@@ -1,0 +1,19 @@
+steps:
+  - name: 'node:24'
+    entrypoint: 'npm'
+    args: ['install']
+
+  - name: 'node:24'
+    entrypoint: 'npm'
+    args: ['run', 'build','--no-cache']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy',]
+
+timeout: '1600s'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  env:
+    - 'NO_CACHE=true'
+  machineType: 'E2_HIGHCPU_8'

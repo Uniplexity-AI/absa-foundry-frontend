@@ -1,0 +1,236 @@
+/* ============================================================
+   Shared Page-Level Styles — Uniplexity Design System
+   Imported in main.js alongside main.css
+   ============================================================ */
+
+/* ---- Mesh Background Utility ---- */
+.mesh-background {
+  background-color: var(--color-background, #ffffff);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-primary, #2f2e8b) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary, #2f2e8b) 4%, transparent) 1px, transparent 1px);
+  background-size: var(--space-grid, 38px) var(--space-grid, 38px);
+  background-position: center center;
+  pointer-events: none;
+}
+
+/* Dense variant for financial/analytics pages (30px grid, fainter) */
+.mesh-background-dense {
+  background-color: var(--color-background, #ffffff);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-primary, #2f2e8b) 2%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary, #2f2e8b) 2%, transparent) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+/* ---- Dotted Pattern Overlay ---- */
+.dotted-pattern {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--brand-primary, #2f2e8b) 14%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: var(--ui-pattern-opacity, 0.05);
+  pointer-events: none;
+}
+
+/* ---- KPI Card: Hero Variant (expense dashboard style) ---- */
+.kpi-card-hero {
+  background: var(--ui-card-surface, var(--color-white, #ffffff));
+  border: 1px solid var(--ui-surface-outline, var(--color-border, #e5e5e5));
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--ui-card-shadow, none);
+  transition: all 0.2s ease;
+}
+.kpi-card-hero:hover {
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.1));
+  transform: translateY(-2px);
+}
+.kpi-card-hero:active {
+  transform: scale(0.98);
+}
+
+.kpi-icon-wrapper-hero {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  background: var(--brand-soft, rgba(47, 46, 139, 0.08));
+  transition: transform 0.2s ease;
+}
+.group:hover .kpi-icon-wrapper-hero {
+  transform: scale(1.1);
+}
+
+.kpi-value-hero {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--color-text-primary, #262626);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.kpi-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-muted, #737373);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+/* ---- KPI Card: Standard Variant (budget/subaccount style) ---- */
+.kpi-card {
+  background: var(--ui-card-surface, var(--color-white, #ffffff));
+  border: 1px solid var(--ui-surface-outline, var(--color-border, #e5e5e5));
+  border-left: 4px solid var(--color-border, #e5e5e5);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.kpi-card .kpi-label {
+  font-size: 8px;
+  margin-bottom: 0.25rem;
+}
+.kpi-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+/* ---- Custom Scrollbar ---- */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong, #d4d4d4) var(--color-background-muted, #f2f2f2);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-background-muted, #f2f2f2);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong, #d4d4d4);
+  border-radius: 0;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-primary, #2f2e8b);
+}
+
+/* ---- Animations ---- */
+.animate-fade-in-up {
+  animation: fadeInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---- Blur Support (scoped modal backdrop) ---- */
+.blur-scoped {
+  transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+body.scoped-modal-open .blur-scoped {
+  filter: blur(8px) brightness(0.95);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- Dark Mode ---- */
+html.dark .mesh-background {
+  background-color: var(--color-background, #090b11);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-primary, #97cbfd) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary, #97cbfd) 5%, transparent) 1px, transparent 1px);
+}
+html.dark .mesh-background-dense {
+  background-color: var(--color-background, #090b11);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-primary, #97cbfd) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary, #97cbfd) 3%, transparent) 1px, transparent 1px);
+}
+html.dark .dotted-pattern {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--brand-primary, #97cbfd) 18%, transparent) 1px, transparent 1px);
+  opacity: 0.08;
+}
+html.dark .kpi-card-hero {
+  background: var(--ui-card-surface, #11141e);
+  border-color: var(--ui-surface-outline, #2d3445);
+}
+html.dark .kpi-card {
+  background: var(--ui-card-surface, #11141e);
+  border-color: var(--ui-surface-outline, #2d3445);
+}
+html.dark .custom-scrollbar {
+  scrollbar-color: #4b5563 #1a1a1a;
+}
+html.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* ---- Full-Screen / Excel Mode ---- */
+html.app-fullscreen-mode .dashboard-layout > .sidebar,
+html.app-fullscreen-mode .dashboard-layout > .sidebar * {
+  display: none !important;
+  width: 0 !important;
+}
+html.app-fullscreen-mode .dashboard-layout .sidebar-edge-open {
+  display: none !important;
+}
+html.app-fullscreen-mode .dashboard-layout {
+  grid-template-columns: 0 1fr !important;
+}
+html.app-fullscreen-mode #main-dashboard-content {
+  padding: 0 !important;
+  max-width: 100% !important;
+}
+html.app-fullscreen-mode header.sticky {
+  position: relative !important;
+}
+html.app-fullscreen-mode .dashboard-main {
+  padding-top: 0 !important;
+}
+
+/* ---- Design System: Spacing Scale ---- */
+
+:root {
+  --space-gap-xs: var(--space-1);
+  --space-gap-sm: var(--space-2);
+  --space-gap-md: var(--space-4);
+  --space-gap-lg: var(--space-6);
+  --space-gap-xl: var(--space-8);
+  --space-section: var(--space-8);
+  --space-card-padding: var(--space-5);
+  --space-card-gap: var(--space-4);
+  --space-list-gap: var(--space-2);
+  --space-form-gap: var(--space-4);
+  --space-input-padding: var(--space-2) var(--space-3);
+  --space-table-cell: var(--space-3) var(--space-4);
+}
+
+/* Utility classes for consistent spacing */
+.section-gap { gap: var(--space-section); }
+.card-padding { padding: var(--space-card-padding); }
+.card-gap { gap: var(--space-card-gap); }
+.form-gap { gap: var(--space-form-gap); }
+.list-gap { gap: var(--space-list-gap); }

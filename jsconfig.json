@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": []
+  },
+  "typeAcquisition": {
+    "enable": true
+  },
+  "exclude": ["node_modules", "dist"]
+}

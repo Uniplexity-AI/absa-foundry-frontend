@@ -1,0 +1,12 @@
+runtime: nodejs24
+
+handlers:
+  # Serve static assets (js, css, images, etc.)
+  - url: /(.*\..+)$
+    static_files: dist/\1
+    upload: dist/(.*\..+)$
+
+  # Fallback — serve index.html for all other routes (SPA routing)
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html

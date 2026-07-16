@@ -1,0 +1,5 @@
+/* patterns.css — deprecated: .mesh-background, .dotted-pattern, and related global styles
+ * have been consolidated into src/assets/pages.css for consistent theming and dark mode support.
+ * This file is kept as a re-export to avoid breaking imports. Remove once all modules
+ * have been migrated to import from pages.css instead.
+ */

@@ -1,739 +1,769 @@
 <template>
-  <!-- ════════════════════════════════════════════════════
-       ABSA Intelligence Unit — Dashboard Hub
-       Starting point for portfolio overview, customers,
-       operations, and AI-driven insights.
-       ════════════════════════════════════════════════════ -->
-  <div class="absa-dashboard-layout">
-    <!-- ── Left Sidebar ── -->
-    <aside class="absa-sidebar">
-      <div class="absa-sidebar__brand">
-        <div class="absa-sidebar__logo">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect width="28" height="28" rx="6" fill="url(#absaLogoGrad)"/>
-            <text x="14" y="20" text-anchor="middle" fill="white" font-size="16" font-weight="900" font-family="Montserrat, sans-serif">A</text>
-            <defs>
-              <linearGradient id="absaLogoGrad" x1="0" y1="0" x2="28" y2="28">
-                <stop stop-color="#BE0F2C"/><stop offset="1" stop-color="#8B0015"/>
-              </linearGradient>
-            </defs>
-          </svg>
+  <div class="absa-landing">
+    <!-- ── Public Top Navigation Header ── -->
+    <header class="absa-nav">
+      <div class="absa-container absa-nav__inner">
+        <div class="absa-brand">
+          <img src="/logo_red.png" alt="ABSA Intelligence Unit" class="h-8 w-auto object-contain" />
+          <span class="absa-brand__text"> <span class="absa-brand__sub">Intelligence Unit</span></span>
         </div>
-        <span class="absa-sidebar__brand-text">absa Intelligence Unit</span>
+
+        <nav class="absa-nav__links">
+          <a href="#features" class="absa-nav__link">System Capabilities</a>
+          <a href="#impact" class="absa-nav__link">Enterprise Impact</a>
+          <a href="#architecture" class="absa-nav__link">Security & Core Integration</a>
+        </nav>
+
+        <div class="absa-nav__actions">
+          <a href="/login" class="absa-btn-secondary">Sign In</a>
+          <a href="/dashboard" class="absa-btn-primary">Launch Dashboard →</a>
+        </div>
       </div>
+    </header>
 
-      <nav class="absa-sidebar__nav">
-        <a href="/" class="absa-nav-item absa-nav-item--active">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Dashboard
-        </a>
-        <a href="/customers" class="absa-nav-item">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          My Customers
-        </a>
-        <a href="/portfolio" class="absa-nav-item">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-          Portfolio
-        </a>
-        <a href="/operations" class="absa-nav-item">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          Operations
-        </a>
-      </nav>
-
-      <div class="absa-sidebar__bottom">
-        <button class="absa-sidebar__ai-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          AI Assistant
-        </button>
-        <a href="/settings" class="absa-nav-item">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          Settings
-        </a>
-        <a href="/support" class="absa-nav-item">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          Support
-        </a>
-      </div>
-    </aside>
-
-    <!-- ── Main Content ── -->
-    <main class="absa-main">
-      <!-- Top Bar -->
-      <header class="absa-topbar">
-        <div class="absa-topbar__breadcrumb">
-          <span class="absa-topbar__breadcrumb-dim">Home</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          <span class="absa-topbar__breadcrumb-current">Dashboard</span>
-        </div>
-        <div class="absa-topbar__right">
-          <div class="absa-search">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input class="absa-search__input" type="text" placeholder="Search customer, account or ID..." />
+    <!-- ── Hero Section ── -->
+    <section class="absa-hero">
+      <div class="absa-container absa-hero__grid">
+        <div class="absa-hero__content">
+          <div class="absa-pill-badge">
+            <span class="absa-pill-badge__dot"></span>
+            NEXT-GEN AI RETENTION ENGINE
           </div>
-          <button class="absa-icon-btn" aria-label="Notifications">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          </button>
-          <div class="absa-topbar__user">
-            <div class="absa-topbar__avatar">TT</div>
-            <div class="absa-topbar__user-info">
-              <span class="absa-topbar__user-name">Tina Tembo</span>
-              <span class="absa-topbar__user-role">Relationship Manager</span>
-            </div>
-          </div>
-        </div>
-      </header>
 
-      <!-- Dashboard Content -->
-      <div class="absa-content absa-mesh-dense">
-        <!-- Page Header -->
-        <div class="absa-page-header">
-          <div>
-            <h1 class="absa-page-header__title">Portfolio Overview</h1>
-            <p class="absa-page-header__subtitle">Data Snapshot: Latest (July 20, 2026)</p>
+          <h1 class="absa-hero__title">
+            Predictive Customer Lifecycle & Attrition Intelligence
+          </h1>
+
+          <p class="absa-hero__subtitle">
+            Transform customer retention from reactive outreach to proactive AI precision. 
+            Real-time churn risk detection, explainable AI drivers, and Next Best Action recommendations integrated directly into Absa core banking workflows.
+          </p>
+
+          <div class="absa-hero__cta-group">
+            <a href="/dashboard" class="absa-btn-hero-primary">
+              Access Intelligence Hub
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="#features" class="absa-btn-hero-secondary">
+              Explore Platform Features
+            </a>
           </div>
-          <div class="absa-page-header__actions">
-            <button class="absa-toolbar-btn">📥 Export Report</button>
-            <button class="absa-toolbar-btn absa-toolbar-btn--primary">+ New Action</button>
+
+          <div class="absa-hero__trust-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Air-Gapped On-Premises Deployment | Bank-Grade Encryption</span>
           </div>
         </div>
 
-        <!-- ── KPI Cards Row ── -->
-        <div class="absa-kpi-grid">
-          <div class="absa-metric-card absa-accent-left-success">
-            <span class="absa-metric-card__label">Total Customers</span>
-            <span class="absa-metric-card__value">1,240</span>
-            <span class="absa-metric-card__delta absa-metric-card__delta--up">↑ +2.4% vs last period</span>
-          </div>
-          <div class="absa-metric-card absa-accent-left-critical">
-            <span class="absa-metric-card__label">At Risk</span>
-            <span class="absa-metric-card__value">68 <span style="font-size:0.875rem;color:#6B7280;font-weight:500">| 5.5%</span></span>
-            <span class="absa-metric-card__delta absa-metric-card__delta--down">↑ +4 since last snapshot</span>
-          </div>
-          <div class="absa-metric-card absa-accent-left-warning">
-            <span class="absa-metric-card__label">Dormant Accounts</span>
-            <span class="absa-metric-card__value">42</span>
-            <span class="absa-metric-card__delta absa-metric-card__delta--flat">Stable across 3 periods</span>
-          </div>
-          <div class="absa-metric-card absa-accent-left-maroon">
-            <span class="absa-metric-card__label">Actions Due Today</span>
-            <span class="absa-metric-card__value">12</span>
-            <span class="absa-metric-card__delta" style="color:#DC2626;font-weight:600">8 URGENT | 4 ROUTINE</span>
-          </div>
-        </div>
-
-        <!-- ── Two-Column Layout ── -->
-        <div class="absa-grid-2col">
-          <!-- Left: Critical Alerts -->
-          <div class="absa-card absa-card--panel">
-            <div class="absa-section-header">
-              <h2 class="absa-section-header__title">🚨 Critical Alerts</h2>
-              <span class="absa-badge absa-badge--critical">3 Active</span>
-            </div>
-            <div class="absa-alert-item absa-alert-item--critical">
-              <svg class="absa-alert-item__icon" viewBox="0 0 24 24" fill="#DC2626"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="white" stroke-width="2"/></svg>
-              <div class="absa-alert-item__content">
-                <div class="absa-alert-item__title">M. Kapambwe — Health Score drop -25</div>
-                <div class="absa-alert-item__detail">Significant decrease in incoming wire transfers over last 30 days.</div>
+        <!-- Visual Graphic / Interactive Hero Graphic -->
+        <div class="absa-hero__visual">
+          <div class="absa-hero-card-stack">
+            <div class="absa-glass-card absa-glass-card--main">
+              <div class="absa-glass-card__header">
+                <div class="absa-glass-card__title">Live Health Engine</div>
+                <span class="absa-status-badge">ACTIVE MONITORING</span>
               </div>
-              <button class="absa-alert-item__action absa-alert-item__action--critical">ACKNOWLEDGE</button>
-            </div>
-            <div class="absa-alert-item absa-alert-item--warning">
-              <svg class="absa-alert-item__icon" viewBox="0 0 24 24" fill="#F59E0B"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13" stroke="white" stroke-width="2"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="white" stroke-width="2"/></svg>
-              <div class="absa-alert-item__content">
-                <div class="absa-alert-item__title">J. Phiri — State Transition: At Risk</div>
-                <div class="absa-alert-item__detail">Customer moved from Active to At Risk based on behavioral scoring.</div>
+              <div class="absa-hero-metrics">
+                <div class="absa-metric">
+                  <span class="absa-metric__val">94.2%</span>
+                  <span class="absa-metric__label">Churn Accuracy</span>
+                </div>
+                <div class="absa-metric">
+                  <span class="absa-metric__val">ZMW 12.4M</span>
+                  <span class="absa-metric__label">CLV Protected</span>
+                </div>
               </div>
-              <button class="absa-alert-item__action" style="color:#D97706;border-color:#FDE68A">REVIEW</button>
-            </div>
-            <div class="absa-alert-item absa-alert-item--critical">
-              <svg class="absa-alert-item__icon" viewBox="0 0 24 24" fill="#DC2626"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="white" stroke-width="2"/></svg>
-              <div class="absa-alert-item__content">
-                <div class="absa-alert-item__title">P. Lungu — Large Withdrawal Detected</div>
-                <div class="absa-alert-item__detail">Withdrawal of ZMW 450,000 from Savings account.</div>
+              <!-- Graphic Chart Preview -->
+              <div class="absa-graphic-bars">
+                <div class="absa-bar" style="height: 40%"></div>
+                <div class="absa-bar" style="height: 65%"></div>
+                <div class="absa-bar" style="height: 50%"></div>
+                <div class="absa-bar absa-bar--active" style="height: 85%"></div>
+                <div class="absa-bar" style="height: 60%"></div>
+                <div class="absa-bar" style="height: 95%"></div>
               </div>
-              <button class="absa-alert-item__action absa-alert-item__action--critical">ACKNOWLEDGE</button>
             </div>
-          </div>
 
-          <!-- Right: Quick Links + Predictive Ledger -->
-          <div class="absa-card absa-card--panel">
-            <div class="absa-section-header">
-              <h2 class="absa-section-header__title">⚡ Predictive Lifecycle Ledger</h2>
-              <a href="/portfolio" class="absa-link-sm">View All →</a>
+            <!-- Floating Alert Card Overlay -->
+            <div class="absa-floating-alert">
+              <div class="absa-floating-alert__icon">!</div>
+              <div>
+                <div class="absa-floating-alert__title">High Risk Trigger Detected</div>
+                <div class="absa-floating-alert__sub">Customer ID: 994022/11/1 • Salary drop -42%</div>
+              </div>
             </div>
-            <table class="absa-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>State</th>
-                  <th>Health</th>
-                  <th>Churn Prob</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="absa-table__cell-name">Mwenda Kapambwe</td>
-                  <td><span class="absa-status-pill absa-status-pill--churned">Churned</span></td>
-                  <td><span style="color:#DC2626;font-weight:700">22</span></td>
-                  <td class="absa-table__cell-numeric" style="color:#DC2626;font-weight:700">89%</td>
-                  <td><button class="absa-table-action-btn absa-table-action-btn--critical">RETENTION CALL</button></td>
-                </tr>
-                <tr>
-                  <td class="absa-table__cell-name">Joseph Phiri</td>
-                  <td><span class="absa-status-pill absa-status-pill--at-risk">At Risk</span></td>
-                  <td><span style="color:#F59E0B;font-weight:700">48</span></td>
-                  <td class="absa-table__cell-numeric" style="color:#F59E0B;font-weight:700">52%</td>
-                  <td><button class="absa-table-action-btn absa-table-action-btn--warning">BALANCE REVIEW</button></td>
-                </tr>
-                <tr>
-                  <td class="absa-table__cell-name">Patricia Lungu</td>
-                  <td><span class="absa-status-pill absa-status-pill--active">Active</span></td>
-                  <td><span style="color:#16A34A;font-weight:700">82</span></td>
-                  <td class="absa-table__cell-numeric" style="color:#16A34A">8%</td>
-                  <td><button class="absa-table-action-btn absa-table-action-btn--success">UPSELL OPPORTUNITY</button></td>
-                </tr>
-                <tr>
-                  <td class="absa-table__cell-name">Sibongile Banda</td>
-                  <td><span class="absa-status-pill absa-status-pill--dormant">Dormant</span></td>
-                  <td><span style="color:#9CA3AF;font-weight:700">35</span></td>
-                  <td class="absa-table__cell-numeric" style="color:#9CA3AF">18%</td>
-                  <td><button class="absa-table-action-btn absa-table-action-btn--neutral">KYC UPDATE</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- ── Quick Navigation Cards ── -->
-        <div class="absa-section-header" style="margin-top:8px">
-          <h2 class="absa-section-header__title">📊 Platform Modules</h2>
-          <span class="absa-section-header__subtitle">Jump to any section</span>
-        </div>
-        <div class="absa-module-grid">
-          <a href="/customers" class="absa-module-card">
-            <div class="absa-module-card__icon absa-module-card__icon--maroon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div class="absa-module-card__body">
-              <h3 class="absa-module-card__title">My Customers</h3>
-              <p class="absa-module-card__desc">AI-driven customer profiles, health scores & retention actions</p>
-            </div>
-          </a>
-          <a href="/portfolio" class="absa-module-card">
-            <div class="absa-module-card__icon absa-module-card__icon--info">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-            </div>
-            <div class="absa-module-card__body">
-              <h3 class="absa-module-card__title">Portfolio Analytics</h3>
-              <p class="absa-module-card__desc">Segment risk, churn forecasts & branch performance metrics</p>
-            </div>
-          </a>
-          <a href="/operations" class="absa-module-card">
-            <div class="absa-module-card__icon absa-module-card__icon--success">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            </div>
-            <div class="absa-module-card__body">
-              <h3 class="absa-module-card__title">Operations</h3>
-              <p class="absa-module-card__desc">ETL pipeline health, data quality monitoring & execution logs</p>
-            </div>
-          </a>
-          <a href="/models" class="absa-module-card">
-            <div class="absa-module-card__icon absa-module-card__icon--warning">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <div class="absa-module-card__body">
-              <h3 class="absa-module-card__title">AI Models</h3>
-              <p class="absa-module-card__desc">Model monitoring, feature drift detection & champion/challenger tracking</p>
-            </div>
-          </a>
-        </div>
-
-        <!-- ── AI Recommendation Banner ── -->
-        <div class="absa-ai-banner">
-          <svg class="absa-ai-banner__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          <div>
-            <strong>AI Recommendation Engine</strong> — Based on current portfolio trends, the Premier Banking segment shows a predicted 12% churn uplift in the next 30 days. Prioritize retention calls for customers with Health Score below 40.
-          </div>
-        </div>
-
-        <!-- ── Footer Metrics ── -->
-        <div class="absa-footer-metrics">
-          <div class="absa-footer-metric">
-            <span class="absa-footer-metric__label">Pipeline Health</span>
-            <span class="absa-footer-metric__value">All Systems Operational</span>
-          </div>
-          <div class="absa-footer-metric">
-            <span class="absa-footer-metric__label">Avg. Quality Score</span>
-            <span class="absa-footer-metric__value">99.1% <span class="absa-footer-metric__delta--up">↑ 0.3%</span></span>
-          </div>
-          <div class="absa-footer-metric">
-            <span class="absa-footer-metric__label">Models in Production</span>
-            <span class="absa-footer-metric__value">4 Active</span>
-          </div>
-          <div class="absa-footer-metric">
-            <span class="absa-footer-metric__label">Last Data Refresh</span>
-            <span class="absa-footer-metric__value">2 minutes ago</span>
           </div>
         </div>
       </div>
-    </main>
+    </section>
+
+    <!-- ── Impact Stats Banner ── -->
+    <section id="impact" class="absa-stats-banner">
+      <div class="absa-container absa-stats-grid">
+        <div class="absa-stat-item" v-for="stat in systemStats" :key="stat.label">
+          <div class="absa-stat-item__value">{{ stat.value }}</div>
+          <div class="absa-stat-item__label">{{ stat.label }}</div>
+          <div class="absa-stat-item__desc">{{ stat.description }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── System Capabilities / Features Grid ── -->
+    <section id="features" class="absa-features">
+      <div class="absa-container">
+        <div class="absa-section-header">
+          <span class="absa-section-header__tag">CORE SYSTEM CAPABILITIES</span>
+          <h2 class="absa-section-header__title">Engineered for Modern Relationship Management</h2>
+          <p class="absa-section-header__desc">
+            A comprehensive suite of machine learning models and actionable relationship workflows built specifically for retail and private banking operations.
+          </p>
+        </div>
+
+        <div class="absa-features-grid">
+          <div class="absa-feature-card" v-for="feat in systemFeatures" :key="feat.title">
+            <div class="absa-feature-card__icon" v-html="feat.iconSvg"></div>
+            <h3 class="absa-feature-card__title">{{ feat.title }}</h3>
+            <p class="absa-feature-card__desc">{{ feat.description }}</p>
+            <ul class="absa-feature-card__list">
+              <li v-for="(item, idx) in feat.bullets" :key="idx">{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Enterprise CTA Banner ── -->
+    <section class="absa-cta-banner">
+      <div class="absa-container absa-cta-banner__inner">
+        <div>
+          <h2 class="absa-cta-banner__title">Ready to Empower Your Relationship Managers?</h2>
+          <p class="absa-cta-banner__desc">Access real-time risk scores, automated Next Best Actions, and full account histories right now.</p>
+        </div>
+        <a href="/dashboard" class="absa-btn-cta-light">Launch Intelligence Hub</a>
+      </div>
+    </section>
+
+    <!-- ── Compliant Banking Footer ── -->
+    <footer class="absa-footer">
+      <div class="absa-container absa-footer__grid">
+        <div class="absa-footer__brand-col">
+          <div class="absa-brand">
+            <img src="/logo_white.png" alt="ABSA Intelligence Unit" class="h-6 w-auto object-contain" />
+            <span class="absa-brand__text absa-brand__text--light"><span class="absa-brand__sub">Intelligence Unit</span></span>
+          </div>
+          <p class="absa-footer__about">
+            The Absa Customer Lifecycle Prediction Hub is an internal enterprise platform for predictive churn mitigation, behavioral analytics, and automated retention management.
+          </p>
+        </div>
+
+        <div class="absa-footer__col">
+          <h4 class="absa-footer__col-title">Platform Modules</h4>
+          <a href="/dashboard" class="absa-footer__link">Portfolio Dashboard</a>
+          <a href="/customers" class="absa-footer__link">Customer Ledger</a>
+          <a href="/analytics" class="absa-footer__link">Predictive Models</a>
+          <a href="/alerts" class="absa-footer__link">Priority Triggers</a>
+        </div>
+
+        <div class="absa-footer__col">
+          <h4 class="absa-footer__col-title">Security & Governance</h4>
+          <a href="#" class="absa-footer__link">Air-Gapped Deployment</a>
+          <a href="#" class="absa-footer__link">Core Banking API</a>
+          <a href="#" class="absa-footer__link">Audit Log Compliance</a>
+          <a href="#" class="absa-footer__link">Access Control (RBAC)</a>
+        </div>
+
+        <div class="absa-footer__col">
+          <h4 class="absa-footer__col-title">Internal Support</h4>
+          <a href="#" class="absa-footer__link">System Documentation</a>
+          <a href="#" class="absa-footer__link">RM Training Hub</a>
+          <a href="#" class="absa-footer__link">IT Helpdesk</a>
+          <a href="#" class="absa-footer__link">Model Release Notes</a>
+        </div>
+      </div>
+
+      <div class="absa-footer__bottom">
+        <div class="absa-container absa-footer__bottom-inner">
+          <span>&copy; 2026 Absa Bank Zambia PLC. All Rights Reserved. Internal Confidential System.</span>
+          <div class="absa-footer__legal">
+            <a href="#">Privacy Notice</a>
+            <a href="#">Security Protocol</a>
+            <a href="#">Terms of Operational Use</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
-<script setup>
-// ABSA Intelligence Unit — Dashboard Hub
-// No external dependencies needed for the static dashboard view.
-// All interactivity (router links, search, etc.) uses native HTML.
+<script setup lang="ts">
+import { ref } from 'vue';
+
+// Enterprise Impact Metrics Data
+const systemStats = ref([
+  { value: '94.2%', label: 'Prediction Precision', description: 'Accurate 60-day early warning churn detection' },
+  { value: '45%', label: 'Attrition Reduction', description: 'Lower churn rate across target private accounts' },
+  { value: '1.2M+', label: 'Accounts Analyzed', description: 'Real-time daily transaction pattern scoring' },
+  { value: '< 200ms', label: 'Engine Response', description: 'Instant Next Best Action recommendation generation' }
+]);
+
+// System Features Mapping to Platform Requirements
+const systemFeatures = ref([
+  {
+    title: 'AI Customer Health Scoring',
+    description: 'Dynamic 0–100 health metrics calculated daily based on cash flows, channel activity, and product usage.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+    bullets: ['Automated risk status categorization', '60-day predictive lookahead window', 'Historical trajectory tracking']
+  },
+  {
+    title: 'Explainable AI (SHAP Drivers)',
+    description: 'Full transparency into machine learning decisions with explicit risk driver rankings for every account.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>`,
+    bullets: ['Identifies specific behavioral drops', 'Inflow & deposit variance analytics', 'No black-box predictions']
+  },
+  {
+    title: 'Next Best Action (NBA) Engine',
+    description: 'Context-aware retention recommendations generated automatically to guide Relationship Managers.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+    bullets: ['Priority rank & AI confidence score', 'One-click action logging modal', 'Pre-crafted campaign offers']
+  },
+  {
+    title: 'Lifecycle Journey Mapping',
+    description: '12-month visual timeline tracing every state transition from onboarding through active, at-risk, or churned states.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    bullets: ['Transition point tagging', 'Historical state comparisons', 'Tenure vs risk mapping']
+  },
+  {
+    title: 'Portfolio Risk Ledger',
+    description: 'Interactive dashboard for Relationship Managers to filter, search, and manage high-value account risks.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`,
+    bullets: ['Multi-branch filtering capabilities', 'Instant alert acknowledgments', 'Direct Core Banking integration']
+  },
+  {
+    title: 'Air-Gapped Enterprise Security',
+    description: 'Designed to operate within Absa strict private cloud constraints without external cloud dependency.',
+    iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    bullets: ['Role-Based Access Control (RBAC)', 'End-to-end audit log tracking', 'Zero external data transmission']
+  }
+]);
 </script>
 
 <style scoped>
 /* ════════════════════════════════════════════════════════
-   ABSA Dashboard Layout — Scoped Styles
-   Built on absa-colors.css, patterns.css & pages.css tokens.
+   Absa Public Landing Page Tokens & Styles
    ════════════════════════════════════════════════════════ */
 
-/* ── Root Layout ── */
-.absa-dashboard-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
+.absa-landing {
   min-height: 100vh;
-  background: #F8F8FA;
-  font-family: 'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #FFFFFF;
+  color: #1F2937;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  line-height: 1.5;
 }
 
-/* ── Sidebar ── */
-.absa-sidebar {
-  background: #FFFFFF;
-  border-right: 1px solid #E8E8EC;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
+.absa-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Top Navigation Bar ── */
+.absa-nav {
+  height: 72px;
+  border-bottom: 1px solid #E5E7EB;
   position: sticky;
   top: 0;
-  height: 100vh;
-  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 50;
 }
 
-.absa-sidebar__brand {
+.absa-nav__inner {
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 18px 20px;
-  border-bottom: 1px solid #F3F4F6;
+  justify-content: space-between;
 }
 
-.absa-sidebar__brand-text {
-  font-size: 0.8125rem;
+.absa-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.absa-brand__text {
   font-weight: 800;
-  color: #111827;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-
-.absa-sidebar__nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 12px;
-  flex: 1;
-}
-
-.absa-sidebar__bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 12px;
-  border-top: 1px solid #F3F4F6;
-}
-
-.absa-sidebar__ai-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  margin-bottom: 6px;
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 150ms ease;
-}
-
-.absa-sidebar__ai-btn:hover {
-  opacity: 0.9;
-}
-
-/* Nav items (reused from pages.css pattern) */
-.absa-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #4B5563;
-  text-decoration: none;
-  transition: all 150ms ease;
-}
-
-.absa-nav-item:hover {
-  background: #F3F4F6;
-  color: #111827;
-}
-
-.absa-nav-item--active {
-  background: #FDE8EC;
+  font-size: 1.05rem;
   color: #BE0F2C;
-  font-weight: 700;
 }
 
-/* ── Main Content ── */
-.absa-main {
+.absa-brand__text--light { color: #FFFFFF; }
+
+.absa-brand__sub {
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.absa-brand__text--light .absa-brand__sub { color: #9CA3AF; }
+
+.absa-nav__links {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  gap: 28px;
 }
 
-.absa-content {
-  flex: 1;
-  padding: 24px 32px;
-  overflow-y: auto;
+.absa-nav__link {
+  text-decoration: none;
+  color: #4B5563;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: color 0.15s;
 }
 
-/* ── Top Bar ── */
-.absa-topbar {
+.absa-nav__link:hover { color: #BE0F2C; }
+
+.absa-nav__actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  height: 64px;
-  background: #FFFFFF;
-  border-bottom: 1px solid #E8E8EC;
-  position: sticky;
-  top: 0;
-  z-index: 30;
+  gap: 12px;
 }
 
-.absa-topbar__breadcrumb {
-  display: flex;
+.absa-btn-secondary {
+  text-decoration: none;
+  color: #1F2937;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+}
+
+.absa-btn-primary {
+  text-decoration: none;
+  background: #BE0F2C;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.absa-btn-primary:hover { background: #8B0015; }
+
+/* ── Hero Section ── */
+.absa-hero {
+  padding: 80px 0;
+  background: linear-gradient(180deg, #FFF5F5 0%, #FFFFFF 100%);
+  overflow: hidden;
+}
+
+.absa-hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.absa-pill-badge {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8125rem;
-  color: #9CA3AF;
+  background: #FEE2E2;
+  color: #BE0F2C;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
 }
 
-.absa-topbar__breadcrumb-dim { color: #9CA3AF; }
-.absa-topbar__breadcrumb-current { color: #111827; font-weight: 600; }
-
-.absa-topbar__right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.absa-topbar__user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.absa-topbar__avatar {
-  width: 36px;
-  height: 36px;
+.absa-pill-badge__dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  background: #BE0F2C;
+}
+
+.absa-hero__title {
+  font-size: 2.75rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #111827;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.02em;
+}
+
+.absa-hero__subtitle {
+  font-size: 1.1rem;
+  color: #4B5563;
+  margin: 0 0 32px 0;
+  line-height: 1.6;
+}
+
+.absa-hero__cta-group {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.absa-btn-hero-primary {
   background: linear-gradient(135deg, #BE0F2C, #8B0015);
   color: #FFFFFF;
-  font-size: 0.75rem;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 6px;
   font-weight: 800;
-  display: flex;
+  font-size: 0.95rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.3);
 }
 
-.absa-topbar__user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.absa-topbar__user-name {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.absa-topbar__user-role {
-  font-size: 0.6875rem;
-  color: #6B7280;
-}
-
-.absa-icon-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  border-radius: 8px;
-  color: #6B7280;
-  cursor: pointer;
-  transition: all 150ms ease;
-}
-
-.absa-icon-btn:hover {
-  background: #F3F4F6;
-  color: #111827;
-}
-
-/* Search (matches pages.css) */
-.absa-search {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  width: 320px;
-  background: #F9FAFB;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
-  padding: 0 12px;
-  gap: 8px;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
-}
-
-.absa-search:focus-within {
-  border-color: #BE0F2C;
-  box-shadow: 0 0 0 3px rgba(190, 15, 44, 0.12);
+.absa-btn-hero-secondary {
   background: #FFFFFF;
+  color: #1F2937;
+  border: 1px solid #D1D5DB;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
-.absa-search__input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.8125rem;
-  color: #111827;
-}
-
-.absa-search__input::placeholder {
-  color: #9CA3AF;
-}
-
-/* ── Page Header ── */
-.absa-page-header {
+.absa-hero__trust-badge {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.absa-page-header__title {
-  font-size: 1.375rem;
-  font-weight: 800;
-  color: #111827;
-  letter-spacing: -0.02em;
-  margin: 0 0 4px;
-}
-
-.absa-page-header__subtitle {
-  font-size: 0.8125rem;
-  color: #6B7280;
-  margin: 0;
-}
-
-.absa-page-header__actions {
-  display: flex;
+  align-items: center;
   gap: 8px;
+  font-size: 0.775rem;
+  color: #6B7280;
+  font-weight: 600;
 }
 
-/* ── KPI Grid ── */
-.absa-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+/* Hero Visual Card Stack */
+.absa-hero__visual {
+  position: relative;
+}
+
+.absa-hero-card-stack {
+  position: relative;
+  width: 100%;
+}
+
+.absa-glass-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.absa-glass-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 24px;
 }
 
-@media (max-width: 1200px) {
-  .absa-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+.absa-glass-card__title {
+  font-weight: 800;
+  font-size: 0.95rem;
 }
 
-@media (max-width: 768px) {
-  .absa-kpi-grid { grid-template-columns: 1fr; }
-  .absa-dashboard-layout { grid-template-columns: 1fr; }
-  .absa-sidebar { display: none; }
-  .absa-grid-2col { grid-template-columns: 1fr; }
-  .absa-module-grid { grid-template-columns: 1fr; }
-  .absa-content { padding: 16px; }
-  .absa-topbar { padding: 0 16px; }
+.absa-status-badge {
+  background: #DCFCE7;
+  color: #15803D;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
-/* ── Two Column Grid ── */
-.absa-grid-2col {
+.absa-hero-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
-/* ── Panel Card ── */
-.absa-card--panel {
-  background: #FFFFFF;
-  border: 1px solid #E8E8EC;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-/* ── Badge ── */
-.absa-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  border-radius: 999px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.absa-badge--critical {
-  background: #FEE2E2;
-  color: #DC2626;
-}
-
-/* ── Link ── */
-.absa-link-sm {
-  font-size: 0.75rem;
-  font-weight: 600;
+.absa-metric__val {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 900;
   color: #BE0F2C;
-  text-decoration: none;
 }
 
-.absa-link-sm:hover {
-  text-decoration: underline;
-}
-
-/* ── Table Action Buttons ── */
-.absa-table-action-btn {
-  padding: 4px 10px;
-  font-size: 0.625rem;
-  font-weight: 700;
-  border-radius: 5px;
-  border: 1px solid;
-  cursor: pointer;
-  white-space: nowrap;
-  letter-spacing: 0.03em;
-  transition: all 150ms ease;
-}
-
-.absa-table-action-btn--critical {
-  background: #FEE2E2;
-  color: #DC2626;
-  border-color: #FECACA;
-}
-.absa-table-action-btn--critical:hover { background: #FECACA; }
-
-.absa-table-action-btn--warning {
-  background: #FEF3C7;
-  color: #D97706;
-  border-color: #FDE68A;
-}
-.absa-table-action-btn--warning:hover { background: #FDE68A; }
-
-.absa-table-action-btn--success {
-  background: #DCFCE7;
-  color: #16A34A;
-  border-color: #BBF7D0;
-}
-.absa-table-action-btn--success:hover { background: #BBF7D0; }
-
-.absa-table-action-btn--neutral {
-  background: #F3F4F6;
+.absa-metric__label {
+  font-size: 0.75rem;
   color: #6B7280;
-  border-color: #E5E7EB;
-}
-.absa-table-action-btn--neutral:hover { background: #E5E7EB; }
-
-.absa-table__cell-name {
-  font-weight: 600;
-  color: #111827;
+  font-weight: 700;
 }
 
-/* ── Module Navigation Cards ── */
-.absa-module-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-@media (max-width: 1000px) {
-  .absa-module-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-.absa-module-card {
+.absa-graphic-bars {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 18px;
-  background: #FFFFFF;
-  border: 1px solid #E8E8EC;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: all 200ms ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  align-items: flex-end;
+  gap: 12px;
+  height: 100px;
+  padding-top: 10px;
+  border-bottom: 1px solid #F3F4F6;
 }
 
-.absa-module-card:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-  border-color: #D1D5DB;
+.absa-bar {
+  flex: 1;
+  background: #F3F4F6;
+  border-radius: 4px 4px 0 0;
 }
 
-.absa-module-card__icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+.absa-bar--active {
+  background: linear-gradient(180deg, #BE0F2C, #8B0015);
+}
+
+.absa-floating-alert {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  background: #111827;
+  color: #FFFFFF;
+  border-radius: 8px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.absa-floating-alert__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #DC2626;
+  color: white;
+  font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
-.absa-module-card__icon--maroon  { background: linear-gradient(135deg, #BE0F2C, #8B0015); }
-.absa-module-card__icon--info    { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
-.absa-module-card__icon--success { background: linear-gradient(135deg, #16A34A, #15803D); }
-.absa-module-card__icon--warning { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.absa-floating-alert__title { font-size: 0.8rem; font-weight: 800; }
+.absa-floating-alert__sub { font-size: 0.7rem; color: #9CA3AF; }
 
-.absa-module-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+/* ── Stats Banner ── */
+.absa-stats-banner {
+  background: #8B0015;
+  color: #FFFFFF;
+  padding: 48px 0;
 }
 
-.absa-module-card__title {
-  font-size: 0.875rem;
-  font-weight: 700;
+.absa-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.absa-stat-item__value {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.absa-stat-item__label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.absa-stat-item__desc {
+  font-size: 0.725rem;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+/* ── Features Section ── */
+.absa-features {
+  padding: 96px 0;
+}
+
+.absa-section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 64px auto;
+}
+
+.absa-section-header__tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #BE0F2C;
+  letter-spacing: 0.05em;
+}
+
+.absa-section-header__title {
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 8px 0 16px 0;
   color: #111827;
+}
+
+.absa-section-header__desc {
+  font-size: 0.95rem;
+  color: #6B7280;
+}
+
+.absa-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.absa-feature-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 28px;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.absa-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: #BE0F2C;
+}
+
+.absa-feature-card__icon {
+  width: 44px;
+  height: 44px;
+  background: #FFF5F5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.absa-feature-card__title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+}
+
+.absa-feature-card__desc {
+  font-size: 0.85rem;
+  color: #6B7280;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.absa-feature-card__list {
+  padding-left: 16px;
+  margin: 0;
+  font-size: 0.775rem;
+  color: #4B5563;
+}
+
+.absa-feature-card__list li {
+  margin-bottom: 6px;
+}
+
+/* ── CTA Banner ── */
+.absa-cta-banner {
+  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  color: #FFFFFF;
+  padding: 60px 0;
+}
+
+.absa-cta-banner__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.absa-cta-banner__title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+}
+
+.absa-cta-banner__desc {
+  font-size: 0.95rem;
+  opacity: 0.9;
   margin: 0;
 }
 
-.absa-module-card__desc {
+.absa-btn-cta-light {
+  background: #FFFFFF;
+  color: #8B0015;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* ── Footer ── */
+.absa-footer {
+  background: #111827;
+  color: #FFFFFF;
+  padding-top: 64px;
+}
+
+.absa-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.absa-footer__about {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  margin-top: 16px;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.absa-footer__col-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 16px 0;
+}
+
+.absa-footer__link {
+  display: block;
+  color: #9CA3AF;
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  transition: color 0.15s;
+}
+
+.absa-footer__link:hover { color: #FFFFFF; }
+
+.absa-footer__bottom {
+  border-top: 1px solid #1F2937;
+  padding: 24px 0;
   font-size: 0.75rem;
   color: #6B7280;
-  margin: 0;
-  line-height: 1.4;
 }
 
-/* ── Scrollbar ── */
-.absa-sidebar::-webkit-scrollbar { width: 4px; }
-.absa-sidebar::-webkit-scrollbar-track { background: transparent; }
-.absa-sidebar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 4px; }
-.absa-sidebar::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
+.absa-footer__bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.absa-footer__legal {
+  display: flex;
+  gap: 16px;
+}
+
+.absa-footer__legal a {
+  color: #6B7280;
+  text-decoration: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .absa-hero__grid, .absa-features-grid, .absa-stats-grid, .absa-footer__grid {
+    grid-template-columns: 1fr;
+  }
+  .absa-nav__links { display: none; }
+  .absa-cta-banner__inner { flex-direction: column; gap: 24px; text-align: center; }
+}
 </style>

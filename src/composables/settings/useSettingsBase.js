@@ -10,7 +10,6 @@ import { mapFrontendToBackend } from '@/config/moduleIdMap'
 import { useDashboardStore } from '@/stores/dashboard'
 import { useAuthStore } from '@/stores/auth'
 import { usePricingStore } from '@/stores/pricingStore'
-import { pricingConfig as fallbackConfig } from '@/config/pricingConfig.js'
 import { useRBAC } from '@/composables/useRBAC'
 import { usePreferences } from '@/config/usePreferences.js'
 import { useAudit } from '@/config/useAudit.js'
@@ -101,7 +100,7 @@ export function useSettingsBase() {
   const branchesCount = ref(0)
   const storageUsage = ref({ total_mb: 0 })
 
-  const config = computed(() => pricingStore.config || fallbackConfig)
+  const config = computed(() => pricingStore.config || {})
 
   const activeSubscriptionKPIs = computed(() => {
     if (!config.value) return null
@@ -209,7 +208,7 @@ export function useSettingsBase() {
 
   const activeCycle = computed(() => {
     const m = customMonths.value || 1
-    const cycles = config.value?.billingCycles || fallbackConfig.billingCycles
+    const cycles = config.value?.billingCycles || {}
     if (m % 12 === 0) return cycles.yearly
     if (m % 3 === 0) return cycles.quarterly
     return cycles.monthly
@@ -246,7 +245,7 @@ export function useSettingsBase() {
     if (!tier) return { modulesCost, grandTotal: modulesCost }
     const extraUsers = Math.max(0, (customUsers.value || 0) - (tier.maxUsers || 0))
     const extraBranches = Math.max(0, (customBranches.value || 0) - (tier.maxBranches || 0))
-    const surcharges = config.value.surcharges || fallbackConfig.surcharges
+    const surcharges = config.value.surcharges || {}
     const extraUserCost = (modulesCost * ((surcharges.extraUserPercentage || 0) / 100)) * extraUsers
     const extraBranchCost = (modulesCost * ((surcharges.extraBranchPercentage || 0) / 100)) * extraBranches
     const storageOption = (surcharges.storageOptions || []).find(o => o.id === selectedStorageId.value)

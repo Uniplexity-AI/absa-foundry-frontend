@@ -1,224 +1,186 @@
 <template>
-  <div class="min-h-screen flex flex-col lg:flex-row bg-white font-sans overflow-hidden">
-    
-    <!-- Left: Login Form -->
-    <div class="flex flex-col justify-center items-center w-full lg:w-5/12 relative z-10 bg-white border-r border-gray-200">
-       <!-- Background Grid for Left Side -->
-       <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: radial-gradient(#2F2E8B 1px, transparent 1px); background-size: 24px 24px;"></div>
-
-      <div class="w-full max-w-md mx-auto px-6 py-8">
-        
+  <div class="absa-login">
+    <!-- ── Left: Login Form ── -->
+    <div class="absa-login__form-panel">
+      <div class="absa-login__form-inner">
         <!-- Header -->
-        <div class="text-center mb-8">
-          <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-100 text-[#2F2E8B] text-xs font-mono mb-6 rounded-sm">
-             <i class="fas fa-shield-alt"></i>
-             <span>// ACCESS_CONTROL_V2.1</span>
+        <div class="absa-login__header">
+          <div class="absa-pill-badge absa-pill-badge--login">
+            <span class="absa-pill-badge__dot"></span>
+            ACCESS_CONTROL_V2.1
           </div>
 
-          <router-link to="/" class="block mb-6 group">
-             <img src="/logo_red.png" alt="ABSA Intelligence Unit" class="h-12 mx-auto object-contain transition-transform group-hover:scale-105" />
+          <router-link to="/" class="absa-login__logo-link">
+            <img src="/logo_red.png" alt="ABSA Intelligence Unit" class="absa-login__logo" />
           </router-link>
 
-          <h2 class="text-2xl font-bold text-gray-900 mb-2 tracking-tight">WELCOME <span class="text-[#2F2E8B]">BACK</span></h2>
-          <p class="text-gray-500 text-sm font-mono">Authenticate to access system modules.</p>
+          <h2 class="absa-login__title">Welcome <span class="absa-login__title-accent">Back</span></h2>
+          <p class="absa-login__subtitle">Authenticate to access system modules.</p>
         </div>
 
-        <div class="bg-white/80 backdrop-blur-sm p-1 rounded-none">
-            <!-- Google Sign-In Button -->
-            <div class="mb-6 w-full flex justify-center tech-google-btn-container">
-              <GoogleLogin 
-                :callback="handleGoogleLogin"
-                @error="handleGoogleError"
-                prompt
-                theme="outline"
-                size="large"
-                shape="rectangular"
-              />
-            </div>
+        <div class="absa-login__form-card">
+          <!-- Google Sign-In -->
+          <div class="absa-login__google-btn">
+            <GoogleLogin
+              :callback="handleGoogleLogin"
+              @error="handleGoogleError"
+              prompt
+              theme="outline"
+              size="large"
+              shape="rectangular"
+            />
+          </div>
 
-          <!-- Tech Divider -->
-          <div class="relative mb-8 text-center flex items-center justify-center gap-4">
-              <div class="h-px bg-gray-200 w-full relative">
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-[#2F2E8B]"></div>
-              </div>
-              <span class="text-xs font-mono text-gray-400 uppercase whitespace-nowrap">OR_CONTINUE_WITH_EMAIL</span>
-              <div class="h-px bg-gray-200 w-full relative">
-                  <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-[#2F2E8B]"></div>
-              </div>
+          <!-- Divider -->
+          <div class="absa-login__divider">
+            <span class="absa-login__divider-text">or continue with email</span>
           </div>
 
           <!-- Error Message -->
-          <div v-if="errorMessage" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-mono flex items-start">
-             <i class="fas fa-exclamation-triangle mt-1 mr-3"></i>
-             <span>{{ errorMessage }}</span>
+          <div v-if="errorMessage" class="absa-alert absa-alert--error">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span>{{ errorMessage }}</span>
           </div>
 
           <!-- Success Message -->
-          <div v-if="successMessage" class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 text-sm font-mono flex items-start">
-             <i class="fas fa-check-circle mt-1 mr-3"></i>
-             <span>{{ successMessage }}</span>
+          <div v-if="successMessage" class="absa-alert absa-alert--success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>{{ successMessage }}</span>
           </div>
 
           <!-- Info Message -->
-          <div v-if="hasIntendedRoute" class="mb-6 p-4 bg-blue-50 border-l-4 border-[#2F2E8B] text-[#2F2E8B] text-sm font-mono">
-            <p class="font-bold flex items-center gap-2 mb-1">
-               <i class="fas fa-info-circle"></i> MODULE_LOCKED
-            </p>
-            <p class="opacity-80">Authentication required for access.</p>
+          <div v-if="hasIntendedRoute" class="absa-alert absa-alert--info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div>
+              <p class="absa-alert__title">MODULE_LOCKED</p>
+              <p class="absa-alert__desc">Authentication required for access.</p>
+            </div>
           </div>
 
-          <form class="space-y-5" @submit.prevent="handleSubmit">
+          <form class="absa-login__form" @submit.prevent="handleSubmit">
             <!-- Email -->
-            <div class="group">
-              <label for="email" class="block text-xs font-mono font-bold text-gray-500 mb-1 uppercase tracking-wider group-focus-within:text-[#2F2E8B] transition-colors">Email_Address</label>
-              <div class="relative">
+            <div class="absa-field" :class="{ 'absa-field--error': errors.email }">
+              <label for="email" class="absa-field__label">Email Address</label>
+              <div class="absa-field__input-wrap">
+                <Mail class="absa-field__icon" />
                 <input
                   id="email"
                   v-model="formData.email"
                   type="email"
                   required
-                  class="block w-full pl-10 pr-3 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm"
-                  :class="{ 'border-red-500 bg-red-50': errors.email }"
-                  placeholder="USER@DOMAIN.COM"
+                  class="absa-field__input"
+                  placeholder="user@domain.com"
                 />
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail class="h-4 w-4 text-gray-400 group-focus-within:text-[#2F2E8B] transition-colors" />
-                </div>
-                <!-- Tech corner accent -->
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#2F2E8B] opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
               </div>
-              <p v-if="errors.email" class="mt-1 text-xs text-red-600 font-mono">{{ errors.email }}</p>
+              <p v-if="errors.email" class="absa-field__error">{{ errors.email }}</p>
             </div>
-            
+
             <!-- Password -->
-            <div class="group">
-              <label for="password" class="block text-xs font-mono font-bold text-gray-500 mb-1 uppercase tracking-wider group-focus-within:text-[#2F2E8B] transition-colors">Access_Key</label>
-              <div class="relative">
+            <div class="absa-field" :class="{ 'absa-field--error': errors.password }">
+              <label for="password" class="absa-field__label">Access Key</label>
+              <div class="absa-field__input-wrap">
+                <Lock class="absa-field__icon" />
                 <input
                   id="password"
                   v-model="formData.password"
                   :type="showPassword ? 'text' : 'password'"
                   required
-                  class="block w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm"
-                  :class="{ 'border-red-500 bg-red-50': errors.password }"
+                  class="absa-field__input"
                   placeholder="••••••••••••"
                 />
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock class="h-4 w-4 text-gray-400 group-focus-within:text-[#2F2E8B] transition-colors" />
-                </div>
-                <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <Eye v-if="!showPassword" class="h-4 w-4 text-gray-400 hover:text-[#2F2E8B] transition-colors" />
-                  <EyeOff v-else class="h-4 w-4 text-gray-400 hover:text-[#2F2E8B] transition-colors" />
+                <button type="button" class="absa-field__toggle" @click="showPassword = !showPassword">
+                  <Eye v-if="!showPassword" class="absa-field__toggle-icon" />
+                  <EyeOff v-else class="absa-field__toggle-icon" />
                 </button>
-                 <!-- Tech corner accent -->
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#2F2E8B] opacity-0 group-focus-within:opacity-100 transition-opacity"></div>
               </div>
-              <p v-if="errors.password" class="mt-1 text-xs text-red-600 font-mono">{{ errors.password }}</p>
+              <p v-if="errors.password" class="absa-field__error">{{ errors.password }}</p>
             </div>
 
-            <!-- Forgot password -->
-            <div class="flex justify-end">
-              <router-link to="/forgot-password" class="text-xs font-mono text-gray-500 hover:text-[#2F2E8B] uppercase tracking-wide flex items-center gap-1 group">
-                 RECOVER_PASSWORD <i class="fas fa-chevron-right text-[10px] group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- Forgot Password -->
+            <div class="absa-login__forgot">
+              <router-link to="/forgot-password" class="absa-login__forgot-link">
+                Recover Password
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
               </router-link>
             </div>
 
-            <!-- Submit Button -->
+            <!-- Submit -->
             <button
               type="submit"
               :disabled="loading"
-              class="w-full relative group overflow-hidden bg-[#2F2E8B] text-white py-3 px-4 font-mono text-sm uppercase tracking-wider hover:bg-[#1a1955] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+              class="absa-btn absa-btn--primary absa-btn--block"
             >
-              <div class="absolute inset-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
-              <span class="relative flex items-center justify-center gap-2">
-                <Loader2 v-if="loading" class="animate-spin h-4 w-4" />
-                {{ loading ? 'AUTHENTICATING...' : 'INITIATE_SESSION' }}
-                <i v-if="!loading" class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-              </span>
+              <Loader2 v-if="loading" class="absa-btn__spinner" />
+              {{ loading ? 'AUTHENTICATING...' : 'Initiate Session' }}
+              <svg v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </form>
 
-          <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-            <p class="text-sm text-gray-600 mb-2">New to the network?</p>
-            <router-link to="/terms-acceptance" class="inline-flex items-center gap-2 text-[#2F2E8B] font-mono text-sm font-bold uppercase hover:bg-blue-50 px-4 py-2 border border-transparent hover:border-blue-100 transition-all rounded-sm">
-               <span>CREATE_ACCOUNT</span>
+          <div class="absa-login__footer-link">
+            <p>New to the network?</p>
+            <router-link to="/terms-acceptance" class="absa-login__create-link">
+              Create Account
             </router-link>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: Brand Section -->
-    <div class="hidden lg:flex lg:w-7/12 relative overflow-hidden">
-       <!-- Brand Background Mesh -->
-       <div class="absolute inset-0 bg-[#0a0a2a]">
-          <!-- Logo in background -->
-          <div class="absolute inset-0 flex items-center justify-end overflow-hidden">
-            <img 
-              src="/logo_white.png" 
-              alt="Logo Background" 
-              class="w-[120%] max-w-none opacity-10 blur-sm translate-x-[20%] mix-blend-overlay grayscale"
-            />
-          </div>
-          <!-- Multiple Gradient Layers for "Mesh" effect -->
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(47,46,139,0.4)_0%,transparent_50%)]"></div>
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(47,46,139,0.3)_0%,transparent_50%)]"></div>
-          <div class="absolute inset-0 bg-gradient-to-br from-[#0a0a2a] via-[#2F2E8B]/20 to-[#0a0a2a]"></div>
-          
-          <!-- Tech Grid Overlay -->
-          <div class="absolute inset-0 opacity-[0.15]" 
-               style="background-image: 
-                 linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                 linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-               background-size: 50px 50px;">
-          </div>
-       </div>
+    <!-- ── Right: Brand Panel ── -->
+    <div class="absa-login__brand-panel">
+      <div class="absa-login__brand-bg">
+        <img
+          src="/logo_white.png"
+          alt="Logo Background"
+          class="absa-login__brand-watermark"
+        />
+        <div class="absa-login__brand-gradient-1"></div>
+        <div class="absa-login__brand-gradient-2"></div>
+        <div class="absa-login__brand-gradient-3"></div>
+        <div class="absa-login__brand-grid"></div>
+      </div>
 
-       <!-- Content -->
-       <div class="relative z-10 w-full h-full flex flex-col justify-center px-20">
-          <div class="border-l-4 border-[#2F2E8B] pl-10">
-             <div class="text-blue-300 font-mono text-xs mb-6 tracking-[0.3em] uppercase flex items-center gap-3">
-                <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
-                NODE_STATUS: ONLINE
-             </div>
-             <h2 class="text-5xl xl:text-6xl font-bold text-white mb-8 leading-tight font-sans tracking-tight">
-                Unified Business<br />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-white">Intelligence Grid</span>
-             </h2>
-             <p class="text-blue-100/60 text-xl max-w-lg leading-relaxed font-light font-sans italic">
-                 "Seamlessly integrate POS, Inventory, and HR modules into a single logical command center."
-             </p>
+      <div class="absa-login__brand-content">
+        <div class="absa-login__brand-accent-line">
+          <div class="absa-login__brand-status">
+            <span class="absa-login__brand-dot"></span>
+            NODE STATUS: ONLINE
           </div>
+          <h2 class="absa-login__brand-title">
+            Predictive Customer<br />
+            <span class="absa-login__brand-title-highlight">Lifecycle Intelligence</span>
+          </h2>
+          <p class="absa-login__brand-quote">
+            "Transform customer retention from reactive outreach to proactive AI precision."
+          </p>
+        </div>
 
-          <!-- Feature Ticks -->
-          <div class="space-y-4 pl-8">
-             <div class="flex items-center gap-4 text-blue-200/80 font-mono text-sm group">
-                <div class="w-8 h-8 rounded-sm bg-[#2F2E8B]/30 border border-[#2F2E8B]/50 flex items-center justify-center group-hover:bg-[#2F2E8B] transition-colors">
-                   <i class="fas fa-check text-xs"></i>
-                </div>
-                <span>Simplicity</span>
-             </div>
-             <div class="flex items-center gap-4 text-blue-200/80 font-mono text-sm group">
-               <div class="w-8 h-8 rounded-sm bg-[#2F2E8B]/30 border border-[#2F2E8B]/50 flex items-center justify-center group-hover:bg-[#2F2E8B] transition-colors">
-                   <i class="fas fa-check text-xs"></i>
-                </div>
-                <span>Productivity</span>
-             </div>
-             <div class="flex items-center gap-4 text-blue-200/80 font-mono text-sm group">
-                <div class="w-8 h-8 rounded-sm bg-[#2F2E8B]/30 border border-[#2F2E8B]/50 flex items-center justify-center group-hover:bg-[#2F2E8B] transition-colors">
-                   <i class="fas fa-check text-xs"></i>
-                </div>
-                <span>Data-Driven Decisions</span>
-             </div>
+        <div class="absa-login__brand-features">
+          <div class="absa-login__brand-feature">
+            <div class="absa-login__brand-check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span>AI-Driven Retention</span>
           </div>
-       </div>
+          <div class="absa-login__brand-feature">
+            <div class="absa-login__brand-check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span>Real-Time Risk Scoring</span>
+          </div>
+          <div class="absa-login__brand-feature">
+            <div class="absa-login__brand-check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span>Bank-Grade Security</span>
+          </div>
+        </div>
+      </div>
 
-       <!-- Decorative Code/Data overlay (Optional purely visual) -->
-       <div class="absolute bottom-8 right-8 text-[#2F2E8B]/20 font-mono text-[10px] text-right pointer-events-none select-none">
-          <div>01001011 01010101 01001100 01000001</div>
-          <div>01010100 01000101 01000011 01001000</div>
-          <div>SESSION_ID: {{ Math.random().toString(36).substring(7).toUpperCase() }}</div>
-       </div>
+      <div class="absa-login__brand-footer">
+        <div>01001011 01010101 01001100 01000001</div>
+        <div>01010100 01000101 01000011 01001000</div>
+      </div>
     </div>
   </div>
 </template>
@@ -482,24 +444,604 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.animate-shimmer {
-  animation: shimmer 3s infinite linear;
+/* ════════════════════════════════════════════════════════
+   ABSA Login Page — Maroon Design System
+   References: absa-colors.css, patterns.css, pages.css
+   ════════════════════════════════════════════════════════ */
+
+/* ── Root Layout ── */
+.absa-login {
+  min-height: 100vh;
+  display: flex;
+  font-family: var(--absa-font-main, 'Montserrat', 'Inter', system-ui, sans-serif);
+  background: var(--absa-white, #FFFFFF);
+  overflow: hidden;
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+/* ── Left: Form Panel ── */
+.absa-login__form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  background: var(--absa-white, #FFFFFF);
+  border-right: 1px solid var(--absa-border-light, #E8E8EC);
 }
 
-/* Professional Alignment for Google Login */
-.tech-google-btn-container :deep(> div) {
+.absa-login__form-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: radial-gradient(var(--absa-maroon, #BE0F2C) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.absa-login__form-inner {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 24px;
+}
+
+/* ── Header ── */
+.absa-login__header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.absa-pill-badge--login {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--absa-maroon-soft, #FDE8EC);
+  color: var(--absa-maroon, #BE0F2C);
+  font-size: 0.675rem;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  letter-spacing: 0.04em;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+.absa-login__logo-link {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.absa-login__logo {
+  height: 44px;
+  margin: 0 auto;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.absa-login__logo-link:hover .absa-login__logo {
+  transform: scale(1.05);
+}
+
+.absa-login__title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--absa-text-primary, #111827);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.absa-login__title-accent {
+  color: var(--absa-maroon, #BE0F2C);
+}
+
+.absa-login__subtitle {
+  font-size: 0.825rem;
+  color: var(--absa-text-muted, #9CA3AF);
+  margin: 0;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+/* ── Form Card ── */
+.absa-login__form-card {
+  background: var(--absa-surface-card, #FFFFFF);
+  border: var(--absa-border-card, 1px solid #E8E8EC);
+  border-radius: var(--absa-radius-card, 12px);
+  padding: 28px;
+  box-shadow: var(--absa-shadow-card, 0 2px 8px rgba(0,0,0,0.06));
+}
+
+/* ── Google Button ── */
+.absa-login__google-btn {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.absa-login__google-btn :deep(> div) {
   display: flex !important;
   justify-content: center !important;
   width: 100% !important;
 }
 
-.tech-google-btn-container :deep(iframe) {
+.absa-login__google-btn :deep(iframe) {
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+/* ── Divider ── */
+.absa-login__divider {
+  position: relative;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.absa-login__divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: var(--absa-border-light, #E8E8EC);
+}
+
+.absa-login__divider-text {
+  position: relative;
+  display: inline-block;
+  padding: 0 14px;
+  background: var(--absa-surface-card, #FFFFFF);
+  color: var(--absa-text-muted, #9CA3AF);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+/* ── Alerts ── */
+.absa-alert {
+  padding: 12px 14px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  border-radius: var(--absa-radius-sm, 6px);
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+.absa-alert--error {
+  background: var(--absa-critical-soft, #FEE2E2);
+  color: var(--absa-critical, #DC2626);
+  border-left: 3px solid var(--absa-critical, #DC2626);
+}
+
+.absa-alert--success {
+  background: var(--absa-success-soft, #DCFCE7);
+  color: var(--absa-success, #16A34A);
+  border-left: 3px solid var(--absa-success, #16A34A);
+}
+
+.absa-alert--info {
+  background: var(--absa-info-soft, #DBEAFE);
+  color: var(--absa-info, #2563EB);
+  border-left: 3px solid var(--absa-info, #2563EB);
+}
+
+.absa-alert__title {
+  font-weight: 800;
+  margin: 0 0 2px 0;
+  font-size: 0.75rem;
+}
+
+.absa-alert__desc {
+  margin: 0;
+  opacity: 0.85;
+  font-size: 0.7rem;
+}
+
+/* ── Form Fields ── */
+.absa-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.absa-field__label {
+  display: block;
+  font-size: 0.675rem;
+  font-weight: 800;
+  color: var(--absa-text-secondary, #4B5563);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+.absa-field__input-wrap {
+  position: relative;
+}
+
+.absa-field__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--absa-text-muted, #9CA3AF);
+  pointer-events: none;
+  transition: color 0.15s;
+}
+
+.absa-field__input-wrap:focus-within .absa-field__icon {
+  color: var(--absa-maroon, #BE0F2C);
+}
+
+.absa-field__input {
+  width: 100%;
+  padding: 11px 12px 11px 38px;
+  background: var(--absa-surface-page, #F8F8FA);
+  border: var(--absa-border-input, 1px solid #D9D9DF);
+  font-size: 0.8rem;
+  color: var(--absa-text-primary, #111827);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  border-radius: var(--absa-radius-sm, 6px);
+}
+
+.absa-field__input::placeholder {
+  color: var(--absa-text-muted, #9CA3AF);
+}
+
+.absa-field__input:focus {
+  border-color: var(--absa-maroon, #BE0F2C);
+  box-shadow: var(--absa-ring-focus, 0 0 0 3px rgba(190, 15, 44, 0.25));
+  background: var(--absa-white, #FFFFFF);
+}
+
+.absa-field--error .absa-field__input {
+  border-color: var(--absa-critical, #DC2626);
+  background: var(--absa-critical-soft, #FEE2E2);
+}
+
+.absa-field__error {
+  margin: 4px 0 0 0;
+  font-size: 0.675rem;
+  color: var(--absa-critical, #DC2626);
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+}
+
+/* ── Password Toggle ── */
+.absa-field__toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.absa-field__toggle-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--absa-text-muted, #9CA3AF);
+  transition: color 0.15s;
+}
+
+.absa-field__toggle:hover .absa-field__toggle-icon {
+  color: var(--absa-maroon, #BE0F2C);
+}
+
+/* ── Forgot Password ── */
+.absa-login__forgot {
+  text-align: right;
+}
+
+.absa-login__forgot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: var(--absa-text-secondary, #4B5563);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  transition: color 0.15s;
+}
+
+.absa-login__forgot-link:hover {
+  color: var(--absa-maroon, #BE0F2C);
+}
+
+/* ── Buttons ── */
+.absa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--absa-radius-sm, 6px);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  font-family: var(--absa-font-main, 'Montserrat', system-ui, sans-serif);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.absa-btn--primary {
+  background: var(--absa-maroon-gradient, linear-gradient(135deg, #BE0F2C 0%, #8B0015 100%));
+  color: var(--absa-text-inverse, #FFFFFF);
+  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.3);
+}
+
+.absa-btn--primary:hover {
+  background: var(--absa-maroon-deep, #8B0015);
+}
+
+.absa-btn--primary:active {
+  transform: scale(0.98);
+}
+
+.absa-btn--primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.absa-btn--block {
+  width: 100%;
+}
+
+.absa-btn__spinner {
+  animation: absa-spin 0.8s linear infinite;
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes absa-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Footer Link ── */
+.absa-login__footer-link {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--absa-border-light, #E8E8EC);
+  text-align: center;
+}
+
+.absa-login__footer-link p {
+  font-size: 0.8rem;
+  color: var(--absa-text-secondary, #4B5563);
+  margin: 0 0 8px 0;
+}
+
+.absa-login__create-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--absa-maroon, #BE0F2C);
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border: 1px solid var(--absa-maroon, #BE0F2C);
+  border-radius: var(--absa-radius-sm, 6px);
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  letter-spacing: 0.04em;
+}
+
+.absa-login__create-link:hover {
+  background: var(--absa-maroon, #BE0F2C);
+  color: var(--absa-text-inverse, #FFFFFF);
+}
+
+/* ════════════════════════════════════════════════════════
+   Right: Brand Panel
+   ════════════════════════════════════════════════════════ */
+
+.absa-login__brand-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .absa-login__brand-panel {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* ── Brand Background ── */
+.absa-login__brand-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--absa-maroon-deep, #8B0015);
+}
+
+.absa-login__brand-watermark {
+  position: absolute;
+  inset: 0;
+  width: 120%;
+  max-width: none;
+  opacity: 0.08;
+  filter: blur(2px);
+  transform: translateX(20%);
+  mix-blend-mode: overlay;
+  object-fit: contain;
+}
+
+.absa-login__brand-gradient-1 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(190, 15, 44, 0.5) 0%, transparent 50%);
+}
+
+.absa-login__brand-gradient-2 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 70%, rgba(190, 15, 44, 0.35) 0%, transparent 50%);
+}
+
+.absa-login__brand-gradient-3 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #8B0015 0%, rgba(190, 15, 44, 0.25) 50%, #8B0015 100%);
+}
+
+.absa-login__brand-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* ── Brand Content ── */
+.absa-login__brand-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 0 64px;
+}
+
+.absa-login__brand-accent-line {
+  border-left: 4px solid var(--absa-maroon, #BE0F2C);
+  padding-left: 32px;
+  margin-bottom: 40px;
+}
+
+.absa-login__brand-status {
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  font-size: 0.675rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.absa-login__brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--absa-success, #16A34A);
+}
+
+.absa-login__brand-title {
+  font-size: 2.75rem;
+  font-weight: 900;
+  color: var(--absa-text-inverse, #FFFFFF);
+  margin: 0 0 20px 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.absa-login__brand-title-highlight {
+  background: linear-gradient(135deg, var(--absa-maroon-light, #E84D5B), var(--absa-white, #FFFFFF));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.absa-login__brand-quote {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  font-style: italic;
+  font-weight: 300;
+  max-width: 420px;
+  margin: 0;
+}
+
+/* ── Brand Features ── */
+.absa-login__brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 36px;
+}
+
+.absa-login__brand-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.15s;
+}
+
+.absa-login__brand-feature:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.absa-login__brand-check {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--absa-radius-sm, 6px);
+  background: rgba(190, 15, 44, 0.35);
+  border: 1px solid rgba(190, 15, 44, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--absa-white, #FFFFFF);
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.absa-login__brand-feature:hover .absa-login__brand-check {
+  background: var(--absa-maroon, #BE0F2C);
+}
+
+/* ── Brand Footer (Binary decoration) ── */
+.absa-login__brand-footer {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  font-size: 0.575rem;
+  color: rgba(190, 15, 44, 0.18);
+  text-align: right;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1023px) {
+  .absa-login__form-panel {
+    border-right: none;
+  }
+
+  .absa-login__form-inner {
+    padding: 24px 20px;
+  }
+
+  .absa-login__brand-panel {
+    display: none;
+  }
 }
 </style>

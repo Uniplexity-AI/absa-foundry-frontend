@@ -1,177 +1,158 @@
 <template>
-  <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <!-- Mesh Background (Fixed to viewport) -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+  <div class="absa-subaccounts-page">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm relative shrink-0">
-      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-2 h-8 bg-[#2F2E8B] rounded-sm shadow-sm"></div>
-          <div>
-              <div class="flex items-center gap-2">
-                 <span class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">MODULE // SUB_ACCOUNTS</span>
-              </div>
-              <h1 class="text-xl font-black text-gray-900 uppercase tracking-tight">User Management</h1>
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-           <button @click="handleAddBranchClick" class="border border-gray-200 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 px-4 py-2 rounded-sm text-xs font-bold font-mono uppercase transition-all flex items-center gap-2 bg-white shadow-sm">
-             <i class="fas fa-store"></i> ADD_BRANCH
-           </button>
+    <div class="absa-subaccounts__breadcrumb">
+      <span>Home</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      <span>Dashboard</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      <span class="absa-subaccounts__breadcrumb-current">User Management</span>
+    </div>
 
-           <button @click="showManageBranchesModal = true" class="border border-gray-200 hover:border-orange-500 hover:text-orange-500 text-gray-600 px-4 py-2 rounded-sm text-xs font-bold font-mono uppercase transition-all flex items-center gap-2 bg-white shadow-sm">
-             <i class="fas fa-cog"></i> MANAGE_BRANCHES
-           </button>
-
-           <button @click="handleAddUserClick" class="bg-[#2F2E8B] hover:bg-[#1D226B] text-white px-6 py-2 rounded-sm text-xs font-bold font-mono uppercase shadow-md transition-all flex items-center gap-2">
-             <i class="fas fa-plus"></i> NEW_SUB_ACCOUNT
-           </button>
-        </div>
+    <!-- Actions Bar -->
+    <div class="absa-subaccounts__actions">
+      <h1 class="absa-subaccounts__title">User Management</h1>
+      <div class="absa-subaccounts__btns">
+        <button @click="handleAddBranchClick" class="absa-subaccounts__btn absa-subaccounts__btn--outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Add Branch
+        </button>
+        <button @click="showManageBranchesModal = true" class="absa-subaccounts__btn absa-subaccounts__btn--outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Manage Branches
+        </button>
+        <button @click="handleAddUserClick" class="absa-subaccounts__btn absa-subaccounts__btn--primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New User
+        </button>
       </div>
-    </header>
+    </div>
 
     <div class="flex-1 max-w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 relative z-10 space-y-8">
 
       <!-- Active Sessions Alert -->
       <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="transform -translate-y-2 opacity-0" enter-to-class="transform translate-y-0 opacity-100">
-        <div v-if="activeSessions.length > 0" class="bg-white border border-indigo-100 rounded-sm p-6 relative overflow-hidden shadow-sm">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-          <div class="absolute top-0 right-0 p-4 opacity-5">
-            <i class="fas fa-users-cog text-8xl text-[#2F2E8B]"></i>
-          </div>
-          <div class="relative z-10">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <span class="flex h-3 w-3 relative">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-[#2F2E8B]"></span>
-                </span>
-                <h3 class="font-black text-[#2F2E8B] text-sm uppercase tracking-tight">Active Sessions ({{ activeSessions.length }})</h3>
-              </div>
-              <button @click="logoutFromAllSubAccounts" class="text-[10px] font-mono font-bold text-red-600 uppercase hover:underline">
-                LOGOUT_FROM_ALL
-              </button>
+        <div v-if="activeSessions.length > 0" class="absa-alert-info absa-subaccounts__sessions">
+          <div class="absa-subaccounts__sessions-header">
+            <div class="absa-subaccounts__sessions-title">
+              <span class="absa-subaccounts__sessions-dot"></span>
+              Active Sessions ({{ activeSessions.length }})
             </div>
-            <div class="flex flex-wrap gap-4">
-              <div v-for="session in activeSessions" :key="session.subAccountId" 
-                   class="bg-gray-50/80 backdrop-blur-sm border border-gray-100 rounded-sm px-4 py-3 flex items-center gap-4 shadow-sm hover:border-indigo-300 hover:bg-white transition-all group">
-                <div class="h-10 w-10 flex items-center justify-center text-[#2F2E8B] font-black text-sm uppercase">
-                  {{ session.subAccountName.substring(0, 2) }}
-                </div>
-                <div>
-                  <div class="font-bold text-gray-900 uppercase text-xs">{{ session.subAccountName }}</div>
-                  <div class="text-[9px] font-mono font-bold text-gray-400 uppercase mt-0.5">SINCE_{{ new Date(session.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</div>
-                </div>
-                <button @click="logoutFromSubAccount(session.subAccountId)" class="ml-2 text-gray-300 hover:text-red-500 transition-colors">
-                  <i class="fas fa-times"></i>
-                </button>
+            <button @click="logoutFromAllSubAccounts" class="absa-subaccounts__sessions-logout-all">
+              Logout All
+            </button>
+          </div>
+          <div class="absa-subaccounts__sessions-list">
+            <div v-for="session in activeSessions" :key="session.subAccountId"
+                 class="absa-subaccounts__session-card">
+              <div class="absa-subaccounts__session-avatar">
+                {{ session.subAccountName.substring(0, 2) }}
               </div>
+              <div class="absa-subaccounts__session-info">
+                <div class="absa-subaccounts__session-name">{{ session.subAccountName }}</div>
+                <div class="absa-subaccounts__session-time">Since {{ new Date(session.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</div>
+              </div>
+              <button @click="logoutFromSubAccount(session.subAccountId)" class="absa-subaccounts__session-close">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
           </div>
         </div>
       </Transition>
 
       <!-- Metrics Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="absa-subaccounts__kpi-grid">
         <!-- Total Users KPI -->
-        <div class="kpi-card group border-l-4 border-l-[#2F2E8B]">
-          <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest rounded-bl-sm z-20">STAT_USER</div>
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none"></div>
-          <div class="flex justify-between items-start mb-6 relative z-10">
-            <div class="kpi-icon-wrapper text-[#2F2E8B]">
-              <i class="fas fa-users text-lg"></i>
-            </div>
+        <div class="absa-metric-bg absa-accent-left-maroon">
+          <div class="absa-subaccounts__kpi-header">
+            <span class="absa-subaccounts__kpi-badge">STAT_USER</span>
           </div>
-          <div class="relative z-10">
-            <h3 class="kpi-value font-outfit">{{ totalSubAccounts }}</h3>
-            <p class="kpi-label uppercase">Registered Users</p>
+          <div class="absa-subaccounts__kpi-body">
+            <div class="absa-subaccounts__kpi-icon absa-subaccounts__kpi-icon--maroon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="absa-subaccounts__kpi-value">{{ totalSubAccounts }}</h3>
+            <p class="absa-subaccounts__kpi-label">Registered Users</p>
           </div>
         </div>
 
         <!-- Total Branches KPI -->
-        <div class="kpi-card group border-l-4 border-l-green-500">
-          <div class="absolute top-0 right-0 bg-gray-100 border-b border-l border-gray-200 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest rounded-bl-sm z-20">STAT_SHOP</div>
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none"></div>
-          <div class="flex justify-between items-start mb-6 relative z-10">
-            <div class="kpi-icon-wrapper text-green-600">
-              <i class="fas fa-store text-lg"></i>
-            </div>
+        <div class="absa-metric-bg absa-accent-left-success">
+          <div class="absa-subaccounts__kpi-header">
+            <span class="absa-subaccounts__kpi-badge">STAT_SHOP</span>
           </div>
-          <div class="relative z-10">
-            <h3 class="kpi-value font-outfit">{{ totalBranches }}</h3>
-            <p class="kpi-label uppercase text-green-600/80">Active Branches</p>
+          <div class="absa-subaccounts__kpi-body">
+            <div class="absa-subaccounts__kpi-icon absa-subaccounts__kpi-icon--green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3 class="absa-subaccounts__kpi-value">{{ totalBranches }}</h3>
+            <p class="absa-subaccounts__kpi-label absa-subaccounts__kpi-label--green">Active Branches</p>
           </div>
         </div>
 
-        <!-- Tier Info KPI (New) -->
-        <div class="kpi-card group border-l-4 border-l-orange-500">
-          <div class="absolute top-0 right-0 bg-gray-100 border-b border-l border-gray-200 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest rounded-bl-sm z-20">STAT_TIER</div>
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none"></div>
-          <div class="flex justify-between items-start mb-6 relative z-10">
-            <div class="kpi-icon-wrapper text-orange-500">
-              <i class="fas fa-crown text-lg"></i>
-            </div>
+        <!-- Tier Info KPI -->
+        <div class="absa-metric-bg absa-accent-left-warning">
+          <div class="absa-subaccounts__kpi-header">
+            <span class="absa-subaccounts__kpi-badge">STAT_TIER</span>
           </div>
-          <div class="relative z-10">
-            <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight font-outfit truncate">{{ currentTier?.label || 'COMMERCIAL' }}</h3>
-            <p class="kpi-label uppercase text-orange-600/80">Subscription Tier</p>
+          <div class="absa-subaccounts__kpi-body">
+            <div class="absa-subaccounts__kpi-icon absa-subaccounts__kpi-icon--amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <h3 class="absa-subaccounts__kpi-value absa-subaccounts__kpi-value--sm">{{ currentTier?.tier || 'COMMERCIAL' }}</h3>
+            <p class="absa-subaccounts__kpi-label absa-subaccounts__kpi-label--amber">Subscription Tier</p>
           </div>
         </div>
 
-        <!-- Sales Context KPI (Reuse totalSales logic if needed, but keeping it simple) -->
-        <div class="kpi-card group border-l-4 border-l-purple-600">
-          <div class="absolute top-0 right-0 bg-gray-100 border-b border-l border-gray-200 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest rounded-bl-sm z-20">STAT_CTX</div>
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none"></div>
-          <div class="flex justify-between items-start mb-6 relative z-10">
-            <div class="kpi-icon-wrapper text-purple-600">
-              <i class="fas fa-database text-lg"></i>
-            </div>
+        <!-- Filtered Context KPI -->
+        <div class="absa-metric-bg absa-accent-left-info">
+          <div class="absa-subaccounts__kpi-header">
+            <span class="absa-subaccounts__kpi-badge">STAT_CTX</span>
           </div>
-          <div class="relative z-10">
-            <h3 class="kpi-value font-outfit">{{ filtered.length }}</h3>
-            <p class="kpi-label uppercase text-purple-600/80">Filtered Context</p>
+          <div class="absa-subaccounts__kpi-body">
+            <div class="absa-subaccounts__kpi-icon absa-subaccounts__kpi-icon--blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <h3 class="absa-subaccounts__kpi-value">{{ filtered.length }}</h3>
+            <p class="absa-subaccounts__kpi-label absa-subaccounts__kpi-label--blue">Filtered Context</p>
           </div>
         </div>
       </div>
 
     <!-- Filters & Toolbar -->
-    <div class="bg-white p-4 border border-gray-200 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between rounded-sm relative z-10 transition-all hover:border-indigo-200 overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <div class="relative flex-1 w-full md:max-w-md">
-        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-        <input v-model="search" @input="applySearch" placeholder="SEARCH_BY_NAME_OR_EMAIL..." 
-               class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-400 text-xs font-mono font-bold" />
+    <div class="absa-subaccounts__toolbar">
+      <div class="absa-subaccounts__search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input v-model="search" @input="applySearch" placeholder="Search by name or email..." />
       </div>
       <div class="flex gap-3 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-        <div class="relative min-w-[140px]">
-          <select v-model="filterRole" @change="applySearch" class="w-full appearance-none px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer hover:bg-white transition-colors">
+        <div class="absa-subaccounts__select-wrap">
+          <select v-model="filterRole" @change="applySearch" class="absa-subaccounts__select">
             <option value="">ALL_ROLES</option>
             <option v-for="r in roles" :key="r.id || r" :value="r.name || r">{{ r.name || r }}</option>
           </select>
-          <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[8px]"></i>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="relative min-w-[160px]">
-          <select v-model="filterBranch" @change="applySearch" class="w-full appearance-none px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer hover:bg-white transition-colors">
+        <div class="absa-subaccounts__select-wrap">
+          <select v-model="filterBranch" @change="applySearch" class="absa-subaccounts__select">
             <option value="">ALL_BRANCHES</option>
             <option v-for="b in branches" :key="b._id" :value="b._id">{{ b.name }}</option>
           </select>
-          <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[8px]"></i>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="flex items-center border border-gray-200 rounded-sm overflow-hidden bg-gray-50">
+        <div class="absa-subaccounts__view-toggle">
           <button @click="viewMode = 'cards'" 
-            class="px-3 py-2 text-[10px] font-mono font-bold uppercase transition-all flex items-center gap-1.5"
-            :class="viewMode === 'cards' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-500 hover:text-[#2F2E8B] hover:bg-white'">
+            class="absa-subaccounts__view-btn"
+            :class="{ 'absa-subaccounts__view-btn--active': viewMode === 'cards' }">
             <i class="fas fa-th"></i>
           </button>
           <button @click="viewMode = 'list'" 
-            class="px-3 py-2 text-[10px] font-mono font-bold uppercase transition-all flex items-center gap-1.5 border-l border-gray-200"
-            :class="viewMode === 'list' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-500 hover:text-[#2F2E8B] hover:bg-white'">
+            class="absa-subaccounts__view-btn"
+            :class="{ 'absa-subaccounts__view-btn--active': viewMode === 'list' }">
             <i class="fas fa-list"></i>
           </button>
         </div>
-        <button @click="refresh" class="px-4 py-2 bg-white border border-gray-200 text-gray-500 rounded-sm hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-all flex items-center gap-2 text-[10px] font-mono font-bold uppercase">
+        <button @click="refresh" class="absa-subaccounts__reload-btn">
           <i class="fas fa-sync-alt" :class="{'animate-spin': loading}"></i>
           <span>Reload</span>
         </button>
@@ -179,28 +160,28 @@
     </div>
 
     <!-- Sub-accounts Loading -->
-    <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse">
-        <div v-for="i in 4" :key="`skeleton-${i}`" class="h-64 bg-gray-100 rounded-2xl"></div>
+    <div v-if="loading" class="absa-subaccounts__loading-grid">
+      <div v-for="i in 4" :key="`skeleton-${i}`" class="absa-subaccounts__loading-card"></div>
     </div>
 
     <!-- ── CARD VIEW ── -->
     <div v-else-if="viewMode === 'cards'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 relative z-10">
       <div v-for="(acc, index) in paged" :key="acc.id || acc.email || index" @click="openDetailsModal(acc)" 
-           class="group bg-white rounded-sm border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-[#2F2E8B] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
+           class="group bg-white rounded-sm border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-[#BE0F2C] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
         
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
 
-        <div class="absolute top-0 right-0 py-1 px-3 bg-gray-50 border-b border-l border-gray-100 text-[9px] font-mono font-black text-gray-500 uppercase tracking-widest rounded-bl-sm group-hover:bg-[#2F2E8B] group-hover:text-white transition-colors">
+        <div class="absolute top-0 right-0 py-1 px-3 bg-gray-50 border-b border-l border-gray-100 text-[9px] font-mono font-black text-gray-500 uppercase tracking-widest rounded-bl-sm group-hover:bg-[#BE0F2C] group-hover:text-white transition-colors">
           {{ acc.role }}
         </div>
 
         <div class="relative z-10">
           <div class="flex items-center gap-4 mb-5">
-            <div class="h-12 w-12 text-[#2F2E8B] flex items-center justify-center font-black text-xl group-hover:scale-110 transition-transform">
+            <div class="h-12 w-12 text-[#BE0F2C] flex items-center justify-center font-black text-xl group-hover:scale-110 transition-transform">
               {{ acc.name.charAt(0).toUpperCase() }}
             </div>
             <div class="min-w-0">
-              <h3 class="font-black text-gray-900 group-hover:text-[#2F2E8B] transition-colors truncate uppercase tracking-tight">{{ acc.name }}</h3>
+              <h3 class="font-black text-gray-900 group-hover:text-[#BE0F2C] transition-colors truncate uppercase tracking-tight">{{ acc.name }}</h3>
               <p class="text-[10px] font-mono font-bold text-gray-400 truncate mt-0.5">{{ acc.email }}</p>
             </div>
           </div>
@@ -224,7 +205,7 @@
            <button 
              v-if="!isLoggedInToSubAccount(acc.id)"
              @click.stop="loginToSubAccount(acc)" 
-             class="flex-1 flex items-center justify-center gap-2 bg-[#2F2E8B] text-white px-4 py-2 rounded-sm hover:bg-[#1D226B] transition-all text-[10px] font-mono font-bold uppercase shadow-sm"
+             class="flex-1 flex items-center justify-center gap-2 bg-[#BE0F2C] text-white px-4 py-2 rounded-sm hover:bg-[#8B0015] transition-all text-[10px] font-mono font-bold uppercase shadow-sm"
            >
              <i class="fas fa-sign-in-alt"></i> Login
            </button>
@@ -241,9 +222,11 @@
         </div>
       </div>
       <!-- Empty state -->
-      <div v-if="paged.length === 0" class="col-span-full text-center py-16 border-2 border-dashed border-gray-100 rounded-sm bg-gray-50/50">
-        <i class="fas fa-users-slash text-gray-200 text-4xl mb-4"></i>
-        <p class="text-[11px] font-mono font-bold text-gray-400 uppercase tracking-widest">No sub-accounts match current filters</p>
+      <div v-if="paged.length === 0" class="absa-subaccounts__empty absa-dots">
+        <div class="absa-subaccounts__empty-icon">
+          <i class="fas fa-users-slash"></i>
+        </div>
+        <p class="absa-subaccounts__empty-text">No sub-accounts match current filters</p>
       </div>
     </div>
 
@@ -251,7 +234,7 @@
     <div v-else-if="viewMode === 'list'" class="relative z-10 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-sm">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
-          <thead class="bg-gray-50 border-b-2 border-gray-100">
+          <thead class="absa-table-header">
             <tr>
               <th class="px-4 py-3 text-[9px] font-mono font-black text-gray-500 uppercase tracking-widest">User</th>
               <th class="px-4 py-3 text-[9px] font-mono font-black text-gray-500 uppercase tracking-widest">Role</th>
@@ -263,10 +246,10 @@
           <tbody class="divide-y divide-gray-100">
             <tr v-for="(acc, index) in paged" :key="`list-${acc.id || acc.email || index}`"
                 @click="openDetailsModal(acc)"
-                class="hover:bg-indigo-50/30 transition-colors cursor-pointer group">
+                class="hover:bg-maroon-soft-bg/30 transition-colors cursor-pointer group">
               <td class="px-4 py-3">
                 <div class="flex items-center gap-3">
-                  <div class="h-9 w-9 shrink-0 rounded-sm bg-[#2F2E8B]/5 flex items-center justify-center font-black text-sm text-[#2F2E8B] group-hover:bg-[#2F2E8B] group-hover:text-white transition-colors">
+                  <div class="h-9 w-9 shrink-0 rounded-sm bg-[#BE0F2C]/5 flex items-center justify-center font-black text-sm text-[#BE0F2C] group-hover:bg-[#BE0F2C] group-hover:text-white transition-colors">
                     {{ (acc.name || '?').charAt(0).toUpperCase() }}
                   </div>
                   <div>
@@ -291,7 +274,7 @@
                 <div class="flex items-center justify-end gap-1">
                   <button v-if="!isLoggedInToSubAccount(acc.id)"
                     @click.stop="loginToSubAccount(acc)"
-                    class="h-8 px-3 flex items-center gap-1.5 bg-[#2F2E8B] text-white rounded-sm hover:bg-[#1D226B] transition-all text-[9px] font-mono font-bold uppercase shadow-sm">
+                    class="h-8 px-3 flex items-center gap-1.5 bg-[#BE0F2C] text-white rounded-sm hover:bg-[#8B0015] transition-all text-[9px] font-mono font-bold uppercase shadow-sm">
                     <i class="fas fa-sign-in-alt text-[8px]"></i> Login
                   </button>
                   <button v-else
@@ -318,17 +301,16 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex justify-between items-center mt-8 relative z-10">
-      <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Displaying_Entries: {{ filtered.length }}</div>
-      <div class="flex gap-2">
-        <button @click="prevPage" :disabled="page <= 1" class="h-8 w-8 flex items-center justify-center border border-gray-200 rounded-sm hover:border-[#2F2E8B] disabled:opacity-30 disabled:hover:border-gray-200 transition-colors bg-white">
-          <i class="fas fa-chevron-left text-[10px]"></i>
+    <div class="absa-subaccounts__pagination">
+      <div class="absa-subaccounts__pagination-info">Displaying {{ filtered.length }} entries</div>
+      <div class="absa-subaccounts__pagination-controls">
+        <button @click="prevPage" :disabled="page <= 1" class="absa-subaccounts__page-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <div class="h-8 px-4 flex items-center justify-center border border-gray-200 rounded-sm bg-white text-[10px] font-mono font-bold uppercase tracking-widest">
-          PAGE_{{ page }}_OF_{{ totalPages }}
-        </div>
-        <button @click="nextPage" :disabled="page >= totalPages" class="h-8 w-8 flex items-center justify-center border border-gray-200 rounded-sm hover:border-[#2F2E8B] disabled:opacity-30 disabled:hover:border-gray-200 transition-colors bg-white">
-          <i class="fas fa-chevron-right text-[10px]"></i>
+        <span class="absa-subaccounts__page-btn absa-subaccounts__page-btn--current">{{ page }}</span>
+        <span class="absa-subaccounts__pagination-info">of {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="page >= totalPages" class="absa-subaccounts__page-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
     </div>
@@ -342,7 +324,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
-              <div class="w-1 h-6 bg-[#2F2E8B]"></div>
+              <div class="w-1 h-6 bg-[#BE0F2C]"></div>
               <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight">System // New User Registration</h3>
             </div>
             <button @click="closeCreateModal" class="text-gray-400 hover:text-gray-600">
@@ -357,25 +339,25 @@
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Display Name</label>
-                   <input v-model="newAccount.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="NAME_REQUIRED" />
+                   <input v-model="newAccount.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="NAME_REQUIRED" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Email Address</label>
                    <div class="relative">
                        <i class="far fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs text-xs"></i>
-                       <input v-model="newAccount.email" required type="email" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="EMAIL_REQUIRED" />
+                       <input v-model="newAccount.email" required type="email" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="EMAIL_REQUIRED" />
                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center justify-between">
                       <span>Role</span>
-                      <button type="button" @click="fetchRoles" class="text-[8px] font-mono font-bold text-[#2F2E8B] normal-case hover:underline flex items-center gap-1" title="Reload roles from Settings">
+                      <button type="button" @click="fetchRoles" class="text-[8px] font-mono font-bold text-[#BE0F2C] normal-case hover:underline flex items-center gap-1" title="Reload roles from Settings">
                         <i class="fas fa-sync-alt"></i> refresh
                       </button>
                     </label>
                     <div class="relative">
-                        <select v-model="newAccount.role" required class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
+                        <select v-model="newAccount.role" required class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
                           <option value="" disabled>SELECT_ROLE</option>
                           <option v-for="r in availableCreateRoles" :key="`new-role-${r.id || r}`" :value="r.id || r">
                             {{ (r.name || r) }}<template v-if="r.isCustom || r.is_custom"> • CUSTOM</template>
@@ -388,7 +370,7 @@
                   <div>
                     <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Branch</label>
                     <div class="relative">
-                        <select v-model="newAccount.branch_id" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
+                        <select v-model="newAccount.branch_id" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
                           <option :value="null">MASTER_ALL</option>
                           <option v-for="b in availableBranches" :key="`new-branch-${b._id || b.id}`" :value="b._id || b._id">{{ b.name }}</option>
                         </select>
@@ -402,16 +384,16 @@
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Access Password</label>
-                   <input v-model="newAccount.password" required type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold" placeholder="••••••••" />
+                   <input v-model="newAccount.password" required type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold" placeholder="••••••••" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Confirm Identity</label>
-                   <input v-model="newAccount.confirmPassword" required type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold" placeholder="••••••••" />
+                   <input v-model="newAccount.confirmPassword" required type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold" placeholder="••••••••" />
                 </div>
                 <div v-if="newAccount.password && newAccount.confirmPassword && newAccount.password !== newAccount.confirmPassword" class="text-red-500 text-[10px] font-mono font-bold uppercase bg-red-50 p-3 border border-red-100 rounded-sm flex items-center gap-2">
                     <i class="fas fa-exclamation-triangle"></i> ERROR_PASSWORD_MISMATCH
                 </div>
-                <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-sm border-l-4 border-l-[#2F2E8B]">
+                <div class="p-4 bg-maroon-soft-bg border border-maroon-soft-border rounded-sm border-l-4 border-l-[#BE0F2C]">
                   <p class="text-[10px] font-mono font-bold text-indigo-900 uppercase tracking-wider leading-relaxed">
                     User permissions will be automatically inherited from the selected role.
                   </p>
@@ -421,7 +403,7 @@
 
           <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
             <button type="button" @click="closeCreateModal" class="px-5 py-2 text-gray-500 font-bold text-xs uppercase hover:bg-gray-100 rounded-sm transition-colors">CANCEL_OP</button>
-            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#2F2E8B] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#1D226B] shadow-md transition-all disabled:opacity-50">
+            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#BE0F2C] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#8B0015] shadow-md transition-all disabled:opacity-50">
               <span v-if="loading"><i class="fas fa-spinner fa-spin mr-2"></i>EXECUTING...</span>
               <span v-else>COMMIT_REGISTRATION</span>
             </button>
@@ -442,7 +424,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
-              <div class="w-1 h-6 bg-[#2F2E8B]"></div>
+              <div class="w-1 h-6 bg-[#BE0F2C]"></div>
               <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight">System // New Branch Setup</h3>
             </div>
             <button @click="closeBranchModal" class="text-gray-400 hover:text-gray-600">
@@ -456,13 +438,13 @@
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Branch Designation</label>
-                   <input v-model="newBranch.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="BRANCH_NAME" />
+                   <input v-model="newBranch.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="BRANCH_NAME" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Physical Location</label>
                    <div class="relative">
                        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                       <input v-model="newBranch.location" required class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="STREET_CITY_LOC" />
+                       <input v-model="newBranch.location" required class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" placeholder="STREET_CITY_LOC" />
                    </div>
                 </div>
              </div>
@@ -471,11 +453,11 @@
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Technical Phone</label>
-                   <input v-model="newBranch.phone" type="tel" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="+260_XXX_XXXXXX" />
+                   <input v-model="newBranch.phone" type="tel" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="+260_XXX_XXXXXX" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Technical Email</label>
-                   <input v-model="newBranch.email" type="email" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="BRANCH_SUPPORT_EMAIL" />
+                   <input v-model="newBranch.email" type="email" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" placeholder="BRANCH_SUPPORT_EMAIL" />
                 </div>
              </div>
           </div>
@@ -489,7 +471,7 @@
 
           <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
             <button type="button" @click="closeBranchModal" class="px-5 py-2 text-gray-500 font-bold text-xs uppercase hover:bg-gray-100 rounded-sm transition-colors">HALT_OP</button>
-            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#2F2E8B] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#1D226B] shadow-md transition-all disabled:opacity-50">
+            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#BE0F2C] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#8B0015] shadow-md transition-all disabled:opacity-50">
               <span v-if="loading"><i class="fas fa-spinner fa-spin mr-2"></i>EXECUTING...</span>
               <span v-else>INITIALIZE_BRANCH</span>
             </button>
@@ -630,7 +612,7 @@
               v-model="branchDeleteConfirmation"
               type="text"
               autocomplete="off"
-              class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold uppercase"
+              class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold uppercase"
               placeholder="DELETE"
               @input="branchDeleteError = ''"
             />
@@ -668,7 +650,7 @@
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-4">
-              <div class="h-10 w-10 flex items-center justify-center text-[#2F2E8B] font-black">
+              <div class="h-10 w-10 flex items-center justify-center text-[#BE0F2C] font-black">
                   <i class="fas fa-id-badge text-lg"></i>
               </div>
               <div>
@@ -682,8 +664,8 @@
           </div>
          <!-- Tabs -->
          <div class="border-b border-gray-100 mb-8 flex gap-8">
-             <button @click="detailsTab = 'profile'" :class="{'border-b-2 border-[#2F2E8B] text-[#2F2E8B]': detailsTab === 'profile', 'text-gray-400 border-transparent hover:text-gray-600': detailsTab !== 'profile'}" class="pb-3 px-1 text-[10px] font-mono font-black uppercase tracking-[0.2em] transition-all">PROFILE_CFG</button>
-             <button @click="detailsTab = 'modules'" :class="{'border-b-2 border-[#2F2E8B] text-[#2F2E8B]': detailsTab === 'modules', 'text-gray-400 border-transparent hover:text-gray-600': detailsTab !== 'modules'}" class="pb-3 px-1 text-[10px] font-mono font-black uppercase tracking-[0.2em] transition-all">FEATURE_MATIX</button>
+             <button @click="detailsTab = 'profile'" :class="{'border-b-2 border-[#BE0F2C] text-[#BE0F2C]': detailsTab === 'profile', 'text-gray-400 border-transparent hover:text-gray-600': detailsTab !== 'profile'}" class="pb-3 px-1 text-[10px] font-mono font-black uppercase tracking-[0.2em] transition-all">PROFILE_CFG</button>
+             <button @click="detailsTab = 'modules'" :class="{'border-b-2 border-[#BE0F2C] text-[#BE0F2C]': detailsTab === 'modules', 'text-gray-400 border-transparent hover:text-gray-600': detailsTab !== 'modules'}" class="pb-3 px-1 text-[10px] font-mono font-black uppercase tracking-[0.2em] transition-all">FEATURE_MATIX</button>
          </div>
          
          <!-- PROFILE TAB -->
@@ -693,7 +675,7 @@
               <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Display Name</label>
-                   <input v-model="editProfile.name" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all text-xs font-bold uppercase" />
+                   <input v-model="editProfile.name" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all text-xs font-bold uppercase" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">System Credentials</label>
@@ -707,12 +689,12 @@
                     <div>
                       <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center justify-between">
                         <span>Assign Role</span>
-                        <button type="button" @click="fetchRoles" class="text-[8px] font-mono font-bold text-[#2F2E8B] normal-case hover:underline flex items-center gap-1" title="Reload roles from Settings">
+                        <button type="button" @click="fetchRoles" class="text-[8px] font-mono font-bold text-[#BE0F2C] normal-case hover:underline flex items-center gap-1" title="Reload roles from Settings">
                           <i class="fas fa-sync-alt"></i> refresh
                         </button>
                       </label>
                       <div class="relative">
-                        <select v-model="editProfile.role" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
+                        <select v-model="editProfile.role" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
                             <option v-for="r in availableAssignableRoles" :key="`edit-role-${r.id || r}`" :value="r.id || r">
                               {{ (r.name || r) }}<template v-if="r.isCustom || r.is_custom"> • CUSTOM</template>
                             </option>
@@ -726,7 +708,7 @@
                     <div>
                       <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Assign Branch</label>
                       <div class="relative">
-                        <select v-model="editProfile.branch_id" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
+                        <select v-model="editProfile.branch_id" class="w-full appearance-none px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] outline-none cursor-pointer text-[10px] font-mono font-bold uppercase">
                             <option :value="null">MASTER_ALL</option>
                             <option v-for="b in branches" :key="`edit-branch-${b._id || b.id}`" :value="b._id || b.id">{{ b.name }}</option>
                         </select>
@@ -736,14 +718,14 @@
                  </div>
                  <div>
                     <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Security Override (Password)</label>
-                    <input v-model="editProfile.password" type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all text-xs font-bold" placeholder="VERIFICATION_KEY_UNAVAILABLE" />
+                    <input v-model="editProfile.password" type="password" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all text-xs font-bold" placeholder="VERIFICATION_KEY_UNAVAILABLE" />
                  </div>
               </div>
             </div>
 
             <div class="flex justify-end pt-8 gap-3 border-t border-gray-100">
                 <button type="button" @click="closeDetailsModal" class="px-5 py-2 text-gray-500 font-bold text-xs uppercase hover:bg-gray-100 rounded-sm transition-colors">DISCARD_CHG</button>
-                <button @click="saveProfile" :disabled="loading" class="px-6 py-2 bg-[#2F2E8B] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#1D226B] shadow-md transition-all transform active:scale-95">
+                <button @click="saveProfile" :disabled="loading" class="px-6 py-2 bg-[#BE0F2C] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#8B0015] shadow-md transition-all transform active:scale-95">
                    <span v-if="loading"><i class="fas fa-spinner fa-spin mr-2"></i>EXECUTING...</span>
                    <span v-else>COMMIT_UPDATE</span>
                 </button>
@@ -752,13 +734,13 @@
          
          <!-- MODULES TAB -->
          <div v-if="detailsTab === 'modules'" class="space-y-6">
-            <div class="bg-indigo-50 p-5 rounded-sm border border-indigo-100 border-l-4 border-l-[#2F2E8B]">
+            <div class="bg-maroon-soft-bg p-5 rounded-sm border border-maroon-soft-border border-l-4 border-l-[#BE0F2C]">
                <div class="flex gap-4">
-                   <div class="text-[#2F2E8B] mt-1"><i class="fas fa-shield-alt text-lg"></i></div>
+                   <div class="text-[#BE0F2C] mt-1"><i class="fas fa-shield-alt text-lg"></i></div>
                    <div>
-                       <h4 class="font-black text-[#2F2E8B] text-[11px] uppercase tracking-wider">Module Access Control</h4>
+                       <h4 class="font-black text-[#BE0F2C] text-[11px] uppercase tracking-wider">Module Access Control</h4>
                        <p class="text-[10px] font-mono font-bold text-indigo-900 uppercase tracking-wider mt-1.5 leading-relaxed">
-                         Click modules to toggle access for <span class="text-[#2F2E8B]">{{ selectedSubAccount?.name || selectedSubAccount?.email }}</span>. Changes are saved automatically.
+                         Click modules to toggle access for <span class="text-[#BE0F2C]">{{ selectedSubAccount?.name || selectedSubAccount?.email }}</span>. Changes are saved automatically.
                        </p>
                    </div>
                </div>
@@ -767,7 +749,7 @@
             <div class="flex justify-between items-center mb-4">
                <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Feature_Access_Matrix</div>
                <div class="relative">
-                 <select v-model="roleFilter" class="appearance-none px-3 py-1.5 border border-gray-200 rounded-sm text-[9px] font-mono font-bold uppercase bg-white text-gray-700 outline-none focus:ring-1 focus:ring-[#2F2E8B]">
+                 <select v-model="roleFilter" class="appearance-none px-3 py-1.5 border border-gray-200 rounded-sm text-[9px] font-mono font-bold uppercase bg-white text-gray-700 outline-none focus:ring-1 focus:ring-[#BE0F2C]">
                     <option value="">SHOW_ALL_MATRICES</option>
                     <option v-for="r in roles" :key="`matrix-role-${r.id || r}`" :value="r.id || r">{{ r.name || r }} DEFAULTS</option>
                  </select>
@@ -776,7 +758,7 @@
             </div>
             
             <div v-if="modulesLoading" class="text-center py-12 bg-gray-50 rounded-sm border border-dashed border-gray-200">
-                <i class="fas fa-spinner fa-spin text-xl text-[#2F2E8B] mb-3"></i>
+                <i class="fas fa-spinner fa-spin text-xl text-[#BE0F2C] mb-3"></i>
                 <p class="text-[10px] font-mono font-bold text-gray-400 uppercase">SYNCHRONIZING_MODULE_DATA...</p>
             </div>
             
@@ -784,13 +766,13 @@
                <div v-for="(mod, index) in filteredModules" :key="mod.id || index" 
                     @click="toggleModuleAssignment(mod.id)"
                     class="p-4 border rounded-sm flex items-center justify-between group transition-all cursor-pointer hover:shadow-sm"
-                     :class="assignedModules.includes(mod.id) ? 'bg-indigo-50/50 border-indigo-200 hover:border-indigo-300' : 'bg-gray-50/50 border-gray-100 hover:border-gray-300 opacity-60 hover:opacity-80'"
+                     :class="assignedModules.includes(mod.id) ? 'bg-maroon-soft-bg/50 border-indigo-200 hover:border-[var(--absa-maroon,#BE0F2C)]' : 'bg-gray-50/50 border-gray-100 hover:border-gray-300 opacity-60 hover:opacity-80'"
                >
                   <span class="text-[10px] font-mono font-black text-gray-800 uppercase tracking-widest">{{ mod.name }}</span>
-                  <div v-if="savingModules && togglingModuleId === mod.id" class="text-[#2F2E8B]">
+                  <div v-if="savingModules && togglingModuleId === mod.id" class="text-[#BE0F2C]">
                     <i class="fas fa-spinner fa-spin text-[10px]"></i>
                   </div>
-                  <div v-else-if="assignedModules.includes(mod.id)" class="text-[#2F2E8B] flex items-center justify-center">
+                  <div v-else-if="assignedModules.includes(mod.id)" class="text-[#BE0F2C] flex items-center justify-center">
                     <i class="fas fa-check text-[10px]"></i>
                   </div>
                   <div v-else class="text-gray-300 group-hover:text-gray-400">
@@ -804,7 +786,7 @@
             </div>
             
              <div class="flex justify-end pt-8 border-t border-gray-100">
-                <button type="button" @click="closeDetailsModal" class="px-6 py-2 bg-white border border-gray-200 rounded-sm text-xs font-bold uppercase text-gray-500 hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-colors">CLOSE_MATIX</button>
+                <button type="button" @click="closeDetailsModal" class="px-6 py-2 bg-white border border-gray-200 rounded-sm text-xs font-bold uppercase text-gray-500 hover:border-[#BE0F2C] hover:text-[#BE0F2C] transition-colors">CLOSE_MATIX</button>
             </div>
          </div>
         </div>
@@ -829,31 +811,31 @@
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Branch Designation</label>
-                   <input v-model="editBranchData.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" />
+                   <input v-model="editBranchData.name" required class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Physical Location</label>
                    <div class="relative">
                        <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                       <input v-model="editBranchData.location" required class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" />
+                       <input v-model="editBranchData.location" required class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-bold uppercase" />
                    </div>
                 </div>
              </div>
              <div class="space-y-6">
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Technical Phone</label>
-                   <input v-model="editBranchData.phone" type="tel" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" />
+                   <input v-model="editBranchData.phone" type="tel" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" />
                 </div>
                 <div>
                    <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Technical Email</label>
-                   <input v-model="editBranchData.email" type="email" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#2F2E8B] focus:border-[#2F2E8B] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" />
+                   <input v-model="editBranchData.email" type="email" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm focus:ring-1 focus:ring-[#BE0F2C] focus:border-[#BE0F2C] outline-none transition-all placeholder-gray-300 text-xs font-mono font-bold" />
                 </div>
              </div>
           </div>
           
           <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
             <button type="button" @click="closeEditBranchModal" class="px-5 py-2 text-gray-500 font-bold text-xs uppercase hover:bg-gray-100 rounded-sm transition-colors">CANCEL_OP</button>
-            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#2F2E8B] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#1D226B] shadow-md transition-all disabled:opacity-50">
+            <button type="submit" :disabled="loading" class="px-6 py-2 bg-[#BE0F2C] text-white font-bold text-xs uppercase rounded-sm hover:bg-[#8B0015] shadow-md transition-all disabled:opacity-50">
               <span v-if="loading"><i class="fas fa-spinner fa-spin mr-2"></i>EXECUTING...</span>
               <span v-else>UPDATE_BRANCH</span>
             </button>
@@ -875,8 +857,7 @@ import API_BASE_URL from '@/api_services/api';
 import { decodeJWT } from '@/api_services/decodeJWT.js';
 import { useRBAC } from '@/composables/useRBAC';
 import { useRouter } from 'vue-router';
-import { usePricingStore } from '@/stores/pricingStore';
-import { pricingConfig as fallbackConfig } from '@/config/pricingConfig.js';
+
 import { DEFAULT_ROLES } from '@/config/rbac';
 import { Modal } from '@/components/ui/index.js';
 
@@ -884,8 +865,6 @@ import { Modal } from '@/components/ui/index.js';
 const { formatCurrency } = useCurrency();
 const { getTenantId } = decodeJWT();
 const router = useRouter();
-const pricingStore = usePricingStore();
-
 
 // RBAC integration for roles
 const { tenantRoles, fetchRoles, initializeRBAC } = useRBAC();
@@ -897,18 +876,7 @@ const loading = ref(false);
 const error = ref('');
 const profile = ref({});
 const subscription = ref(null);
-const currentTier = computed(() => {
-  const config = pricingStore.config || fallbackConfig;
-
-  // ── GAP FIX 6: Use backend subscription as single source of truth for tier ────────────────
-  // This ensures that when an admin upgrades a plan (e.g. Small -> Enterprise), it reflects 
-  // immediately here without falling back to legacy business_type guesses.
-  const tierKey = (subscription.value && subscription.value.tier) ? String(subscription.value.tier).toLowerCase() : null;
-  if (tierKey && config.tiers[tierKey]) return config.tiers[tierKey];
-
-  // Default fallback if no subscription tier is specified yet
-  return config.tiers.enterprise;
-});
+const currentTier = computed(() => subscription.value || {});
 
 
 const showCreateModal = ref(false);
@@ -1866,7 +1834,6 @@ const cleanupExpiredSessions = () => {
 onMounted(async () => {
   loadSessions();
   await fetchTenantProfile();
-  if (!pricingStore.config) pricingStore.fetchConfig();
   await fetchBranches();
   await fetchSubAccounts();
   await initializeRBAC();
@@ -1911,5 +1878,738 @@ onMounted(async () => {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* ═══ ABSA SubAccounts Page Styles ═══ */
+.absa-subaccounts-page {
+  padding: 0;
+}
+
+.absa-subaccounts__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9CA3AF;
+  margin-bottom: 14px;
+  font-family: 'Space Mono', monospace;
+}
+
+.absa-subaccounts__breadcrumb-current {
+  color: #BE0F2C;
+}
+
+.absa-subaccounts__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.absa-subaccounts__title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.absa-subaccounts__btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.absa-subaccounts__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: 1px solid #E8E8EC;
+  background: #FFFFFF;
+  color: #4B5563;
+  font-family: 'Montserrat', system-ui, sans-serif;
+}
+
+.absa-subaccounts__btn:hover {
+  border-color: #BE0F2C;
+  color: #BE0F2C;
+}
+
+.absa-subaccounts__btn--primary {
+  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
+}
+
+.absa-subaccounts__btn--primary:hover {
+  opacity: 0.9;
+  color: #FFFFFF;
+}
+
+.absa-subaccounts__btn--outline {
+  background: #FFFFFF;
+}
+
+/* ═══ KPI Cards ═══ */
+.absa-subaccounts__kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.absa-subaccounts__kpi-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.absa-subaccounts__kpi-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #9CA3AF;
+  letter-spacing: 0.08em;
+  background: #F3F4F6;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.absa-subaccounts__kpi-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.absa-subaccounts__kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.absa-subaccounts__kpi-icon--maroon { background: #FDE8EC; color: #BE0F2C; }
+.absa-subaccounts__kpi-icon--green  { background: #DCFCE7; color: #16A34A; }
+.absa-subaccounts__kpi-icon--amber  { background: #FEF3C7; color: #F59E0B; }
+.absa-subaccounts__kpi-icon--blue   { background: #DBEAFE; color: #2563EB; }
+
+.absa-subaccounts__kpi-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px 0;
+}
+
+.absa-subaccounts__kpi-value--sm {
+  font-size: 1.25rem;
+}
+
+.absa-subaccounts__kpi-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.absa-subaccounts__kpi-label--green { color: #16A34A; }
+.absa-subaccounts__kpi-label--amber { color: #F59E0B; }
+.absa-subaccounts__kpi-label--blue  { color: #2563EB; }
+
+/* ═══ Toolbar ═══ */
+.absa-subaccounts__toolbar {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.absa-subaccounts__search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+  min-width: 200px;
+}
+
+.absa-subaccounts__search-wrap input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: #111827;
+  outline: none;
+  transition: all 150ms ease;
+}
+
+.absa-subaccounts__search-wrap input:focus {
+  border-color: #BE0F2C;
+  box-shadow: 0 0 0 3px rgba(190, 15, 44, 0.12);
+  background: #FFFFFF;
+}
+
+.absa-subaccounts__search-wrap input::placeholder {
+  color: #9CA3AF;
+}
+
+.absa-subaccounts__search-wrap svg,
+.absa-subaccounts__search-wrap i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+
+/* Toolbar selects */
+.absa-subaccounts__select {
+  appearance: none;
+  padding: 8px 32px 8px 12px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.675rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4B5563;
+  outline: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+  min-width: 140px;
+}
+
+.absa-subaccounts__select:focus {
+  border-color: #BE0F2C;
+  box-shadow: 0 0 0 3px rgba(190, 15, 44, 0.12);
+}
+
+.absa-subaccounts__select-wrap {
+  position: relative;
+}
+
+.absa-subaccounts__select-wrap svg {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+/* View toggle */
+.absa-subaccounts__view-toggle {
+  display: flex;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #F9FAFB;
+}
+
+.absa-subaccounts__view-btn {
+  padding: 8px 12px;
+  font-size: 0.675rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #9CA3AF;
+  transition: all 150ms ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.absa-subaccounts__view-btn--active {
+  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  color: #FFFFFF;
+}
+
+.absa-subaccounts__view-btn:not(.absa-subaccounts__view-btn--active):hover {
+  background: #FFFFFF;
+  color: #BE0F2C;
+}
+
+.absa-subaccounts__view-btn + .absa-subaccounts__view-btn {
+  border-left: 1px solid #E5E7EB;
+}
+
+/* Reload button */
+.absa-subaccounts__reload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #6B7280;
+  font-size: 0.675rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.absa-subaccounts__reload-btn:hover {
+  border-color: #BE0F2C;
+  color: #BE0F2C;
+}
+
+/* ═══ Sessions ═══ */
+.absa-subaccounts__sessions {
+  margin-bottom: 24px;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.absa-subaccounts__sessions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.absa-subaccounts__sessions-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2563EB;
+}
+
+.absa-subaccounts__sessions-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563EB;
+  animation: absaPulse 2s ease-in-out infinite;
+}
+
+@keyframes absaPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.absa-subaccounts__sessions-logout-all {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #DC2626;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.absa-subaccounts__sessions-logout-all:hover {
+  text-decoration: underline;
+}
+
+.absa-subaccounts__sessions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.absa-subaccounts__session-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  border-radius: 8px;
+  transition: all 150ms ease;
+}
+
+.absa-subaccounts__session-card:hover {
+  border-color: #BE0F2C;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.absa-subaccounts__session-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #FDE8EC;
+  color: #BE0F2C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.absa-subaccounts__session-info {
+  min-width: 0;
+}
+
+.absa-subaccounts__session-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase;
+}
+
+.absa-subaccounts__session-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.575rem;
+  font-weight: 700;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+
+.absa-subaccounts__session-close {
+  color: #D1D5DB;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 150ms ease;
+  margin-left: auto;
+}
+
+.absa-subaccounts__session-close:hover {
+  color: #DC2626;
+  background: #FEE2E2;
+}
+
+/* ═══ Content Area ═══ */
+.absa-subaccounts__content {
+  margin-bottom: 24px;
+}
+
+/* ═══ Loading ═══ */
+.absa-subaccounts__loading-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.absa-subaccounts__loading-card {
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 40%, #F3F4F6 80%);
+  background-size: 200% 100%;
+  animation: absaShimmer 1.8s ease-in-out infinite;
+}
+
+/* ═══ Empty State ═══ */
+.absa-subaccounts__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 24px;
+  border: 2px dashed #E8E8EC;
+  border-radius: 12px;
+  background-color: #FBFBFB;
+}
+
+.absa-subaccounts__empty-icon {
+  font-size: 2.5rem;
+  color: #D1D5DB;
+  margin-bottom: 12px;
+}
+
+.absa-subaccounts__empty-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #9CA3AF;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ═══ Pagination ═══ */
+.absa-subaccounts__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.absa-subaccounts__pagination-info {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.06em;
+}
+
+.absa-subaccounts__pagination-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.absa-subaccounts__page-btn {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E8E8EC;
+  border-radius: 6px;
+  background: #FFFFFF;
+  color: #4B5563;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.absa-subaccounts__page-btn:hover:not(:disabled) {
+  border-color: #BE0F2C;
+  color: #BE0F2C;
+}
+
+.absa-subaccounts__page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.absa-subaccounts__page-btn--current {
+  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+
+/* ═══ Card Items ═══ */
+.absa-subaccounts__card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.absa-subaccounts__user-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.absa-subaccounts__user-card:hover {
+  border-color: #BE0F2C;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.absa-subaccounts__user-card-role {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #F3F4F6;
+  color: #6B7280;
+  letter-spacing: 0.06em;
+}
+
+.absa-subaccounts__user-card:hover .absa-subaccounts__user-card-role {
+  background: #BE0F2C;
+  color: #FFFFFF;
+}
+
+.absa-subaccounts__user-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.absa-subaccounts__user-card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #FDE8EC;
+  color: #BE0F2C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.absa-subaccounts__user-card-name {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.absa-subaccounts__user-card-email {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+
+.absa-subaccounts__user-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.absa-subaccounts__user-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+}
+
+.absa-subaccounts__user-card-row-label {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.04em;
+}
+
+.absa-subaccounts__user-card-row-value {
+  font-weight: 700;
+  color: #111827;
+}
+
+.absa-subaccounts__user-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.absa-subaccounts__user-card-action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.625rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: none;
+}
+
+.absa-subaccounts__user-card-action--login {
+  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
+}
+
+.absa-subaccounts__user-card-action--login:hover {
+  opacity: 0.9;
+}
+
+.absa-subaccounts__user-card-action--logout {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.absa-subaccounts__user-card-action--delete {
+  width: 36px;
+  flex: 0 0 auto;
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  color: #9CA3AF;
+}
+
+.absa-subaccounts__user-card-action--delete:hover {
+  color: #DC2626;
+  border-color: #DC2626;
+  background: #FEE2E2;
+}
+
+/* ═══ Table View ═══ */
+.absa-subaccounts__table-wrap {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 1200px) {
+  .absa-subaccounts__kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .absa-subaccounts__kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .absa-subaccounts__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .absa-subaccounts__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .absa-subaccounts__search-wrap {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .absa-subaccounts__card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

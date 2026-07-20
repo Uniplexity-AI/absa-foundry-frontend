@@ -135,26 +135,15 @@ const routes = [
   {
     path: '/dashboard',
     component: () => import('../components/layouts/DashboardLayout.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: false }, // We'll handle auth in the global beforeEach guard
 
     children: [
       { path: '', redirect: '/dashboard/home' },
       { path: 'home', name: 'DashboardHome', component: () => import('../views/DashboardHome.vue') },
      
-      { path: 'invoicing', name: 'InvoicingModule', component: () => import('../views/dashboardModules/sales/InvoicingModule.vue') },
-      { path: 'invoicing/invoices', name: 'InvoicesPage', component: () => import('../views/dashboardModules/sales/invoicing/InvoicesPage.vue') },
-      { path: 'invoicing/quotations', name: 'QuotationsPage', component: () => import('../views/dashboardModules/sales/invoicing/QuotationsPage.vue') },
-      { path: 'invoicing/proposals', name: 'ProposalsPage', component: () => import('../views/dashboardModules/sales/invoicing/ProposalsPage.vue') },
-      { path: 'invoicing/contracts', name: 'ContractsPage', component: () => import('../views/dashboardModules/sales/invoicing/ContractsPage.vue') },
-      { path: 'invoicing/progress-reports', name: 'ProgressReportsPage', component: () => import('../views/dashboardModules/sales/invoicing/ProgressReportsPage.vue') },
-      { path: 'invoicing/recurring', name: 'RecurringInvoicesPage', component: () => import('../views/dashboardModules/sales/invoicing/RecurringInvoicesPage.vue') },
-      { path: 'invoicing/billing-report', name: 'BillingReportPage', component: () => import('../views/dashboardModules/sales/invoicing/BillingReportPage.vue') },
-      { path: 'invoicing/receipts', name: 'ReceiptsPage', component: () => import('../views/dashboardModules/sales/invoicing/ReceiptsPage.vue') },
-      { path: 'invoicing/credit-debit-notes', name: 'CreditDebitNotesPage', component: () => import('../views/dashboardModules/sales/invoicing/CreditDebitNotesPage.vue') },
-      { path: 'invoicing/bank-accounts', name: 'BankAccountsPage', component: () => import('../views/dashboardModules/sales/invoicing/BankAccountsPage.vue') },
-      { path: 'invoicing/all', name: 'AllDocumentsPage', component: () => import('../views/dashboardModules/sales/invoicing/AllDocumentsPage.vue') },
+    
       { path: 'ai', name: 'AiModule', component: () => import('../views/dashboardModules/aiagents/AiModule.vue') },
-      { path: 'reports', name: 'ReportsModule', component: () => import('../views/dashboardModules/ReportsModule.vue') },
+     
 
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/dashboardModules/settings/SettingsModule.vue') },
       { path: 'allshops', name: 'AllShopsModule', component: () => import('../views/dashboardModules/settings/SubAccountModule.vue') },

@@ -16,7 +16,7 @@
           </div>
 
           <router-link to="/" class="block mb-6 group">
-            <img src="/uniplexity_logo.png" alt="Uniplexity Logo" class="h-12 mx-auto object-contain transition-transform group-hover:scale-105" />
+            <img src="/logo_red.png" alt="ABSA Intelligence Unit" class="h-12 mx-auto object-contain transition-transform group-hover:scale-105" />
           </router-link>
           
           <h2 class="text-2xl font-bold text-gray-900 mb-2 tracking-tight">IDENTITY <span class="text-[#2F2E8B]">RECOVERY</span></h2>
@@ -108,8 +108,8 @@
           <!-- Logo in background -->
           <div class="absolute inset-0 flex items-center justify-end overflow-hidden">
             <img 
-              src="/uniplexity_logo.png" 
-              alt="Logo Background" 
+              src="/logo_white.png"
+              alt="Logo Background"
               class="w-[120%] max-w-none opacity-10 blur-sm translate-x-[20%] mix-blend-overlay grayscale"
             />
           </div>

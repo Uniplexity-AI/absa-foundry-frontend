@@ -7,39 +7,26 @@ import { DEV_BYPASS } from '@/config/devFlags.js';
 const LandingPage = () => import('@/views/Home.vue');
 
 // =============================UB App Bot================================
-const UBBot = () => import('@/views/ubbot/ubbot.vue');
+
 
 // ============================Authentications page imports=============================
-import MultiStepSignup from '@/views/auth/MultiStepSignup.vue';
+
 import Login from '@/views/auth/login.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
 import SuperAdminOverview from '@/views/AdminView/AdminDashboard.vue';
-import TenantManagement from '@/views/AdminView/TenantManagement.vue';
-import PaymentGateway from '@/views/AdminView/PaymentGateway.vue';
+
+
 import TenantRevenues from '@/views/AdminView/Revenue.vue';
 import TenantReports from '@/views/AdminView/Reports.vue';
-import TenantTaxes from '@/views/AdminView/Taxes.vue';
+
 import RagChat from '@/views/AdminView/RagChat.vue'
 import RagUpload from '@/views/AdminView/RagUpload.vue'
 import EmailManagement from '@/views/AdminView/EmailManagement.vue'
-import PartnerLogoManagement from '@/views/AdminView/PartnerLogoManagement.vue'
-import TestimonialsManager from '@/views/AdminView/TestimonialsManager.vue'
 import UserActivities from '@/views/AdminView/UserActivities.vue'
 
-//===========================HR Module Imports ===========================
-import ResumeParsing from '@/views/HRModule/pages/ResumeParsing.vue';
-import ProfileScoring from '@/views/HRModule/pages/ProfileScoring.vue';
-import Shortlisting from '@/views/HRModule/pages/Shortlisting.vue';
-import ChatScreening from '@/views/HRModule/pages/ChatScreening.vue';
-import Scheduling from '@/views/HRModule/pages/Scheduling.vue';
-import DecisionSupport from '@/views/HRModule/pages/DecisionSupport.vue';
-import CandidateProfile from '@/views/HRModule/pages/CandidateProfile.vue';
-import Dashboard from '@/views/HRModule/pages/Dashboard.vue';
-import NotFound from '@/views/HRModule/pages/NotFound.vue';
-import AutomationOverview from '@/views/HRModule/pages/AutomationOverview.vue';
-import UserPortal from '@/views/HRModule/portal/UsersPortal.vue';
+
 
 
 // ===================================Strategic Management Module ==============================
@@ -56,8 +43,6 @@ import EnvironmentalSubpage from '@/views/dashboardModules/strategic/Environment
 import InternalAnalysisSubpage from '@/views/dashboardModules/strategic/InternalAnalysisSubpage.vue';
 import PositioningSubpage from '@/views/dashboardModules/strategic/PositioningSubpage.vue';
 import BrandStrategySubpage from '@/views/dashboardModules/strategic/BrandStrategySubpage.vue';
-import ProjectsModule from '@/views/dashboardModules/hrmodules/projects/ProjectsModule.vue';
-import ProjectDetails from '@/views/dashboardModules/hrmodules/projects/ProjectDetails.vue';
 
 
 // Define routes
@@ -72,73 +57,9 @@ const routes = [
       isPublic: true
     }
   },
-  {
-    path: '/pricing',
-    name: 'PricingCalculator',
-    component: () => import('@/views/PricingCalculator.vue'),
-    meta: {
-      requiresAuth: false,
-      isPublic: true
-    }
-  },
-  {
-    path: '/marketplace',
-    name: 'MarketplaceStorefront',
-    component: () => import('@/views/MarketplaceStorefront.vue'),
-    meta: {
-      requiresAuth: false,
-      isPublic: true
-    }
-  },
-  {
-    path: '/apply/:slug',
-    name: 'PublicApplicationPortal',
-    component: () => import('../views/portals/PublicApplicationPortal.vue'),
-    meta: {
-      requiresAuth: false,
-      isPublic: true
-    }
-  },
 
-  //==============================compliance Module =====================
-  //  {path:'/compliance' ,name: 'Compliance', component: ComplianceModule},
-  // Loading test page
-  {
-    path: '/loading-test',
-    name: 'LoadingTest',
-    component: () => import('@/views/LoadingTestPage.vue'),
-    meta: { requiresAuth: false }
-  },
 
-  // ================================Hr Routes =====================
-  {
-    path: '/hrmodule',
-    component: () => import('../components/layouts/DashboardLayout.vue'),
-    name: 'dashboard-layout',
-    children: [
-      { path: '', component: Dashboard, name: 'dashboard' },
-      { path: 'resume-parsing', component: ResumeParsing, name: 'resume-parsing' },
-      { path: 'profile-scoring', component: ProfileScoring, name: 'profile-scoring' },
-      { path: 'shortlisting', component: Shortlisting, name: 'shortlisting' },
-      { path: 'chat-screening', component: ChatScreening, name: 'chat-screening' },
-      { path: 'scheduling', component: Scheduling, name: 'scheduling' },
-      { path: 'decision-support', component: DecisionSupport, name: 'decision-support' },
-      { path: 'candidate/:id', component: CandidateProfile, name: 'candidate-profile' },
-      { path: 'automation-overview', component: AutomationOverview, name: 'automation-overview' },
-      { path: 'staff', name: 'StaffPage', component: () => import('../views/dashboardModules/hrmodules/StaffPage.vue') },
-      { path: 'task-payroll', name: 'TaskPayroll', component: () => import('../views/dashboardModules/hrmodules/TaskPayrollPage.vue') },
-      { path: 'attendance', name: 'MyAttendance', component: () => import('../views/dashboardModules/hrmodules/AttendancePage.vue') },
-      { path: 'hr-reports', name: 'HRReports', component: () => import('../views/dashboardModules/hrmodules/HRReportsPage.vue') },
-      // Portal Builder Routes
-      { path: 'discipline', name: 'EmployeeDiscipline', component: () => import('../views/dashboardModules/hrmodules/EmployeeDisciplinePage.vue') },
-      { path: 'portals', name: 'PortalLaunchpad', component: () => import('../views/HRModule/pages/PortalLaunchpad.vue') },
-      { path: 'portals/new', name: 'PortalBuilderNew', component: () => import('../views/HRModule/pages/PortalBuilder.vue') },
-      { path: 'portals/edit/:id', name: 'PortalBuilderEdit', component: () => import('../views/HRModule/pages/PortalBuilder.vue') },
-    ],
-  },
-  // Public pages required by Google OAuth
- 
-
+  
   // PWA Test Page (development only)
   {
     path: '/pwa-test',
@@ -171,23 +92,7 @@ const routes = [
     //   }
     // }
   },
-  {
-    path: '/signup',
-    name: 'MultiStepSignup',
-    component: MultiStepSignup,
-    meta: { requiresAuth: false },
-    beforeEnter: (to, from, next) => {
-      if (DEV_BYPASS) {
-        return next();
-      }
-      const consent = localStorage.getItem('uniplexity_consent')
-      if (!consent) {
-        next('/terms-acceptance')
-      } else {
-        next()
-      }
-    }
-  },
+
   
   {
     path: '/reset-password',
@@ -202,7 +107,7 @@ const routes = [
     meta: { requiresAuth: false }
   },
 
-  { path: '/portal', component: UserPortal, name: 'user-portal' },
+
 
   //==================== Super Admin =========================
   {
@@ -211,31 +116,20 @@ const routes = [
     children: [
       { path: 'dashboard', name: 'SuperAdmin', component: SuperAdminOverview },
       { path: 'system-traces', name: 'SystemTraces', component: () => import('@/views/AdminView/SystemTraces.vue') },
-      { path: 'tenant-management', name: 'TenantManagement', component: TenantManagement },
+      
       { path: 'tenant-revenues', name: 'TenantRevenues', component: TenantRevenues },
       { path: 'tenant-reports', name: 'TenantReports', component: TenantReports },
-      { path: 'tenant-taxes', name: 'TenantTaxes', component: TenantTaxes },
+     
       { path: 'rag-chat', component: RagChat },
       { path: 'rag-upload', component: RagUpload },
       { path: 'email-management', name: 'EmailManagement', component: EmailManagement },
-      { path: 'user-activities', name: 'UserActivities', component: UserActivities },
-      { path: 'partner-logos', name: 'PartnerLogoManagement', component: PartnerLogoManagement },
-      { path: 'testimonials', name: 'TestimonialsManager', component: TestimonialsManager },
-      { path: 'lending-admin', name: 'LendingAdminMfe', component: () => import('../views/dashboardModules/microfinance/MicrofinanceFallback.vue') },
-      { path: 'settings', name: 'SuperAdminSettings', component: () => import('@/views/AdminView/Settings.vue') },
-      { path: 'pricing-management', name: 'PricingManagement', component: () => import('@/views/AdminView/PricingManagement.vue') },
-      { path: 'kpi-growth', name: 'KPIGrowthMonitor', component: () => import('@/views/AdminView/KPIGrowthMonitor.vue') },
-      { path: 'tenant-storage', name: 'TenantStorage', component: () => import('@/views/AdminView/TenantStorage.vue') },
-      { path: 'payment-gateway', name: 'PaymentGateway', component: PaymentGateway },
-      { path: 'endpoint-monitor', name: 'EndpointMonitor', component: () => import('@/views/AdminView/EndpointMonitor.vue') },
-      { path: 'sales-analytics', name: 'SalesAnalytics', component: () => import('@/views/AdminView/SalesAnalytics.vue') },
+      
+    
       { path: 'user-module-access', name: 'UserModuleAccess', component: () => import('@/views/AdminView/UserModuleManagement.vue') },
     ]
   },
   { path: '/lexi-ai-lawyer', component: RagChat },
 
-  //==================ai bot=================================
-  { path: '/ub-bot', name: 'UBBot', component: UBBot },
 
   // Dashboard routes
   {
@@ -265,15 +159,10 @@ const routes = [
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/dashboardModules/settings/SettingsModule.vue') },
       { path: 'allshops', name: 'AllShopsModule', component: () => import('../views/dashboardModules/settings/SubAccountModule.vue') },
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/dashboardModules/settings/ProfileModule.vue') },
-      { path: 'expenses', name: 'ExpensesModule', component: () => import('../views/dashboardModules/accounting/ExpensesDashboard.vue') },
-      { path: 'expenses/list', name: 'ExpensesList', component: () => import('../views/dashboardModules/accounting/expenses/ExpensesListPage.vue') },
-      { path: 'expenses/fixed-costs', name: 'FixedCosts', component: () => import('../views/dashboardModules/accounting/expenses/FixedCostsPage.vue') },
-      // Legacy aliases (ExpensesModuleFull.vue removed)
-      { path: 'expenses/all', name: 'AllExpenses', redirect: (to) => ({ name: 'ExpensesList', query: to.query }) },
-      { path: 'expenses/reports', name: 'ExpensesReports', redirect: (to) => ({ name: 'ExpensesModule', query: { ...to.query, open: 'reports' } }) },
-      { path: 'delivery-tickets', name: 'DeliveryTickets', component: () => import('@/views/dashboardModules/DeliveryTicketModule.vue') },
-      { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/dashboardModules/aiagents/ImageCaptureModule.vue') },
-      { path: 'mining', name: 'MiningModule', component: () => import('../views/dashboardModules/mining/MiningModule2.vue') },
+      
+    
+      // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/dashboardModules/aiagents/ImageCaptureModule.vue') },
+    
       { path: 'crm', name: 'CrmModule', component: () => import('../views/dashboardModules/sales/CRMModule.vue') },
       { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/dashboardModules/sales/CRMLeadsPage.vue') },
       { path: 'crm/pipeline', name: 'CrmPipeline', component: () => import('../views/dashboardModules/sales/CRMPipelinePage.vue') },
@@ -287,10 +176,6 @@ const routes = [
       { path: 'crm/visits', name: 'CrmVisits', component: () => import('../views/dashboardModules/sales/CRMVisitsPage.vue') },
       { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/dashboardModules/sales/CRMWhatsAppPage.vue') },
       { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/dashboardModules/sales/CRMAcquisitionPage.vue') },
-      { path: 'loans', name: 'LoansModule', component: () => import('../views/dashboardModules/accounting/LoansModule.vue') },
-      { path: 'payroll', name: 'PayrollModule', component: () => import('../views/dashboardModules/hrmodules/PayrollModule.vue') },
-      { path: 'hr-staff', name: 'StaffDashboardModule', component: () => import('../views/dashboardModules/hrmodules/StaffDashboardModule.vue') },
-      { path: 'training', name: 'TrainingCenter', component: () => import('../views/dashboardModules/hrmodules/TrainingPage.vue') },
       
       { path: 'strategic-management', redirect: '/dashboard/strategic/overview' },
       { path: 'strategic/overview', name: 'StrategicOverview', component: OverviewSubpage },
@@ -306,29 +191,17 @@ const routes = [
       { path: 'strategic/positioning', name: 'StrategicPositioning', component: PositioningSubpage },
       { path: 'strategic/brand', name: 'StrategicBrand', component: BrandStrategySubpage },
       // { path: 'income-capital', name: 'IncomeCapital', component: () => import('../views/dashboardModules/accounting/IncomeCapitalModule.vue') },
-      { path: 'finance', name: 'FinanceModule', component: () => import('../views/dashboardModules/accounting/FinanceModule.vue') },
-      { path: 'ubpay', name: 'UbPayWallet', component: () => import('../views/dashboardModules/accounting/UbPayWallet.vue') },
-      { path: 'bank-accounts', name: 'BankAccountsModule', component: () => import('../views/dashboardModules/accounting/BankAccountsModule.vue') },
-      { path: 'hr-dashboard', name: 'HRDashboardModule', component: () => import('../views/dashboardModules/hrmodules/HRDashboardModule.vue') },
       
-      // Marketplace Module
-      { path: 'marketplace', name: 'MarketplaceDashboard', component: () => import('../views/dashboardModules/marketplace/MarketplaceDashboard.vue') },
-
-      { path: 'projects', name: 'ProjectsModule', component: ProjectsModule },
-      { path: 'projects/:projectId', name: 'ProjectDetailsNew', component: ProjectDetails },
-      { path: 'project-details/:projectId', name: 'ProjectDetails', component: ProjectDetails },
-      { path: 'budgets', name: 'BudgetManagement', component: () => import('../views/dashboardModules/accounting/BudgetManagement.vue') },
+     
     ],
   },
-
-
 
   // Error pages
   { path: '/403', component: () => import('../views/403.vue') },
   { path: '/unauthorized', name: 'Unauthorized', component: { template: '<div><h2>Unauthorized</h2><p>You do not have permission to access this page.</p></div>' } },
 
   // Catch all route - must be last
-  { path: '/:pathMatch(.*)*', component: NotFound, name: 'not-found' },
+  // { path: '/:pathMatch(.*)*', component: NotFound, name: 'not-found' },
 ];
 
 const router = createRouter({
@@ -405,9 +278,7 @@ router.beforeEach(async (to, from, next) => {
 
   // If navigating to the POS module, set a short-lived session flag so the POS view
   // can scroll the sale controls into view immediately on mount.
-  if (to.path === '/dashboard/pos') {
-    try { sessionStorage.setItem('pos_scroll_on_entry', '1'); } catch (e) {}
-  }
+
 
   next();
 });

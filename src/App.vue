@@ -95,7 +95,7 @@ import router from '@/router';
 import pwaManager from '@/utils/pwaManager.js';
 import currencyService from '@/services/currencyService.js';
 import { decodeJWT } from '@/api_services/decodeJWT.js';
-import MiningAiChat from '@/components/MiningAiChat.vue';
+
 import { usePreferences } from '@/config/usePreferences.js';
 import { useRBAC } from '@/composables/useRBAC.js';
 import { DEV_BYPASS } from '@/config/devFlags.js';
@@ -197,42 +197,6 @@ onMounted(async () => {
     fetchPreferences(),
     initializeRBAC()
   ]);
-
-  // ── Offline pre-caching ───────────────────────────────────────
-  // Pre-load inventory and customer data into IndexedDB for offline use
-  if (navigator.onLine) {
-    const { getTenantId } = decodeJWT();
-    const tenantId = getTenantId?.();
-    if (tenantId) {
-      // Fire-and-forget — don't block app startup
-      Promise.all([
-        import('@/utils/offlineHelpers.js').then(async ({ cacheInventoryForOffline }) => {
-          try {
-            await cacheInventoryForOffline();
-            console.log('✅ Inventory cached for offline use');
-          } catch (e) {
-            console.warn('Offline inventory cache failed:', e);
-          }
-        }),
-        import('@/utils/offlineHelpers.js').then(async ({ cacheCustomersForOffline }) => {
-          try {
-            await cacheCustomersForOffline();
-            console.log('✅ Customers cached for offline use');
-          } catch (e) {
-            console.warn('Offline customer cache failed:', e);
-          }
-        }),
-        import('@/utils/offlineSync.js').then(async (mod) => {
-          try {
-            await mod.default.init();
-            console.log('✅ Offline sync manager initialized');
-          } catch (e) {
-            console.warn('Offline sync init failed:', e);
-          }
-        })
-      ]).catch(e => console.warn('Offline pre-caching error:', e));
-    }
-  }
 
   // PWA setup
   pwaManager.onPromptReady(() => {

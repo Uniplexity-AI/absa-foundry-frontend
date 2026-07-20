@@ -7,26 +7,26 @@
     @keydown.enter="handleClick"
     @keydown.space.prevent="handleClick"
     :class="[
-      'relative bg-white border border-gray-200 p-5 transition-all duration-200 overflow-hidden group',
-      navigateTo ? 'cursor-pointer hover:border-[var(--brand-primary)]/40 hover:shadow-sm' : 'cursor-default',
-      accentColor ? 'border-t-4' : '',
+      'relative bg-white p-5 transition-all duration-200 overflow-hidden group rounded-xl',
+      navigateTo ? 'cursor-pointer hover:shadow-md' : 'cursor-default',
       loading ? 'pointer-events-none' : ''
     ]"
-    :style="accentColor ? { borderTopColor: accentColor } : {}"
+    :style="accentColor ? { borderTopColor: accentColor, borderTopWidth: '3px', borderColor: '#E8E8EC', borderWidth: '1px', borderStyle: 'solid' } : { borderColor: '#E8E8EC', borderWidth: '1px', borderStyle: 'solid' }"
   >
-    <div class="absolute inset-0 dotted-pattern pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute inset-0 absa-gradient-maroon-subtle pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></div>
 
     <div class="relative z-10">
       <div class="flex items-start justify-between mb-3">
-        <span class="text-[10px] font-mono font-bold tracking-[0.2em] text-gray-400 uppercase truncate">
+        <span class="text-[10px] font-bold tracking-[0.15em] text-gray-400 uppercase truncate" style="font-family:'Space Mono',monospace">
           {{ label }}
         </span>
         <span
           v-if="trend !== undefined && trend !== null"
           :class="[
-            'text-[10px] font-mono font-bold tracking-wider flex items-center gap-1 shrink-0 ml-2',
+            'text-[10px] font-bold tracking-wider flex items-center gap-1 shrink-0 ml-2',
             trend >= 0 ? 'text-green-600' : 'text-red-500'
           ]"
+          style="font-family:'Space Mono',monospace"
         >
           <i v-if="trend > 0" class="fas fa-arrow-up text-[8px]"></i>
           <i v-else-if="trend < 0" class="fas fa-arrow-down text-[8px]"></i>
@@ -35,13 +35,13 @@
       </div>
 
       <div class="flex items-end justify-between gap-3">
-        <div v-if="!loading" class="text-2xl font-bold tracking-tight text-gray-900 truncate">
+        <div v-if="!loading" class="text-2xl font-extrabold text-gray-900 truncate" style="letter-spacing:-0.02em">
           {{ formattedValue }}
         </div>
         <div v-else class="h-8 w-2/3 bg-gray-200 animate-pulse rounded-none"></div>
 
         <div v-if="navigateTo" class="flex items-center gap-1 text-gray-300 group-hover:text-[var(--brand-primary)] transition-colors shrink-0">
-          <i class="fas fa-arrow-right text-xs group-hover:translate-x-0.5 transition-transform"></i>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:translate-x-0.5 transition-transform"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
 

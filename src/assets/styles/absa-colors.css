@@ -1,0 +1,373 @@
+/* ============================================================
+   ABSA Intelligence Unit — Design Tokens & Color System
+   Derived from the "My Customers" retention dashboard UI.
+   Import once in main.js; all variables are :root-scoped
+   and compatible with Tailwind's theme extension.
+   ============================================================ */
+
+:root {
+  /* ── ABSA Brand Core ─────────────────────────────────── */
+  --absa-maroon:           #BE0F2C;   /* primary brand red-maroon (headers, CTAs) */
+  --absa-maroon-deep:      #8B0015;   /* darker variant for hover / pressed states */
+  --absa-maroon-light:     #E84D5B;   /* lighter accent for soft highlights */
+  --absa-maroon-soft:      #FDE8EC;   /* 8 % tint — subtle backgrounds, badges */
+  --absa-maroon-gradient:  linear-gradient(135deg, #BE0F2C 0%, #8B0015 100%);
+
+  --absa-white:            #FFFFFF;
+  --absa-off-white:        #FBFBFB;   /* card / page background */
+  --absa-border-light:     #E8E8EC;   /* subtle card separators */
+  --absa-divider:          #D9D9DF;   /* stronger borders */
+
+  /* ── Semantic Status (from dashboard pills & gauges) ── */
+  --absa-critical:         #DC2626;   /* "Churned" pill, AI Health CRITICAL */
+  --absa-critical-soft:    #FEE2E2;   /* critical badge background */
+  --absa-warning:          #F59E0B;   /* "At Risk" stage, medium alerts */
+  --absa-warning-soft:     #FEF3C7;   /* warning badge background */
+  --absa-success:          #16A34A;   /* "Active" stage, positive KPIs */
+  --absa-success-soft:     #DCFCE7;   /* success badge background */
+  --absa-info:             #2563EB;   /* informational highlights */
+  --absa-info-soft:        #DBEAFE;   /* info badge background */
+  --absa-neutral:          #6B7280;   /* muted / inactive states */
+  --absa-neutral-soft:     #F3F4F6;   /* neutral badge / skeleton bg */
+
+  /* ── Text Hierarchy ──────────────────────────────────── */
+  --absa-text-primary:     #111827;   /* headings, body */
+  --absa-text-secondary:   #4B5563;   /* supporting copy */
+  --absa-text-muted:       #9CA3AF;   /* placeholders, captions, timestamps */
+  --absa-text-inverse:     #FFFFFF;   /* on maroon / dark surfaces */
+
+  /* ── Surfaces & Backgrounds ──────────────────────────── */
+  --absa-surface-card:     #FFFFFF;            /* elevated card */
+  --absa-surface-page:     #F8F8FA;            /* page / drawer background */
+  --absa-surface-hover:    #F3F4F6;            /* row hover, subtle highlight */
+  --absa-surface-maroon:   var(--absa-maroon); /* branded surface (hero cards) */
+
+  /* ── Borders & Rings ─────────────────────────────────── */
+  --absa-border-card:      1px solid var(--absa-border-light);
+  --absa-border-input:     1px solid var(--absa-divider);
+  --absa-ring-focus:       0 0 0 3px rgba(190, 15, 44, 0.25); /* maroon focus ring */
+
+  /* ── Shadows (lifted from dashboard card depth) ──────── */
+  --absa-shadow-sm:        0 1px 2px  rgba(0, 0, 0, 0.04);
+  --absa-shadow-card:      0 2px 8px  rgba(0, 0, 0, 0.06);
+  --absa-shadow-elevated:  0 8px 24px rgba(0, 0, 0, 0.10);
+  --absa-shadow-modal:     0 16px 48px rgba(0, 0, 0, 0.14);
+
+  /* ── Radii (rounded-card aesthetic from dashboard) ───── */
+  --absa-radius-sm:    6px;
+  --absa-radius-card:  12px;
+  --absa-radius-lg:    16px;
+  --absa-radius-xl:    24px;
+  --absa-radius-full:  999px;
+
+  /* ── Typography (ABSA uses clean geometric sans) ─────── */
+  --absa-font-main:    'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  --absa-font-mono:    'Space Mono', 'Fira Code', monospace;
+
+  /* ── Gauges & Health Score (AI Health Score ring) ────── */
+  --absa-gauge-critical:   #DC2626;
+  --absa-gauge-warning:    #F59E0B;
+  --absa-gauge-good:       #16A34A;
+  --absa-gauge-track:      #E5E7EB;
+  --absa-gauge-size:       120px;
+  --absa-gauge-stroke:     8px;
+
+  /* ── Status Pills (Churned / Active / At Risk) ───────── */
+  --absa-pill-churned-bg:    var(--absa-critical-soft);
+  --absa-pill-churned-text:  var(--absa-critical);
+  --absa-pill-active-bg:     var(--absa-success-soft);
+  --absa-pill-active-text:   var(--absa-success);
+  --absa-pill-atrisk-bg:     var(--absa-warning-soft);
+  --absa-pill-atrisk-text:   var(--absa-warning);
+  --absa-pill-verified-bg:   var(--absa-info-soft);
+  --absa-pill-verified-text: var(--absa-info);
+
+  /* ── Action Cards (maroon gradient hero) ─────────────── */
+  --absa-action-card-bg:        var(--absa-maroon-gradient);
+  --absa-action-card-text:      var(--absa-text-inverse);
+  --absa-action-card-muted:     rgba(255, 255, 255, 0.70);
+  --absa-action-card-border:    rgba(255, 255, 255, 0.12);
+  --absa-action-card-radius:    var(--absa-radius-lg);
+
+  /* ── Timeline / Lifecycle Journey ────────────────────── */
+  --absa-timeline-line:     #D1D5DB;
+  --absa-timeline-dot:      var(--absa-maroon);
+  --absa-timeline-label:    var(--absa-text-secondary);
+
+  /* ── Sidebar & Navigation ────────────────────────────── */
+  --absa-sidebar-bg:          var(--absa-white);
+  --absa-sidebar-border:      var(--absa-border-light);
+  --absa-sidebar-item-hover:  var(--absa-surface-hover);
+  --absa-sidebar-item-active-bg: var(--absa-maroon-soft);
+  --absa-sidebar-item-active-text: var(--absa-maroon);
+  --absa-sidebar-icon-color:  var(--absa-neutral);
+
+  /* ── Top Bar / Header ────────────────────────────────── */
+  --absa-header-bg:       var(--absa-white);
+  --absa-header-border:   var(--absa-border-light);
+  --absa-header-height:   64px;
+
+  /* ── Customer Card (maroon-header variant) ───────────── */
+  --absa-customer-card-header-bg: var(--absa-maroon);
+  --absa-customer-card-header-text: var(--absa-text-inverse);
+  --absa-customer-card-body-bg: var(--absa-white);
+  --absa-customer-card-radius:   var(--absa-radius-card);
+  --absa-customer-card-shadow:   var(--absa-shadow-card);
+
+  /* ── Buttons ─────────────────────────────────────────── */
+  --absa-btn-primary-bg:       var(--absa-maroon);
+  --absa-btn-primary-text:     var(--absa-text-inverse);
+  --absa-btn-primary-hover:    var(--absa-maroon-deep);
+  --absa-btn-secondary-bg:     var(--absa-white);
+  --absa-btn-secondary-text:   var(--absa-maroon);
+  --absa-btn-secondary-border: var(--absa-maroon);
+  --absa-btn-secondary-hover:  var(--absa-maroon-soft);
+  --absa-btn-ghost-hover:      var(--absa-surface-hover);
+  --absa-btn-radius:           var(--absa-radius-sm);
+  --absa-btn-height:           40px;
+
+  /* ── Inputs / Search ─────────────────────────────────── */
+  --absa-input-bg:         var(--absa-white);
+  --absa-input-border:     var(--absa-border-input);
+  --absa-input-focus-ring: var(--absa-ring-focus);
+  --absa-input-radius:     var(--absa-radius-sm);
+  --absa-input-height:     44px;
+  --absa-input-placeholder: var(--absa-text-muted);
+
+  /* ── Spacing Scale (dashboard density) ───────────────── */
+  --absa-space-xs:   4px;
+  --absa-space-sm:   8px;
+  --absa-space-md:   16px;
+  --absa-space-lg:   24px;
+  --absa-space-xl:   32px;
+  --absa-space-2xl:  48px;
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --absa-transition-fast:   150ms ease;
+  --absa-transition-base:   250ms ease;
+  --absa-transition-slow:   350ms ease;
+}
+
+/* ── Re-map Uniplexity brand tokens → ABSA maroon ──────── */
+:root {
+  --brand-primary:            var(--absa-maroon);
+  --brand-primary-hover:      var(--absa-maroon-deep);
+  --brand-soft:               var(--absa-maroon-soft);
+  --color-primary:            var(--absa-maroon);
+  --color-primary-dark:       var(--absa-maroon-deep);
+  --color-error:              var(--absa-critical);
+  --color-warning:            var(--absa-warning);
+  --color-success:            var(--absa-success);
+  --color-info:               var(--absa-info);
+}
+
+/* ════════════════════════════════════════════════════════
+   Utility Classes (optional — use directly in markup)
+   ════════════════════════════════════════════════════════ */
+
+/* Status pill base */
+.absa-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--absa-radius-full);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.absa-pill--churned   { background: var(--absa-pill-churned-bg);   color: var(--absa-pill-churned-text); }
+.absa-pill--active    { background: var(--absa-pill-active-bg);    color: var(--absa-pill-active-text); }
+.absa-pill--at-risk   { background: var(--absa-pill-atrisk-bg);    color: var(--absa-pill-atrisk-text); }
+.absa-pill--verified  { background: var(--absa-pill-verified-bg);  color: var(--absa-pill-verified-text); }
+.absa-pill--neutral   { background: var(--absa-neutral-soft);      color: var(--absa-neutral); }
+
+/* Customer card shell */
+.absa-card {
+  background: var(--absa-surface-card);
+  border: var(--absa-border-card);
+  border-radius: var(--absa-radius-card);
+  box-shadow: var(--absa-shadow-card);
+  overflow: hidden;
+}
+
+.absa-card__header--maroon {
+  background: var(--absa-maroon);
+  color: var(--absa-text-inverse);
+  padding: var(--absa-space-md) var(--absa-space-lg);
+}
+
+.absa-card__body {
+  padding: var(--absa-space-lg);
+}
+
+/* Action / hero card (maroon gradient) */
+.absa-action-card {
+  background: var(--absa-action-card-bg);
+  color: var(--absa-action-card-text);
+  border-radius: var(--absa-action-card-radius);
+  padding: var(--absa-space-lg) var(--absa-space-xl);
+  box-shadow: var(--absa-shadow-elevated);
+}
+
+.absa-action-card__muted {
+  color: var(--absa-action-card-muted);
+}
+
+/* AI Health Score gauge ring (simplified — use SVG for actual gauge) */
+.absa-gauge-ring {
+  --gauge-value: 22; /* set via inline style or JS */
+  --gauge-color: var(--absa-gauge-critical);
+  width: var(--absa-gauge-size);
+  height: var(--absa-gauge-size);
+}
+
+/* Sidebar nav item states */
+.absa-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--absa-space-sm);
+  padding: var(--absa-space-sm) var(--absa-space-md);
+  border-radius: var(--absa-radius-sm);
+  color: var(--absa-text-secondary);
+  transition: background var(--absa-transition-fast), color var(--absa-transition-fast);
+  cursor: pointer;
+}
+
+.absa-nav-item:hover {
+  background: var(--absa-sidebar-item-hover);
+  color: var(--absa-text-primary);
+}
+
+.absa-nav-item--active {
+  background: var(--absa-sidebar-item-active-bg);
+  color: var(--absa-sidebar-item-active-text);
+  font-weight: 600;
+}
+
+/* Primary button */
+.absa-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--absa-btn-height);
+  padding: 0 var(--absa-space-lg);
+  background: var(--absa-btn-primary-bg);
+  color: var(--absa-btn-primary-text);
+  border: none;
+  border-radius: var(--absa-btn-radius);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background var(--absa-transition-fast);
+}
+
+.absa-btn-primary:hover {
+  background: var(--absa-btn-primary-hover);
+}
+
+/* Secondary / outline button */
+.absa-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--absa-btn-height);
+  padding: 0 var(--absa-space-lg);
+  background: var(--absa-btn-secondary-bg);
+  color: var(--absa-btn-secondary-text);
+  border: 1px solid var(--absa-btn-secondary-border);
+  border-radius: var(--absa-btn-radius);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background var(--absa-transition-fast), box-shadow var(--absa-transition-fast);
+}
+
+.absa-btn-outline:hover {
+  background: var(--absa-btn-secondary-hover);
+}
+
+/* Timeline dot */
+.absa-timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--absa-radius-full);
+  background: var(--absa-timeline-dot);
+  border: 2px solid var(--absa-white);
+  box-shadow: 0 0 0 2px var(--absa-timeline-dot);
+}
+
+.absa-timeline-dot--past {
+  background: var(--absa-timeline-line);
+  box-shadow: 0 0 0 2px var(--absa-timeline-line);
+}
+
+/* Search input */
+.absa-search {
+  display: flex;
+  align-items: center;
+  height: var(--absa-input-height);
+  background: var(--absa-input-bg);
+  border: var(--absa-input-border);
+  border-radius: var(--absa-input-radius);
+  padding: 0 var(--absa-space-md);
+  gap: var(--absa-space-sm);
+  transition: border-color var(--absa-transition-fast), box-shadow var(--absa-transition-fast);
+}
+
+.absa-search:focus-within {
+  border-color: var(--absa-maroon);
+  box-shadow: var(--absa-input-focus-ring);
+}
+
+.absa-search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: var(--absa-text-primary);
+}
+
+.absa-search__input::placeholder {
+  color: var(--absa-input-placeholder);
+}
+
+/* Section heading */
+.absa-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--absa-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.absa-section-subtitle {
+  font-size: 0.8125rem;
+  color: var(--absa-text-muted);
+}
+
+/* Metric highlight (KPI values) */
+.absa-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--absa-text-primary);
+  line-height: 1.2;
+}
+
+.absa-metric-label {
+  font-size: 0.75rem;
+  color: var(--absa-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.absa-metric-change--down {
+  color: var(--absa-critical);
+  font-weight: 600;
+}
+
+.absa-metric-change--up {
+  color: var(--absa-success);
+  font-weight: 600;
+}

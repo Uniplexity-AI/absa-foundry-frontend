@@ -1,10 +1,10 @@
 <template>
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-30 relative">
+  <header class="bg-white border-b sticky top-0 z-30 relative" style="border-color:#E8E8EC">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 min-w-0">
-        <div class="w-2 h-8 bg-[var(--brand-primary)] shrink-0"></div>
+        <div class="w-1 h-8 rounded-full shrink-0 absa-gradient-maroon-vertical"></div>
         <div class="min-w-0">
-          <div class="flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-wider text-gray-400 uppercase truncate">
+          <div class="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-gray-400 uppercase truncate" style="font-family:'Space Mono',monospace">
             <button
               v-if="backRoute"
               @click="handleBack"
@@ -21,7 +21,7 @@
             <span class="text-gray-300 hidden sm:inline">//</span>
             <span class="text-gray-900 truncate">{{ currentView }}</span>
           </div>
-          <h1 v-if="title" class="text-xl font-bold text-gray-900 tracking-tight truncate">
+          <h1 v-if="title" class="text-lg font-extrabold text-gray-900 truncate" style="letter-spacing:-0.02em">
             {{ title }}
           </h1>
         </div>

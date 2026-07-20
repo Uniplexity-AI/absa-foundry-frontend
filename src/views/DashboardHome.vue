@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900 overflow-x-hidden">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
+    <div class="fixed inset-0 z-0 pointer-events-none absa-mesh-dense"></div>
 
 
     <PageHeader
@@ -85,8 +85,9 @@
         </KpiSection>
 
         <!-- Hero Section -->
-        <section class="relative mb-10 overflow-hidden bg-white border border-gray-200 p-8 md:p-12 text-gray-800 group">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <section class="relative mb-10 overflow-hidden rounded-xl bg-white border border-[#E8E8EC] p-8 md:p-12 text-gray-800 group shadow-sm">
+          <div class="absolute inset-0 absa-dots pointer-events-none opacity-30"></div>
+          <div class="absolute top-0 left-0 w-full h-1 absa-gradient-maroon"></div>
 
           <div class="absolute top-4 right-4 z-20">
             <InstallAppButton variant="pill" />
@@ -94,42 +95,43 @@
 
           <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex-1 text-center md:text-left">
-              <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50/50 border border-blue-100 text-[var(--brand-primary)] text-[11px] font-medium tracking-widest mb-6">
-                <div class="w-3 h-3 border-2 border-gray-200 border-t-[var(--brand-primary)] rounded-full animate-spin"></div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider mb-6" style="background:#FDE8EC;color:#BE0F2C;border:1px solid rgba(190,15,44,0.15)">
+                <div class="w-2.5 h-2.5 rounded-full" style="background:#16A34A;box-shadow:0 0 0 3px rgba(22,163,74,0.2)"></div>
                 System Active
               </div>
 
-              <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900">
-                {{ greeting }}, <span class="text-[var(--brand-primary)]">{{ userFirstName }}</span>
+              <h1 class="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight text-gray-900" style="letter-spacing:-0.02em">
+                {{ greeting }}, <span style="color:#BE0F2C">{{ userFirstName }}</span>
               </h1>
               <p class="text-gray-600 text-base md:text-lg max-w-xl font-medium leading-relaxed">
                 Welcome back. Everything is running smoothly. Here is a quick look at your workspace today.
               </p>
 
               <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-3">
-                <div class="flex items-center gap-3 bg-gray-50 px-4 py-2 border border-gray-200">
-                  <i class="fas fa-calendar-alt text-[var(--brand-primary)] text-xs"></i>
-                  <span class="text-xs font-medium text-gray-600">{{ currentDateFixed }}</span>
+                <div class="flex items-center gap-3 px-4 py-2 rounded-lg border text-xs font-semibold" style="background:#FBFBFB;border-color:#E8E8EC;color:#4B5563">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span>{{ currentDateFixed }}</span>
                 </div>
-                <div v-if="companyName" class="flex items-center gap-3 bg-gray-50 px-4 py-2 border border-gray-200">
-                  <i class="fas fa-building text-[var(--brand-primary)] text-xs"></i>
-                  <span class="text-xs font-medium text-gray-600">{{ companyName }}</span>
+                <div v-if="companyName" class="flex items-center gap-3 px-4 py-2 rounded-lg border text-xs font-semibold" style="background:#FBFBFB;border-color:#E8E8EC;color:#4B5563">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <span>{{ companyName }}</span>
                 </div>
               </div>
             </div>
 
             <div class="hidden lg:block w-80">
-              <div class="bg-gray-50/50 p-6 border border-gray-200 relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-1.5 h-full bg-[var(--brand-primary)]"></div>
+              <div class="rounded-xl p-6 border relative overflow-hidden group" style="background:#FBFBFB;border-color:#E8E8EC">
+                <div class="absolute top-0 right-0 w-1.5 h-full absa-gradient-maroon-vertical"></div>
                 <div class="flex justify-between items-center mb-4">
-                  <span class="text-xs font-semibold text-gray-500 tracking-wider">Account Setup</span>
-                  <span class="text-xs font-semibold text-[var(--brand-primary)]">85% Complete</span>
+                  <span class="text-xs font-bold text-gray-500 tracking-wider uppercase">Account Setup</span>
+                  <span class="text-xs font-extrabold" style="color:#BE0F2C">85% Complete</span>
                 </div>
-                <div class="w-full bg-gray-200 h-1.5 mb-6">
-                  <div class="bg-[var(--brand-primary)] h-1.5 w-[85%]"></div>
+                <div class="w-full bg-gray-200 h-2 rounded-full mb-6 overflow-hidden">
+                  <div class="absa-gradient-maroon h-2 rounded-full" style="width:85%"></div>
                 </div>
-                <button @click="goTo('/dashboard/profile')" class="w-full py-2.5 bg-[var(--brand-primary)] text-white font-bold text-sm tracking-widest hover:bg-[var(--brand-primary-hover)] transition-all active:scale-95 flex items-center justify-center gap-2">
-                  <i class="fas fa-user-check text-[10px]"></i> Complete Profile
+                <button @click="goTo('/dashboard/profile')" class="w-full py-2.5 rounded-lg text-white font-bold text-xs tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2" style="background:linear-gradient(135deg,#BE0F2C,#8B0015)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Complete Profile
                 </button>
               </div>
             </div>
@@ -137,59 +139,59 @@
         </section>
 
         <!-- Universal Utilities Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <div @click="goTo('/dashboard/profile')" class="group relative bg-white p-6 border border-gray-200 hover:border-[var(--brand-primary)]/50 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          <div @click="goTo('/dashboard/profile')" class="group relative bg-white p-6 rounded-xl border hover:shadow-md transition-all duration-200 cursor-pointer overflow-hidden" style="border-color:#E8E8EC">
+            <div class="absolute inset-0 absa-gradient-maroon-subtle pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="relative z-10">
-              <div class="w-12 h-12 text-[var(--brand-primary)] flex items-center justify-start mb-6 group-hover:scale-110 transition-transform">
-                <i class="fas fa-id-badge text-2xl"></i>
+              <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform" style="background:linear-gradient(135deg,#BE0F2C,#8B0015)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               </div>
-              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">My Profile</h3>
-              <p class="text-xs text-gray-500 mb-6 leading-relaxed">Personalize your identity and manage business cards.</p>
-              <span class="text-xs font-bold text-[var(--brand-primary)] flex items-center gap-2 tracking-widest">
-                Open Profile <i class="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform"></i>
+              <h3 class="text-sm font-extrabold text-gray-900 mb-1.5">My Profile</h3>
+              <p class="text-xs text-gray-500 mb-5 leading-relaxed">Personalize your identity and manage business cards.</p>
+              <span class="text-xs font-bold flex items-center gap-2" style="color:#BE0F2C">
+                Open Profile <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="group-hover:translate-x-0.5 transition-transform"><polyline points="9 18 15 12 9 6"/></svg>
               </span>
             </div>
           </div>
 
-          <div v-if="canAccessSettings" @click="goTo('/dashboard/settings')" class="group relative bg-white p-6 border border-gray-200 hover:border-[var(--brand-primary)]/50 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <div v-if="canAccessSettings" @click="goTo('/dashboard/settings')" class="group relative bg-white p-6 rounded-xl border hover:shadow-md transition-all duration-200 cursor-pointer overflow-hidden" style="border-color:#E8E8EC">
+            <div class="absolute inset-0 absa-gradient-maroon-subtle pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="relative z-10">
-              <div class="w-12 h-12 text-purple-600 flex items-center justify-start mb-6 group-hover:scale-110 transition-transform">
-                <i class="fas fa-cubes text-2xl"></i>
+              <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform" style="background:linear-gradient(135deg,#2563EB,#1D4ED8)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               </div>
-              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">Settings</h3>
-              <p class="text-xs text-gray-500 mb-6 leading-relaxed">Customize your branding and system preferences.</p>
-              <span class="text-xs font-bold text-purple-600 flex items-center gap-2 tracking-widest">
-                Open Settings <i class="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform"></i>
+              <h3 class="text-sm font-extrabold text-gray-900 mb-1.5">Settings</h3>
+              <p class="text-xs text-gray-500 mb-5 leading-relaxed">Customize your branding and system preferences.</p>
+              <span class="text-xs font-bold flex items-center gap-2" style="color:#2563EB">
+                Open Settings <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="group-hover:translate-x-0.5 transition-transform"><polyline points="9 18 15 12 9 6"/></svg>
               </span>
             </div>
           </div>
 
-          <div v-if="canAccessSettings" @click="goTo('/dashboard/settings?tab=modules')" class="group relative bg-white p-6 border border-gray-200 hover:border-[var(--brand-primary)]/50 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <div v-if="canAccessSettings" @click="goTo('/dashboard/settings?tab=modules')" class="group relative bg-white p-6 rounded-xl border hover:shadow-md transition-all duration-200 cursor-pointer overflow-hidden" style="border-color:#E8E8EC">
+            <div class="absolute inset-0 absa-gradient-maroon-subtle pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="relative z-10">
-              <div class="w-12 h-12 text-[var(--brand-primary)] flex items-center justify-start mb-6 group-hover:scale-110 transition-transform">
-                <i class="fas fa-rocket text-2xl"></i>
+              <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform" style="background:linear-gradient(135deg,#16A34A,#15803D)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </div>
-              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">Add Modules</h3>
-              <p class="text-xs text-gray-500 mb-6 leading-relaxed">Unlock more features by subscribing to premium modules.</p>
-              <span class="text-xs font-bold text-[var(--brand-primary)] flex items-center gap-2 tracking-widest">
-                View Modules <i class="fas fa-chevron-right text-[8px] group-hover:translate-x-1 transition-transform"></i>
+              <h3 class="text-sm font-extrabold text-gray-900 mb-1.5">Add Modules</h3>
+              <p class="text-xs text-gray-500 mb-5 leading-relaxed">Unlock more features by subscribing to premium modules.</p>
+              <span class="text-xs font-bold flex items-center gap-2" style="color:#BE0F2C">
+                View Modules <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="group-hover:translate-x-0.5 transition-transform"><polyline points="9 18 15 12 9 6"/></svg>
               </span>
             </div>
           </div>
 
-          <div @click="goTo('/dashboard/ai')" class="group relative bg-white p-6 border border-gray-200 hover:border-[var(--brand-primary)]/50 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <div @click="goTo('/dashboard/ai')" class="group relative bg-white p-6 rounded-xl border hover:shadow-md transition-all duration-200 cursor-pointer overflow-hidden" style="border-color:#E8E8EC">
+            <div class="absolute inset-0 absa-gradient-maroon-subtle pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="relative z-10">
-              <div class="w-12 h-12 text-[var(--brand-primary)] flex items-center justify-start mb-6 group-hover:rotate-12 transition-transform">
-                <i class="fas fa-robot text-2xl"></i>
+              <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 group-hover:rotate-12 transition-transform" style="background:linear-gradient(135deg,#F59E0B,#D97706)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </div>
-              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">Universal AI</h3>
-              <p class="text-xs text-gray-500 mb-6 leading-relaxed">Ask anything about your business or use our AI tools.</p>
-              <span class="text-xs font-bold text-[var(--brand-primary)] flex items-center gap-2 tracking-widest">
-                UB Copilot <i class="fas fa-bolt text-[8px] text-yellow-400"></i>
+              <h3 class="text-sm font-extrabold text-gray-900 mb-1.5">Universal AI</h3>
+              <p class="text-xs text-gray-500 mb-5 leading-relaxed">Ask anything about your business or use our AI tools.</p>
+              <span class="text-xs font-bold flex items-center gap-2" style="color:#BE0F2C">
+                UB Copilot <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#F59E0B"></span>
               </span>
             </div>
           </div>
@@ -202,11 +204,11 @@
       <!-- Approval Popup (always rendered, even during loading) -->
       <div v-if="showApprovalPopup"
            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white shadow-2xl max-w-md w-full p-8 border border-gray-200 relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-full h-1.5 bg-[var(--brand-primary)]"></div>
+        <div class="bg-white shadow-2xl max-w-md w-full p-8 rounded-2xl border relative overflow-hidden" style="border-color:#E8E8EC">
+          <div class="absolute top-0 left-0 w-full h-1.5 absa-gradient-maroon"></div>
           <div class="text-center">
-            <div class="mx-auto flex items-center justify-center h-16 w-16 bg-blue-50 border border-blue-100 mb-6">
-              <i class="fas fa-info-circle text-[var(--brand-primary)] text-2xl"></i>
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-2xl mb-6" style="background:#FDE8EC;border:1px solid rgba(190,15,44,0.15)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </div>
             <h2 class="text-xl font-bold mb-2 text-gray-900 tracking-tight">Access Pending</h2>
             <p class="text-sm text-gray-500 mb-8 leading-relaxed font-medium">
@@ -224,7 +226,8 @@
             </div>
             <button
               @click="showApprovalPopup = false"
-              class="w-full py-3 px-4 bg-[var(--brand-primary)] text-white font-bold text-xs tracking-widest hover:bg-[var(--brand-primary-hover)] transition-all active:scale-95"
+              class="w-full py-3 px-4 rounded-lg text-white font-bold text-xs tracking-wider transition-all active:scale-95"
+              style="background:linear-gradient(135deg,#BE0F2C,#8B0015)"
             >
               Acknowledge
             </button>
@@ -236,14 +239,14 @@
       <Teleport to="body">
         <div v-if="showModulePopup"
              class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div class="bg-white shadow-2xl max-w-md w-full p-8 border border-gray-200 relative overflow-hidden animate-fade-in">
-            <div class="absolute top-0 left-0 w-full h-1.5 bg-[var(--brand-primary)]"></div>
+          <div class="bg-white shadow-2xl max-w-md w-full p-8 rounded-2xl border relative overflow-hidden animate-fade-in" style="border-color:#E8E8EC">
+            <div class="absolute top-0 left-0 w-full h-1.5 absa-gradient-maroon"></div>
             <div class="absolute -right-8 -top-8 text-gray-50 opacity-10">
               <i class="fas fa-rocket text-9xl"></i>
             </div>
             <div class="text-center relative z-10">
-              <div class="mx-auto flex items-center justify-center h-20 w-20 bg-blue-50 border border-blue-100 mb-6 group">
-                <i class="fas fa-rocket text-[var(--brand-primary)] text-3xl animate-pulse"></i>
+              <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl mb-6 group" style="background:#FDE8EC;border:1px solid rgba(190,15,44,0.15)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#BE0F2C" stroke-width="2" class="animate-pulse"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </div>
               <h2 class="text-2xl font-bold mb-3 text-gray-900 tracking-tight">Expand Your Workspace</h2>
               <p class="text-sm text-gray-500 mb-8 leading-relaxed font-medium">
@@ -253,7 +256,8 @@
               <div class="space-y-3">
                 <button v-if="canAccessSettings"
                   @click="goTo('/dashboard/settings?tab=modules')"
-                  class="w-full py-3.5 px-6 bg-[var(--brand-primary)] text-white font-bold text-xs tracking-[0.2em] uppercase hover:bg-[var(--brand-primary-hover)] transition-all active:scale-95 flex items-center justify-center gap-2 group"
+                  class="w-full py-3.5 px-6 rounded-lg text-white font-bold text-xs tracking-[0.2em] uppercase transition-all active:scale-95 flex items-center justify-center gap-2 group"
+                  style="background:linear-gradient(135deg,#BE0F2C,#8B0015)"
                 >
                   Explore Modules <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-all"></i>
                 </button>

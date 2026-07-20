@@ -1,5 +1,240 @@
-/* patterns.css — deprecated: .mesh-background, .dotted-pattern, and related global styles
- * have been consolidated into src/assets/pages.css for consistent theming and dark mode support.
- * This file is kept as a re-export to avoid breaking imports. Remove once all modules
- * have been migrated to import from pages.css instead.
- */
+/* ============================================================
+   ABSA Intelligence Unit — Pattern & Background Utilities
+   Maroon-branded patterns for dashboards, cards, and surfaces.
+   ============================================================ */
+
+/* ── Maroon Gradient Overlays (action cards, hero banners) ── */
+.absa-gradient-maroon {
+  background: linear-gradient(135deg, #BE0F2C 0%, #8B0015 100%);
+}
+
+.absa-gradient-maroon-subtle {
+  background: linear-gradient(135deg, rgba(190, 15, 44, 0.06) 0%, rgba(139, 0, 21, 0.02) 100%);
+}
+
+.absa-gradient-maroon-vertical {
+  background: linear-gradient(180deg, #BE0F2C 0%, #8B0015 100%);
+}
+
+.absa-gradient-card-header {
+  background: linear-gradient(180deg, #BE0F2C 0%, #A01028 100%);
+}
+
+/* ── Mesh Background (ABSA maroon tint) ── */
+.absa-mesh {
+  background-color: #FBFBFB;
+  background-image:
+    linear-gradient(rgba(190, 15, 44, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 15, 44, 0.03) 1px, transparent 1px);
+  background-size: 38px 38px;
+  background-position: center center;
+}
+
+.absa-mesh-dense {
+  background-color: #FBFBFB;
+  background-image:
+    linear-gradient(rgba(190, 15, 44, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 15, 44, 0.02) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center center;
+}
+
+/* ── Dotted Pattern (subtle texture for empty states) ── */
+.absa-dots {
+  background-image: radial-gradient(circle, rgba(190, 15, 44, 0.12) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ── Striped Row (table alternate) ── */
+.absa-stripe-row {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 47px,
+    rgba(190, 15, 44, 0.015) 47px,
+    rgba(190, 15, 44, 0.015) 94px
+  );
+}
+
+/* ── Critical Pulse (alert / urgent indicator) ── */
+.absa-pulse-critical {
+  animation: absaPulseCritical 2s ease-in-out infinite;
+}
+
+@keyframes absaPulseCritical {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+}
+
+/* ── Shimmer / Skeleton Loading ── */
+.absa-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(190, 15, 44, 0.04) 0%,
+    rgba(190, 15, 44, 0.10) 40%,
+    rgba(190, 15, 44, 0.04) 80%
+  );
+  background-size: 200% 100%;
+  animation: absaShimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes absaShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Health Score Ring Background (for gauge SVGs) ── */
+.absa-gauge-track {
+  stroke: #E5E7EB;
+  fill: none;
+}
+
+.absa-gauge-critical { stroke: #DC2626; }
+.absa-gauge-warning  { stroke: #F59E0B; }
+.absa-gauge-good     { stroke: #16A34A; }
+
+/* ── Timeline Connector Line ── */
+.absa-timeline-line {
+  background: linear-gradient(90deg, #16A34A 0%, #16A34A 55%, #F59E0B 55%, #F59E0B 78%, #DC2626 78%, #DC2626 100%);
+  height: 3px;
+  border-radius: 999px;
+}
+
+/* ── Card Top Accent Bar ── */
+.absa-accent-bar-maroon   { border-top: 3px solid #BE0F2C; }
+.absa-accent-bar-critical { border-top: 3px solid #DC2626; }
+.absa-accent-bar-warning  { border-top: 3px solid #F59E0B; }
+.absa-accent-bar-success  { border-top: 3px solid #16A34A; }
+.absa-accent-bar-info     { border-top: 3px solid #2563EB; }
+
+/* ── Card Left Accent (KPI cards) ── */
+.absa-accent-left-maroon   { border-left: 4px solid #BE0F2C; }
+.absa-accent-left-critical { border-left: 4px solid #DC2626; }
+.absa-accent-left-warning  { border-left: 4px solid #F59E0B; }
+.absa-accent-left-success  { border-left: 4px solid #16A34A; }
+
+/* ── Alert Banner Backgrounds ── */
+.absa-alert-critical {
+  background: linear-gradient(135deg, #FEE2E2 0%, #FEF2F2 100%);
+  border: 1px solid #FECACA;
+}
+
+.absa-alert-warning {
+  background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+  border: 1px solid #FDE68A;
+}
+
+.absa-alert-info {
+  background: linear-gradient(135deg, #DBEAFE 0%, #EFF6FF 100%);
+  border: 1px solid #BFDBFE;
+}
+
+.absa-alert-success {
+  background: linear-gradient(135deg, #DCFCE7 0%, #F0FDF4 100%);
+  border: 1px solid #BBF7D0;
+}
+
+/* ── Data Table Header Background ── */
+.absa-table-header {
+  background: linear-gradient(180deg, #F8F8FA 0%, #F3F4F6 100%);
+  border-bottom: 2px solid #E5E7EB;
+}
+
+/* ── Section Divider ── */
+.absa-section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #E5E7EB 20%, #E5E7EB 80%, transparent 100%);
+}
+
+/* ── Number Metric Background (dashboard KPI cards) ── */
+.absa-metric-bg {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBFBFB 100%);
+  border: 1px solid #E8E8EC;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.absa-metric-bg:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+  transition: all 200ms ease;
+}
+
+/* ── Chart Container Background ── */
+.absa-chart-container {
+  background: #FFFFFF;
+  border: 1px solid #E8E8EC;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* ── Run Status Indicators (ETL pipeline) ── */
+.absa-run-running {
+  background: linear-gradient(90deg, #DBEAFE, #EFF6FF, #DBEAFE);
+  background-size: 200% 100%;
+  animation: absaRunPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes absaRunPulse {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+.absa-run-completed { background: #DCFCE7; }
+.absa-run-failed    { background: #FEE2E2; }
+
+/* ── Dark Mode Overrides ── */
+html.dark .absa-mesh {
+  background-color: #0C0C10;
+  background-image:
+    linear-gradient(rgba(190, 15, 44, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 15, 44, 0.05) 1px, transparent 1px);
+}
+
+html.dark .absa-mesh-dense {
+  background-color: #0C0C10;
+  background-image:
+    linear-gradient(rgba(190, 15, 44, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 15, 44, 0.03) 1px, transparent 1px);
+}
+
+html.dark .absa-metric-bg {
+  background: linear-gradient(180deg, #16161E 0%, #111118 100%);
+  border-color: #2A2A35;
+}
+
+html.dark .absa-chart-container {
+  background: #16161E;
+  border-color: #2A2A35;
+}
+
+html.dark .absa-table-header {
+  background: linear-gradient(180deg, #1A1A24 0%, #14141C 100%);
+  border-bottom-color: #2A2A35;
+}
+
+html.dark .absa-alert-critical {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.12) 0%, rgba(220, 38, 38, 0.04) 100%);
+  border-color: rgba(220, 38, 38, 0.20);
+}
+
+html.dark .absa-alert-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 100%);
+  border-color: rgba(245, 158, 11, 0.20);
+}
+
+html.dark .absa-alert-info {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(37, 99, 235, 0.04) 100%);
+  border-color: rgba(37, 99, 235, 0.20);
+}
+
+html.dark .absa-alert-success {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.12) 0%, rgba(22, 163, 74, 0.04) 100%);
+  border-color: rgba(22, 163, 74, 0.20);
+}
+
+html.dark .absa-run-completed { background: rgba(22, 163, 74, 0.12); }
+html.dark .absa-run-failed    { background: rgba(220, 38, 38, 0.12); }
+html.dark .absa-section-divider {
+  background: linear-gradient(90deg, transparent 0%, #2A2A35 20%, #2A2A35 80%, transparent 100%);
+}

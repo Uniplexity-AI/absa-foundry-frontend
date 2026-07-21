@@ -40,7 +40,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import DocumentsView from './components/DocumentsView.vue';
 
 const { getUserEmail, activeTab, moduleLoading } = useCRMModule();

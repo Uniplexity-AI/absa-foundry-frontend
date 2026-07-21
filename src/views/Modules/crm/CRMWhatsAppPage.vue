@@ -199,7 +199,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted, computed, ref, watch, nextTick } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 
 const {
   getUserEmail, activeTab, moduleLoading, filteredCommunications, communicationFilter,

@@ -1,7 +1,7 @@
 
 import { ref, computed } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT';
+import API_BASE_URL from '@/services/api';
 import { getUsers, createUser, updateUser, deleteUser } from '@/api_services/owners_api.js';
 import { availableModules } from '@/config/moduleCards.js';
 

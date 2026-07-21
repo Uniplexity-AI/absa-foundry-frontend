@@ -4,8 +4,8 @@
  */
 
 import { ref, computed, readonly } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT';
+import API_BASE_URL from '@/services/api';
 import { DEV_BYPASS } from '@/config/devFlags.js';
 import {
   DEFAULT_ROLES,

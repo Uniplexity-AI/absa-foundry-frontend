@@ -799,8 +799,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import API_BASE_URL from '@/api_services/api'
-import { decodeJWT } from '@/api_services/decodeJWT'
+import API_BASE_URL from '@/services/api.js'
+import { decodeJWT } from '@/services/decodeJWT.js'
 import StrategicNavigation from './components/StrategicNavigation.vue'
 
 const router = useRouter()

@@ -298,8 +298,8 @@ import {
   Search, Package, Briefcase, Globe, Info, Loader2, Plus, Users
 } from 'lucide-vue-next';
 import { ref, computed, watch } from 'vue';
-import * as crmApi from '@/api_services/crm_api.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import LinkedDocumentsWidget from './LinkedDocumentsWidget.vue';
 
 const props = defineProps({

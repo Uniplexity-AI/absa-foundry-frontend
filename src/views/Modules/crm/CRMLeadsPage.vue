@@ -798,7 +798,7 @@
 import { BackButton } from '@/components/ui'
 import { ref, onMounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import LeadsView from './components/LeadsView.vue';
 import LeadDetailModal from './components/LeadDetailModal.vue';
 import BulkUploadLeadsModal from './components/BulkUploadLeadsModal.vue';
@@ -856,7 +856,7 @@ function openWhatsAppDialog(lead) {
 function proceedWithWhatsApp() {
   if (!whatsAppDialogLead.value) return;
   const msg = whatsAppMessage.value?.trim() || '';
-  import('@/api_services/crm_api.js').then(crmApi => {
+  import('@/services/crm_api.js').then(crmApi => {
     crmApi.logLeadActivity(whatsAppDialogLead.value.id, {
       tenant_id: getTenantId(),
       action: 'WhatsApp',
@@ -886,7 +886,7 @@ function saveCallDialogNote() {
   if (callNotes.value?.trim()) parts.push('NOTES: ' + callNotes.value.trim());
   parts.push('OUTCOME: ' + callOutcome.value + ' | DURATION: ' + (callDuration.value || 0) + 'min');
   const notes = parts.join(' | ');
-  import('@/api_services/crm_api.js').then(crmApi => {
+  import('@/services/crm_api.js').then(crmApi => {
     crmApi.logLeadActivity(callDialogLead.value.id, {
       tenant_id: getTenantId(),
       action: 'Phone Call',
@@ -983,7 +983,7 @@ async function autoOpenLeadFromQuery() {
   let target = (leads.value || []).find(l => String(l.id) === String(leadId) || String(l._id) === String(leadId));
   if (!target) {
     try {
-      const { getLead } = await import('@/api_services/crm_api.js');
+      const { getLead } = await import('@/services/crm_api.js');
       target = await getLead(leadId, getTenantId());
     } catch (e) {
       console.warn('CRMLeadsPage: failed to fetch lead by id', e);
@@ -996,7 +996,7 @@ watch(() => route.query.leadId, () => { autoOpenLeadFromQuery(); });
 async function handleArchiveLead(lead) {
   const tenantId = getTenantId();
   try {
-    const { updateLead } = await import('@/api_services/crm_api.js');
+    const { updateLead } = await import('@/services/crm_api.js');
     // Toggle archived state — spread full lead to satisfy required fields
     const newArchived = !lead.archived;
     await updateLead(lead.id, { ...lead, archived: newArchived, tenant_id: tenantId }, tenantId);

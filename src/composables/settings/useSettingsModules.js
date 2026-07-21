@@ -2,7 +2,7 @@ import { ref, computed, reactive } from 'vue'
 import { toast } from 'vue3-toastify'
 import { mapFrontendToBackend, mapBackendToFrontend } from '@/config/moduleIdMap'
 import { getAvailableModules, getModuleCards } from '@/config/moduleCards'
-import { getModuleStatuses, requestModuleSubscription } from '@/api_services/modules_api.js'
+import { getModuleStatuses, requestModuleSubscription } from '@/services/modules_api.js'
 import { useSettingsBase } from './useSettingsBase'
 
 export function useSettingsModules() {

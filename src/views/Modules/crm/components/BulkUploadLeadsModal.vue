@@ -494,9 +494,9 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
-import * as crmApi from '@/api_services/crm_api.js';
-import { API_BASE_URL } from '@/api_services/api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { API_BASE_URL } from '@/services/api.js';
 import { 
   X, ChevronRight, ChevronLeft, Download, Search, 
   FileUp, FileSpreadsheet, CheckCircle, AlertTriangle, 

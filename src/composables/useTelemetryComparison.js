@@ -4,7 +4,7 @@
  */
 
 import { ref, computed, reactive, watch } from 'vue'
-import TelemetryComparisonService from '@/api_services/telemetry_comparison_api'
+import TelemetryComparisonService from '@/services/telemetry_comparison_api'
 
 export function useTelemetryComparison() {
   // State

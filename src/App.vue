@@ -94,7 +94,7 @@ import { ref, onMounted, onUnmounted, watch, version } from 'vue';
 import router from '@/router';
 import pwaManager from '@/utils/pwaManager.js';
 import currencyService from '@/services/currencyService.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 
 import { usePreferences } from '@/config/usePreferences.js';
 import { useRBAC } from '@/composables/useRBAC.js';

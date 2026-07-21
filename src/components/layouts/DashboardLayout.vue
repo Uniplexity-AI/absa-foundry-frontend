@@ -107,10 +107,10 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue'
-import { decodeJWT } from '@/api_services/decodeJWT'
+import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
-import API_BASE_URL from '@/api_services/api'
+import API_BASE_URL from '@/services/api'
 
 const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
 

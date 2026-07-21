@@ -584,8 +584,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import * as crmApi from '@/api_services/crm_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { on as onCrmEvent } from '@/events/crmEvents.js';
 import { emit as emitCrmEvent } from '@/events/crmEvents.js';
 import { useUIStore } from '@/stores/ui.js';
@@ -593,7 +593,7 @@ import { useCurrency } from '@/composables/useCurrency';
 import AccountDetailModal from './AccountDetailModal.vue';
 import AccountFormModal from './AccountFormModal.vue';
 import BulkUploadAccountsModal from './BulkUploadAccountsModal.vue';
-import { useCRMModule } from '../functions/CRMModule.js';
+import { useCRMModule } from '../composables/CRMModule.js';
 const uiStore = useUIStore();
 import {
   Building, Users, Plus, ArrowRightLeft, CalendarPlus, Search, LayoutGrid, List,

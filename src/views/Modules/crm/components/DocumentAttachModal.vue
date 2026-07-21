@@ -233,8 +233,8 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { X, Upload, Link, CloudUpload, FileText, Search, Loader2, Check, Save } from 'lucide-vue-next';
-import * as documentsApi from '@/api_services/documents_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as documentsApi from '@/services/documents_api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 
 const { getTenantId } = decodeJWT();
 

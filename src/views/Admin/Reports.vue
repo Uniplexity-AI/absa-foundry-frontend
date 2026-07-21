@@ -196,8 +196,8 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue';
-import API_BASE_URL, { authFetch } from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import API_BASE_URL, { authFetch } from '@/services/api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 
 const { getTenantId } = decodeJWT();
 import { marked } from 'marked';

@@ -341,8 +341,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { emit as emitCrmEvent, on as onCrmEvent } from '@/events/crmEvents.js';
-import * as crmApi from '@/api_services/crm_api.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import ContactDetailModal from './ContactDetailModal.vue';
 import ContactFormModal from './ContactFormModal.vue';
 import {

@@ -443,7 +443,7 @@
 <script setup>
 import { ref, watch, nextTick, onMounted, computed } from 'vue'
 import axios from 'axios'
-import API_BASE_URL from '@/api_services/api'
+import API_BASE_URL from '@/services/api'
 
 // Core State
 const question = ref('')

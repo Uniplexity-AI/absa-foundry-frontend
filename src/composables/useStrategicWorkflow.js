@@ -1,7 +1,7 @@
 
 import { ref } from 'vue'
 import axios from 'axios'
-import { API_BASE_URL } from '@/api_services/api'
+import { API_BASE_URL } from '@/services/api'
 export const workflowResult = ref(null)
 export const workflowLoading = ref(false)
 export const workflowError = ref(null)

@@ -1,6 +1,6 @@
 import { ref, reactive, watch } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT.js';
+import API_BASE_URL from '@/services/api';
 import { DEV_BYPASS } from '@/config/devFlags.js';
 
 // Global reactive state to be shared across components

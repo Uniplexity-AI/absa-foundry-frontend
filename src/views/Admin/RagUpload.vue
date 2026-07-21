@@ -247,7 +247,7 @@
 <script setup>
 
 import { ref, watch, onMounted } from 'vue'
-import API_BASE_URL, { authFetch } from '@/api_services/api';
+import API_BASE_URL, { authFetch } from '@/services/api';
 
 // Add loading states
 const isLoading = ref({

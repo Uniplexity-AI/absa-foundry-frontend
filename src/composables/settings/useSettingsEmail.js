@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { toast } from 'vue3-toastify'
-import { getEmailConfigurations, saveEmailConfiguration, testEmailConfiguration, deleteEmailConfiguration } from '@/api_services/crm_email_api.js'
+import { getEmailConfigurations, saveEmailConfiguration, testEmailConfiguration, deleteEmailConfiguration } from '@/services/crm_email_api.js'
 import { useSettingsBase } from './useSettingsBase'
 
 // ── Notification types with default labels/icons ───────────────

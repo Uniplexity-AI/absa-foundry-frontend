@@ -144,7 +144,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import CRMEmailModal from './components/CRMEmailModal.vue';
 import { 
   UserCircle, Loader2, Plus, Send, MailOpen, 

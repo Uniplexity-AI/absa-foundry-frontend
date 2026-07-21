@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted } from "vue"
-import { API_BASE_URL } from "@/api_services/api.js"
+import { API_BASE_URL } from "@/services/api.js"
 
 export function useActivityTracker({ userId, tenantId, module }) {
   const lastActivity = ref(Date.now())

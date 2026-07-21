@@ -374,7 +374,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import { useCRMModule } from '../functions/CRMModule.js';
+import { useCRMModule } from '../composables/CRMModule.js';
 import SearchableSelect from './SearchableSelect.vue';
 import { 
   X, ChevronDown, Plus, Trash2, Users, MapPin, Navigation, Loader2

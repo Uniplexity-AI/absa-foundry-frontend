@@ -72,8 +72,8 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import * as documentsApi from '@/api_services/documents_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as documentsApi from '@/services/documents_api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 
 const { getTenantId } = decodeJWT();
 

@@ -93,7 +93,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { requestModuleSubscription } from '@/api_services/modules_api';
+import { requestModuleSubscription } from '@/services/modules_api';
 
 const props = defineProps({
   modelValue: Boolean,

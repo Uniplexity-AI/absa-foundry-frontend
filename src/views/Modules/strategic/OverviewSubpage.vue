@@ -627,9 +627,9 @@
 import { ref, watch, toRaw, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-import API_BASE_URL from '@/api_services/api'
+import API_BASE_URL from '@/services/api.js'
 import { workflowLoading, runStrategicWorkflow, workflowResult, fetchSavedOverview } from '@/composables/useStrategicWorkflow'
-import { decodeJWT } from '@/api_services/decodeJWT'
+import { decodeJWT } from '@/services/decodeJWT.js'
 import StrategicNavigation from './components/StrategicNavigation.vue'
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 

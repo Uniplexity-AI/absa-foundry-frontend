@@ -429,8 +429,8 @@ import {
   TrendingUp
 } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
-import * as crmApi from '@/api_services/crm_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { emit as emitCrmEvent } from '@/events/crmEvents.js';
 import DealDetailModal from './DealDetailModal.vue';
 import DealFormModal from './DealFormModal.vue';

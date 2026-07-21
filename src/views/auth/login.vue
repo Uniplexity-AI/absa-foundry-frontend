@@ -200,9 +200,9 @@ import {
 } from 'lucide-vue-next'
 
 import axios from 'axios'
-import { login, API_BASE_URL, MICRO_FINANCE_URL } from '@/api_services/api'
+import { login, API_BASE_URL, MICRO_FINANCE_URL } from '@/services/api'
 import { GoogleLogin } from 'vue3-google-login'
-import { decodeJWT } from '@/api_services/decodeJWT'
+import { decodeJWT } from '@/services/decodeJWT'
 
 export default defineComponent({
   name: 'Login',

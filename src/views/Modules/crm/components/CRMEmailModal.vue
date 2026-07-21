@@ -171,7 +171,7 @@
 <script setup>
 import { ref } from 'vue';
 import { X, Paperclip, Bold, Italic, List, ChevronDown, Loader2 } from 'lucide-vue-next';
-import { useCRMModule } from '../functions/CRMModule.js';
+import { useCRMModule } from '../composables/CRMModule.js';
 
 const {
   emailForm, showCc, showBcc, showLinkRecord, showTemplates, closeEmailModal, sendEmail

@@ -596,10 +596,10 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted, ref, computed, watch } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import CRMMeetingModal from './components/CRMMeetingModal.vue';
-import API_BASE_URL from '@/api_services/api.js';
-import * as meetingsApi from '@/api_services/crm_meetings_api.js';
+import API_BASE_URL from '@/services/api.js';
+import * as meetingsApi from '@/services/crm_meetings_api.js';
 import { useCurrency } from '@/composables/useCurrency';
 import {
   UserCircle, CalendarDays, CalendarCheck, Clock, CheckCircle2,

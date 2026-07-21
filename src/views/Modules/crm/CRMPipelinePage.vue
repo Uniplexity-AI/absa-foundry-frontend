@@ -853,13 +853,13 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted, onBeforeUnmount, ref, computed, watch, nextTick, reactive } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import LinkedDocumentsWidget from './components/LinkedDocumentsWidget.vue';
 import LeadDetailModal from './components/LeadDetailModal.vue';
 import LeadConversionModal from './components/LeadConversionModal.vue';
 import AccountDetailModal from './components/AccountDetailModal.vue';
 import AccountFormModal from './components/AccountFormModal.vue';
-import * as crmApi from '@/api_services/crm_api.js';
+import * as crmApi from '@/services/crm_api.js';
 import { ChevronDown, ChevronUp, X, Save, Loader2, MapPin, Plus, FileText, CloudUpload } from 'lucide-vue-next';
 
 const {
@@ -938,7 +938,7 @@ function saveStageRename(stage) {
     // Default stage — save as override in customPipelineStages
     customPipelineStages.value.push({ ...stage, name: newName, isCustom: true });
   }
-  import('@/api_services/crm_api.js').then(crmApi => {
+  import('@/services/crm_api.js').then(crmApi => {
     crmApi.updateCRMMetadata({ tenant_id: getTenantId(), pipeline_stages: customPipelineStages.value }).catch(() => {});
   });
   editingStageId.value = null;
@@ -976,7 +976,7 @@ function moveStage(stage, direction) {
     }
   });
 
-  import('@/api_services/crm_api.js').then(crmApi => {
+  import('@/services/crm_api.js').then(crmApi => {
     crmApi.updateCRMMetadata({ tenant_id: getTenantId(), pipeline_stages: customPipelineStages.value }).catch(() => {});
   });
 }

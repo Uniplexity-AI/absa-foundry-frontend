@@ -365,8 +365,8 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import * as crmApi from '@/api_services/crm_api.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { useRBAC } from '@/composables/useRBAC';
 import LinkedDocumentsWidget from './LinkedDocumentsWidget.vue';
 import UserSearchSelect from './UserSearchSelect.vue';

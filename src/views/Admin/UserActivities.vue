@@ -523,7 +523,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
-import API_BASE_URL from '@/api_services/api';
+import API_BASE_URL from '@/services/api';
 import { Bar, Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js';
 import { saveAs } from 'file-saver';

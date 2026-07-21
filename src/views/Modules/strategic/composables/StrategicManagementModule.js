@@ -1,6 +1,6 @@
 import { ref, computed, watch } from 'vue'
-import { decodeJWT } from '@/api_services/decodeJWT.js'
-import API_BASE_URL from '@/api_services/api'
+import { decodeJWT } from '@/services/decodeJWT.js'
+import API_BASE_URL from '@/services/api'
 
 export function useStrategicManagement() {
   // JWT functions

@@ -13,8 +13,8 @@
 //   await logAudit('export', 'sales',     { resource_type: 'pdf_report', period: 'month' });
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { API_BASE_URL } from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT';
+import { API_BASE_URL } from '@/services/api';
+import { decodeJWT } from '@/services/decodeJWT';
 
 export function useAudit() {
   const { getToken, getUserEmail, getUserName, getUserRole, getTenantId } = decodeJWT();

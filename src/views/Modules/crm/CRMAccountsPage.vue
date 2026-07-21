@@ -92,7 +92,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import AccountsView from './components/AccountsView.vue';
 import AccountFormModal from './components/AccountFormModal.vue';
 import { UserCircle } from 'lucide-vue-next';

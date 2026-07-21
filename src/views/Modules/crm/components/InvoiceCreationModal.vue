@@ -173,9 +173,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { checkModuleSubscription } from '@/api_services/modules_api';
-import * as documentsApi from '@/api_services/documents_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import { checkModuleSubscription } from '@/services/modules_api';
+import * as documentsApi from '@/services/documents_api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 
 const { getTenantId } = decodeJWT();
 const router = useRouter();

@@ -314,7 +314,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import API_BASE_URL, { authFetch } from '@/api_services/api';
+import API_BASE_URL, { authFetch } from '@/services/api';
 import { getModuleCards } from '@/config/moduleCards';
 
 const loading = ref(false);

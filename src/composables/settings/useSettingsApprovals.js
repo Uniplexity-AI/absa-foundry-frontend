@@ -1,7 +1,7 @@
 import { ref, computed, reactive } from 'vue'
 import { toast } from 'vue3-toastify'
-import { decodeJWT } from '@/api_services/decodeJWT'
-import API_BASE_URL from '@/api_services/api'
+import { decodeJWT } from '@/services/decodeJWT'
+import API_BASE_URL from '@/services/api'
 
 /**
  * Approval Workflow Composable

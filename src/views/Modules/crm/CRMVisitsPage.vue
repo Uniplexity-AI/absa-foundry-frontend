@@ -297,7 +297,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted, ref, computed } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import { 
   UserCircle, MapPin, Plus, Navigation, LogIn, LogOut, 
   Check, Trash2, Pencil, Calendar, Timer, CheckCircle2, UserMinus, 

@@ -25,8 +25,8 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT';
+import API_BASE_URL from '@/services/api';
 
 const props = defineProps({
   size: {

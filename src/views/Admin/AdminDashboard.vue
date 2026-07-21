@@ -412,7 +412,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import Chart from 'chart.js/auto';
-import API_BASE_URL, { authFetch } from '@/api_services/api';
+import API_BASE_URL, { authFetch } from '@/services/api';
 
 const loading = ref(false);
 const stats = ref(null);

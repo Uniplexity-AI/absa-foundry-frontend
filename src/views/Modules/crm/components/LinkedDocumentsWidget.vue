@@ -188,9 +188,9 @@ import {
 } from 'lucide-vue-next';
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import * as documentsApi from '@/api_services/documents_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
-import API_BASE_URL from '@/api_services/api';
+import * as documentsApi from '@/services/documents_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
+import API_BASE_URL from '@/services/api.js';
 import DocumentAttachModal from './DocumentAttachModal.vue';
 import DocumentQuickViewModal from './DocumentQuickViewModal.vue';
 

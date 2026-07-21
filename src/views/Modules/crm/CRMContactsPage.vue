@@ -54,7 +54,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import ContactsView from './components/ContactsView.vue';
 import ContactFormModal from './components/ContactFormModal.vue';
 import { UserCircle } from 'lucide-vue-next';

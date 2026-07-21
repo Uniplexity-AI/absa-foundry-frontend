@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { decodeJWT } from '@/api_services/decodeJWT';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { getModuleCards, availableModules } from '@/config/moduleCards';
 import { DEV_BYPASS } from '@/config/devFlags.js';
 
@@ -11,8 +11,8 @@ const LandingPage = () => import('@/views/Home.vue');
 
 // ============================Authentications page imports=============================
 
-import Login from '@/views/auth/login.vue';
-import ResetPassword from '@/views/auth/ResetPassword.vue';
+import Login from '@/views/Auth/login.vue';
+import ResetPassword from '@/views/Auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
 import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
@@ -75,7 +75,7 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import('@/views/auth/ForgotPassword.vue'),
+    component: () => import('@/views/Auth/ForgotPassword.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -103,7 +103,7 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    component: () => import('@/views/auth/Logout.vue'),
+    component: () => import('@/views/Auth/Logout.vue'),
     meta: { requiresAuth: false }
   },
 

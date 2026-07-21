@@ -65,7 +65,7 @@ src/
 │   └── styles/
 │       └── absa-colors.css # ABSA brand design tokens
 │
-├── components/            # Reusable UI components
+├── components/            # 🔵 SHARED components (used across all modules)
 │   ├── layouts/           # Page shells
 │   │   ├── DashboardLayout.vue      # Authenticated layout
 │   │   └── SuperAdminLayout.vue     # Admin panel layout
@@ -79,9 +79,9 @@ src/
 │   │   ├── DashboardWidgets.vue
 │   │   └── ...
 │   ├── LandingPage/       # Public marketing site (18 components)
-│   └── *.vue              # Standalone components
+│   └── *.vue              # Standalone shared components
 │
-├── composables/           # Reusable logic (Vue composables)
+├── composables/           # 🔵 SHARED composables (used across all modules)
 │   ├── useRBAC.js         # Role-based access control
 │   ├── useCurrency.js     # Currency formatting
 │   ├── useDashboardWidgets.js
@@ -118,14 +118,26 @@ src/
 │   ├── 403.vue             # Access denied
 │   ├── auth/               # Login, reset password, logout
 │   ├── Admin/          # Super admin pages (16 views)
-│   └── Modules/   # Feature modules
-│       ├── sales/          # CRM (13 pages), Invoicing
+│   └── Modules/          # Feature modules (each self-contained)
+│       ├── aiagents/       # AI module, chatbots, models
+│       │   ├── components/ # 🟠 SCOPED — AI-specific UI widgets
+│       │   └── functions/  # 🟠 SCOPED — AI-specific composables
+│       ├── crm/            # CRM (leads, contacts, accounts, deals)
+│       │   ├── components/ # 🟠 SCOPED — CRM-specific UI (modals, forms)
+│       │   └── functions/  # 🟠 SCOPED — CRM-specific composables
+│       ├── datapipeline/   # ETL engine & data health
+│       │   ├── components/ # 🟠 SCOPED — pipeline-specific widgets
+│       │   └── functions/  # 🟠 SCOPED — pipeline-specific composables
+│       ├── managers/       # Branch Manager & Relationship Manager
+│       │   ├── components/ # 🟠 SCOPED — manager-specific UI
+│       │   └── functions/  # 🟠 SCOPED — manager-specific composables
+│       ├── settings/       # Profile, settings, sub-accounts, roles
+│       │   ├── components/ # 🟠 SCOPED — settings-specific UI
+│       │   └── functions/  # 🟠 SCOPED — settings-specific composables
 │       ├── strategic/      # Strategic management (12 subpages)
-│       ├── accounting/     # Finance, expenses, loans
-│       ├── settings/       # Profile, settings, sub-accounts
-│       ├── aiagents/       # AI module, image capture
-│       ├── microfinance/   # Lending admin fallback
-│       └── mining/         # Mining module placeholder
+│       │   ├── components/ # 🟠 SCOPED — strategic-specific UI
+│       │   └── functions/  # 🟠 SCOPED — strategic-specific composables
+│    
 │
 ├── workers/
 │   └── dataProcessor.worker.js  # Web Worker
@@ -133,6 +145,31 @@ src/
 ├── App.vue                # Root component
 ├── main.js                # App entry point
 └── index.css              # Tailwind directives
+```
+
+### Component & Composable Scoping
+
+The codebase follows a strict **shared vs scoped** convention to prevent tight coupling and enable tree-shaking:
+
+| Scope | Location | Visibility | Rule |
+|---|---|---|---|
+| 🔵 **Shared** | `src/components/` | App-wide | Any module, view, or layout can import. Keep generic — no module-specific logic. |
+| 🟠 **Scoped** | `Modules/<name>/components/` | Single module | **Only** imported by pages within the same module folder. Contains module-specific UI (forms, modals, charts). |
+| 🔵 **Shared** | `src/composables/` | App-wide | Cross-cutting concerns: RBAC, currency, export, network, PWA. No business logic tied to one module. |
+| 🟠 **Scoped** | `Modules/<name>/functions/` | Single module | Module-specific composables: CRM lead scoring, AI model orchestration, ETL run parsing. |
+
+**Examples:**
+
+```
+✅ src/components/ui/KpiCard.vue          → imported by DashboardHome, BranchManager, Models
+✅ src/composables/useRBAC.js             → imported by every module for permission checks
+
+✅ Modules/crm/components/BulkUploadModal.vue → ONLY imported by CRM pages
+✅ Modules/crm/functions/CRMModule.js         → ONLY imported within the CRM module
+✅ Modules/aiagents/components/ChatSidebar.vue → ONLY imported by AiModule.vue
+
+❌ Modules/aiagents/components/ChatSidebar.vue → imported by CRM (violates scoping)
+❌ Modules/crm/functions/CRMModule.js          → imported by Settings (violates scoping)
 ```
 
 ---
@@ -207,13 +244,21 @@ All routes defined in `src/router/index.js`. PoC scope aligns with FRONTEND-REQU
 
 ## Managers
 
-The **Managers** module houses role-specific dashboards and tools for frontline banking staff, organised into sub-folders for **components** (UI widgets, charts, tables) and **functions** (composable logic, API bindings, state management).
+**Location:** `src/views/Modules/managers/`
+
+```
+managers/
+├── components/          # 🟠 SCOPED — BM/RM dashboards, scorecards, drill-down tables
+├── functions/           # 🟠 SCOPED — manager composables (KPI aggregation, team ranking)
+├── BranchManagerDashboard.vue
+└── ...
+```
 
 ### Branch Manager
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/branch` | `views/Modules/strategic/` | Branch KPIs, team performance table, churn forecast chart |
+| `/dashboard/branch-manager` | `Modules/managers/BranchManagerDashboard.vue` | Branch KPIs, team performance table, churn forecast chart |
 | `/dashboard/branch/team` | *(Post-PoC)* | Individual RM performance drill-down |
 | `/dashboard/branch/customers` | *(Post-PoC)* | Branch-level customer portfolio with risk segmentation |
 
@@ -241,13 +286,22 @@ The **Managers** module houses role-specific dashboards and tools for frontline 
 
 ## AI Agents
 
-The **AI Agents** module provides intelligent automation and conversational interfaces. Organised into sub-folders for **components** (chat widgets, model cards, prompt builders) and **functions** (LLM orchestration, RAG pipelines, model registry).
+**Location:** `src/views/Modules/aiagents/`
+
+```
+aiagents/
+├── components/          # 🟠 SCOPED — ChatSidebar, prompt builders, model cards
+├── functions/           # 🟠 SCOPED — LLM orchestration, RAG pipelines, model registry
+├── AiModule.vue
+├── Models.vue
+└── ...
+```
 
 ### Chatbots
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/aiagents/chat` | `views/Modules/aiagents/` | Conversational AI interface for RM assistance |
+| `/dashboard/ai` | `Modules/aiagents/AiModule.vue` | Conversational AI interface for RM assistance |
 | `/dashboard/aiagents/chat/history` | *(Post-PoC)* | Chat history & transcript browser |
 | `/dashboard/aiagents/chat/settings` | *(Post-PoC)* | Bot personality, escalation rules, knowledge base |
 
@@ -261,7 +315,7 @@ The **AI Agents** module provides intelligent automation and conversational inte
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/models` | `views/Modules/aiagents/` | Model metrics (AUC-ROC, F1), champion vs challenger, feature drift monitor (PSI), prediction log browser |
+| `/dashboard/models` | `Modules/aiagents/Models.vue` | Model metrics (AUC-ROC, F1), champion vs challenger, feature drift monitor (PSI), prediction log browser |
 | `/dashboard/models/registry` | *(Post-PoC)* | Model version registry & approval workflow |
 | `/dashboard/models/explain` | *(Post-PoC)* | Global & local SHAP explainability dashboard |
 
@@ -275,13 +329,21 @@ The **AI Agents** module provides intelligent automation and conversational inte
 
 ## Data Pipeline
 
-The **Data Pipeline** module manages data ingestion, transformation, and quality assurance. Organised into sub-folders for **components** (run history tables, DAG visualisers, quality scorecards) and **functions** (ETL orchestration, data quality rules engine, lineage tracking).
+**Location:** `src/views/Modules/datapipeline/`
+
+```
+datapipeline/
+├── components/          # 🟠 SCOPED — run history tables, DAG visualisers, quality scorecards
+├── functions/           # 🟠 SCOPED — ETL orchestration, data quality rules, lineage tracking
+├── EtlPipeline.vue
+└── ...
+```
 
 ### ETL Engine
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/operations` | `views/Modules/` | ETL Run History table, pipeline status, DAG viewer |
+| `/dashboard/etl-pipeline` | `Modules/datapipeline/EtlPipeline.vue` | ETL Run History table, pipeline status, DAG viewer |
 | `/dashboard/operations/runs/:id` | *(PoC — in scope)* | Run detail: duration, rows processed, errors, log tail |
 | `/dashboard/operations/schedule` | *(Post-PoC)* | Cron schedule editor, backfill trigger, dependency graph |
 
@@ -295,7 +357,7 @@ The **Data Pipeline** module manages data ingestion, transformation, and quality
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/operations/health` | *(PoC — in scope)* | Data quality dashboard: completeness, freshness, accuracy |
+| `/dashboard/operations/health` | `Modules/datapipeline/` | Data quality dashboard: completeness, freshness, accuracy |
 | `/dashboard/operations/health/rules` | *(Post-PoC)* | Data quality rule editor (Great Expectations-style) |
 | `/dashboard/operations/health/lineage` | *(Post-PoC)* | Column-level lineage from source → feature → prediction |
 
@@ -309,13 +371,23 @@ The **Data Pipeline** module manages data ingestion, transformation, and quality
 
 ## Starting Pages (Shared Attributes)
 
-These are platform-wide screens that span across roles and modules, providing common administrative and navigational capabilities.
+These platform-wide screens live in `Modules/settings/` and span across roles and modules.
+
+```
+settings/
+├── components/          # 🟠 SCOPED — role editors, branch assignment widgets
+├── functions/           # 🟠 SCOPED — settings composables (preferences, permissions)
+├── SettingsModule.vue
+├── SubAccountModule.vue
+├── ProfileModule.vue
+└── ...
+```
 
 ### Sub-Account Management
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/settings/subaccounts` | `views/Modules/settings/` | Create & manage sub-accounts (branches) |
+| `/dashboard/subaccounts` | `Modules/settings/SubAccountModule.vue` | Create & manage sub-accounts (branches) |
 | `/dashboard/settings/subaccounts/:id/users` | *(Post-PoC)* | Assign users to branches with role bindings |
 
 **Shared attributes:**
@@ -328,7 +400,7 @@ These are platform-wide screens that span across roles and modules, providing co
 
 | Path | Component | Description |
 |---|---|---|
-| `/dashboard/settings/roles` | `views/Modules/settings/` | Define roles with granular permissions |
+| `/dashboard/settings/roles` | `Modules/settings/` | Define roles with granular permissions |
 | `/dashboard/settings/roles/:id` | *(Post-PoC)* | Permission matrix editor per role |
 
 **Shared attributes:**

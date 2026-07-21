@@ -105,8 +105,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { toast } from 'vue3-toastify';
-import API_BASE_URL from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT';
+import API_BASE_URL from '@/services/api';
+import { decodeJWT } from '@/services/decodeJWT';
 
 const { getTenantId } = decodeJWT();
 const notifications = ref([]);

@@ -251,8 +251,8 @@ import {
   Loader2, Mail, Phone, MessageSquare, Plus, FileText
 } from 'lucide-vue-next';
 import { ref, watch, onUnmounted } from 'vue';
-import * as crmApi from '@/api_services/crm_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { useCurrency } from '@/composables/useCurrency';
 import LinkedDocumentsWidget from './LinkedDocumentsWidget.vue';
 

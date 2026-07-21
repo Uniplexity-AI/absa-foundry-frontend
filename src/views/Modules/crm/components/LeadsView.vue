@@ -1027,8 +1027,8 @@ import { useBulkSelect } from '@/composables/useBulkSelect';
 import { useRoute } from 'vue-router';
 import { BackButton, BulkActionsBar, SelectAllCheckbox } from '@/components/ui'
 import { useCurrency } from '@/composables/useCurrency';
-import * as crmApi from '@/api_services/crm_api.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { on as onCrmEvent } from '@/events/crmEvents.js';
 import { useUIStore } from '@/stores/ui';
 import { 

@@ -161,7 +161,7 @@ import {
   MapPin, Clock, MessageSquare, StickyNote, Building2, PhoneCall,
   AlertTriangle, Info
 } from 'lucide-vue-next';
-import crmApi from '@/api_services/crm_api.js';
+import crmApi from '@/services/crm_api.js';
 
 const props = defineProps({
   tenantId: { type: String, required: true }

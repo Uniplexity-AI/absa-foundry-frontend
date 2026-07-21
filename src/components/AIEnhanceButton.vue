@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import API_BASE_URL from '@/api_services/api';
+import API_BASE_URL from '@/services/api';
 
 const props = defineProps({
   modelValue: {

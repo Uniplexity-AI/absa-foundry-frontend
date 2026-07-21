@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { ref, reactive, computed } from 'vue'
 import { toast } from 'vue3-toastify'
-import { decodeJWT } from '@/api_services/decodeJWT'
+import { decodeJWT } from '@/services/decodeJWT'
 import currencyService from '@/services/currencyService.js'
 import { useCurrency } from '@/composables/useCurrency.js'
 import { useConfirmDialog } from '@/composables/useConfirmDialog.js'
-import API_BASE_URL from '@/api_services/api'
+import API_BASE_URL from '@/services/api'
 import { mapFrontendToBackend } from '@/config/moduleIdMap'
 import { useDashboardStore } from '@/stores/dashboard'
 import { useAuthStore } from '@/stores/auth'
@@ -284,7 +284,7 @@ export function useSettingsBase() {
         selected_storage_id: selectedStorageId.value,
         total_est: totals.value.grandTotal, timestamp: new Date().toISOString()
       }
-      const { requestModuleSubscription } = await import('@/api_services/modules_api.js')
+      const { requestModuleSubscription } = await import('@/services/modules_api.js')
       await requestModuleSubscription(mappedModules, cycle, selectedTier, payload)
       showCalculatorSuccess.value = `Upgrade Request Submitted!\n\nTier: ${config.value.tiers[selectedTierId.value].label}\nRequested Users: ${customUsers.value}\nRequested Branches: ${customBranches.value}\nTotal Est: ${config.value.baseCurrency}${totals.value.grandTotal.toLocaleString()}`
       alert(showCalculatorSuccess.value)

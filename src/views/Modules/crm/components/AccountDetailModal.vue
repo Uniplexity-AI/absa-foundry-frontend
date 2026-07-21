@@ -1178,9 +1178,9 @@ import {
   GitCommitHorizontal, CalendarPlus, Download
 } from 'lucide-vue-next';
 import { ref, computed, watch, onMounted } from 'vue';
-import * as crmApi from '@/api_services/crm_api';
-import * as documentsApi from '@/api_services/documents_api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import * as documentsApi from '@/services/documents_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { useRBAC } from '@/composables/useRBAC';
 import LinkedDocumentsWidget from './LinkedDocumentsWidget.vue';
 

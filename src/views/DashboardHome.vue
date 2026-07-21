@@ -297,8 +297,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT.js';
+import API_BASE_URL from '@/services/api';
 import KpiSection from '@/components/ui/KpiSection.vue';
 import KpiCard from '@/components/ui/KpiCard.vue';
 import DashboardWidgets from '@/components/ui/DashboardWidgets.vue';

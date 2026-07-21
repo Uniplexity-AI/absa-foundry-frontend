@@ -5,7 +5,7 @@
 
 import { ref, computed, onMounted } from 'vue';
 import currencyService from '@/services/currencyService.js';
-import { decodeJWT } from '@/api_services/decodeJWT';
+import { decodeJWT } from '@/services/decodeJWT';
 
 const isInitialized = ref(false);
 const currentSettings = ref({

@@ -309,7 +309,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import AdminPageWrapper from './components/AdminPageWrapper.vue';
-import { systemTracesApi } from '@/api_services/system_traces_api';
+import { systemTracesApi } from '@/services/system_traces_api.js';
 
 const loading = ref(false);
 const traces = ref([]);

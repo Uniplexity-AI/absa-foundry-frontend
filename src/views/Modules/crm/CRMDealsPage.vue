@@ -54,7 +54,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import DealsView from './components/DealsView.vue';
 import DealFormModal from './components/DealFormModal.vue';
 import { UserCircle } from 'lucide-vue-next';

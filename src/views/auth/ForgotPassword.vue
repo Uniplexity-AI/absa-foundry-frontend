@@ -156,7 +156,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Mail, Loader2 } from 'lucide-vue-next'
-import { requestPasswordReset } from '@/api_services/auth_api'
+import { requestPasswordReset } from '@/services/auth_api'
 
 const email = ref('')
 const loading = ref(false)

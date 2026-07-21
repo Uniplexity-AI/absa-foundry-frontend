@@ -45,7 +45,7 @@ export function useNetworkStatus() {
    */
   const updateSyncStatus = async () => {
     try {
-      const { getTenantId } = await import('@/api_services/decodeJWT.js');
+      const { getTenantId } = await import('@/services/decodeJWT.js');
       const tenantId = getTenantId?.();
       
       if (!tenantId) return;

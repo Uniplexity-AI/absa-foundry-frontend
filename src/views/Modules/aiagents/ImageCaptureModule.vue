@@ -572,8 +572,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import API_BASE_URL from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import API_BASE_URL from '@/services/api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import CSVFilesList from '@/components/CSVFilesList.vue';
 
 const { getTenantId, getUserEmail, getToken } = decodeJWT();

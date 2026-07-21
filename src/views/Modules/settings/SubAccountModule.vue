@@ -853,8 +853,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useCurrency } from '@/composables/useCurrency';
-import API_BASE_URL from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import API_BASE_URL from '@/services/api';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { useRBAC } from '@/composables/useRBAC';
 import { useRouter } from 'vue-router';
 

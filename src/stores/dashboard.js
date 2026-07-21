@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import API_BASE_URL from '@/api_services/api'
+import API_BASE_URL from '@/services/api'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   const modules = ref([])

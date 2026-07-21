@@ -401,8 +401,8 @@
 import { ref, computed, watch } from 'vue';
 import { X, User, Building2, Handshake, CheckCircle2, Info, ArrowLeft, ArrowRight, Check, Search } from 'lucide-vue-next';
 import { emit as emitCrmEvent } from '@/events/crmEvents.js';
-import * as crmApi from '@/api_services/crm_api.js';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as crmApi from '@/services/crm_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import { useCurrency } from '@/composables/useCurrency';
 
 const { getTenantId } = decodeJWT();

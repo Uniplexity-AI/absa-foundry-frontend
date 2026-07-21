@@ -1,9 +1,9 @@
 import { ref, computed, onMounted, watch, nextTick, onBeforeUnmount, onErrorCaptured } from 'vue';
 import { useCurrency } from '@/composables/useCurrency';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
-import API_BASE_URL from '@/api_services/api';
-import * as crmApi from '@/api_services/crm_api.js';
-import * as emailApi from '@/api_services/crm_email_api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
+import API_BASE_URL from '@/services/api';
+import * as crmApi from '@/services/crm_api.js';
+import * as emailApi from '@/services/crm_email_api.js';
 import { useCRMQuickAccessStore } from '@/stores/useCRMQuickAccessStore';
 import { useNavigationStore } from '@/stores/useNavigationStore';
 import L from 'leaflet';
@@ -12,11 +12,11 @@ import { usePreferences } from '@/config/usePreferences';
 import { XLSXCompat as XLSX } from '@/utils/excel.js';
 import _ from 'lodash';
 import { on as onCrmEvent, emit as emitCrmEvent } from '@/events/crmEvents.js';
-import * as meetingsApi from '@/api_services/crm_meetings_api.js';
-import { getUserPerformance as apiGetUserPerformance } from '@/api_services/crm_performance_api.js';
+import * as meetingsApi from '@/services/crm_meetings_api.js';
+import { getUserPerformance as apiGetUserPerformance } from '@/services/crm_performance_api.js';
 import { useAudit } from '@/config/useAudit.js';
 import { useRBAC } from '@/composables/useRBAC';
-import * as documentsApi from '@/api_services/documents_api';
+import * as documentsApi from '@/services/documents_api';
 
 // ── Singleton state (shared across all useCRMModule() callers) ──
 const showMeetingModal = ref(false);

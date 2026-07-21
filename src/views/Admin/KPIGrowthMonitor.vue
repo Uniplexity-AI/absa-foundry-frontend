@@ -100,7 +100,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { API_BASE_URL, authFetch } from '@/api_services/api.js';
+import { API_BASE_URL, authFetch } from '@/services/api.js';
 
 const isApiConfigured = Boolean(API_BASE_URL && API_BASE_URL.length > 0);
 

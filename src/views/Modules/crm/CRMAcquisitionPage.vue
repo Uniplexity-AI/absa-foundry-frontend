@@ -347,8 +347,8 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
-import { saveAcquisitionCost, getAcquisitionCosts, deleteAcquisitionCost, updateAcquisitionCost } from '@/api_services/crm_api.js';
+import { useCRMModule } from './composables/CRMModule.js';
+import { saveAcquisitionCost, getAcquisitionCosts, deleteAcquisitionCost, updateAcquisitionCost } from '@/services/crm_api.js';
 import {
   UserCircle, DollarSign, X, Users, Calculator, 
   TrendingUp, TrendingDown, Plus, ChevronRight, Trash2, Target, Pencil

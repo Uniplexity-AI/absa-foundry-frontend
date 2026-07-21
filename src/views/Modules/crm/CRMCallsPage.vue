@@ -291,7 +291,7 @@
 <script setup>
 import { BackButton } from '@/components/ui'
 import { onMounted, ref, computed, watch } from 'vue';
-import { useCRMModule } from './functions/CRMModule.js';
+import { useCRMModule } from './composables/CRMModule.js';
 import {
   UserCircle, Phone, PhoneCall, PhoneMissed,
   ArrowUpRight, ArrowDownLeft, Clock, FileText, Send, Trash2,

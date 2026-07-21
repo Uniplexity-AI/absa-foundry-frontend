@@ -417,9 +417,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { emit as emitCrmEvent } from '@/events/crmEvents.js';
-import * as documentsApi from '@/api_services/documents_api';
-import { API_BASE_URL } from '@/api_services/api';
-import { decodeJWT } from '@/api_services/decodeJWT.js';
+import * as documentsApi from '@/services/documents_api.js';
+import { API_BASE_URL } from '@/services/api.js';
+import { decodeJWT } from '@/services/decodeJWT.js';
 import DocumentUploadModal from './DocumentUploadModal.vue';
 import DocumentDetailModal from './DocumentDetailModal.vue';
 import DocumentShareModal from './DocumentShareModal.vue';

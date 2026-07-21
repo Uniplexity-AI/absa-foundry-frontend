@@ -319,8 +319,8 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useCRMModule } from './functions/CRMModule.js';
-import * as crmApi from '@/api_services/crm_api';
+import { useCRMModule } from './composables/CRMModule.js';
+import * as crmApi from '@/services/crm_api.js';
 import { UserPlus, Building, UserCircle, ChevronDown, GitBranch, ArrowRight, TrendingUp, BarChart2, Zap, Clock } from 'lucide-vue-next';
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 import CRMNotificationPanel from './components/CRMNotificationPanel.vue';

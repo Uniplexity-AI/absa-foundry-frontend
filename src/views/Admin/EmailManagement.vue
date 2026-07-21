@@ -342,7 +342,7 @@
 
 <script>
 import axios from 'axios'
-import { API_BASE_URL } from '@/api_services/api'
+import { API_BASE_URL } from '@/services/api'
 import { ConfirmDialog } from '@/components/ui/index.js'
 
 export default {

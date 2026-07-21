@@ -744,8 +744,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { decodeJWT } from '@/api_services/decodeJWT';
-import API_BASE_URL from '@/api_services/api';
+import { decodeJWT } from '@/services/decodeJWT';
+import API_BASE_URL from '@/services/api';
 import html2canvas from 'html2canvas';
 
 const { getTenantId, getUserRole, getUserEmail, getUserName } = decodeJWT();

@@ -261,6 +261,29 @@ export default defineComponent({
         const data = result.data
         console.log('Backend response:', data)
         
+        // Verify the token contains real user data (guard against backend accepting fake users)
+        const token = data.access_token
+        if (!token) throw new Error('No token received')
+
+        let claims
+        try {
+          claims = JSON.parse(atob(token.split('.')[1]))
+        } catch {
+          throw new Error('Invalid token format')
+        }
+
+        if (!claims.sub && !claims.user_id && !claims.username) {
+          throw new Error('Invalid credentials')
+        }
+
+        // Populate from JWT claims if response body doesn't include them
+        if (claims.role && !data.role) data.role = claims.role
+        if (claims.email && !data.email) data.email = claims.email
+        if (claims.sub && !data.user_id) data.user_id = claims.sub
+        if (claims.username && !data.name) data.name = claims.username
+        if (claims.company_name && !data.company_name) data.company_name = claims.company_name
+        if (claims.tenant_id && !data.tenant_id) data.tenant_id = claims.tenant_id
+
         localStorage.setItem('token', data.access_token)
         localStorage.setItem('user_id', data.user_id)
         localStorage.setItem('email', data.email)
@@ -325,6 +348,32 @@ export default defineComponent({
       try {
         // POST /auth/login — API Gateway expects { username, password }
         const response = await login(formData.email, formData.password)
+
+        // Verify the token contains real user data (guard against backend accepting fake users)
+        const token = response.access_token || localStorage.getItem('token')
+        if (!token) throw new Error('No token received')
+
+        let claims
+        try {
+          claims = JSON.parse(atob(token.split('.')[1]))
+        } catch {
+          throw new Error('Invalid token format')
+        }
+
+        if (!claims.sub && !claims.user_id && !claims.username) {
+          // Token lacks identity claims — backend issued a phantom token
+          localStorage.removeItem('token')
+          localStorage.removeItem('refresh_token')
+          throw new Error('Invalid credentials')
+        }
+
+        // Populate localStorage from JWT claims if response body doesn't include them
+        if (claims.role && !response.role) response.role = claims.role
+        if (claims.email && !response.email) response.email = claims.email
+        if (claims.sub && !response.user_id) response.user_id = claims.sub
+        if (claims.username && !response.name) response.name = claims.username
+        if (claims.company_name && !response.company_name) response.company_name = claims.company_name
+        if (claims.tenant_id && !response.tenant_id) response.tenant_id = claims.tenant_id
 
         // Standard response: { access_token, refresh_token, token_type, expires_in }
         // The login() function in services/api.js already stores token + refresh_token

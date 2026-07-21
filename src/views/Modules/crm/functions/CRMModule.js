@@ -9,7 +9,7 @@ import { useNavigationStore } from '@/stores/useNavigationStore';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { usePreferences } from '@/config/usePreferences';
-import * as XLSX from 'xlsx';
+import { XLSXCompat as XLSX } from '@/utils/excel.js';
 import _ from 'lodash';
 import { on as onCrmEvent, emit as emitCrmEvent } from '@/events/crmEvents.js';
 import * as meetingsApi from '@/api_services/crm_meetings_api.js';
@@ -2508,7 +2508,7 @@ export function useCRMModule() {
     finally { isProcessing.value = false; }
   }
 
-  function readFileData(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = (e) => { try { const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' }); const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { raw: false }); if (jsonData.length === 0) reject(new Error('File is empty.')); else resolve(jsonData); } catch (error) { reject(new Error('Failed to parse file: ' + error.message)); } }; reader.onerror = () => reject(new Error('Failed to read file.')); reader.readAsArrayBuffer(file); }); }
+  function readFileData(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = async (e) => { try { const workbook = await XLSX.read(new Uint8Array(e.target.result), { type: 'array' }); const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { raw: false }); if (jsonData.length === 0) reject(new Error('File is empty.')); else resolve(jsonData); } catch (error) { reject(new Error('Failed to parse file: ' + error.message)); } }; reader.onerror = () => reject(new Error('Failed to read file.')); reader.readAsArrayBuffer(file); }); }
 
   function validateData(data) {
     validRecords.value = []; invalidRecords.value = [];

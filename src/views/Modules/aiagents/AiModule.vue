@@ -543,7 +543,7 @@ import API_BASE_URL from '@/api_services/api';
 import { marked } from 'marked';
 import he from 'he';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } from 'docx';
-import ChatSidebar from '@/components/ChatSidebar.vue';
+import ChatSidebar from './components/ChatSidebar.vue';
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 
 const { getTenantId, getUserRole, getUserName, getCompanyName, getUserEmail } = decodeJWT();

@@ -810,7 +810,7 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import API_BASE_URL from '@/api_services/api'
 import { decodeJWT } from '@/api_services/decodeJWT'
-import StrategicAnalysisAgent from '@/views/components/StrategicAnalysisAgent.vue'
+import StrategicAnalysisAgent from './components/StrategicAnalysisAgent.vue'
 import StrategicNavigation from './components/StrategicNavigation.vue'
 
 const router = useRouter()

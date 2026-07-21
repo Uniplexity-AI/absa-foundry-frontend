@@ -527,7 +527,7 @@ import API_BASE_URL from '@/api_services/api';
 import { Bar, Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js';
 import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
+import { XLSXCompat as XLSX } from '@/utils/excel.js';
 import jsPDF from 'jspdf';
 import { Document, Packer, Table, TableRow, TableCell, TextRun, Paragraph, AlignmentType, BorderStyle, WidthType, HeadingLevel } from 'docx';
 
@@ -641,8 +641,9 @@ function exportExcel() {
   ];
 
   XLSX.utils.book_append_sheet(wb, ws, 'Activity Report');
-  const buf = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  saveAs(new Blob([buf], { type: 'application/octet-stream' }), `Activity_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  XLSX.write(wb, { bookType: 'xlsx', type: 'array' }).then(buf => {
+    saveAs(new Blob([buf], { type: 'application/octet-stream' }), `Activity_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  });
 }
 
 function exportPDF() {

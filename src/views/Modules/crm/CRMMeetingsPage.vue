@@ -897,7 +897,7 @@ async function openExcelEditor() {
     const result = await meetingsApi.getMeetings({ tenant_id: tenantId, limit: 10000 });
     const data = result?.data || result?.items || (Array.isArray(result) ? result : []);
     if (!data || !data.length) { alert('No meetings to export.'); return; }
-    const XLSX = await import('xlsx');
+    const { XLSXCompat: XLSX } = await import('@/utils/excel.js');
     const rows = data.map(m => ({
       ID: m.id || m._id || '',
       Title: m.title || '',
@@ -911,7 +911,7 @@ async function openExcelEditor() {
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Meetings');
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const wbout = await XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([wbout], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url;
@@ -925,9 +925,9 @@ async function onExcelImport(event) {
   const file = event.target.files?.[0];
   if (!file) return;
   try {
-    const XLSX = await import('xlsx');
+    const { XLSXCompat: XLSX } = await import('@/utils/excel.js');
     const data = await file.arrayBuffer();
-    const wb = XLSX.read(data, { type: 'array' });
+    const wb = await XLSX.read(data, { type: 'array' });
     const ws = wb.Sheets[wb.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(ws);
     if (!rows.length) { alert('No data found.'); return; }

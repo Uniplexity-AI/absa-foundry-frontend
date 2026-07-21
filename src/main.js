@@ -12,7 +12,7 @@ import './index.css'; // Adding Tailwind to the project
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import vRole from './utils/v-role';
-import currencyPlugin from './plugins/currency.js';
+import currencyPlugin from './config/currency.js';
 // Auth protections
 // import authStore from './store/auth_store';
 import { LucideHome, LucideFileText, LucidePercent, LucideFilter, LucideMessageSquare, LucideCalendar, LucideAward, LucideX } from 'lucide-vue-next';

@@ -15,34 +15,34 @@ import Login from '@/views/auth/login.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
-import SuperAdminOverview from '@/views/AdminView/AdminDashboard.vue';
+import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
 
 
-import TenantRevenues from '@/views/AdminView/Revenue.vue';
-import TenantReports from '@/views/AdminView/Reports.vue';
+import TenantRevenues from '@/views/Admin/Revenue.vue';
+import TenantReports from '@/views/Admin/Reports.vue';
 
-import RagChat from '@/views/AdminView/RagChat.vue'
-import RagUpload from '@/views/AdminView/RagUpload.vue'
-import EmailManagement from '@/views/AdminView/EmailManagement.vue'
-import UserActivities from '@/views/AdminView/UserActivities.vue'
+import RagChat from '@/views/Admin/RagChat.vue'
+import RagUpload from '@/views/Admin/RagUpload.vue'
+import EmailManagement from '@/views/Admin/EmailManagement.vue'
+import UserActivities from '@/views/Admin/UserActivities.vue'
 
 
 
 
 // ===================================Strategic Management Module ==============================
 
-import OverviewSubpage from '@/views/dashboardModules/strategic/OverviewSubpage.vue';
-import NotesSubpage from '@/views/dashboardModules/strategic/NotesSubpage.vue';
-import GovernanceSubpage from '@/views/dashboardModules/strategic/GovernanceSubpage.vue';
-import ActionsSubpage from '@/views/dashboardModules/strategic/ActionsSubpage.vue';
-import GoalsSubpage from '@/views/dashboardModules/strategic/GoalsSubpage.vue';
-import PredictionsSubpage from '@/views/dashboardModules/strategic/PredictionsSubpage.vue';
-import AnalysisSubpage from '@/views/dashboardModules/strategic/AnalysisSubpage.vue';
-import FundingSubpage from '@/views/dashboardModules/strategic/FundingSubpage.vue';
-import EnvironmentalSubpage from '@/views/dashboardModules/strategic/EnvironmentalSubpage.vue';
-import InternalAnalysisSubpage from '@/views/dashboardModules/strategic/InternalAnalysisSubpage.vue';
-import PositioningSubpage from '@/views/dashboardModules/strategic/PositioningSubpage.vue';
-import BrandStrategySubpage from '@/views/dashboardModules/strategic/BrandStrategySubpage.vue';
+import OverviewSubpage from '@/views/Modules/strategic/OverviewSubpage.vue';
+import NotesSubpage from '@/views/Modules/strategic/NotesSubpage.vue';
+import GovernanceSubpage from '@/views/Modules/strategic/GovernanceSubpage.vue';
+import ActionsSubpage from '@/views/Modules/strategic/ActionsSubpage.vue';
+import GoalsSubpage from '@/views/Modules/strategic/GoalsSubpage.vue';
+import PredictionsSubpage from '@/views/Modules/strategic/PredictionsSubpage.vue';
+import AnalysisSubpage from '@/views/Modules/strategic/AnalysisSubpage.vue';
+import FundingSubpage from '@/views/Modules/strategic/FundingSubpage.vue';
+import EnvironmentalSubpage from '@/views/Modules/strategic/EnvironmentalSubpage.vue';
+import InternalAnalysisSubpage from '@/views/Modules/strategic/InternalAnalysisSubpage.vue';
+import PositioningSubpage from '@/views/Modules/strategic/PositioningSubpage.vue';
+import BrandStrategySubpage from '@/views/Modules/strategic/BrandStrategySubpage.vue';
 
 
 // Define routes
@@ -115,7 +115,7 @@ const routes = [
     component: SuperAdminLayout,
     children: [
       { path: 'dashboard', name: 'SuperAdmin', component: SuperAdminOverview },
-      { path: 'system-traces', name: 'SystemTraces', component: () => import('@/views/AdminView/SystemTraces.vue') },
+      { path: 'system-traces', name: 'SystemTraces', component: () => import('@/views/Admin/SystemTraces.vue') },
       
       { path: 'tenant-revenues', name: 'TenantRevenues', component: TenantRevenues },
       { path: 'tenant-reports', name: 'TenantReports', component: TenantReports },
@@ -125,7 +125,7 @@ const routes = [
       { path: 'email-management', name: 'EmailManagement', component: EmailManagement },
       
     
-      { path: 'user-module-access', name: 'UserModuleAccess', component: () => import('@/views/AdminView/UserModuleManagement.vue') },
+      { path: 'user-module-access', name: 'UserModuleAccess', component: () => import('@/views/Admin/UserModuleManagement.vue') },
     ]
   },
   { path: '/lexi-ai-lawyer', component: RagChat },
@@ -140,31 +140,31 @@ const routes = [
     children: [
       { path: '', redirect: '/dashboard/home' },
       { path: 'home', name: 'DashboardHome', component: () => import('../views/DashboardHome.vue') },
-      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/dashboardModules/managers/BranchManagerDashboard.vue') },
-      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/dashboardModules/aiagents/Models.vue') },
-      { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/dashboardModules/datapipeline/EtlPipeline.vue') },
+      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue') },
+      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue') },
+      { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue') },
      
     
-      { path: 'ai', name: 'AiModule', component: () => import('../views/dashboardModules/aiagents/AiModule.vue') },
-      { path: 'settings', name: 'SettingsModule', component: () => import('../views/dashboardModules/settings/SettingsModule.vue') },
-      { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/dashboardModules/settings/SubAccountModule.vue') },
-      { path: 'profile', name: 'ProfileModule', component: () => import('../views/dashboardModules/settings/ProfileModule.vue') },
+      { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue') },
+      { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue') },
+      { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue') },
+      { path: 'profile', name: 'ProfileModule', component: () => import('../views/Modules/settings/ProfileModule.vue') },
       
-      // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/dashboardModules/aiagents/ImageCaptureModule.vue') },
+      // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/Modules/aiagents/ImageCaptureModule.vue') },
     
-      { path: 'crm', name: 'CrmModule', component: () => import('../views/dashboardModules/crm/CRMModule.vue') },
-      { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/dashboardModules/crm/CRMLeadsPage.vue') },
-      { path: 'crm/pipeline', name: 'CrmPipeline', component: () => import('../views/dashboardModules/crm/CRMPipelinePage.vue') },
-      { path: 'crm/contacts', name: 'CrmContacts', component: () => import('../views/dashboardModules/crm/CRMContactsPage.vue') },
-      { path: 'crm/accounts', name: 'CrmAccounts', component: () => import('../views/dashboardModules/crm/CRMAccountsPage.vue') },
-      { path: 'crm/deals', name: 'CrmDeals', component: () => import('../views/dashboardModules/crm/CRMDealsPage.vue') },
-      { path: 'crm/documents', name: 'CrmDocuments', component: () => import('../views/dashboardModules/crm/CRMDocumentsPage.vue') },
-      { path: 'crm/meetings', name: 'CrmMeetings', component: () => import('../views/dashboardModules/crm/CRMMeetingsPage.vue') },
-      { path: 'crm/emails', name: 'CrmEmails', component: () => import('../views/dashboardModules/crm/CRMEmailsPage.vue') },
-      { path: 'crm/calls', name: 'CrmCalls', component: () => import('../views/dashboardModules/crm/CRMCallsPage.vue') },
-      { path: 'crm/visits', name: 'CrmVisits', component: () => import('../views/dashboardModules/crm/CRMVisitsPage.vue') },
-      { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/dashboardModules/crm/CRMWhatsAppPage.vue') },
-      { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/dashboardModules/crm/CRMAcquisitionPage.vue') },
+      { path: 'crm', name: 'CrmModule', component: () => import('../views/Modules/crm/CRMModule.vue') },
+      { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/Modules/crm/CRMLeadsPage.vue') },
+      { path: 'crm/pipeline', name: 'CrmPipeline', component: () => import('../views/Modules/crm/CRMPipelinePage.vue') },
+      { path: 'crm/contacts', name: 'CrmContacts', component: () => import('../views/Modules/crm/CRMContactsPage.vue') },
+      { path: 'crm/accounts', name: 'CrmAccounts', component: () => import('../views/Modules/crm/CRMAccountsPage.vue') },
+      { path: 'crm/deals', name: 'CrmDeals', component: () => import('../views/Modules/crm/CRMDealsPage.vue') },
+      { path: 'crm/documents', name: 'CrmDocuments', component: () => import('../views/Modules/crm/CRMDocumentsPage.vue') },
+      { path: 'crm/meetings', name: 'CrmMeetings', component: () => import('../views/Modules/crm/CRMMeetingsPage.vue') },
+      { path: 'crm/emails', name: 'CrmEmails', component: () => import('../views/Modules/crm/CRMEmailsPage.vue') },
+      { path: 'crm/calls', name: 'CrmCalls', component: () => import('../views/Modules/crm/CRMCallsPage.vue') },
+      { path: 'crm/visits', name: 'CrmVisits', component: () => import('../views/Modules/crm/CRMVisitsPage.vue') },
+      { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/Modules/crm/CRMWhatsAppPage.vue') },
+      { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/Modules/crm/CRMAcquisitionPage.vue') },
       
       { path: 'strategic-management', redirect: '/dashboard/strategic/overview' },
       { path: 'strategic/overview', name: 'StrategicOverview', component: OverviewSubpage },

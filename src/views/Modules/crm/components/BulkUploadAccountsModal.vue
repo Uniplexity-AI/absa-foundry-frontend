@@ -159,7 +159,7 @@ import { ref, computed } from 'vue';
 import { X, Upload, Download, FileSpreadsheet, CheckCircle, Loader2, Info, Wand2, AlertTriangle } from 'lucide-vue-next';
 import { decodeJWT } from '@/api_services/decodeJWT.js';
 import * as crmApi from '@/api_services/crm_api.js';
-import * as XLSX from 'xlsx';
+import { XLSXCompat as XLSX } from '@/utils/excel.js';
 
 const { getTenantId } = decodeJWT();
 
@@ -212,7 +212,7 @@ async function processFile() {
   processing.value = true;
   try {
     const buf = await selectedFile.value.arrayBuffer();
-    const wb = XLSX.read(buf, { type: 'array' });
+    const wb = await XLSX.read(buf, { type: 'array' });
     const ws = wb.Sheets[wb.SheetNames[0]];
     const json = XLSX.utils.sheet_to_json(ws, { defval: '' });
     rawRows.value = json;

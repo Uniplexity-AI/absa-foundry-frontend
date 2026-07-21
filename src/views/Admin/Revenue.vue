@@ -486,7 +486,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue';
-import * as XLSX from 'xlsx';
+import { XLSXCompat as XLSX } from '@/utils/excel.js';
 import API_BASE_URL, { authFetch } from '@/api_services/api';
 
 // State

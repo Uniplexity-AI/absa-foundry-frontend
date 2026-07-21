@@ -2,7 +2,7 @@ import { ref, computed, reactive } from 'vue'
 import { toast } from 'vue3-toastify'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import * as XLSX from 'xlsx'
+import { XLSXCompat as XLSX } from '@/utils/excel.js'
 import { useSettingsBase } from './useSettingsBase'
 
 export function useSettingsNotifications() {

@@ -1,6 +1,6 @@
 import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, AlignmentType, WidthType, BorderStyle } from 'docx';
 import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
+import { XLSXCompat as XLSX } from '@/utils/excel.js';
 
 // Format currency
 const formatCurrency = (amount) => {

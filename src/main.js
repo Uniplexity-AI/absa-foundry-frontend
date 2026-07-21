@@ -8,7 +8,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router'; // Import the router
 import './index.css'; // Adding Tailwind to the project
-import store from '@/store/index';
+// import store from '@/store/index';
 import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import vRole from './utils/v-role';
@@ -71,7 +71,7 @@ if (!DEV_BYPASS) {
 const app = createApp(App);
 const pinia = createPinia(); // Create Pinia instance
 
-app.use(store);  // Use Vuex store (Legacy)
+// app.use(store);  // Use Vuex store (Legacy)
 app.use(pinia); // Use Pinia for state management
 app.use(router); // Use the router
 app.use(currencyPlugin); // Use currency plugin for global currency formatting

@@ -140,31 +140,31 @@ const routes = [
     children: [
       { path: '', redirect: '/dashboard/home' },
       { path: 'home', name: 'DashboardHome', component: () => import('../views/DashboardHome.vue') },
+      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/dashboardModules/managers/BranchManagerDashboard.vue') },
+      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/dashboardModules/aiagents/Models.vue') },
+      { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/dashboardModules/datapipeline/EtlPipeline.vue') },
      
     
       { path: 'ai', name: 'AiModule', component: () => import('../views/dashboardModules/aiagents/AiModule.vue') },
-     
-
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/dashboardModules/settings/SettingsModule.vue') },
-      { path: 'allshops', name: 'AllShopsModule', component: () => import('../views/dashboardModules/settings/SubAccountModule.vue') },
+      { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/dashboardModules/settings/SubAccountModule.vue') },
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/dashboardModules/settings/ProfileModule.vue') },
       
-    
       // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/dashboardModules/aiagents/ImageCaptureModule.vue') },
     
-      { path: 'crm', name: 'CrmModule', component: () => import('../views/dashboardModules/sales/CRMModule.vue') },
-      { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/dashboardModules/sales/CRMLeadsPage.vue') },
-      { path: 'crm/pipeline', name: 'CrmPipeline', component: () => import('../views/dashboardModules/sales/CRMPipelinePage.vue') },
-      { path: 'crm/contacts', name: 'CrmContacts', component: () => import('../views/dashboardModules/sales/CRMContactsPage.vue') },
-      { path: 'crm/accounts', name: 'CrmAccounts', component: () => import('../views/dashboardModules/sales/CRMAccountsPage.vue') },
-      { path: 'crm/deals', name: 'CrmDeals', component: () => import('../views/dashboardModules/sales/CRMDealsPage.vue') },
-      { path: 'crm/documents', name: 'CrmDocuments', component: () => import('../views/dashboardModules/sales/CRMDocumentsPage.vue') },
-      { path: 'crm/meetings', name: 'CrmMeetings', component: () => import('../views/dashboardModules/sales/CRMMeetingsPage.vue') },
-      { path: 'crm/emails', name: 'CrmEmails', component: () => import('../views/dashboardModules/sales/CRMEmailsPage.vue') },
-      { path: 'crm/calls', name: 'CrmCalls', component: () => import('../views/dashboardModules/sales/CRMCallsPage.vue') },
-      { path: 'crm/visits', name: 'CrmVisits', component: () => import('../views/dashboardModules/sales/CRMVisitsPage.vue') },
-      { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/dashboardModules/sales/CRMWhatsAppPage.vue') },
-      { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/dashboardModules/sales/CRMAcquisitionPage.vue') },
+      { path: 'crm', name: 'CrmModule', component: () => import('../views/dashboardModules/crm/CRMModule.vue') },
+      { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/dashboardModules/crm/CRMLeadsPage.vue') },
+      { path: 'crm/pipeline', name: 'CrmPipeline', component: () => import('../views/dashboardModules/crm/CRMPipelinePage.vue') },
+      { path: 'crm/contacts', name: 'CrmContacts', component: () => import('../views/dashboardModules/crm/CRMContactsPage.vue') },
+      { path: 'crm/accounts', name: 'CrmAccounts', component: () => import('../views/dashboardModules/crm/CRMAccountsPage.vue') },
+      { path: 'crm/deals', name: 'CrmDeals', component: () => import('../views/dashboardModules/crm/CRMDealsPage.vue') },
+      { path: 'crm/documents', name: 'CrmDocuments', component: () => import('../views/dashboardModules/crm/CRMDocumentsPage.vue') },
+      { path: 'crm/meetings', name: 'CrmMeetings', component: () => import('../views/dashboardModules/crm/CRMMeetingsPage.vue') },
+      { path: 'crm/emails', name: 'CrmEmails', component: () => import('../views/dashboardModules/crm/CRMEmailsPage.vue') },
+      { path: 'crm/calls', name: 'CrmCalls', component: () => import('../views/dashboardModules/crm/CRMCallsPage.vue') },
+      { path: 'crm/visits', name: 'CrmVisits', component: () => import('../views/dashboardModules/crm/CRMVisitsPage.vue') },
+      { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/dashboardModules/crm/CRMWhatsAppPage.vue') },
+      { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/dashboardModules/crm/CRMAcquisitionPage.vue') },
       
       { path: 'strategic-management', redirect: '/dashboard/strategic/overview' },
       { path: 'strategic/overview', name: 'StrategicOverview', component: OverviewSubpage },
@@ -179,7 +179,7 @@ const routes = [
       { path: 'strategic/internal-analysis', name: 'StrategicInternalAnalysis', component: InternalAnalysisSubpage },
       { path: 'strategic/positioning', name: 'StrategicPositioning', component: PositioningSubpage },
       { path: 'strategic/brand', name: 'StrategicBrand', component: BrandStrategySubpage },
-      // { path: 'income-capital', name: 'IncomeCapital', component: () => import('../views/dashboardModules/accounting/IncomeCapitalModule.vue') },
+      
       
      
     ],
@@ -227,8 +227,8 @@ router.beforeEach(async (to, from, next) => {
 
   // 2. Subscription & Module Access Check (Dashboard routes)
   if (to.path.startsWith('/dashboard') && to.path !== '/dashboard/home') {
-    // Special handling for profile/settings/allshops (usually allowed if logged in)
-    const allowedUniversal = ['/dashboard/profile', '/dashboard/settings', '/dashboard/allshops'];
+    // Special handling for profile/settings/subaccounts (usually allowed if logged in)
+    const allowedUniversal = ['/dashboard/profile', '/dashboard/settings', '/dashboard/subaccounts', '/dashboard/home'];
     if (allowedUniversal.includes(to.path)) {
       return next();
     }

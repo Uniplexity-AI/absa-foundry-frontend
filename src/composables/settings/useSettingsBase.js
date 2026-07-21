@@ -9,7 +9,7 @@ import API_BASE_URL from '@/api_services/api'
 import { mapFrontendToBackend } from '@/config/moduleIdMap'
 import { useDashboardStore } from '@/stores/dashboard'
 import { useAuthStore } from '@/stores/auth'
-import { usePricingStore } from '@/stores/pricingStore'
+// import { usePricingStore } from '@/stores/pricingStore'
 import { useRBAC } from '@/composables/useRBAC'
 import { usePreferences } from '@/config/usePreferences.js'
 import { useAudit } from '@/config/useAudit.js'
@@ -28,7 +28,7 @@ export function useSettingsBase() {
   const dashboardStore = useDashboardStore()
   const { fetchModules } = dashboardStore
   const authStore = useAuthStore()
-  const pricingStore = usePricingStore()
+  const pricingStore = reactive({ config: null, fetchConfig: () => {} })
   const {
     confirmState: settingsConfirmState,
     openConfirm: openSettingsConfirm,

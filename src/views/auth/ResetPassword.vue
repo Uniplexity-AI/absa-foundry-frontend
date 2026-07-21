@@ -207,7 +207,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { resetPassword } from '@/api_services/auth';
+import { resetPassword } from '@/api_services/auth_api';
 import { Loader2, Eye, EyeOff } from 'lucide-vue-next';
 
 const form = ref({

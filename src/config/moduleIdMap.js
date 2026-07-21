@@ -3,43 +3,19 @@
 // This map primarily handles aliases or multi-card mappings.
 export const MODULE_ID_MAP = {
   // Alias : Backend Canonical ID
-  'hr-dashboard': 'hrmodule',
-  'hr': 'hrmodule',
-
-  // Backward compatibility / UI Aliases
-  'project_mgmt': 'project-management',
-  'finance_dash': 'finance',
-  'delivery': 'delivery-tickets',
-  'delivery-ticket': 'delivery-tickets',
-  'assets': 'assets-manager',
-  'hotel': 'hotel-manager',
-  'minetech': 'minetech-hub',
-  'minetechhub': 'minetech-hub',
-  'mine-tech': 'minetech-hub',
-  'strategy': 'strategic-management',
-  'education': 'edu-manager',
-  'edu': 'edu-manager',
+ 
   'ai_agent': 'ai',
   'sub_accounts': 'allshops',
   'user_mgmt': 'allshops',
   'users': 'allshops',
 
   // Mining/Legacy
-  'mining-image-capture': 'image-capture',
-  'mining_image_capture': 'image-capture',
-  'mining': 'image-capture',
-  'miningimagecapture': 'image-capture',
+  
   'image-capture': 'image-capture',
   'text-scanner': 'image-capture',
   'text_scanner': 'image-capture',
 
-  // Tender Management
-  'tender': 'tender-management',
-  'tenders': 'tender-management',
 
-  // Marketplace
-  'market': 'marketplace',
-  'market-place': 'marketplace'
 };
 
 export function mapFrontendToBackend(id) {

@@ -1,6 +1,4 @@
 import axios from 'axios'
-import store from '@/store/store'  // ✅ Import Vuex store
-
 import { API_BASE_URL as BASE_URL } from './api'
 
 const API_URL = `${BASE_URL}/auth`;
@@ -17,7 +15,7 @@ const apiClient = axios.create({
 // ✅ Automatically attach token to requests
 // Automatically add token from store
 apiClient.interceptors.request.use(config => {
-  const token = store.getters.getToken
+  const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -33,7 +31,7 @@ export default {
       if (response.data && response.data.access_token) {
         const email = response.data.email
         const access_token = response.data.access_token
-        store.dispatch('saveUserEmail', email)
+        localStorage.setItem('email', email)
         localStorage.setItem('userEmail', email)
         localStorage.setItem('access_token', access_token)
 
@@ -57,7 +55,7 @@ export default {
 
       if (response.data.success) {
         const email = userData.email
-        store.dispatch('saveUserEmail', email)   // ✅ Store in Vuex
+        localStorage.setItem('email', email)
         localStorage.setItem('userEmail', email) // ✅ Store in localStorage
       }
 
@@ -76,8 +74,6 @@ export default {
     localStorage.removeItem('userEmail'); // Clear email on logout
     localStorage.removeItem('access_token')
 
-    // Optional: Clear Vuex store too
-    store.dispatch('clearUser')
     window.location.href = '/home'; // Redirect to home page
   },
 
@@ -105,5 +101,52 @@ export default {
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to fetch profile')
     }
+  }
+
+}
+
+export async function requestPasswordReset(email) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to send reset email');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function resetPassword(email, otp, password) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        email: email,
+        otp: otp,
+        new_password: password 
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to reset password');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
   }
 }

@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/auth_store';
+import { useAuthStore } from '@/stores/auth';
 
 export default {
   mounted(el, binding) {

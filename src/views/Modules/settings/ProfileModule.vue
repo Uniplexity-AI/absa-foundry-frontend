@@ -862,7 +862,6 @@ const moduleIconMap = {
   'invoicing': 'fas fa-file-invoice',
   'assets': 'fas fa-building',
   'hotel': 'fas fa-hotel',
-  'microfinance': 'fas fa-piggy-bank',
   'education': 'fas fa-graduation-cap',
 };
 

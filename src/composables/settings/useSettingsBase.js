@@ -24,7 +24,7 @@ import {
 } from '@/config/rbac'
 
 export function useSettingsBase() {
-  const { getTenantId, getUserRole, getUserEmail } = decodeJWT()
+  const { getUserRole, getUserEmail } = decodeJWT()
   const dashboardStore = useDashboardStore()
   const { fetchModules } = dashboardStore
   const authStore = useAuthStore()
@@ -40,7 +40,6 @@ export function useSettingsBase() {
   const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin, tenantUIPreferences, updateUIPreferences, applyUIPreferences, createRole, updateRole, deleteRole, tenantRoles } = useRBAC()
   const { formatCurrency, formatCurrencyCompact, currencyCode } = useCurrency()
 
-  const tenantId = computed(() => getTenantId())
   const userRole = ref(getUserRole() || 'user')
   const userEmail = computed(() => getUserEmail())
 
@@ -75,9 +74,7 @@ export function useSettingsBase() {
 
   async function fetchOwnerSubscription() {
     try {
-      const tid = tenantId.value
-      if (!tid) return
-      const res = await fetch(`${API_BASE_URL}/modules-manager/owner/subscription?tenant_id=${tid}`, {
+      const res = await fetch(`${API_BASE_URL}/modules-manager/owner/subscription`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       })
       if (res.ok) ownerSubscription.value = await res.json()
@@ -338,8 +335,8 @@ export function useSettingsBase() {
   return {
     // deps
     axios, toast,
-    API_BASE_URL, getTenantId, getUserRole, getUserEmail,
-    tenantId, userRole, userEmail,
+    API_BASE_URL, getUserRole, getUserEmail,
+    userRole, userEmail,
     decodeJWT, currencyService,
     formatCurrency, formatCurrencyCompact, currencyCode,
     settingsConfirmState, openSettingsConfirm, closeSettingsConfirm, handleSettingsConfirm,

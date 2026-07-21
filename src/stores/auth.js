@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     logout() {
-      ['token','user_id','email','role','userName','company_name','tenant_id']
+      ['token','refresh_token','user_id','email','role','userName']
         .forEach(k => localStorage.removeItem(k))
       this.token = null
       this.userRole = null

@@ -45,17 +45,12 @@ export function useNetworkStatus() {
    */
   const updateSyncStatus = async () => {
     try {
-      const { getTenantId } = await import('@/services/decodeJWT.js');
-      const tenantId = getTenantId?.();
-      
-      if (!tenantId) return;
-
       const [pendingOps, unsyncedTxs, unsyncedStock, allInventory, unsyncedCustomers] = await Promise.all([
         inventoryDB.getPendingOperations(),
-        inventoryDB.getUnsyncedTransactions(tenantId),
+        inventoryDB.getUnsyncedTransactions(),
         inventoryDB.getUnsyncedStockChanges?.() || Promise.resolve([]),
-        inventoryDB.getAllInventory(tenantId),
-        inventoryDB.getUnsyncedCustomers(tenantId)
+        inventoryDB.getAllInventory(),
+        inventoryDB.getUnsyncedCustomers()
       ]);
 
       const pendingInventory = allInventory.filter(item => item.syncStatus === 'pending');

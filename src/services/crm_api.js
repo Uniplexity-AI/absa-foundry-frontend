@@ -43,35 +43,35 @@ function _sanitizeParams(params = {}) {
   return out
 }
 
-export async function getLeads(tenantId, params = {}) {
+export async function getLeads(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams(clean).toString()
   const res = await fetch(`${API_BASE_URL}/crm/leads?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLead(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLead(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLeadNotes(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/notes?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLeadNotes(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/notes`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLeadEmails(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/emails?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLeadEmails(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/emails`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLeadAttachments(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/attachments?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLeadAttachments(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/attachments`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLeadCampaigns(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/campaigns?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLeadCampaigns(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/campaigns`, { headers: _headers() })
   return _handleRes(res)
 }
 
@@ -84,8 +84,8 @@ export async function createLead(payload) {
   return _handleRes(res)
 }
 
-export async function updateLead(leadId, payload, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}?tenant_id=${tenantId}`, {
+export async function updateLead(leadId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}`, {
     method: 'PUT',
     headers: _headers(),
     body: JSON.stringify(payload)
@@ -93,14 +93,14 @@ export async function updateLead(leadId, payload, tenantId) {
   return _handleRes(res)
 }
 
-export async function deleteLead(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}?tenant_id=${tenantId}`, {
+export async function deleteLead(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}`, {
     method: 'DELETE',
     headers: _headers()
   })
   const data = await _handleRes(res)
   try {
-    await logLeadActivity(leadId, { tenant_id: tenantId, action: 'deleted', notes: '' })
+    await logLeadActivity(leadId, { action: 'deleted', notes: '' })
   } catch (e) {
     console.warn('Failed to log lead deletion activity', e)
   }
@@ -108,47 +108,44 @@ export async function deleteLead(leadId, tenantId) {
 }
 
 // Customers
-export async function getCustomers(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/customers?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getCustomers() {
+  const res = await fetch(`${API_BASE_URL}/crm/customers`, { headers: _headers() })
   return _handleRes(res)
 }
 export async function createCustomer(payload) {
   const res = await fetch(`${API_BASE_URL}/crm/customers`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
-export async function updateCustomer(customerId, payload, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/customers/${customerId}?tenant_id=${tenantId}`, { method: 'PUT', headers: _headers(), body: JSON.stringify(payload) })
+export async function updateCustomer(customerId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/customers/${customerId}`, { method: 'PUT', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
-export async function deleteCustomer(customerId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/customers/${customerId}?tenant_id=${tenantId}`, { method: 'DELETE', headers: _headers() })
+export async function deleteCustomer(customerId) {
+  const res = await fetch(`${API_BASE_URL}/crm/customers/${customerId}`, { method: 'DELETE', headers: _headers() })
   return _handleRes(res)
 }
 
 // Accounts & Conversion helpers
-export async function createAccount(payload, tenantId) {
-  const body = Object.assign({ tenant_id: tenantId }, payload || {})
-  const res = await fetch(`${API_BASE_URL}/crm/accounts`, { method: 'POST', headers: _headers(), body: JSON.stringify(body) })
+export async function createAccount(payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/accounts`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
 
-export async function createContact(payload, tenantId) {
-  const body = Object.assign({ tenant_id: tenantId }, payload || {})
-  const res = await fetch(`${API_BASE_URL}/crm/contacts`, { method: 'POST', headers: _headers(), body: JSON.stringify(body) })
+export async function createContact(payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/contacts`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
 
-export async function convertLead(leadId, tenantId, options = {}) {
-  // Server-side endpoint for conversion expects tenant_id in the payload
-  const payload = Object.assign({ leadId, tenant_id: tenantId }, options || {})
+export async function convertLead(leadId, options = {}) {
+  const payload = Object.assign({ leadId }, options || {})
   const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/convert`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
 
 // Communications
-export async function getCommunications(tenantId, params = {}) {
+export async function getCommunications(params = {}) {
   const clean = _sanitizeParams(params)
-  const q = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const q = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/communications?${q}`, { headers: _headers() })
   return _handleRes(res)
 }
@@ -156,9 +153,9 @@ export async function createCommunication(payload) {
   const res = await fetch(`${API_BASE_URL}/crm/communications`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   const data = await _handleRes(res)
   try {
-    if (payload.contactId && payload.tenant_id) {
+    if (payload.contactId) {
       // Log communication as activity for the contact (lead)
-      await logLeadActivity(payload.contactId, { tenant_id: payload.tenant_id, action: `communication:${payload.type}`, notes: payload.message || payload.subject || '' })
+      await logLeadActivity(payload.contactId, { action: `communication:${payload.type}`, notes: payload.message || payload.subject || '' })
     }
   } catch (e) {
     console.warn('Failed to log communication activity', e)
@@ -167,16 +164,16 @@ export async function createCommunication(payload) {
 }
 
 // Convenience WhatsApp helpers
-export async function startWhatsAppText({ tenantId, related_type, related_id, name, phone, text }) {
-  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'text', message: text || `WhatsApp message to ${name}`, phone, tenant_id: tenantId }
+export async function startWhatsAppText({ related_type, related_id, name, phone, text }) {
+  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'text', message: text || `WhatsApp message to ${name}`, phone }
   try { createCommunication(payload).catch(() => { }) } catch { }
   const waPhone = (phone || '').replace(/[^+0-9]/g, '').replace(/^\+/, '')
   const url = waPhone ? `https://wa.me/${encodeURIComponent(waPhone)}?text=${encodeURIComponent(text || '')}` : `https://web.whatsapp.com/send?text=${encodeURIComponent(text || '')}`
   window.open(url, '_blank')
 }
 
-export async function startWhatsAppAudioCall({ tenantId, related_type, related_id, name, phone }) {
-  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'audio_call', message: `WhatsApp audio call to ${name}`, phone, tenant_id: tenantId }
+export async function startWhatsAppAudioCall({ related_type, related_id, name, phone }) {
+  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'audio_call', message: `WhatsApp audio call to ${name}`, phone }
   try { createCommunication(payload).catch(() => { }) } catch { }
   // Open chat as a proxy to initiate the call within WhatsApp UI
   const waPhone = (phone || '').replace(/[^+0-9]/g, '').replace(/^\+/, '')
@@ -184,20 +181,20 @@ export async function startWhatsAppAudioCall({ tenantId, related_type, related_i
   window.open(url, '_blank')
 }
 
-export async function startWhatsAppVideoCall({ tenantId, related_type, related_id, name, phone }) {
-  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'video_call', message: `WhatsApp video call to ${name}`, phone, tenant_id: tenantId }
+export async function startWhatsAppVideoCall({ related_type, related_id, name, phone }) {
+  const payload = { related_type, related_id, contactName: name, type: 'whatsapp', subtype: 'video_call', message: `WhatsApp video call to ${name}`, phone }
   try { createCommunication(payload).catch(() => { }) } catch { }
   const waPhone = (phone || '').replace(/[^+0-9]/g, '').replace(/^\+/, '')
   const url = waPhone ? `https://wa.me/${encodeURIComponent(waPhone)}` : `https://web.whatsapp.com/`
   window.open(url, '_blank')
 }
-export async function deleteCommunication(commId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}?tenant_id=${tenantId}`, { method: 'DELETE', headers: _headers() })
+export async function deleteCommunication(commId) {
+  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}`, { method: 'DELETE', headers: _headers() })
   return _handleRes(res)
 }
 
-export async function patchCommunication(commId, tenantId, payload) {
-  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}?tenant_id=${tenantId}`, {
+export async function patchCommunication(commId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}`, {
     method: 'PATCH',
     headers: _headers(),
     body: JSON.stringify(payload || {})
@@ -205,94 +202,93 @@ export async function patchCommunication(commId, tenantId, payload) {
   return _handleRes(res)
 }
 
-export async function getCommunicationNotes(commId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}/notes?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getCommunicationNotes(commId) {
+  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}/notes`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function addCommunicationNote(commId, tenantId, text) {
-  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}/notes?tenant_id=${tenantId}`, {
+export async function addCommunicationNote(commId, text) {
+  const res = await fetch(`${API_BASE_URL}/crm/communications/${commId}/notes`, {
     method: 'POST', headers: _headers(), body: JSON.stringify({ text })
   })
   return _handleRes(res)
 }
 
 // Lead activities
-export async function getLeadActivities(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/activities?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getLeadActivities(leadId) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/activities`, { headers: _headers() })
   return _handleRes(res)
 }
 
 export async function logLeadActivity(leadId, payload) {
-  const tenantId = payload.tenant_id
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/activities?tenant_id=${tenantId}`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/activities`, { method: 'POST', headers: _headers(), body: JSON.stringify(payload) })
   return _handleRes(res)
 }
 
 // Notifications
-export async function getNotifications(tenantId, params = {}) {
+export async function getNotifications(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/notifications?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getLeadNotifications(leadId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/notifications?tenant_id=${tenantId}&lead_id=${encodeURIComponent(leadId)}&category=crm`, { headers: _headers() })
+export async function getLeadNotifications(leadId) {
+  const res = await fetch(`${API_BASE_URL}/notifications?lead_id=${encodeURIComponent(leadId)}&category=crm`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function markNotificationRead(notifId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/notifications/${notifId}/read?tenant_id=${tenantId}`, {
+export async function markNotificationRead(notifId) {
+  const res = await fetch(`${API_BASE_URL}/notifications/${notifId}/read`, {
     method: 'PUT', headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function markAllNotificationsRead(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/notifications/mark-read?tenant_id=${tenantId}`, {
+export async function markAllNotificationsRead() {
+  const res = await fetch(`${API_BASE_URL}/notifications/mark-read`, {
     method: 'PUT', headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function dismissNotification(notifId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/notifications/${notifId}/dismiss?tenant_id=${tenantId}`, {
+export async function dismissNotification(notifId) {
+  const res = await fetch(`${API_BASE_URL}/notifications/${notifId}/dismiss`, {
     method: 'POST', headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function dismissAllNotifications(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/notifications?tenant_id=${tenantId}`, {
+export async function dismissAllNotifications() {
+  const res = await fetch(`${API_BASE_URL}/notifications`, {
     method: 'DELETE', headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function scanCrmNotifications(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/notifications/scan?tenant_id=${tenantId}`, {
+export async function scanCrmNotifications() {
+  const res = await fetch(`${API_BASE_URL}/crm/notifications/scan`, {
     method: 'POST', headers: _headers()
   })
   return _handleRes(res)
 }
 
 // Module metadata & generic records API (for dynamic module UI)
-export async function getModuleMetadata(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/metadata/modules?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getModuleMetadata() {
+  const res = await fetch(`${API_BASE_URL}/metadata/modules`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getModuleRecords(moduleName, tenantId, params = {}) {
+export async function getModuleRecords(moduleName, params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ module: moduleName, tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ module: moduleName, ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/records?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
 // CRM Metadata (Pipeline Stages)
-export async function getCRMMetadata(tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/metadata?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getCRMMetadata() {
+  const res = await fetch(`${API_BASE_URL}/crm/metadata`, { headers: _headers() })
   return _handleRes(res)
 }
 
@@ -306,8 +302,8 @@ export async function updateCRMMetadata(metadata) {
 }
 
 // Import/Export functions
-export async function bulkImportLeads(leadsData, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/import?tenant_id=${tenantId}`, {
+export async function bulkImportLeads(leadsData) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/import`, {
     method: 'POST',
     headers: _headers(),
     body: JSON.stringify(leadsData)
@@ -315,38 +311,35 @@ export async function bulkImportLeads(leadsData, tenantId) {
   return _handleRes(res)
 }
 
-export async function exportLeads(tenantId, limit = 10000) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/export?tenant_id=${tenantId}&limit=${limit}`, {
+export async function exportLeads(limit = 10000) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/export?limit=${limit}`, {
     headers: _headers()
   })
   return _handleRes(res)
 }
 
 export async function fetchLeads(params = {}) {
-  // Alias for getLeads with tenant_id from params
-  const tenantId = params.tenant_id
-  if (!tenantId) throw new Error('tenant_id required')
-  return getLeads(tenantId, params)
+  return getLeads(params)
 }
 
 // ============================================================================
 // CONTACTS API
 // ============================================================================
 
-export async function getContacts(tenantId, params = {}) {
+export async function getContacts(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/contacts?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getContact(contactId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/contacts/${contactId}?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getContact(contactId) {
+  const res = await fetch(`${API_BASE_URL}/crm/contacts/${contactId}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function updateContact(contactId, payload, tenantId) {
-  const body = Object.assign({ tenant_id: tenantId }, payload || {})
+export async function updateContact(contactId, payload) {
+  const body = Object.assign({}, payload || {})
   const res = await fetch(`${API_BASE_URL}/crm/contacts/${contactId}`, {
     method: 'PUT',
     headers: _headers(),
@@ -355,16 +348,16 @@ export async function updateContact(contactId, payload, tenantId) {
   return _handleRes(res)
 }
 
-export async function deleteContact(contactId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/contacts/${contactId}?tenant_id=${tenantId}`, {
+export async function deleteContact(contactId) {
+  const res = await fetch(`${API_BASE_URL}/crm/contacts/${contactId}`, {
     method: 'DELETE',
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function getContactActivities(contactId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/activities?tenant_id=${tenantId}&related_type=contact&related_id=${contactId}`, {
+export async function getContactActivities(contactId) {
+  const res = await fetch(`${API_BASE_URL}/crm/activities?related_type=contact&related_id=${contactId}`, {
     headers: _headers()
   })
   return _handleRes(res)
@@ -374,20 +367,20 @@ export async function getContactActivities(contactId, tenantId) {
 // ACCOUNTS API
 // ============================================================================
 
-export async function getAccounts(tenantId, params = {}) {
+export async function getAccounts(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/accounts?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getAccount(accountId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getAccount(accountId) {
+  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function updateAccount(accountId, payload, tenantId) {
-  const body = Object.assign({ tenant_id: tenantId }, payload || {})
+export async function updateAccount(accountId, payload) {
+  const body = Object.assign({}, payload || {})
   const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}`, {
     method: 'PUT',
     headers: _headers(),
@@ -396,23 +389,23 @@ export async function updateAccount(accountId, payload, tenantId) {
   return _handleRes(res)
 }
 
-export async function deleteAccount(accountId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}?tenant_id=${tenantId}`, {
+export async function deleteAccount(accountId) {
+  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}`, {
     method: 'DELETE',
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function getAccountContacts(accountId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}/contacts?tenant_id=${tenantId}`, {
+export async function getAccountContacts(accountId) {
+  const res = await fetch(`${API_BASE_URL}/crm/accounts/${accountId}/contacts`, {
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function getAccountActivities(accountId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/activities?tenant_id=${tenantId}&related_type=account&related_id=${accountId}`, {
+export async function getAccountActivities(accountId) {
+  const res = await fetch(`${API_BASE_URL}/crm/activities?related_type=account&related_id=${accountId}`, {
     headers: _headers()
   })
   return _handleRes(res)
@@ -422,15 +415,15 @@ export async function getAccountActivities(accountId, tenantId) {
 // DEALS API
 // ============================================================================
 
-export async function getDeals(tenantId, params = {}) {
+export async function getDeals(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/deals?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getDeal(dealId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getDeal(dealId) {
+  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}`, { headers: _headers() })
   return _handleRes(res)
 }
 
@@ -443,8 +436,8 @@ export async function createDeal(payload) {
   return _handleRes(res)
 }
 
-export async function updateDeal(dealId, payload, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}?tenant_id=${tenantId}`, {
+export async function updateDeal(dealId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}`, {
     method: 'PUT',
     headers: _headers(),
     body: JSON.stringify(payload)
@@ -452,31 +445,31 @@ export async function updateDeal(dealId, payload, tenantId) {
   return _handleRes(res)
 }
 
-export async function deleteDeal(dealId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}?tenant_id=${tenantId}`, {
+export async function deleteDeal(dealId) {
+  const res = await fetch(`${API_BASE_URL}/crm/deals/${dealId}`, {
     method: 'DELETE',
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function getDealActivities(dealId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/activities?tenant_id=${tenantId}&related_type=deal&related_id=${dealId}`, {
+export async function getDealActivities(dealId) {
+  const res = await fetch(`${API_BASE_URL}/crm/activities?related_type=deal&related_id=${dealId}`, {
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function getAccountDeals(accountId, tenantId, params = {}) {
+export async function getAccountDeals(accountId, params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, accountId, per_page: 200, ...clean }).toString()
+  const query = new URLSearchParams({ accountId, per_page: 200, ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/deals?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getMeetings(tenantId, params = {}) {
+export async function getMeetings(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/meetings/list?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
@@ -485,9 +478,9 @@ export async function getMeetings(tenantId, params = {}) {
 // ACTIVITIES API
 // ============================================================================
 
-export async function getActivities(tenantId, params = {}) {
+export async function getActivities(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/activities?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
@@ -496,9 +489,9 @@ export async function getActivities(tenantId, params = {}) {
 // VISITS API
 // ============================================================================
 
-export async function getVisits(tenantId, params = {}) {
+export async function getVisits(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/visits?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
@@ -512,8 +505,8 @@ export async function createVisit(payload) {
   return _handleRes(res)
 }
 
-export async function patchVisit(visitId, tenantId, payload) {
-  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}?tenant_id=${tenantId}`, {
+export async function patchVisit(visitId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}`, {
     method: 'PATCH',
     headers: _headers(),
     body: JSON.stringify(payload || {})
@@ -521,8 +514,8 @@ export async function patchVisit(visitId, tenantId, payload) {
   return _handleRes(res)
 }
 
-export async function addVisitNote(visitId, tenantId, text) {
-  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}/notes?tenant_id=${tenantId}`, {
+export async function addVisitNote(visitId, text) {
+  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}/notes`, {
     method: 'POST',
     headers: _headers(),
     body: JSON.stringify({ text })
@@ -530,13 +523,13 @@ export async function addVisitNote(visitId, tenantId, text) {
   return _handleRes(res)
 }
 
-export async function getVisitNotes(visitId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}/notes?tenant_id=${tenantId}`, { headers: _headers() })
+export async function getVisitNotes(visitId) {
+  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}/notes`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function deleteVisit(visitId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}?tenant_id=${tenantId}`, {
+export async function deleteVisit(visitId) {
+  const res = await fetch(`${API_BASE_URL}/crm/visits/${visitId}`, {
     method: 'DELETE',
     headers: _headers()
   })
@@ -544,9 +537,9 @@ export async function deleteVisit(visitId, tenantId) {
 }
 
 // Bulk Upload for Leads
-export async function uploadLeadsBulkFile(formData, tenantId) {
+export async function uploadLeadsBulkFile(formData) {
   const token = localStorage.getItem('token') || ''
-  const res = await fetch(`${API_BASE_URL}/crm/leads/bulk-upload-file?tenant_id=${tenantId}`, {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/bulk-upload-file`, {
     method: 'POST',
     headers: {
       Authorization: token ? `Bearer ${token}` : ''
@@ -557,8 +550,8 @@ export async function uploadLeadsBulkFile(formData, tenantId) {
   return _handleRes(res)
 }
 
-export async function processLeadsBulkUpload(payload, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/bulk-upload-process?tenant_id=${tenantId}`, {
+export async function processLeadsBulkUpload(payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/bulk-upload-process`, {
     method: 'POST',
     headers: _headers(),
     body: JSON.stringify(payload)
@@ -566,9 +559,9 @@ export async function processLeadsBulkUpload(payload, tenantId) {
   return _handleRes(res)
 }
 
-export async function downloadLeadTemplate(tenantId) {
+export async function downloadLeadTemplate() {
   const token = localStorage.getItem('token') || ''
-  const res = await fetch(`${API_BASE_URL}/crm/leads/download-template?tenant_id=${tenantId}`, {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/download-template`, {
     method: 'GET',
     headers: {
       Authorization: token ? `Bearer ${token}` : ''
@@ -611,11 +604,9 @@ export async function updateMeeting(meetingId, payload) {
 }
 
 // Delete a meeting
-export async function deleteMeeting(meetingId, tenantId) {
+export async function deleteMeeting(meetingId) {
   const token = localStorage.getItem('token') || '';
-  const tid = tenantId || (typeof localStorage !== 'undefined' ? localStorage.getItem('tenant_id') : '') || '';
-  const qs = tid ? `?tenant_id=${encodeURIComponent(tid)}` : '';
-  const response = await fetch(`${API_BASE_URL}/crm/meetings/${meetingId}${qs}`, {
+  const response = await fetch(`${API_BASE_URL}/crm/meetings/${meetingId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -628,8 +619,8 @@ export async function deleteMeeting(meetingId, tenantId) {
   return { success: true };
 }
 
-export async function createLeadNote(leadId, tenantId, payload) {
-  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/notes?tenant_id=${tenantId}`, {
+export async function createLeadNote(leadId, payload) {
+  const res = await fetch(`${API_BASE_URL}/crm/leads/${leadId}/notes`, {
     method: 'POST',
     headers: _headers(),
     body: JSON.stringify(payload)
@@ -637,16 +628,16 @@ export async function createLeadNote(leadId, tenantId, payload) {
   return _handleRes(res)
 }
 
-export async function deleteLeadNote(noteId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/notes/${noteId}?tenant_id=${tenantId}`, {
+export async function deleteLeadNote(noteId) {
+  const res = await fetch(`${API_BASE_URL}/crm/notes/${noteId}`, {
     method: 'DELETE',
     headers: _headers()
   })
   return _handleRes(res)
 }
 
-export async function deleteLeadActivity(activityId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/activities/${activityId}?tenant_id=${tenantId}`, {
+export async function deleteLeadActivity(activityId) {
+  const res = await fetch(`${API_BASE_URL}/crm/activities/${activityId}`, {
     method: 'DELETE',
     headers: _headers()
   })
@@ -654,8 +645,7 @@ export async function deleteLeadActivity(activityId, tenantId) {
 }
 
 export async function logAccountActivity(accountId, payload) {
-  const tenantId = payload.tenant_id
-  const res = await fetch(`${API_BASE_URL}/crm/activities?tenant_id=${tenantId}`, {
+  const res = await fetch(`${API_BASE_URL}/crm/activities`, {
     method: 'POST',
     headers: _headers(),
     body: JSON.stringify({ ...payload, related_type: 'account', related_id: accountId })
@@ -663,8 +653,8 @@ export async function logAccountActivity(accountId, payload) {
   return _handleRes(res)
 }
 
-export async function deleteAccountActivity(activityId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/activities/${activityId}?tenant_id=${tenantId}`, {
+export async function deleteAccountActivity(activityId) {
+  const res = await fetch(`${API_BASE_URL}/crm/activities/${activityId}`, {
     method: 'DELETE',
     headers: _headers()
   })
@@ -755,16 +745,16 @@ export async function bulkUpdateLeads(payload) {
   return _handleRes(res)
 }
 
-export async function getStats(tenantId, params = {}) {
+export async function getStats(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/stats?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function getTeamPerformance(tenantId, params = {}) {
+export async function getTeamPerformance(params = {}) {
   const clean = _sanitizeParams(params)
-  const query = new URLSearchParams({ tenant_id: tenantId, ...clean }).toString()
+  const query = new URLSearchParams({ ...clean }).toString()
   const res = await fetch(`${API_BASE_URL}/crm/performance/team?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
@@ -782,16 +772,16 @@ export async function saveAcquisitionCost(payload) {
   return _handleRes(res)
 }
 
-export async function getAcquisitionCosts(tenantId, leadId = null) {
-  const params = { tenant_id: tenantId }
+export async function getAcquisitionCosts(leadId = null) {
+  const params = {  }
   if (leadId) params.lead_id = leadId
   const query = new URLSearchParams(params).toString()
   const res = await fetch(`${API_BASE_URL}/crm/acquisition-costs?${query}`, { headers: _headers() })
   return _handleRes(res)
 }
 
-export async function deleteAcquisitionCost(costId, tenantId) {
-  const res = await fetch(`${API_BASE_URL}/crm/acquisition-costs/${costId}?tenant_id=${tenantId}`, {
+export async function deleteAcquisitionCost(costId) {
+  const res = await fetch(`${API_BASE_URL}/crm/acquisition-costs/${costId}`, {
     method: 'DELETE',
     headers: _headers()
   })

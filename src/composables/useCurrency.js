@@ -23,36 +23,9 @@ export function useCurrency() {
    */
   const initializeCurrency = async () => {
     try {
-      let tenantId = null;
-      
-      // Try multiple methods to get tenant ID safely
+      // Always ensure currencyService initializes
       try {
-        const { getTenantId } = decodeJWT();
-        tenantId = getTenantId();
-      } catch (e) {
-        console.warn('useCurrency: decodeJWT getTenantId failed, trying localStorage fallback');
-      }
-
-      // Fallbacks for various token key names used across the app
-      if (!tenantId) {
-        const rawToken = localStorage.getItem('token') || localStorage.getItem('access_token') || localStorage.getItem('accessToken');
-        if (rawToken) {
-          try {
-            const maybeDecoded = JSON.parse(atob(rawToken.split('.')[1]));
-            tenantId = maybeDecoded?.tenant_id || null;
-          } catch (e) {
-            console.warn('useCurrency: Token decode failed, using defaults');
-          }
-        }
-      }
-
-      if (!tenantId) {
-        console.warn('useCurrency: No tenant ID found in token, using defaults');
-      }
-
-      // Always ensure currencyService initializes (even with null tenant)
-      try {
-        await currencyService.initialize(tenantId);
+        await currencyService.initialize();
         currentSettings.value = currencyService.getSettings();
       } catch (serviceError) {
         console.error('useCurrency: currencyService.initialize failed:', serviceError);
@@ -66,9 +39,7 @@ export function useCurrency() {
       }
       
       isInitialized.value = true;
-      if (tenantId) {
-        console.log('Currency service initialized for tenant:', tenantId);
-      }
+      console.log('Currency service initialized');
     } catch (error) {
       console.error('useCurrency: Critical initialization error:', error);
       // Ensure we always mark as initialized even if everything fails

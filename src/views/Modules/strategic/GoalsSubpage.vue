@@ -1051,15 +1051,13 @@ const newGoal = ref({
   current: '',
   target: '',
   type: selectedGoalType.value,
-  tenant_id: '',
 })
 
 const activeTab = ref('goals')
 
 
-// Get tenant_id from JWT token
-const jwtHelper = decodeJWT()
-const tenantId = ref(jwtHelper.getTenantId())
+// Tenant context removed - API calls no longer require tenant_id
+const tenantId = ref('default')
 
 // Fetch mission & vision from backend
 const fetchMissionVision = async () => {

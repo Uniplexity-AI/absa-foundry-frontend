@@ -311,11 +311,11 @@ import { useRBAC } from '@/composables/useRBAC';
 import { getModuleCards } from '@/config/moduleCards.js';
 
 const router = useRouter();
-const { getTenantId, getUserRole, getUserEmail, getCompanyName } = decodeJWT();
+const { getUserRole, getUserEmail } = decodeJWT();
 const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC();
 
 const userRole = ref(getUserRole() || 'user');
-const companyName = ref(getCompanyName() || localStorage.getItem('company_name') || '');
+const companyName = ref(localStorage.getItem('company_name') || '');
 const subscribedModules = ref([]);
 const loading = ref(true);
 const kpiLoading = ref(true);
@@ -544,43 +544,37 @@ const kpiList = computed(() => [
 
 // ─── KPI Fetching ──────────────────────────────────────────────
 async function fetchKpis() {
-  const tenantId = getTenantId()
-  if (!tenantId) {
-    Object.values(kpiData).forEach(k => { k.loading = false })
-    return
-  }
-
   kpiLoading.value = true
 
   const fetchers = [
     {
       key: 'revenue',
-      url: `${API_BASE_URL}/sales/dashboard-summary?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/sales/dashboard-summary`,
       transform: (d) => ({ value: d?.total_revenue ?? d?.revenue ?? null, trend: d?.revenue_trend ?? null })
     },
     {
       key: 'expenses',
-      url: `${API_BASE_URL}/expenses/summary?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/expenses/summary`,
       transform: (d) => ({ value: d?.total_expenses ?? d?.total ?? null, trend: d?.expense_trend ?? null })
     },
     {
       key: 'invoices',
-      url: `${API_BASE_URL}/invoicing/summary?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/invoicing/summary`,
       transform: (d) => ({ value: d?.active_invoices ?? d?.pending_count ?? null, trend: null })
     },
     {
       key: 'payroll',
-      url: `${API_BASE_URL}/payroll/summary?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/payroll/summary`,
       transform: (d) => ({ value: d?.pending_total ?? d?.total ?? null, trend: null })
     },
     {
       key: 'posToday',
-      url: `${API_BASE_URL}/pos/today?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/pos/today`,
       transform: (d) => ({ value: d?.total_sales ?? d?.today_total ?? null, trend: d?.trend ?? null })
     },
     {
       key: 'inventory',
-      url: `${API_BASE_URL}/inventory/summary?tenant_id=${tenantId}`,
+      url: `${API_BASE_URL}/inventory/summary`,
       transform: (d) => ({ value: d?.total_items ?? d?.item_count ?? null, trend: null })
     }
   ]
@@ -606,15 +600,14 @@ async function fetchKpis() {
 
 // ─── Module Fetching ───────────────────────────────────────────
 async function fetchModules() {
-  const tenantId = getTenantId()
   const role = getUserRole()
   const email = getUserEmail()
   userRole.value = role || 'user'
-  companyName.value = getCompanyName() || companyName.value
+  companyName.value = localStorage.getItem('company_name') || companyName.value
 
   try {
     await initializeRBAC()
-    const endpoint = `${API_BASE_URL}/modules-manager/owner/modules?tenant_id=${tenantId}`
+    const endpoint = `${API_BASE_URL}/modules-manager/owner/modules`
 
     const res = await fetch(endpoint)
     if (!res.ok) throw new Error(`Failed to fetch modules: ${res.statusText}`)
@@ -732,7 +725,21 @@ function goTo(route) {
   }
 }
 
-function handleLogout() {
+async function handleLogout() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+  } catch (e) {
+    console.warn('Backend logout failed, clearing locally', e)
+  }
   try {
     const authStore = useAuthStore()
     authStore.logout()

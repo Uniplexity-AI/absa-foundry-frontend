@@ -6,16 +6,10 @@ import router from '@/router';
 const RAW_API_URL =
   import.meta.env.VITE_API_BASE_URL ||
   (window.location.hostname === 'localhost'
-    ? 'http://127.0.0.1:8000'
+    ? 'http://100.82.12.85:8080'
     : 'https://ub-app-backend-692487163735.europe-west1.run.app');
 
-export const MAIN_APP_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3000'
-  : 'https://app.uniplexityai.com';
 
-export const MICRO_FINANCE_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3005'
-  : 'https://ub-mfe-microfinance-692487163735.europe-west1.run.app';
 
 // Force HTTPS if not localhost
 const enforcedBaseUrl = window.location.hostname === 'localhost'
@@ -87,23 +81,78 @@ axios.interceptors.request.use(
   }
 );
 
-// Response interceptor (optional - for handling token expiry)
+// Response interceptor — auto-refresh on 401
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) reject(error);
+    else resolve(token);
+  });
+  failedQueue = [];
+};
+
 axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      // alert("Token expired, redirecting to login page")
-      window.location.href = '/login'
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Don't retry login/refresh endpoints themselves
+    if (originalRequest._retry || originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/refresh')) {
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+      }
+      return Promise.reject(error);
     }
+
+    if (error.response?.status === 401) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return axios(originalRequest);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+
+      try {
+        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+          refresh_token: refreshToken,
+        });
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+        processQueue(null, data.access_token);
+        return axios(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
     return Promise.reject(error);
   }
 );
 
 
-export async function Signup(email, password, phone_number, role, tenant_id) {
+export async function Signup(email, password, phone_number, role) {
   const payload = {
     email,
     password,
@@ -111,29 +160,55 @@ export async function Signup(email, password, phone_number, role, tenant_id) {
     role
   };
 
-  const response = await axios.post(`${API_BASE_URL}/auth/signup?tenant_id=${tenant_id}`, payload);
+  const response = await axios.post(`${API_BASE_URL}/auth/signup`, payload);
   return response.data;
 }
 
-export async function login(email, password) {
-  const payload = { email, password };
-  const response = await axios.post(`${API_BASE_URL}/auth/login`, payload)
-    .then((newResponse) => {
-      if (newResponse.data.station_id) {
-        localStorage.setItem("stationId", newResponse.data.station_id);
-        localStorage.setItem("name", newResponse.data.name);
-      }
-      return newResponse;
-    });
-  return response.data;
+/**
+ * Authenticate with username/password per API Gateway spec.
+ * POST /auth/login → { username, password }
+ * Response: { access_token, refresh_token, token_type, expires_in }
+ */
+export async function login(username, password) {
+  const payload = { username, password };
+  const response = await axios.post(`${API_BASE_URL}/auth/login`, payload);
+  const data = response.data;
+
+  // Store tokens from the spec-compliant response
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+  }
+  if (data.refresh_token) {
+    localStorage.setItem('refresh_token', data.refresh_token);
+  }
+
+  return data;
 }
+
+/**
+ * Exchange a refresh token for a new token pair.
+ * POST /auth/refresh → { refresh_token }
+ * Response: { access_token, refresh_token, token_type, expires_in }
+ */
+export async function refreshToken(refreshTokenValue) {
+  const payload = { refresh_token: refreshTokenValue };
+  const response = await axios.post(`${API_BASE_URL}/auth/refresh`, payload);
+  const data = response.data;
+
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+  }
+  if (data.refresh_token) {
+    localStorage.setItem('refresh_token', data.refresh_token);
+  }
+
+  return data;
+}
+
 export async function logout() {
-  const response = await axios.get(`${API_BASE_URL}/auth/logout`).catch((error) => {
-    console.log("Error during logout: ", error)
-  }).finally(() => {
-    localStorage.clear();
-    // router.push('/');
-    window.location.href = '/';
+  await axios.get(`${API_BASE_URL}/auth/logout`).catch((error) => {
+    console.log('Error during logout:', error);
   });
-  console.log("Logout: ", response);
+  localStorage.clear();
+  window.location.href = '/';
 }

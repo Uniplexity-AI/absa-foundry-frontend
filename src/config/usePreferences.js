@@ -19,15 +19,6 @@ export function usePreferences() {
     const isLoading = ref(false);
     const error = ref(null);
 
-    const getTenantId = () => {
-        try {
-            const { getTenantId: fetchId } = decodeJWT();
-            return fetchId?.();
-        } catch (e) {
-            return null;
-        }
-    };
-
     const applyBranding = () => {
         const root = document.documentElement;
         root.style.setProperty('--brand-primary', preferences.primaryColor);
@@ -41,13 +32,10 @@ export function usePreferences() {
     };
 
     const fetchPreferences = async () => {
-        const tenantId = getTenantId();
-        if (!tenantId) return;
-
         isLoading.value = true;
         try {
             // Try local storage first for speed
-            const cached = localStorage.getItem(`ub_prefs_${tenantId}`);
+            const cached = localStorage.getItem('ub_prefs');
             if (cached) {
                 const parsed = JSON.parse(cached);
                 Object.assign(preferences, parsed);
@@ -59,12 +47,12 @@ export function usePreferences() {
                 return;
             }
 
-            const res = await fetch(`${API_BASE_URL}/preferences/?tenant_id=${tenantId}`);
+            const res = await fetch(`${API_BASE_URL}/preferences/`);
             if (res.ok) {
                 const data = await res.json();
                 if (data.preferences) {
                     Object.assign(preferences, data.preferences);
-                    localStorage.setItem(`ub_prefs_${tenantId}`, JSON.stringify(data.preferences));
+                    localStorage.setItem('ub_prefs', JSON.stringify(data.preferences));
                     applyBranding();
                 }
             }
@@ -78,19 +66,16 @@ export function usePreferences() {
     };
 
     const savePreferences = async (newPrefs) => {
-        const tenantId = getTenantId();
-        if (!tenantId) return { success: false, error: 'No tenant ID' };
-
         isLoading.value = true;
         try {
             if (DEV_BYPASS) {
                 Object.assign(preferences, newPrefs, { isLoaded: true });
-                localStorage.setItem(`ub_prefs_${tenantId}`, JSON.stringify(preferences));
+                localStorage.setItem('ub_prefs', JSON.stringify(preferences));
                 applyBranding();
                 return { success: true };
             }
 
-            const res = await fetch(`${API_BASE_URL}/preferences/?tenant_id=${tenantId}`, {
+            const res = await fetch(`${API_BASE_URL}/preferences/`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ preferences: newPrefs })
@@ -99,7 +84,7 @@ export function usePreferences() {
             if (res.ok) {
                 const data = await res.json();
                 Object.assign(preferences, data.preferences);
-                localStorage.setItem(`ub_prefs_${tenantId}`, JSON.stringify(data.preferences));
+                localStorage.setItem('ub_prefs', JSON.stringify(data.preferences));
                 applyBranding();
                 return { success: true };
             } else {

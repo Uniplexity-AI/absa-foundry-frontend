@@ -72,10 +72,10 @@ export async function scheduleEmail(emailData) {
  * @param {number} skip - Number of emails to skip
  * @returns {Promise<Object>} List of emails and total count
  */
-export async function getCRMEmails(tenantId, folder = 'all', linkedRecordId = null, limit = 50, skip = 0) {
+export async function getCRMEmails(folder = 'all', linkedRecordId = null, limit = 50, skip = 0) {
   try {
     const token = localStorage.getItem('token');
-    let url = `${API_BASE_URL}/crm/emails/list?tenant_id=${tenantId}&folder=${folder}&limit=${limit}&skip=${skip}`;
+    let url = `${API_BASE_URL}/crm/emails/list?folder=${folder}&limit=${limit}&skip=${skip}`;
 
     if (linkedRecordId) {
       url += `&linked_record_id=${linkedRecordId}`;
@@ -104,10 +104,10 @@ export async function getCRMEmails(tenantId, folder = 'all', linkedRecordId = nu
  * @param {string} userEmail - Optional: Filter by user email
  * @returns {Promise<Object>} Email statistics
  */
-export async function getEmailStats(tenantId, userEmail = null) {
+export async function getEmailStats(userEmail = null) {
   try {
     const token = localStorage.getItem('token');
-    let url = `${API_BASE_URL}/crm/emails/stats?tenant_id=${tenantId}`;
+    let url = `${API_BASE_URL}/crm/emails/stats`;
 
     if (userEmail) {
       url += `&user_email=${userEmail}`;

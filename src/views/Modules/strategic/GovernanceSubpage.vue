@@ -356,8 +356,7 @@ import { decodeJWT } from '@/services/decodeJWT.js'
 import StrategicNavigation from './components/StrategicNavigation.vue'
 
 const router = useRouter()
-const { getTenantId } = decodeJWT()
-const tenantId = getTenantId()
+const tenantId = 'default'
 const isLoading = ref(false)
 
 const activeTab = ref('governance')

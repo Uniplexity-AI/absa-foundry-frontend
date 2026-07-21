@@ -24,28 +24,61 @@ apiClient.interceptors.request.use(config => {
 
 
 export default {
+  /**
+   * POST /auth/login — API Gateway spec
+   * Body: { username, password }
+   * Response: { access_token, refresh_token, token_type, expires_in }
+   */
   async login(credentials) {
     try {
-      const response = await axios.post(`${API_URL}/login`, credentials, { withCredentials: true })
+      const response = await axios.post(`${API_URL}/login`, {
+        username: credentials.username || credentials.email,
+        password: credentials.password,
+      }, { withCredentials: true });
 
-      if (response.data && response.data.access_token) {
-        const email = response.data.email
-        const access_token = response.data.access_token
-        localStorage.setItem('email', email)
-        localStorage.setItem('userEmail', email)
-        localStorage.setItem('access_token', access_token)
+      const data = response.data;
 
-        // Call the endpoint to set the cookie
-        await axios.post(
-          `${API_URL}/set-cookie-token`,
-          { token: access_token },
-          { withCredentials: true }
-        )
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('token', data.access_token);
+      }
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
       }
 
-      return response.data
+      return data;
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Login failed')
+      throw new Error(error.response?.data?.detail || 'Login failed');
+    }
+  },
+
+  /**
+   * POST /auth/refresh — API Gateway spec
+   * Body: { refresh_token }
+   * Response: { access_token, refresh_token, token_type, expires_in }
+   */
+  async refreshToken(refreshTokenValue) {
+    try {
+      const response = await axios.post(`${API_URL}/refresh`, {
+        refresh_token: refreshTokenValue,
+      }, { withCredentials: true });
+
+      const data = response.data;
+
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('token', data.access_token);
+      }
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+      }
+
+      return data;
+    } catch (error) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
+      throw new Error(error.response?.data?.detail || 'Token refresh failed');
     }
   },
 

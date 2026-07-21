@@ -806,9 +806,8 @@ import StrategicNavigation from './components/StrategicNavigation.vue'
 const router = useRouter()
 const lastUpdated = ref('3 min ago')
 
-// Get tenant ID from JWT
-const jwtHelper = decodeJWT()
-const tenantId = ref(jwtHelper.getTenantId())
+// Tenant context removed
+const tenantId = ref('default')
 
 // Loading states
 const isLoadingAnalysis = ref(false)

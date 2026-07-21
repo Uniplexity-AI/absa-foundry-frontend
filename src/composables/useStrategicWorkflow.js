@@ -21,12 +21,9 @@ if (persisted) {
  * This is called on page load so the dashboard shows data
  * even if localStorage is empty (new browser, cleared cache, etc.).
  */
-export async function fetchSavedOverview(tenantId) {
-  if (!tenantId) return null
+export async function fetchSavedOverview() {
   try {
-    const response = await axios.get(`${API_BASE_URL}/strategic/strategic/get-overview`, {
-      params: { tenant_id: tenantId }
-    })
+    const response = await axios.get(`${API_BASE_URL}/strategic/strategic/get-overview`)
     const data = response.data
     // Only use if it has real data (not a "no_data" response)
     if (data && data.status !== 'no_data' && data.status !== 'error') {

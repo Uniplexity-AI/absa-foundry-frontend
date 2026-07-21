@@ -215,9 +215,8 @@ router.beforeEach(async (to, from, next) => {
     return next({ path: '/dashboard/home', query: cleanQuery, replace: true });
   }
 
-  const { getTenantId, getUserRole } = decodeJWT();
+  const { getUserRole } = decodeJWT();
   const token = localStorage.getItem('token');
-  const tenantId = getTenantId();
   const role = getUserRole();
 
   // 1. Authentication Check

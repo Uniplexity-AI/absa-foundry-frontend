@@ -38,17 +38,7 @@ export function decodeJWT() {
     }
   }
 
-  const getTenantId = () => {
-    const decoded = decodeToken()
-    const tenantId = decoded?.tenant_id || null
 
-    // If no tenant_id in token, log a warning
-    if (!tenantId) {
-      console.warn('No tenant_id found in JWT token. Decoded token:', decoded)
-    }
-
-    return tenantId
-  }
 
   const getUserRole = () => {
     const decoded = decodeToken()
@@ -65,42 +55,34 @@ export function decodeJWT() {
     return decoded?.name || null
   }
 
-  const getUserFullname = () => getUserName()
 
   const getUserId = () => {
     const decoded = decodeToken()
     return decoded?.id || decoded?.user_id || decoded?.sub || null
   }
 
-  const getCompanyName = () => {
-    const decoded = decodeToken()
-    const company =
-      decoded?.company_name ||
-      decoded?.companyName ||
-      decoded?.business_name ||
-      decoded?.businessName ||
-      decoded?.trading_name ||
-      decoded?.tradingName ||
-      decoded?.company ||
-      null
+  
 
-    if (company) {
+  const logout = async () => {
+    // Revoke token on backend before clearing locally
+    const token = localStorage.getItem('token')
+    if (token) {
       try {
-        localStorage.setItem('company_name', company)
-      } catch {
-        // ignore storage errors
+        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://100.82.12.85:8080'}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+      } catch (e) {
+        console.warn('Backend logout failed, clearing locally', e)
       }
     }
-
-    return company
-  }
-
-  const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user_id')
     localStorage.removeItem('email')
     localStorage.removeItem('role')
-    localStorage.removeItem('company_name')
     localStorage.removeItem('branches')
     localStorage.removeItem('selected_branch')
 
@@ -166,13 +148,10 @@ export function decodeJWT() {
   return {
     getToken,
     decodeToken,
-    getTenantId,
     getUserRole,
     getUserEmail,
     getUserName,
-    getUserFullname,
     getUserId,
-    getCompanyName,
     getBranchId,
     logout,
     setBranches,

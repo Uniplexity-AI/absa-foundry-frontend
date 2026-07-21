@@ -13,7 +13,6 @@ import { availableModules } from '@/config/moduleCards.js';
 // "Fully implement state management" often implies moving logic out of .vue.
 
 export function useUserManagement() {
-    const { getTenantId } = decodeJWT();
 
     // --- State ---
     const users = ref([]);
@@ -62,14 +61,9 @@ export function useUserManagement() {
 
     // 1. Users Management
     const fetchUsers = async () => {
-        const tenantId = getTenantId();
-        if (!tenantId) return;
-
         loading.value.users = true;
         try {
-            // Use existing API wrapper
-            // Note: owners_api.js getUsers returns res.data
-            const data = await getUsers(tenantId);
+            const data = await getUsers();
             users.value = Array.isArray(data) ? data : [];
         } catch (err) {
             setError(err);
@@ -79,23 +73,10 @@ export function useUserManagement() {
     };
 
     const addUser = async (userData) => {
-        const tenantId = getTenantId();
-        if (!tenantId) return false;
-
         loading.value.action = true;
         clearMessages();
         try {
-            // The component used fetch('/users/add'), owners_api uses axios post '/users/'
-            // We should match the endpoint used in the component if they differ.
-            // Component: fetch(`${API_BASE_URL}/users/add`, body: { tenant_id, ...userData })
-            // owners_api: axios.post(`${BASE_URL}/users/`, data, params: { tenant_id })
-
-            // It seems the component is using a specific /add endpoint. 
-            // I should stick to the component's working endpoint pattern or check if owners_api is aligned.
-            // Safest is to replicate the component's successful calls logic here.
-
             const payload = {
-                tenant_id: tenantId,
                 ...userData
             };
 
@@ -124,15 +105,11 @@ export function useUserManagement() {
     };
 
     const editUser = async (userData) => {
-        const tenantId = getTenantId();
-        if (!tenantId) return false;
-
         loading.value.action = true;
         clearMessages();
 
         try {
             const payload = {
-                tenant_id: tenantId,
                 ...userData
             };
 
@@ -159,11 +136,10 @@ export function useUserManagement() {
     };
 
     const removeUser = async (email) => {
-        const tenantId = getTenantId();
         loading.value.action = true;
         clearMessages();
         try {
-            const res = await fetch(`${API_BASE_URL}/users/remove?tenant_id=${encodeURIComponent(tenantId)}&email=${encodeURIComponent(email)}`, {
+            const res = await fetch(`${API_BASE_URL}/users/remove?email=${encodeURIComponent(email)}`, {
                 method: 'DELETE'
             });
 
@@ -186,12 +162,9 @@ export function useUserManagement() {
 
     // 2. Branches Management
     const fetchBranches = async () => {
-        const tenantId = getTenantId();
-        if (!tenantId) return;
-
         loading.value.branches = true;
         try {
-            const res = await fetch(`${API_BASE_URL}/subaccounts/branches/list?tenant_id=${tenantId}`);
+            const res = await fetch(`${API_BASE_URL}/subaccounts/branches/list`);
             if (res.ok) {
                 const data = await res.json();
                 branches.value = Array.isArray(data) ? data : [];
@@ -205,13 +178,11 @@ export function useUserManagement() {
     };
 
     const addBranch = async (branchData) => {
-        const tenantId = getTenantId();
         loading.value.action = true;
         clearMessages();
         try {
             const payload = {
-                ...branchData,
-                tenant_id: tenantId
+                ...branchData
             };
 
             const res = await fetch(`${API_BASE_URL}/subaccounts/branches`, {
@@ -237,11 +208,10 @@ export function useUserManagement() {
     };
 
     const removeBranch = async (branchId) => {
-        const tenantId = getTenantId();
         loading.value.action = true;
         clearMessages();
         try {
-            const res = await fetch(`${API_BASE_URL}/subaccounts/branches/${branchId}?tenant_id=${tenantId}`, {
+            const res = await fetch(`${API_BASE_URL}/subaccounts/branches/${branchId}`, {
                 method: 'DELETE'
             });
             if (!res.ok) throw new Error('Failed to delete branch');

@@ -63,7 +63,6 @@ export const PERMISSION_ENTITIES = [
   { id: 'allshops', name: 'Users', icon: 'fas fa-users-cog' },
   { id: 'delivery-tickets', name: 'Delivery Tickets', icon: 'fas fa-truck-loading' },
   { id: 'strategic-management', name: 'Executive Module', icon: 'fas fa-chess' },
-  { id: 'microfinance', name: 'Microfinance', icon: 'fas fa-university' },
   { id: 'finance', name: 'Finance Dashboard', icon: 'fas fa-wallet' },
   { id: 'hr-dashboard', name: 'HR Dashboard', icon: 'fas fa-users' },
   { id: 'image-capture-standalone', name: 'Image Capture - Text Scanner', icon: 'fas fa-camera' },
@@ -364,7 +363,6 @@ export const ORGANIZATION_TYPES = [
   { id: 'undp', name: 'UNDP', icon: 'fas fa-globe' },
   { id: 'ngo', name: 'NGO', icon: 'fas fa-hands-helping' },
   { id: 'government', name: 'Government Agency', icon: 'fas fa-building-columns' },
-  { id: 'microfinance', name: 'Microfinance Institution', icon: 'fas fa-piggy-bank' },
   { id: 'cooperative', name: 'Cooperative', icon: 'fas fa-people-group' },
   { id: 'other', name: 'Other', icon: 'fas fa-ellipsis-h' }
 ];

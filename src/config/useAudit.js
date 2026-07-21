@@ -17,7 +17,7 @@ import { API_BASE_URL } from '@/services/api';
 import { decodeJWT } from '@/services/decodeJWT';
 
 export function useAudit() {
-  const { getToken, getUserEmail, getUserName, getUserRole, getTenantId } = decodeJWT();
+  const { getToken, getUserEmail, getUserName, getUserRole } = decodeJWT();
 
   /**
    * Resolve the active operator role at call time.
@@ -42,14 +42,7 @@ export function useAudit() {
    */
   async function logAudit(action, module, details = {}) {
     try {
-      const tenantId = getTenantId();
-      if (!tenantId) {
-        console.warn('[Audit] Skipping log — no tenant_id available');
-        return;
-      }
-
       const payload = {
-        tenant_id: tenantId,
         user_email: getUserEmail(),
         user_name: getUserName(),
         role: _resolveRole(),

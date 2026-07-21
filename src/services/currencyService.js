@@ -42,46 +42,43 @@ class CurrencyService {
 
   async initialize(tenantId) {
     try {
-      if (!tenantId) {
-        // No tenant provided: attempt to load global settings from localStorage
-        const globalKey = 'currency_settings_global';
-        const storedGlobal = localStorage.getItem(globalKey);
-        if (storedGlobal) {
-          try {
-            const parsedGlobal = JSON.parse(storedGlobal);
-            this.updateSettings(parsedGlobal);
-            this.initialized = true;
-            return;
-          } catch (e) {
-            // invalid global payload, clear it
-            localStorage.removeItem(globalKey);
-          }
-        }
-
-        // no tenant and no global settings - keep defaults
-        this.initialized = true;
-        return;
-      }
-
-      // tenantId present: try to load from backend
-      const response = await fetch(`${this.API_BASE_URL}/currency/currency-settings?tenant_id=${tenantId}`);
-      if (response.ok) {
-        const result = await response.json();
-        if (result.currency_settings) {
-          this.updateSettings(result.currency_settings);
+      // Try to load from localStorage first
+      const globalKey = 'currency_settings_global';
+      const storedGlobal = localStorage.getItem(globalKey);
+      if (storedGlobal) {
+        try {
+          const parsedGlobal = JSON.parse(storedGlobal);
+          this.updateSettings(parsedGlobal);
           this.initialized = true;
           return;
+        } catch (e) {
+          localStorage.removeItem(globalKey);
         }
       }
 
-      // Fallback to tenant-specific localStorage
-      const stored = localStorage.getItem(`currency_settings_${tenantId}`);
+      // Try to load from backend
+      try {
+        const response = await fetch(`${this.API_BASE_URL}/currency/currency-settings`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.currency_settings) {
+            this.updateSettings(result.currency_settings);
+            this.initialized = true;
+            return;
+          }
+        }
+      } catch (e) {
+        // Backend unavailable, continue with defaults
+      }
+
+      // Fallback to localStorage
+      const stored = localStorage.getItem('currency_settings');
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
           this.updateSettings(parsed);
         } catch (e) {
-          localStorage.removeItem(`currency_settings_${tenantId}`);
+          localStorage.removeItem('currency_settings');
         }
       }
 

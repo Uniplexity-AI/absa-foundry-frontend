@@ -114,45 +114,16 @@ const route = router.currentRoute;
 const showInstallToast = ref(false);
 let autoHideTimer = null;
 
-// --- MFE modal overlay (covers sidebar when microfinance modal opens) ---
-const isMfeModalOpen = ref(false);
-const mfePortalLink = ref(null);
-const mfeCopied = ref(false);
-
-const copyMfeLink = async () => {
-  try {
-    await navigator.clipboard.writeText(mfePortalLink.value);
-  } catch {
-    const ta = document.createElement('textarea');
-    ta.value = mfePortalLink.value;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
-  }
-  mfeCopied.value = true;
-  setTimeout(() => (mfeCopied.value = false), 2000);
-};
-
-const handleMfeMessage = (e) => {
-  if (e.data?.type === 'MFE_MODAL_OPEN')  isMfeModalOpen.value = true;
-  if (e.data?.type === 'MFE_MODAL_CLOSE') { isMfeModalOpen.value = false; mfePortalLink.value = null; }
-  if (e.data?.type === 'MFE_SHOW_PORTAL_LINK') {
-    mfePortalLink.value = e.data.link;
-    isMfeModalOpen.value = true;  // show backdrop
-  }
-};
-window.addEventListener('message', handleMfeMessage);
 
 // Session checking function
 const checkAndRedirectIfAuthenticated = () => {
   try {
-    const { getUserEmail, getTenantId, getUserRole } = decodeJWT();
+    const { getUserEmail, getUserRole } = decodeJWT();
     const userEmail = getUserEmail?.();
-    const tenantId = getTenantId?.();
     const userRole = getUserRole?.();
     
     // Check if user has valid session data
-    if (userEmail && tenantId && userRole) {
+    if (userEmail && userRole) {
       // Check if we're currently on landing page or login/signup pages
       const currentPath = route.value.path;
       const authPages = ['/', '/login', '/signup', '/signup-legacy'];
@@ -180,14 +151,10 @@ onMounted(async () => {
   // Offline infrastructure removed - operating in online-only mode
   // IndexedDB and offline sync manager initialization removed
 
-  // Initialize currency service with tenant settings on app startup
+  // Initialize currency service on app startup
   try {
-    const { getTenantId } = decodeJWT();
-    const tenantId = getTenantId?.();
-    if (tenantId) {
-      await currencyService.initialize(tenantId);
-      console.log('Currency service initialized for tenant:', tenantId);
-    }
+    await currencyService.initialize();
+    console.log('Currency service initialized');
   } catch (error) {
     console.warn('Failed to initialize currency service:', error);
   }
@@ -233,14 +200,7 @@ watch(route, (newRoute) => {
   checkAndRedirectIfAuthenticated();
 });
 
-// Toggle global blur on shell elements when MFE modal opens
-watch(isMfeModalOpen, (val) => {
-  if (val) {
-    document.body.classList.add('scoped-modal-open');
-  } else {
-    document.body.classList.remove('scoped-modal-open');
-  }
-});
+
 
 onUnmounted(() => {
   clearAutoHideTimer();
@@ -262,12 +222,7 @@ const clearAutoHideTimer = () => {
   }
 }
 
-// <<<<<<< Sepo
-// const cancelInstall = () => {
-//   showInstallButton.value = false
-//   installPromptEvent = null
-// }
-// =======
+
 const installPWA = async () => {
   clearAutoHideTimer();
   const success = await pwaManager.install();

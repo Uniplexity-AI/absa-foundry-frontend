@@ -70,6 +70,11 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           <span>Support</span>
         </a>
+
+        <button class="absa-nav-item absa-nav-item--bottom" @click="handleLogout" title="Logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
 
@@ -107,11 +112,13 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
 import API_BASE_URL from '@/services/api'
 
+const router = useRouter()
 const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
 
 // ── Sidebar Collapse State ──
@@ -120,6 +127,27 @@ const collapsed = ref(false)
 function toggleSidebar() {
   collapsed.value = !collapsed.value
   localStorage.setItem('absa_sidebar_collapsed', collapsed.value ? '1' : '0')
+}
+
+async function handleLogout() {
+  try {
+    const token = localStorage.getItem('token')
+    if (token) {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+  } catch (e) {
+    console.warn('Backend logout failed, clearing locally', e)
+  }
+  // Clear all auth data
+  ;['token','refresh_token','user_id','email','role','userName','company_name','branches','selected_branch']
+    .forEach(k => localStorage.removeItem(k))
+  router.push('/login')
 }
 
 // Restore saved preference on mount
@@ -187,10 +215,8 @@ const visibleModules = computed(() => {
 async function fetchSubscribedModules() {
   try {
     await initializeRBAC()
-    const tenantId = decodeJWT().getTenantId?.()
-    if (!tenantId) return
 
-    const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules?tenant_id=${tenantId}`)
+    const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules`)
     if (!res.ok) return
     const data = await res.json()
 

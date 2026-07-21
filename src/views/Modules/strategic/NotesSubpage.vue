@@ -220,7 +220,7 @@ watch(searchQuery, () => {
 })
 
 const jwtHelper = decodeJWT()
-const tenantId = ref(jwtHelper.getTenantId())
+const tenantId = ref('default')
 
 const openAddNoteModal = () => {
   isEditing.value = false

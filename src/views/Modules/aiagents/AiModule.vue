@@ -546,7 +546,7 @@ import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Width
 import ChatSidebar from './components/ChatSidebar.vue';
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 
-const { getTenantId, getUserRole, getUserName, getCompanyName, getUserEmail } = decodeJWT();
+const { getUserRole, getUserName, getCompanyName, getUserEmail } = decodeJWT();
 
 /**
  * Custom Ollama Client to avoid Node.js dependencies during build
@@ -732,7 +732,6 @@ function parseDemoActions(rawText) {
 
 useActivityTracker({
   userId: getUserEmail(),
-  tenantId: getTenantId(),
   module: 'AI Module'
 });
 // State
@@ -1087,14 +1086,12 @@ const sendMessage = async () => {
     if (!localStorage.getItem('thread_id')) localStorage.setItem('thread_id', threadId);
 
     // --- Online Logic ---
-    const tenantId = getTenantId();
     const role = getUserRole();
     const companyName = getCompanyName();
     const userName = getUserName();
     
     // Construct query properly. Only include context tags if values exist.
     let contextPrefix = "";
-    if (tenantId) contextPrefix += `[tenant_id: ${tenantId}] `;
     if (role) contextPrefix += `[role: ${role}] `;
     if (companyName) contextPrefix += `[company_name: ${companyName}] `;
     if (userName) contextPrefix += `[user_name: ${userName}] `;

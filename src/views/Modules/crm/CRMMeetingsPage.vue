@@ -609,7 +609,7 @@ import {
 } from 'lucide-vue-next';
 
 const {
-  getUserEmail, getTenantId, activeTab, moduleLoading, meetingStats, meetingView, meetingFilter,
+  getUserEmail, activeTab, moduleLoading, meetingStats, meetingView, meetingFilter,
   showMeetingModal, filteredMeetings, openNewMeeting, openMeetingDetail, editMeeting,
   completeMeetingAction, deleteMeeting, crmFormatDate, formatTime,
   currentMonthYear, calendarDays, weekDays, previousMonth, nextMonth, openDayMeetings,

@@ -33,7 +33,7 @@
 
           <!-- Divider -->
           <div class="absa-login__divider">
-            <span class="absa-login__divider-text">or continue with email</span>
+            <span class="absa-login__divider-text">or continue with credentials</span>
           </div>
 
           <!-- Error Message -->
@@ -58,18 +58,19 @@
           </div>
 
           <form class="absa-login__form" @submit.prevent="handleSubmit">
-            <!-- Email -->
+            <!-- Email or Username -->
             <div class="absa-field" :class="{ 'absa-field--error': errors.email }">
-              <label for="email" class="absa-field__label">Email Address</label>
+              <label for="email" class="absa-field__label">Email or Username</label>
               <div class="absa-field__input-wrap">
                 <Mail class="absa-field__icon" />
                 <input
                   id="email"
                   v-model="formData.email"
-                  type="email"
+                  type="text"
                   required
                   class="absa-field__input"
-                  placeholder="user@domain.com"
+                  placeholder="Enter email or username"
+                  autocomplete="username"
                 />
               </div>
               <p v-if="errors.email" class="absa-field__error">{{ errors.email }}</p>
@@ -200,7 +201,7 @@ import {
 } from 'lucide-vue-next'
 
 import axios from 'axios'
-import { login, API_BASE_URL, MICRO_FINANCE_URL } from '@/services/api'
+import { login, API_BASE_URL } from '@/services/api'
 import { GoogleLogin } from 'vue3-google-login'
 import { decodeJWT } from '@/services/decodeJWT'
 
@@ -262,7 +263,6 @@ export default defineComponent({
         
         localStorage.setItem('token', data.access_token)
         localStorage.setItem('user_id', data.user_id)
-        localStorage.setItem('tenant_id', data.tenant_id)
         localStorage.setItem('email', data.email)
         localStorage.setItem('userName', data.name)
         localStorage.setItem('role', data.role)
@@ -285,26 +285,7 @@ export default defineComponent({
             router.push(intended)
             return
           }
-          switch (data.role?.toLowerCase()) {
-            case 'cashier':
-            case 'attendant':
-            case 'manager':
-            case 'admin':
-            case 'owner':
-              router.push('/dashboard/home')
-              break
-            case 'sub_account':
-              router.push('/dashboard/crm')
-              break
-            case 'supervisor':
-              router.push('/supervisor/dashboard')
-              break
-            case 'client':
-              window.location.href = `${MICRO_FINANCE_URL}/client/dashboard?tenant_id=${data.tenant_id}&token=${data.access_token}`;
-              break
-            default:
-              router.push('/')
-          }
+          router.push('/dashboard/home')
         }, 1000)
 
       } catch (error) {
@@ -321,11 +302,8 @@ export default defineComponent({
       errors.email = ''
       errors.password = ''
 
-      if (!formData.email) {
-        errors.email = 'Email is required'
-        isValid = false
-      } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-        errors.email = 'Invalid email format'
+      if (!formData.email.trim()) {
+        errors.email = 'Email or username is required'
         isValid = false
       }
 
@@ -345,14 +323,18 @@ export default defineComponent({
       successMessage.value = ''
 
       try {
+        // POST /auth/login — API Gateway expects { username, password }
         const response = await login(formData.email, formData.password)
 
-        localStorage.setItem('user_id', response.user_id)
-        localStorage.setItem('token', response.access_token)
-        localStorage.setItem('role', response.role)
-        localStorage.setItem('email', response.email)
-        localStorage.setItem('company_name', response.company_name)
-        localStorage.setItem('tenant_id', response.tenant_id)
+        // Standard response: { access_token, refresh_token, token_type, expires_in }
+        // The login() function in services/api.js already stores token + refresh_token
+        // Additional user metadata from the JWT or extended response:
+        if (response.user_id) localStorage.setItem('user_id', response.user_id)
+        if (response.role) localStorage.setItem('role', response.role)
+        if (response.email) localStorage.setItem('email', response.email)
+        if (response.company_name) localStorage.setItem('company_name', response.company_name)
+        if (response.tenant_id) localStorage.setItem('tenant_id', response.tenant_id)
+        if (response.name) localStorage.setItem('userName', response.name)
         
         if (response.role === 'sub_account') {
           localStorage.setItem('active_subaccount_id', response.user_id)
@@ -360,7 +342,9 @@ export default defineComponent({
           localStorage.setItem('active_subaccount_name', response.name)
         }
 
-        await fetchAndStoreBranches(response.tenant_id)
+        if (response.tenant_id) {
+          await fetchAndStoreBranches(response.tenant_id)
+        }
 
         successMessage.value = 'Login successful!'
 
@@ -371,40 +355,13 @@ export default defineComponent({
             router.push(intended)
             return
           }
-          switch (response.role?.toLowerCase()) {
-            case 'cashier':
-              router.push('/dashboard/home')
-              break
-            case 'attendant':
-              router.push('/dashboard/home')
-              break
-            case 'manager':
-              router.push('/dashboard/home')
-              break
-            case 'admin':
-              router.push('/dashboard/home')
-              break
-            case 'owner':
-              router.push('/dashboard/home')
-              break
-            case 'sub_account':
-              router.push('/dashboard/crm')
-              break
-            case 'supervisor':
-              router.push('/supervisor/dashboard')
-              break
-            case 'client':
-              window.location.href = `${MICRO_FINANCE_URL}/client/dashboard?tenant_id=${response.tenant_id}&token=${response.access_token}`;
-              break
-
-            default:
-              router.push('/')
-          }
+          router.push('/dashboard/home')
         }, 1000)
+
       } catch (error) {
         console.error('Login error:', error)
         // Standardize error message for security and clarity
-        errorMessage.value = 'Login failed. Invalid email or password.'
+        errorMessage.value = 'Login failed. Invalid credentials.'
         errors.password = 'Invalid credentials'
       } finally {
         loading.value = false

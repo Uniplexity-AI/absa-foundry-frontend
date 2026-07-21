@@ -633,12 +633,10 @@ import { decodeJWT } from '@/services/decodeJWT.js'
 import StrategicNavigation from './components/StrategicNavigation.vue'
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 
-const { getTenantId } = decodeJWT();
 const { getUserEmail } = decodeJWT();
 // Use Activity Tracker
 useActivityTracker({
   userId: getUserEmail(),
-  tenantId: getTenantId(),
   module: 'hr-dashboard'
 });
 
@@ -735,15 +733,12 @@ const isUploading = ref(false)
 const uploadHistory = ref([])
 const fileInput = ref(null)
 
-const tenantId = ref('') 
+const tenantId = ref('default')
 const uploadedData = ref(null)
 
 const fetchUploadHistory = async () => {
-    if (!tenantId.value) return
     try {
-        const response = await axios.get(`${API_BASE_URL}/strategy/analysis/documents`, {
-            params: { tenant_id: tenantId.value }
-        })
+        const response = await axios.get(`${API_BASE_URL}/strategy/analysis/documents`)
         uploadHistory.value = response.data
     } catch (error) {
         console.error('Error fetching upload history:', error)
@@ -751,12 +746,7 @@ const fetchUploadHistory = async () => {
 }
 
 const loadUploadHistory = () => {
-    const jwtHelper = decodeJWT();
-    const jwtTenantId = jwtHelper.getTenantId();
-    if(jwtTenantId) {
-       tenantId.value = jwtTenantId
-       fetchUploadHistory()
-    }
+    fetchUploadHistory()
 }
 
 
@@ -845,7 +835,7 @@ const formatDate = (timestamp) => {
 }
 
 const handleUpload = async () => {
-  if (!selectedDepartment.value || selectedFiles.value.length === 0 || !tenantId.value) return
+  if (!selectedDepartment.value || selectedFiles.value.length === 0) return
 
   isUploading.value = true
 
@@ -855,7 +845,6 @@ const handleUpload = async () => {
 
     // 2. Send metadata to backend
     const payload = {
-        tenant_id: tenantId.value,
         department: selectedDepartment.value, 
         files: selectedFiles.value.map(f => ({ name: f.name, size: f.size })),
         summary: documentSummary.value,
@@ -892,7 +881,7 @@ const deleteUpload = async (id) => {
   if (confirm('Are you sure you want to delete this upload record?')) {
       try {
           await axios.delete(`${API_BASE_URL}/strategy/analysis/documents/${recordId}`, {
-              params: { tenant_id: tenantId.value }
+              params: { }
           })
           await fetchUploadHistory()
       } catch (error) {
@@ -906,9 +895,7 @@ const deleteUpload = async (id) => {
 }
 
 const handleRunWorkflow = () => {
-  if(tenantId.value){
-     runStrategicWorkflow(tenantId.value, uploadedData.value);
-  }
+     runStrategicWorkflow('default', uploadedData.value);
 }
 
 const parseWorkflowData = (data) => {
@@ -1045,16 +1032,12 @@ onMounted(async () => {
     parseWorkflowData(workflowResult.value)
   } else {
     // No cached data — try to fetch from DB
-    const jwtHelper = decodeJWT()
-    const tid = jwtHelper.getTenantId()
-    if (tid) {
-      tenantId.value = tid
-      console.log('[OverviewSubpage] No cached data, fetching from DB for', tid)
-      const dbData = await fetchSavedOverview(tid)
-      if (dbData) {
-        console.log('[OverviewSubpage] Loaded overview from DB')
-        parseWorkflowData(dbData)
-      }
+
+    console.log('[OverviewSubpage] No cached data, fetching from DB')
+    const dbData = await fetchSavedOverview()
+    if (dbData) {
+      console.log('[OverviewSubpage] Loaded overview from DB')
+      parseWorkflowData(dbData)
     }
   }
 })

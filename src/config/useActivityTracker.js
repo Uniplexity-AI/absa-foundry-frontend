@@ -1,7 +1,7 @@
 import { ref, onMounted, onUnmounted } from "vue"
 import { API_BASE_URL } from "@/services/api.js"
 
-export function useActivityTracker({ userId, tenantId, module }) {
+export function useActivityTracker({ userId, module }) {
   const lastActivity = ref(Date.now())
   let interval = null
 
@@ -25,7 +25,6 @@ export function useActivityTracker({ userId, tenantId, module }) {
           },
           body: JSON.stringify({
             user_id: userId,
-            tenant_id: tenantId,
             module,
             timestamp: new Date().toISOString()
           })

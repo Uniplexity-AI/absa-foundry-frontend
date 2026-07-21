@@ -23,7 +23,7 @@ import {
   UI_CARD_ELEVATION_OPTIONS,
   UI_PATTERN_OPTIONS,
   UI_VISUAL_STYLE_PRESETS,
-  HEALTHCARE_ROLE_IDS,
+ 
   hasPermission as checkPermission,
   hasAnyPermission as checkAnyPermission,
   createEmptyRole,
@@ -32,18 +32,7 @@ import {
   validateRole
 } from '@/config/rbac';
 
-// Healthcare sub-entity keys used as feature flags in healthcare_addons.
-// Must match ALL_HEALTHCARE_ADDONS in SettingsModule.vue.
-const HC_SUB_ENTITY_KEYS = [
-  'patient_registration', 'patient_demographics', 'patient_clinical', 'appointments', 'queue', 'triage',
-  'clinical_emr', 'diagnosis', 'prescriptions', 'prescriptions_controlled', 'procedures',
-  'lab_orders', 'lab_results', 'lab_verify', 'lab_config',
-  'radiology_orders', 'radiology_reporting', 'radiology_images', 'radiology_config',
-  'admissions', 'bed_management', 'nursing_notes', 'nursing_mar', 'nursing_care_plans', 'theatre', 'discharge',
-  'insurance', 'claims', 'billing', 'documents', 'dms_admin',
-  'ai_queries', 'whatsapp_config',
-  'reports_clinical', 'reports_operational', 'reports_financial', 'reports_regulatory', 'audit_logs'
-];
+
 
 // ==================== REACTIVE STATE ====================
 
@@ -64,7 +53,7 @@ const error = ref(null);
 // ==================== COMPOSABLE ====================
 
 export function useRBAC() {
-  const { getTenantId, getUserRole, getUserEmail } = decodeJWT();
+  const { getUserRole, getUserEmail } = decodeJWT();
 
   // ==================== PERMISSION CHECKING ====================
 
@@ -153,15 +142,12 @@ export function useRBAC() {
    * Fetch tenant-specific roles from API
    */
   const fetchRoles = async () => {
-    const tenantId = getTenantId();
-    if (!tenantId) return;
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/roles?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/roles`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -243,9 +229,6 @@ export function useRBAC() {
    * Create a new custom role
    */
   const createRole = async (roleData) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     const validation = validateRole(roleData);
     if (!validation.valid) {
       throw new Error(validation.errors.join(', '));
@@ -256,7 +239,7 @@ export function useRBAC() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/roles?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/roles`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -289,15 +272,12 @@ export function useRBAC() {
    * Update an existing role
    */
   const updateRole = async (roleId, updates) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/roles/${roleId}?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/roles/${roleId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -333,9 +313,6 @@ export function useRBAC() {
    * Delete a custom role (system roles cannot be deleted)
    */
   const deleteRole = async (roleId) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     const role = tenantRoles.value.find(r => r.id === roleId);
     if (role?.id === 'owner') {
       throw new Error('The Owner role cannot be deleted');
@@ -346,7 +323,7 @@ export function useRBAC() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/roles/${roleId}?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/roles/${roleId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -375,15 +352,12 @@ export function useRBAC() {
    * Fetch associated organizations
    */
   const fetchOrganizations = async () => {
-    const tenantId = getTenantId();
-    if (!tenantId) return;
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/organizations?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/organizations`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -405,15 +379,12 @@ export function useRBAC() {
    * Add a new associated organization
    */
   const addOrganization = async (orgData) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/organizations?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/organizations`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -447,15 +418,12 @@ export function useRBAC() {
    * Update an organization
    */
   const updateOrganization = async (orgId, updates) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/organizations/${orgId}?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/organizations/${orgId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -491,15 +459,12 @@ export function useRBAC() {
    * Remove an organization association
    */
   const removeOrganization = async (orgId) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     isLoading.value = true;
     error.value = null;
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/organizations/${orgId}?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/organizations/${orgId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -528,9 +493,6 @@ export function useRBAC() {
    * Fetch UI preferences for tenant
    */
   const fetchUIPreferences = async () => {
-    const tenantId = getTenantId();
-    if (!tenantId) return;
-
     try {
       const cachedPrefs = localStorage.getItem('ub_ui_preferences');
       if (cachedPrefs) {
@@ -541,7 +503,7 @@ export function useRBAC() {
       if (DEV_BYPASS) return;
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/preferences?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/preferences`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -564,9 +526,6 @@ export function useRBAC() {
    * Update UI preferences
    */
   const updateUIPreferences = async (preferences) => {
-    const tenantId = getTenantId();
-    if (!tenantId) throw new Error('Tenant ID not found');
-
     isLoading.value = true;
     error.value = null;
 
@@ -579,7 +538,7 @@ export function useRBAC() {
       }
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/rbac/preferences?tenant_id=${tenantId}`, {
+      const response = await fetch(`${API_BASE_URL}/rbac/preferences`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

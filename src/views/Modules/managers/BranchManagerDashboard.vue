@@ -1,175 +1,193 @@
 <template>
-  <div class="absa-bm-dashboard">
-    <!-- Breadcrumb -->
-    <div class="absa-bm__breadcrumb">
-      <span>Home</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span>Branch Management</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span class="absa-bm__breadcrumb-current">Branch Manager Dashboard</span>
-    </div>
-
-    <!-- Header -->
-    <div class="absa-bm__header">
-      <div>
-        <h1 class="absa-bm__title">Branch Manager Dashboard</h1>
-        <p class="absa-bm__subtitle">{{ currentBranch }} &bull; {{ currentDate }}</p>
+  <div class="absa-bm">
+    <div class="absa-bm-content">
+      <!-- Breadcrumb -->
+      <div class="absa-bm-breadcrumb">
+        <span>Home</span>
+        <svg width="6" height="10" viewBox="0 0 6 10" fill="none"><path d="M1 1l4 4-4 4" stroke="#5d3f3f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="absa-bm-breadcrumb--active">Dashboard</span>
       </div>
-      <div class="absa-bm__header-right">
-        <div class="absa-bm__search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Search RM, customer or account..." class="absa-bm__search-input" />
+
+      <!-- Subtitle -->
+      <div class="absa-bm-subtitle">Ranked 4th of 22 branches</div>
+
+      <!-- Section 1: Top KPIs -->
+      <div class="absa-bm-kpi-grid">
+        <div class="absa-bm-kpi">
+          <div class="absa-bm-kpi__top">
+            <div>
+              <div class="absa-bm-kpi__label">AGGREGATE AT RISK %</div>
+              <div class="absa-bm-kpi__value absa-bm-kpi__value--red">14.2%</div>
+            </div>
+            <div class="absa-bm-kpi__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="absa-bm-kpi__trend">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0l4 5H0z" fill="#4caf50"/></svg>
+            <span class="absa-bm-kpi__trend-up">2.1%</span>
+            <span class="absa-bm-kpi__trend-label">vs last month</span>
+          </div>
+          <div class="absa-bm-kpi__bar">
+            <div class="absa-bm-kpi__bar-fill absa-bm-kpi__bar-fill--red" style="width: 14.2%"></div>
+          </div>
         </div>
-        <div class="absa-bm__user">
-          <div class="absa-bm__avatar">SB</div>
-          <div class="absa-bm__user-info">
-            <span class="absa-bm__user-name">S. Bwalya</span>
-            <span class="absa-bm__user-role">Branch Manager</span>
+
+        <div class="absa-bm-kpi">
+          <div class="absa-bm-kpi__top">
+            <div>
+              <div class="absa-bm-kpi__label">DORMANT ACCOUNTS</div>
+              <div class="absa-bm-kpi__value">328</div>
+            </div>
+            <div class="absa-bm-kpi__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+          </div>
+          <div class="absa-bm-kpi__trend">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M0 0l4 5 4-5H0z" fill="#920021"/></svg>
+            <span class="absa-bm-kpi__trend-down">12 cases</span>
+            <span class="absa-bm-kpi__trend-label">re-activated</span>
+          </div>
+          <div class="absa-bm-kpi__bar">
+            <div class="absa-bm-kpi__bar-fill absa-bm-kpi__bar-fill--dormant" style="width: 45%"></div>
+          </div>
+        </div>
+
+        <div class="absa-bm-kpi">
+          <div class="absa-bm-kpi__top">
+            <div>
+              <div class="absa-bm-kpi__label">MONTHLY CHURN RATE</div>
+              <div class="absa-bm-kpi__value">0.84%</div>
+            </div>
+            <div class="absa-bm-kpi__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+          </div>
+          <div class="absa-bm-kpi__trend">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M0 0l4 5 4-5H0z" fill="#920021"/></svg>
+            <span class="absa-bm-kpi__trend-down">0.12%</span>
+            <span class="absa-bm-kpi__trend-label">well within 1.5% target</span>
+          </div>
+          <div class="absa-bm-kpi__bar">
+            <div class="absa-bm-kpi__bar-fill absa-bm-kpi__bar-fill--churn" style="width: 25%"></div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ═══ Branch KPI Cards ═══ -->
-    <div class="absa-bm__kpi-grid">
-      <div class="absa-metric-bg absa-bm__kpi absa-accent-left-critical">
-        <div class="absa-bm__kpi-header">
-          <span class="absa-bm__kpi-badge">AGGREGATE</span>
-          <div class="absa-bm__kpi-icon absa-bm__kpi-icon--red">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <!-- Section 2: Team Performance Table -->
+      <div class="absa-bm-table-section">
+        <div class="absa-bm-table-section__header">
+          <h3 class="absa-bm-table-section__title">Relationship Manager Performance</h3>
+          <div class="absa-bm-table-section__actions">
+            <button class="absa-bm-btn absa-bm-btn--outline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+              Filter
+            </button>
+            <button class="absa-bm-btn absa-bm-btn--primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Report
+            </button>
           </div>
         </div>
-        <div class="absa-bm__kpi-value absa-bm__kpi-value--critical">14.2%</div>
-        <div class="absa-bm__kpi-label">Aggregate At Risk</div>
-        <div class="absa-bm__kpi-comp">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          +1.8% vs last month
-        </div>
-      </div>
-
-      <div class="absa-metric-bg absa-bm__kpi absa-accent-left-info">
-        <div class="absa-bm__kpi-header">
-          <span class="absa-bm__kpi-badge">DORMANT</span>
-          <div class="absa-bm__kpi-icon absa-bm__kpi-icon--blue">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          </div>
-        </div>
-        <div class="absa-bm__kpi-value">328</div>
-        <div class="absa-bm__kpi-label">Dormant Accounts</div>
-        <div class="absa-bm__kpi-comp absa-bm__kpi-comp--neutral">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Stable across 3 periods
-        </div>
-      </div>
-
-      <div class="absa-metric-bg absa-bm__kpi absa-accent-left-success">
-        <div class="absa-bm__kpi-header">
-          <span class="absa-bm__kpi-badge">CHURN</span>
-          <div class="absa-bm__kpi-icon absa-bm__kpi-icon--green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-        </div>
-        <div class="absa-bm__kpi-value absa-bm__kpi-value--success">0.84%</div>
-        <div class="absa-bm__kpi-label">Monthly Churn Rate</div>
-        <div class="absa-bm__kpi-comp absa-bm__kpi-comp--down">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-          -0.3% vs last month
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ RM Performance Table ═══ -->
-    <div class="absa-bm__section">
-      <div class="absa-bm__section-header">
-        <h2 class="absa-bm__section-title">Relationship Manager Performance</h2>
-        <span class="absa-bm__section-period">{{ currentPeriod }}</span>
-      </div>
-      <div class="absa-bm__table-wrap">
-        <table class="absa-bm__table">
-          <thead class="absa-table-header">
-            <tr>
-              <th>RM Name</th>
-              <th>Portfolio Size</th>
-              <th>At Risk %</th>
-              <th>Actions (Month)</th>
-              <th>Avg Health</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="rm in rmPerformance" :key="rm.name">
-              <td>
-                <div class="absa-bm__rm-cell">
-                  <div class="absa-bm__rm-avatar">{{ rm.initials }}</div>
-                  <span class="absa-bm__rm-name">{{ rm.name }}</span>
-                </div>
-              </td>
-              <td class="absa-bm__table-val">{{ rm.portfolioSize }}</td>
-              <td>
-                <span class="absa-bm__risk-pill" :class="'absa-bm__risk-pill--' + rm.riskClass">{{ rm.atRiskPct }}%</span>
-              </td>
-              <td>
-                <div class="absa-bm__actions-info">
-                  <span class="absa-bm__actions-count">{{ rm.actionsLogged }}</span>
-                  <span class="absa-bm__actions-target">/ {{ rm.actionsTarget }} target</span>
-                </div>
-                <div class="absa-bm__actions-bar">
-                  <div class="absa-bm__actions-fill" :style="{ width: (rm.actionsLogged / rm.actionsTarget * 100) + '%' }"></div>
-                </div>
-              </td>
-              <td>
-                <div class="absa-bm__health">
-                  <div class="absa-bm__health-bar">
-                    <div class="absa-bm__health-fill" :class="'absa-bm__health-fill--' + rm.healthClass" :style="{ width: rm.avgHealth + '%' }"></div>
+        <div class="absa-bm-table-wrap">
+          <table class="absa-bm-table">
+            <thead>
+              <tr>
+                <th>RELATIONSHIP MANAGER</th>
+                <th>PORTFOLIO SIZE</th>
+                <th>AT RISK %</th>
+                <th>ACTIONS LOGGED (MOM)</th>
+                <th>AVG HEALTH SCORE</th>
+                <th class="absa-bm-table__th-center">TREND</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="rm in teamMembers" :key="rm.name">
+                <td>
+                  <div class="absa-bm-table__rm">
+                    <div class="absa-bm-table__divider" :class="'absa-bm-table__divider--' + rm.color"></div>
+                    <div>
+                      <div class="absa-bm-table__rm-name">{{ rm.name }}</div>
+                      <div class="absa-bm-table__rm-dept">{{ rm.dept }}</div>
+                    </div>
                   </div>
-                  <span class="absa-bm__health-val" :class="'absa-bm__health-val--' + rm.healthClass">{{ rm.avgHealth }}</span>
-                </div>
-              </td>
-              <td>
-                <span class="absa-bm__status-pill" :class="'absa-bm__status-pill--' + rm.statusClass">{{ rm.status }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ═══ Bottom Row: Churn Forecast + Segment ═══ -->
-    <div class="absa-bm__bottom-grid">
-      <!-- Churn Forecast Chart -->
-      <div class="absa-chart-container">
-        <div class="absa-bm__chart-header">
-          <h3 class="absa-bm__chart-title">Churn Forecast Prediction</h3>
-          <span class="absa-bm__chart-period">Next 6 Weeks</span>
+                </td>
+                <td class="absa-bm-table__cell">{{ rm.portfolio }}</td>
+                <td>
+                  <span class="absa-bm-table__at-risk" :class="'absa-bm-table__at-risk--' + rm.riskColor">{{ rm.atRisk }}</span>
+                </td>
+                <td class="absa-bm-table__cell">{{ rm.actionsLogged }} <span class="absa-bm-table__target">/ {{ rm.actionsTarget }} target</span></td>
+                <td>
+                  <div class="absa-bm-table__health">
+                    <div class="absa-bm-table__health-bar">
+                      <div class="absa-bm-table__health-fill" :class="'absa-bm-table__health-fill--' + rm.healthColor" :style="{ width: rm.healthScore + '%' }"></div>
+                    </div>
+                    <span class="absa-bm-table__health-val">{{ rm.healthScore }}</span>
+                  </div>
+                </td>
+                <td class="absa-bm-table__td-center">
+                  <div class="absa-bm-table__sparkline">
+                    <svg width="60" height="30" viewBox="0 0 60 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <polyline :points="rm.sparkline" fill="none" :stroke="rm.sparkColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="absa-bm__chart-body">
-          <div class="absa-bm__bar-chart">
-            <div class="absa-bm__bar-item" v-for="bar in churnForecast" :key="bar.week">
-              <div class="absa-bm__bar-val">{{ bar.count }}</div>
-              <div class="absa-bm__bar-wrap">
-                <div class="absa-bm__bar" :style="{ height: (bar.count / maxForecast * 100) + '%' }" :class="bar.count > 5 ? 'absa-bm__bar--critical' : 'absa-bm__bar--warning'"></div>
+      </div>
+
+      <!-- Section 3: Churn Forecast (Bento 3:1) -->
+      <div class="absa-bm-churn-grid">
+        <!-- Main Chart -->
+        <div class="absa-bm-chart">
+          <div class="absa-bm-chart__header">
+            <div>
+              <h3 class="absa-bm-chart__title">Churn Forecast Prediction</h3>
+              <p class="absa-bm-chart__subtitle">Projected customer exits based on transactional AI patterns</p>
+            </div>
+            <div class="absa-bm-chart__toggles">
+              <span class="absa-bm-chart__toggle absa-bm-chart__toggle--active">30 Days</span>
+              <span class="absa-bm-chart__toggle">60 Days</span>
+              <span class="absa-bm-chart__toggle">90 Days</span>
+            </div>
+          </div>
+          <div class="absa-bm-chart__viz">
+            <div class="absa-bm-chart__bars">
+              <div class="absa-bm-chart__bar-col" v-for="(bar, i) in forecastBars" :key="i">
+                <span class="absa-bm-chart__bar-label">{{ bar.value }}</span>
+                <div class="absa-bm-chart__bar" :style="{ height: bar.height + 'px' }">
+                  <div class="absa-bm-chart__bar-fill" :style="{ height: bar.fill + '%' }"></div>
+                </div>
               </div>
-              <div class="absa-bm__bar-label">{{ bar.week }}</div>
+            </div>
+            <div class="absa-bm-chart__axis">
+              <span v-for="wk in weekLabels" :key="wk">{{ wk }}</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Predicted Churn by Segment -->
-      <div class="absa-chart-container">
-        <div class="absa-bm__chart-header">
-          <h3 class="absa-bm__chart-title">Predicted Churn by Segment</h3>
-        </div>
-        <div class="absa-bm__segment-list">
-          <div class="absa-bm__segment-item" v-for="seg in segments" :key="seg.name">
-            <div class="absa-bm__segment-top">
-              <span class="absa-bm__segment-name">{{ seg.name }}</span>
-              <span class="absa-bm__segment-pct" :class="'absa-bm__segment-pct--' + seg.color">{{ seg.pct }}%</span>
+        <!-- AI Insight Panel -->
+        <div class="absa-bm-ai-card">
+          <div class="absa-bm-ai-card__bg"></div>
+          <div class="absa-bm-ai-card__content">
+            <div class="absa-bm-ai-card__heading">PREDICTED CHURN BY<br/>SEGMENT</div>
+            <div class="absa-bm-ai-card__segments">
+              <div class="absa-bm-ai-card__segment" v-for="seg in churnSegments" :key="seg.label">
+                <div class="absa-bm-ai-card__segment-top">
+                  <span class="absa-bm-ai-card__segment-label">{{ seg.label }}</span>
+                  <span class="absa-bm-ai-card__segment-pct">{{ seg.pct }}%</span>
+                </div>
+                <div class="absa-bm-ai-card__segment-bar">
+                  <div class="absa-bm-ai-card__segment-fill" :style="{ width: seg.pct + '%' }"></div>
+                </div>
+              </div>
             </div>
-            <div class="absa-bm__segment-bar">
-              <div class="absa-bm__segment-fill" :class="'absa-bm__segment-fill--' + seg.color" :style="{ width: seg.pct + '%' }"></div>
+            <div class="absa-bm-ai-card__insight">
+              <p class="absa-bm-ai-card__insight-text">"Corporate Plus<br/>accounts show high<br/>sensitivity to interest<br/>rate fluctuations.<br/>Recommended<br/>review of fee<br/>structures."</p>
+              <span class="absa-bm-ai-card__insight-label">AI INSIGHT ENGINE</span>
             </div>
-            <div class="absa-bm__segment-count">{{ seg.customers }} customers at risk</div>
           </div>
         </div>
       </div>
@@ -178,199 +196,728 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
-const currentBranch = ref('Lusaka Main Branch')
-const currentDate = ref(new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }))
-const currentPeriod = ref('July 2026')
-
-const rmPerformance = ref([
-  { name: 'Sarah Dlamini', initials: 'SD', portfolioSize: 312, atRiskPct: 18.2, riskClass: 'high', actionsLogged: 42, actionsTarget: 50, avgHealth: 58, healthClass: 'warning', status: 'Needs Review', statusClass: 'warning' },
-  { name: 'Thabo Cele', initials: 'TC', portfolioSize: 285, atRiskPct: 12.8, riskClass: 'mid', actionsLogged: 38, actionsTarget: 45, avgHealth: 64, healthClass: 'warning', status: 'On Track', statusClass: 'good' },
-  { name: 'Linda Smith', initials: 'LS', portfolioSize: 298, atRiskPct: 8.5, riskClass: 'low', actionsLogged: 31, actionsTarget: 40, avgHealth: 76, healthClass: 'good', status: 'Good', statusClass: 'good' }
+const teamMembers = ref([
+  {
+    name: 'Sarah Dlamini',
+    dept: 'Elite Banking',
+    color: 'red',
+    portfolio: '142 Accounts',
+    atRisk: '18.4%',
+    riskColor: 'high',
+    actionsLogged: '42',
+    actionsTarget: '50',
+    healthScore: 72,
+    healthColor: 'red',
+    sparkColor: '#ae0029',
+    sparkline: '0,25 10,18 20,22 30,10 40,15 50,8'
+  },
+  {
+    name: 'Thabo Cele',
+    dept: 'Commercial Banking',
+    color: 'pink',
+    portfolio: '88 Accounts',
+    atRisk: '9.1%',
+    riskColor: 'medium',
+    actionsLogged: '56',
+    actionsTarget: '45',
+    healthScore: 88,
+    healthColor: 'red',
+    sparkColor: '#ae0029',
+    sparkline: '0,20 10,15 20,18 30,8 40,12 50,5'
+  },
+  {
+    name: 'Linda Smith',
+    dept: 'SME Finance',
+    color: 'grey',
+    portfolio: '210 Accounts',
+    atRisk: '12.5%',
+    riskColor: 'low',
+    actionsLogged: '38',
+    actionsTarget: '40',
+    healthScore: 65,
+    healthColor: 'grey',
+    sparkColor: '#5d3f3f',
+    sparkline: '0,15 10,20 20,12 30,18 40,10 50,14'
+  }
 ])
 
-const churnForecast = ref([
-  { week: 'W01', count: 3 }, { week: 'W02', count: 5 },
-  { week: 'W03', count: 8 }, { week: 'W04', count: 6 },
-  { week: 'W05', count: 4 }, { week: 'W06', count: 2 }
+const forecastBars = ref([
+  { value: '42', height: 195, fill: 80 },
+  { value: '58', height: 225, fill: 70 },
+  { value: '31', height: 135, fill: 90 },
+  { value: '77', height: 270, fill: 60 },
+  { value: '39', height: 165, fill: 85 },
+  { value: '52', height: 210, fill: 75 }
 ])
 
-const maxForecast = computed(() => Math.max(...churnForecast.value.map(b => b.count), 1))
+const weekLabels = ref(['WK 01', 'WK 02', 'WK 03', 'WK 04', 'WK 05', 'WK 06'])
 
-const segments = ref([
-  { name: 'Premium', pct: 12, customers: 24, color: 'critical' },
-  { name: 'Mass Market', pct: 45, customers: 142, color: 'warning' },
-  { name: 'SME', pct: 28, customers: 88, color: 'info' },
-  { name: 'Student/Youth', pct: 15, customers: 74, color: 'success' }
+const churnSegments = ref([
+  { label: 'Premier Banking', pct: 12 },
+  { label: 'Corporate Plus', pct: 45 },
+  { label: 'Retail Flex', pct: 28 },
+  { label: 'Wealth Legacy', pct: 15 }
 ])
 </script>
 
 <style scoped>
-/* ═══ Branch Manager Dashboard ═══ */
-.absa-bm-dashboard { }
-
-.absa-bm__breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 600; color: #9CA3AF;
-  margin-bottom: 14px; font-family: 'Space Mono', monospace;
+.absa-bm {
+  min-height: 100vh;
+  background: #f8f9fa;
 }
 
-.absa-bm__breadcrumb-current { color: #BE0F2C; }
-
-/* Header */
-.absa-bm__header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+.absa-bm-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px;
 }
 
-.absa-bm__title { font-size: 1.5rem; font-weight: 900; color: #111827; margin: 0; letter-spacing: -0.02em; }
-.absa-bm__subtitle { font-size: 0.75rem; color: #9CA3AF; margin: 2px 0 0 0; font-family: 'Space Mono', monospace; }
-
-.absa-bm__header-right { display: flex; align-items: center; gap: 16px; }
-
-.absa-bm__search {
-  display: flex; align-items: center; gap: 8px;
-  background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px;
-  padding: 7px 14px; color: #9CA3AF; width: 320px;
-}
-.absa-bm__search-input { border: none; background: transparent; font-size: 0.75rem; color: #111827; outline: none; width: 100%; font-family: 'Space Mono', monospace; }
-.absa-bm__search-input::placeholder { color: #9CA3AF; }
-
-.absa-bm__user { display: flex; align-items: center; gap: 10px; }
-.absa-bm__avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
-  color: #FFF; font-size: 0.75rem; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-}
-.absa-bm__user-info { display: flex; flex-direction: column; line-height: 1.2; }
-.absa-bm__user-name { font-size: 0.8rem; font-weight: 700; color: #111827; }
-.absa-bm__user-role { font-size: 0.625rem; color: #9CA3AF; font-family: 'Space Mono', monospace; }
-
-/* KPI Cards */
-.absa-bm__kpi-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;
+/* ═══ Breadcrumb ═══ */
+.absa-bm-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.absa-bm__kpi { padding: 20px; }
-.absa-bm__kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.absa-bm__kpi-badge {
-  font-family: 'Space Mono', monospace; font-size: 0.55rem; font-weight: 800;
-  color: #9CA3AF; background: #F3F4F6; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.06em;
+.absa-bm-breadcrumb span {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5d3f3f;
+  letter-spacing: 0.6px;
+  line-height: 16px;
 }
-.absa-bm__kpi-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.absa-bm__kpi-icon--red { background: #FEE2E2; color: #DC2626; }
-.absa-bm__kpi-icon--blue { background: #DBEAFE; color: #2563EB; }
-.absa-bm__kpi-icon--green { background: #DCFCE7; color: #16A34A; }
 
-.absa-bm__kpi-value { font-size: 1.75rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; margin-bottom: 2px; }
-.absa-bm__kpi-value--critical { color: #DC2626; }
-.absa-bm__kpi-value--success { color: #16A34A; }
-.absa-bm__kpi-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-
-.absa-bm__kpi-comp { display: flex; align-items: center; gap: 4px; font-size: 0.625rem; font-weight: 700; font-family: 'Space Mono', monospace; color: #DC2626; }
-.absa-bm__kpi-comp--down { color: #16A34A; }
-.absa-bm__kpi-comp--neutral { color: #6B7280; }
-
-/* Sections */
-.absa-bm__section { margin-bottom: 24px; }
-.absa-bm__section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.absa-bm__section-title { font-size: 1rem; font-weight: 800; color: #111827; margin: 0; }
-.absa-bm__section-period { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; color: #BE0F2C; background: #FDE8EC; padding: 3px 10px; border-radius: 999px; }
-
-/* Table */
-.absa-bm__table-wrap { background: #FFF; border: 1px solid #E8E8EC; border-radius: 12px; overflow: hidden; }
-.absa-bm__table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-.absa-bm__table th { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800; color: #9CA3AF; letter-spacing: 0.06em; text-align: left; padding: 12px 20px; }
-.absa-bm__table td { padding: 14px 20px; border-bottom: 1px solid #F3F4F6; vertical-align: middle; }
-.absa-bm__table tbody tr:hover { background: #F9FAFB; }
-
-.absa-bm__rm-cell { display: flex; align-items: center; gap: 10px; }
-.absa-bm__rm-avatar { width: 32px; height: 32px; border-radius: 8px; background: #FDE8EC; color: #BE0F2C; font-weight: 800; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
-.absa-bm__rm-name { font-weight: 700; color: #111827; }
-.absa-bm__table-val { font-weight: 700; color: #111827; }
-
-/* Risk Pills */
-.absa-bm__risk-pill {
-  font-family: 'Space Mono', monospace; font-size: 0.625rem; font-weight: 800;
-  padding: 3px 10px; border-radius: 999px; letter-spacing: 0.04em;
+.absa-bm-breadcrumb--active {
+  color: #77021e !important;
+  font-weight: 700 !important;
 }
-.absa-bm__risk-pill--high { background: #FEE2E2; color: #DC2626; }
-.absa-bm__risk-pill--mid { background: #FEF3C7; color: #D97706; }
-.absa-bm__risk-pill--low { background: #DCFCE7; color: #16A34A; }
 
-/* Actions */
-.absa-bm__actions-info { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
-.absa-bm__actions-count { font-weight: 800; font-size: 0.8rem; color: #111827; }
-.absa-bm__actions-target { font-size: 0.6rem; color: #9CA3AF; font-family: 'Space Mono', monospace; }
-.absa-bm__actions-bar { height: 4px; background: #E5E7EB; border-radius: 2px; overflow: hidden; }
-.absa-bm__actions-fill { height: 100%; background: linear-gradient(90deg, #BE0F2C, #8B0015); border-radius: 2px; transition: width 0.3s; }
-
-/* Health */
-.absa-bm__health { display: flex; align-items: center; gap: 8px; }
-.absa-bm__health-bar { width: 60px; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
-.absa-bm__health-fill { height: 100%; border-radius: 3px; }
-.absa-bm__health-fill--good { background: #16A34A; }
-.absa-bm__health-fill--warning { background: #F59E0B; }
-.absa-bm__health-fill--critical { background: #DC2626; }
-.absa-bm__health-val { font-weight: 800; font-size: 0.75rem; }
-.absa-bm__health-val--good { color: #16A34A; }
-.absa-bm__health-val--warning { color: #D97706; }
-.absa-bm__health-val--critical { color: #DC2626; }
-
-/* Status */
-.absa-bm__status-pill {
-  font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800;
-  padding: 4px 10px; border-radius: 6px; letter-spacing: 0.04em;
+/* ═══ Subtitle ═══ */
+.absa-bm-subtitle {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 200;
+  color: #191c1d;
+  letter-spacing: -0.32px;
+  line-height: 40px;
+  margin-top: -20px;
 }
-.absa-bm__status-pill--good { background: #DCFCE7; color: #16A34A; }
-.absa-bm__status-pill--warning { background: #FEF3C7; color: #D97706; }
 
-/* Bottom Grid */
-.absa-bm__bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+/* ═══ KPI Grid ═══ */
+.absa-bm-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
 
-/* Chart Header */
-.absa-bm__chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.absa-bm__chart-title { font-size: 0.85rem; font-weight: 800; color: #111827; margin: 0; }
-.absa-bm__chart-period { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 700; color: #BE0F2C; }
+.absa-bm-kpi {
+  background: #fff;
+  border: 1px solid #e7bcbc;
+  border-radius: 4px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-/* Bar Chart */
-.absa-bm__chart-body { padding: 0 8px; }
-.absa-bm__bar-chart { display: flex; align-items: flex-end; justify-content: center; gap: 20px; height: 180px; }
-.absa-bm__bar-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 48px; }
-.absa-bm__bar-val { font-size: 0.65rem; font-weight: 800; color: #6B7280; font-family: 'Space Mono', monospace; }
-.absa-bm__bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
-.absa-bm__bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.3s; }
-.absa-bm__bar--critical { background: linear-gradient(180deg, #DC2626, #BE0F2C); }
-.absa-bm__bar--warning { background: linear-gradient(180deg, #F59E0B, #D97706); }
-.absa-bm__bar-label { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 700; color: #9CA3AF; }
+.absa-bm-kpi__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 
-/* Segments */
-.absa-bm__segment-list { display: flex; flex-direction: column; gap: 16px; }
-.absa-bm__segment-item { }
-.absa-bm__segment-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.absa-bm__segment-name { font-size: 0.75rem; font-weight: 700; color: #111827; }
-.absa-bm__segment-pct { font-size: 0.75rem; font-weight: 800; }
-.absa-bm__segment-pct--critical { color: #DC2626; }
-.absa-bm__segment-pct--warning { color: #D97706; }
-.absa-bm__segment-pct--info { color: #2563EB; }
-.absa-bm__segment-pct--success { color: #16A34A; }
-.absa-bm__segment-bar { height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
-.absa-bm__segment-fill { height: 100%; border-radius: 4px; }
-.absa-bm__segment-fill--critical { background: #DC2626; }
-.absa-bm__segment-fill--warning { background: #F59E0B; }
-.absa-bm__segment-fill--info { background: #2563EB; }
-.absa-bm__segment-fill--success { background: #16A34A; }
-.absa-bm__segment-count { font-family: 'Space Mono', monospace; font-size: 0.575rem; color: #9CA3AF; margin-top: 4px; }
+.absa-bm-kpi__label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5d3f3f;
+  letter-spacing: 1.2px;
+  line-height: 16px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.absa-bm-kpi__value {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #191c1d;
+  letter-spacing: -0.32px;
+  line-height: 40px;
+}
+
+.absa-bm-kpi__value--red {
+  color: #ae0029;
+}
+
+.absa-bm-kpi__icon svg {
+  display: block;
+}
+
+.absa-bm-kpi__trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.absa-bm-kpi__trend svg {
+  display: flex;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.absa-bm-kpi__trend-up {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #4caf50;
+  line-height: 16px;
+}
+
+.absa-bm-kpi__trend-down {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #920021;
+  line-height: 16px;
+}
+
+.absa-bm-kpi__trend-label {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #5d3f3f;
+  line-height: 16px;
+}
+
+.absa-bm-kpi__bar {
+  height: 4px;
+  background: #edeeef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.absa-bm-kpi__bar-fill {
+  height: 100%;
+  border-radius: 12px;
+}
+
+.absa-bm-kpi__bar-fill--red {
+  background: #ae0029;
+}
+
+.absa-bm-kpi__bar-fill--dormant {
+  background: #920021;
+}
+
+.absa-bm-kpi__bar-fill--churn {
+  background: #a71935;
+}
+
+/* ═══ Table Section ═══ */
+.absa-bm-table-section {
+  background: #fff;
+  border: 1px solid #e7bcbc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.absa-bm-table-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 25px;
+  border-bottom: 1px solid #e7bcbc;
+}
+
+.absa-bm-table-section__title {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #191c1d;
+  line-height: 32px;
+  margin: 0;
+}
+
+.absa-bm-table-section__actions {
+  display: flex;
+  gap: 16px;
+}
+
+.absa-bm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 17px;
+  border-radius: 2px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  line-height: 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 150ms ease;
+}
+
+.absa-bm-btn--outline {
+  border: 1px solid #926e6e;
+  background: transparent;
+  color: #191c1d;
+}
+
+.absa-bm-btn--outline:hover {
+  border-color: #dc0037;
+}
+
+.absa-bm-btn--primary {
+  border: none;
+  background: #ae0029;
+  color: #fff;
+}
+
+.absa-bm-btn--primary:hover {
+  opacity: 0.9;
+}
+
+.absa-bm-table-wrap {
+  overflow-x: auto;
+}
+
+.absa-bm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.absa-bm-table thead th {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5d3f3f;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 12px 16px 13px;
+  background: #f3f4f5;
+  white-space: nowrap;
+}
+
+.absa-bm-table tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid #e7bcbc;
+  vertical-align: middle;
+}
+
+.absa-bm-table__th-center {
+  text-align: center !important;
+}
+
+.absa-bm-table__td-center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.absa-bm-table__rm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.absa-bm-table__divider {
+  width: 8px;
+  height: 32px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.absa-bm-table__divider--red {
+  background: #920021;
+}
+
+.absa-bm-table__divider--pink {
+  background: #c9354b;
+}
+
+.absa-bm-table__divider--grey {
+  background: #e1e3e4;
+}
+
+.absa-bm-table__rm-name {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #191c1d;
+  line-height: 24px;
+}
+
+.absa-bm-table__rm-dept {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #5d3f3f;
+  line-height: 24px;
+}
+
+.absa-bm-table__cell {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #191c1d;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.absa-bm-table__target {
+  color: #5d3f3f;
+}
+
+.absa-bm-table__at-risk {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.absa-bm-table__at-risk--high {
+  color: #ba1a1a;
+}
+
+.absa-bm-table__at-risk--medium {
+  color: #920021;
+}
+
+.absa-bm-table__at-risk--low {
+  color: #5d3f3f;
+}
+
+.absa-bm-table__health {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.absa-bm-table__health-bar {
+  flex: 1;
+  min-width: 80px;
+  height: 8px;
+  background: #edeeef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.absa-bm-table__health-fill {
+  height: 100%;
+  border-radius: 12px;
+}
+
+.absa-bm-table__health-fill--red {
+  background: #ae0029;
+}
+
+.absa-bm-table__health-fill--grey {
+  background: #5d3f3f;
+}
+
+.absa-bm-table__health-val {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #191c1d;
+  line-height: 20px;
+}
+
+.absa-bm-table__sparkline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══ Churn Forecast Grid (3:1) ═══ */
+.absa-bm-churn-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+/* ═══ Chart Panel ═══ */
+.absa-bm-chart {
+  background: #fff;
+  border: 1px solid #e7bcbc;
+  border-radius: 4px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.absa-bm-chart__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.absa-bm-chart__title {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #191c1d;
+  line-height: 32px;
+  margin: 0;
+}
+
+.absa-bm-chart__subtitle {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #5d3f3f;
+  line-height: 20px;
+  margin: 0;
+}
+
+.absa-bm-chart__toggles {
+  display: flex;
+  gap: 0;
+  background: #edeeef;
+  border-radius: 4px;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.absa-bm-chart__toggle {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5d3f3f;
+  letter-spacing: 0.6px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 16px;
+  text-align: center;
+  transition: all 150ms ease;
+}
+
+.absa-bm-chart__toggle--active {
+  background: #fff;
+  color: #ae0029;
+  font-weight: 700;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.absa-bm-chart__viz {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.absa-bm-chart__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 16px 16px 0;
+}
+
+.absa-bm-chart__bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.absa-bm-chart__bar-label {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #191c1d;
+  line-height: 20px;
+}
+
+.absa-bm-chart__bar {
+  width: 100%;
+  background: rgba(174, 0, 41, 0.1);
+  border-radius: 15px 15px 0 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.absa-bm-chart__bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #dd2336 23.077%, #821021 100%);
+  border-radius: 15px 15px 0 0;
+  align-self: flex-end;
+}
+
+.absa-bm-chart__axis {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.absa-bm-chart__axis span {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5d3f3f;
+  line-height: 16px;
+}
+
+/* ═══ AI Insight Card ═══ */
+.absa-bm-ai-card {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  min-height: 566px;
+  background: linear-gradient(135deg, #dc2337 0%, #a9192a 20%, #760e1d 40%, #440f17 70%, #2b1013 85%, #121010 100%);
+}
+
+.absa-bm-ai-card__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(220, 35, 55, 0.15) 20px,
+    rgba(220, 35, 55, 0.15) 21px
+  );
+}
+
+.absa-bm-ai-card__content {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.absa-bm-ai-card__heading {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.6px;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.absa-bm-ai-card__segments {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.absa-bm-ai-card__segment-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.absa-bm-ai-card__segment-label {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 20px;
+}
+
+.absa-bm-ai-card__segment-pct {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 20px;
+}
+
+.absa-bm-ai-card__segment-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.absa-bm-ai-card__segment-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 12px;
+  transition: width 0.3s ease;
+}
+
+.absa-bm-ai-card__insight {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.absa-bm-ai-card__insight-text {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  color: #fff;
+  line-height: 20px;
+  margin: 0;
+}
+
+.absa-bm-ai-card__insight-label {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffdad9;
+  letter-spacing: 0.6px;
+  line-height: 15px;
+  text-transform: uppercase;
+}
 
 /* ═══ Responsive ═══ */
 @media (max-width: 1200px) {
-  .absa-bm__bottom-grid { grid-template-columns: 1fr; }
+  .absa-bm-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .absa-bm-churn-grid {
+    grid-template-columns: 1fr;
+  }
 }
+
 @media (max-width: 768px) {
-  .absa-bm__kpi-grid { grid-template-columns: 1fr; }
-  .absa-bm__header { flex-direction: column; align-items: flex-start; }
-  .absa-bm__search { width: 100%; }
+  .absa-bm-content {
+    padding: 16px;
+    gap: 24px;
+  }
+
+  .absa-bm-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .absa-bm-chart__header {
+    flex-direction: column;
+  }
+
+  .absa-bm-table-section__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 }
 </style>

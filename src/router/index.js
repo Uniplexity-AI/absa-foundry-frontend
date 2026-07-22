@@ -11,8 +11,8 @@ const LandingPage = () => import('@/views/Home.vue');
 
 // ============================Authentications page imports=============================
 
-import Login from '@/views/Auth/login.vue';
-import ResetPassword from '@/views/Auth/ResetPassword.vue';
+import Login from '@/views/auth/login.vue';
+import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
 import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
@@ -75,7 +75,7 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import('@/views/Auth/ForgotPassword.vue'),
+    component: () => import('@/views/auth/ForgotPassword.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -103,7 +103,7 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    component: () => import('@/views/Auth/Logout.vue'),
+    component: () => import('@/views/auth/Logout.vue'),
     meta: { requiresAuth: false }
   },
 
@@ -140,11 +140,13 @@ const routes = [
     children: [
       { path: '', redirect: '/dashboard/home' },
       { path: 'home', name: 'DashboardHome', component: () => import('../views/DashboardHome.vue') },
+      { path: 'portfolio', name: 'PortfolioOverview', component: () => import('../views/PortfolioOverview.vue') },
+      { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue') },
       { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue') },
       { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue') },
       { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue') },
+      { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue') },
      
-    
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue') },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue') },
       { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue') },
@@ -182,6 +184,24 @@ const routes = [
       
       
      
+    ],
+  },
+
+  // Portfolio route (also accessible from sidebar)
+  {
+    path: '/portfolio',
+    component: () => import('../components/layouts/DashboardLayout.vue'),
+    children: [
+      { path: '', component: () => import('../views/PortfolioOverview.vue') },
+    ],
+  },
+
+  // Customer detail route (also accessible from sidebar)
+  {
+    path: '/customer/:id',
+    component: () => import('../components/layouts/DashboardLayout.vue'),
+    children: [
+      { path: '', component: () => import('../views/CustomerDetail.vue') },
     ],
   },
 

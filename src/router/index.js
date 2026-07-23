@@ -11,8 +11,8 @@ const LandingPage = () => import('@/views/Home.vue');
 
 // ============================Authentications page imports=============================
 
-import Login from '@/views/auth/login.vue';
-import ResetPassword from '@/views/auth/ResetPassword.vue';
+import Login from '@/views/Auth/login.vue';
+import ResetPassword from '@/views/Auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
 import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
@@ -24,7 +24,7 @@ import TenantReports from '@/views/Admin/Reports.vue';
 import RagChat from '@/views/Admin/RagChat.vue'
 import RagUpload from '@/views/Admin/RagUpload.vue'
 import EmailManagement from '@/views/Admin/EmailManagement.vue'
-import UserActivities from '@/views/Admin/UserActivities.vue'
+// import UserActivities from '@/views/Admin/UserActivities.vue'
 
 
 
@@ -75,7 +75,7 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import('@/views/auth/ForgotPassword.vue'),
+    component: () => import('@/views/Auth/ForgotPassword.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -103,7 +103,7 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    component: () => import('@/views/auth/Logout.vue'),
+    component: () => import('@/views/Auth/Logout.vue'),
     meta: { requiresAuth: false }
   },
 

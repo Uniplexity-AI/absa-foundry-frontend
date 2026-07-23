@@ -8,16 +8,22 @@
     <!-- Fixed Collapsible Sidebar -->
     <aside class="absa-sidebar" :class="{ 'absa-sidebar--collapsed': collapsed }">
       <!-- Logo + Toggle -->
-      <div class="absa-sidebar__brand">
+      <div class="absa-sidebar__brand group">
         <img src="/logo_red.png" alt="ABSA" class="absa-sidebar__logo-img" />
         <div v-show="!collapsed" class="absa-sidebar__brand-text">
           <span class="absa-sidebar__brand-name">absa</span>
           <span class="absa-sidebar__brand-sub">Intelligence Unit</span>
         </div>
-        <button class="absa-sidebar__toggle" @click="toggleSidebar" :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline v-if="collapsed" points="9 18 15 12 9 6"/>
-            <polyline v-else points="15 18 9 12 15 6"/>
+        <button class="absa-sidebar__toggle opacity-0 group-hover:opacity-100 transition-opacity duration-200" @click="toggleSidebar" :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+          <svg v-if="collapsed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="5" height="18" rx="1"/>
+            <rect x="10" y="3" width="11" height="18" rx="1"/>
+            <polyline points="14 10 17 12 14 14"/>
+          </svg>
+          <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="5" height="18" rx="1"/>
+            <rect x="10" y="3" width="11" height="18" rx="1"/>
+            <polyline points="17 10 14 12 17 14"/>
           </svg>
         </button>
       </div>
@@ -83,7 +89,7 @@
       <header class="absa-topbar">
         <div class="absa-topbar__left">
           <slot name="breadcrumb">
-            <span class="absa-topbar__breadcrumb-current">Dashboard</span>
+            <span class="absa-topbar__breadcrumb-current">{{ breadcrumbTitle }}</span>
           </slot>
         </div>
         <div class="absa-topbar__right">
@@ -112,14 +118,24 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
 import API_BASE_URL from '@/services/api'
 
 const router = useRouter()
+const route = useRoute()
 const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
+
+const breadcrumbTitle = computed(() => {
+  const map = {
+    'ModelsMonitoring': 'Model Monitoring',
+    'EtlRunHistory': 'ETL Run History',
+    'BranchManagerDashboard': 'Dashboard',
+  }
+  return map[route.name] || 'Dashboard'
+})
 
 // ── Sidebar Collapse State ──
 const collapsed = ref(false)
@@ -292,14 +308,14 @@ async function fetchSubscribedModules() {
 }
 
 .absa-sidebar__logo-img {
-  height: 28px;
+  height: 32px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .absa-sidebar--collapsed .absa-sidebar__logo-img {
-  height: 22px;
+  height: 26px;
 }
 
 .absa-sidebar__brand-text {
@@ -311,13 +327,13 @@ async function fetchSubscribedModules() {
 }
 
 .absa-sidebar__brand-name {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 900;
   color: #BE0F2C;
 }
 
 .absa-sidebar__brand-sub {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: #6B7280;
   letter-spacing: 0.02em;
@@ -350,7 +366,7 @@ async function fetchSubscribedModules() {
 }
 
 .absa-sidebar--collapsed .absa-sidebar__toggle {
-  right: 50%;
+  right: calc(50% + 3px);
   transform: translate(50%, -50%);
 }
 

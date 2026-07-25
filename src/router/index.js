@@ -150,6 +150,7 @@ const routes = [
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue') },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue') },
       { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue') },
+      { path: 'settings/users', name: 'UserManagement', component: () => import('../views/Modules/settings/UserManagement.vue') },
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/Modules/settings/ProfileModule.vue') },
       
       // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/Modules/aiagents/ImageCaptureModule.vue') },

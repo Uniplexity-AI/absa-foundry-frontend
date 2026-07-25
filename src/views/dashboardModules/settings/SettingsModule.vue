@@ -474,13 +474,13 @@ watch(auditModuleFilter, () => { auditPage.value = 1; fetchAuditLogs() })
 .absa-settings__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
 
 .absa-settings__btn--primary {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015); color: #FFFFFF;
-  border-color: transparent; box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
+  background: #BE0F2C; color: #FFFFFF;
+  border-color: transparent;
 }
 
-.absa-settings__btn--primary:hover { opacity: 0.9; }
+.absa-settings__btn--primary:hover { background: #A01028; }
 
-.absa-settings__btn--primary:disabled { opacity: 0.55; cursor: not-allowed; }
+.absa-settings__btn--primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .absa-settings__btn--outline { background: #FFFFFF; }
 

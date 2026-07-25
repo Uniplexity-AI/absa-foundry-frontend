@@ -1,5 +1,6 @@
 <template>
   <div class="absa-etl">
+    <div class="absa-etl__content">
     <!-- Breadcrumb -->
     <div class="absa-etl__breadcrumb">
       <span>Home</span>
@@ -24,13 +25,6 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           Trigger Manual Run
         </button>
-        <div class="absa-etl__user">
-          <div class="absa-etl__avatar">CA</div>
-          <div class="absa-etl__user-info">
-            <span class="absa-etl__user-name">C. Analyst</span>
-            <span class="absa-etl__user-role">Lvl 4 Reviewer</span>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -213,6 +207,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -241,7 +236,16 @@ const executionHistory = ref([
 
 <style scoped>
 /* ═══ ETL Pipeline Health ═══ */
-.absa-etl { }
+.absa-etl__content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  flex: 1;
+}
 
 .absa-etl__breadcrumb {
   display: flex; align-items: center; gap: 6px;
@@ -267,15 +271,12 @@ const executionHistory = ref([
   font-family: 'Montserrat', system-ui, sans-serif; white-space: nowrap;
 }
 .absa-etl__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-etl__btn--primary { background: linear-gradient(135deg, #BE0F2C, #8B0015); color: #FFF; border-color: transparent; box-shadow: 0 4px 14px rgba(190,15,44,0.25); }
+.absa-etl__btn--primary { background: #BE0F2C; color: #FFF; border-color: transparent; }
+.absa-etl__btn--primary:hover { background: #A01028; color: #FFF; border-color: transparent; }
 .absa-etl__btn--primary:hover { opacity: 0.9; color: #FFF; }
 .absa-etl__btn--outline { background: #FFF; }
 
-.absa-etl__user { display: flex; align-items: center; gap: 10px; }
-.absa-etl__avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #BE0F2C, #8B0015); color: #FFF; font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-.absa-etl__user-info { display: flex; flex-direction: column; line-height: 1.2; }
-.absa-etl__user-name { font-size: 0.8rem; font-weight: 700; color: #111827; }
-.absa-etl__user-role { font-size: 0.625rem; color: #9CA3AF; font-family: 'Space Mono', monospace; }
+
 
 /* Health Cards */
 .absa-etl__health-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }

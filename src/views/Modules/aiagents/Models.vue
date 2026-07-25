@@ -348,8 +348,8 @@ onUnmounted(() => document.removeEventListener('click', handleClickOutside))
   font-family: 'Montserrat', system-ui, sans-serif; white-space: nowrap;
 }
 .absa-models__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-models__btn--primary { background: linear-gradient(135deg, #BE0F2C, #8B0015); color: #FFF; border-color: transparent; box-shadow: 0 4px 14px rgba(190,15,44,0.25); }
-.absa-models__btn--primary:hover { opacity: 0.9; color: #FFF; }
+.absa-models__btn--primary { background: #BE0F2C; color: #FFF; border-color: transparent; }
+.absa-models__btn--primary:hover { background: #A01028; color: #FFF; border-color: transparent; }
 .absa-models__btn--outline { background: #FFF; }
 .absa-models__btn-icon {
   display: flex; align-items: center; justify-content: center;

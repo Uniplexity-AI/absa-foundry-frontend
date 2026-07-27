@@ -440,13 +440,12 @@ const executionHistory = ref([
 
 .absa-etl-btn--primary {
   border: none;
-  background: #77021e;
+  background: #BE0F2C;
   color: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .absa-etl-btn--primary:hover {
-  opacity: 0.9;
+  background: #A01028;
 }
 
 /* ═══ Bento Grid ═══ */

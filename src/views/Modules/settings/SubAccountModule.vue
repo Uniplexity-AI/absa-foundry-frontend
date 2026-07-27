@@ -1945,14 +1945,13 @@ onMounted(async () => {
 }
 
 .absa-subaccounts__btn--primary {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  background: #BE0F2C;
   color: #FFFFFF;
   border-color: transparent;
-  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
 }
 
 .absa-subaccounts__btn--primary:hover {
-  opacity: 0.9;
+  background: #A01028;
   color: #FFFFFF;
 }
 
@@ -2149,7 +2148,7 @@ onMounted(async () => {
 }
 
 .absa-subaccounts__view-btn--active {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  background: #BE0F2C;
   color: #FFFFFF;
 }
 
@@ -2407,7 +2406,7 @@ onMounted(async () => {
 }
 
 .absa-subaccounts__page-btn--current {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  background: #BE0F2C;
   color: #FFFFFF;
   border-color: transparent;
 }
@@ -2545,9 +2544,8 @@ onMounted(async () => {
 }
 
 .absa-subaccounts__user-card-action--login {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  background: #BE0F2C;
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
 }
 
 .absa-subaccounts__user-card-action--login:hover {

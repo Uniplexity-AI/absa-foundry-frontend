@@ -478,12 +478,12 @@ const churnSegments = ref([
 
 .absa-bm-btn--primary {
   border: none;
-  background: #ae0029;
+  background: #BE0F2C;
   color: #fff;
 }
 
 .absa-bm-btn--primary:hover {
-  opacity: 0.9;
+  background: #A01028;
 }
 
 .absa-bm-table-wrap {

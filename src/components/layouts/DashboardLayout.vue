@@ -130,6 +130,7 @@ const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
 
 const breadcrumbTitle = computed(() => {
   const map = {
+    'UserManagement': 'User Management',
     'ModelsMonitoring': 'Model Monitoring',
     'EtlRunHistory': 'ETL Run History',
     'BranchManagerDashboard': 'Dashboard',

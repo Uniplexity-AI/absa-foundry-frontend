@@ -1,525 +1,1175 @@
 <template>
-  <div class="absa-settings">
-    <!-- Breadcrumb -->
-    <div class="absa-settings__breadcrumb">
-      <span>Home</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span>Dashboard</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span class="absa-settings__breadcrumb-current">Settings</span>
-    </div>
+  <section class="absa-profile-settings">
+    <div class="settings-shell">
+      <nav class="settings-breadcrumb" aria-label="Breadcrumb">
+        <router-link to="/dashboard/home">Home</router-link>
+        <span aria-hidden="true">/</span>
+        <span>Settings</span>
+        <span aria-hidden="true">/</span>
+        <strong>{{ activeTabLabel }}</strong>
+      </nav>
 
-    <!-- Header Actions -->
-    <div class="absa-settings__actions">
-      <h1 class="absa-settings__title">Settings Configuration</h1>
-      <div class="absa-settings__btns">
-        <button @click="resetActiveTab" class="absa-settings__btn absa-settings__btn--outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-          Reset
-        </button>
-        <button @click="saveActiveTab" class="absa-settings__btn absa-settings__btn--primary" :disabled="isUIPreferencesLoading || notificationsLoading || currencyLoading || telegramLoading">
-          <svg v-if="!(isUIPreferencesLoading||notificationsLoading||currencyLoading||telegramLoading)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="absa-settings__spin"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
-          {{ (isUIPreferencesLoading||notificationsLoading||currencyLoading||telegramLoading) ? 'Saving...' : 'Save Changes' }}
-        </button>
+      <div class="settings-layout">
+        <aside class="settings-tabs" aria-label="Settings sections">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            type="button"
+            class="settings-tab"
+            :class="{ 'settings-tab--active': activeTab === tab.id }"
+            :aria-controls="tab.sectionId"
+            @click="goToSection(tab)"
+          >
+            <span class="settings-tab__icon" aria-hidden="true">
+              <i :class="tab.icon"></i>
+            </span>
+            <span>{{ tab.label }}</span>
+          </button>
+        </aside>
+
+        <div class="settings-content">
+          <section id="personal-information" class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <p class="eyebrow">Profile</p>
+                <h1>Personal Information</h1>
+              </div>
+              <button type="button" class="btn btn--secondary" @click="isEditing = !isEditing">
+                {{ isEditing ? 'Cancel editing' : 'Edit profile' }}
+              </button>
+            </div>
+
+            <div class="profile-grid">
+              <div class="avatar-panel">
+                <div class="avatar-ring">
+                  <div class="avatar">{{ userInitials }}</div>
+                </div>
+                <button type="button" class="avatar-action">Change photo</button>
+              </div>
+
+              <div class="form-grid">
+                <label class="field">
+                  <span>Full Name</span>
+                  <input v-model="profile.fullName" :readonly="!isEditing" type="text" />
+                </label>
+                <label class="field">
+                  <span>Email Address</span>
+                  <input v-model="profile.email" :readonly="!isEditing" type="email" />
+                </label>
+                <label class="field">
+                  <span>Department</span>
+                  <select v-model="profile.department" :disabled="!isEditing">
+                    <option>High-Risk Compliance</option>
+                    <option>Relationship Banking</option>
+                    <option>Credit Risk</option>
+                    <option>Operations</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Role</span>
+                  <select v-model="profile.role" :disabled="!isEditing">
+                    <option>Senior KYC Analyst</option>
+                    <option>Relationship Manager</option>
+                    <option>Branch Manager</option>
+                    <option>Administrator</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Employee ID</span>
+                  <input v-model="profile.employeeId" :readonly="!isEditing" type="text" />
+                </label>
+                <label class="field">
+                  <span>Locale / Timezone</span>
+                  <select v-model="profile.timezone" :disabled="!isEditing">
+                    <option>Lusaka, Zambia (GMT+2)</option>
+                    <option>Johannesburg, South Africa (GMT+2)</option>
+                    <option>London, United Kingdom (GMT+0)</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section id="security-authentication" class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <p class="eyebrow">Access control</p>
+                <h2>Security &amp; Authentication</h2>
+              </div>
+            </div>
+
+            <div class="security-grid">
+              <article class="mfa-card">
+                <div class="mfa-card__top">
+                  <div class="mfa-card__icon">
+                    <i class="fas fa-shield-halved"></i>
+                  </div>
+                  <div>
+                    <h3>Multi-factor authentication</h3>
+                    <span>Enforced</span>
+                  </div>
+                </div>
+                <p>MFA is enforced across your organization. Last updated on Oct 12, 2023.</p>
+                <button type="button">Manage MFA policy</button>
+              </article>
+
+              <form class="password-panel" @submit.prevent="passwordQueued = true">
+                <label class="field">
+                  <span>Update Password</span>
+                  <div class="password-input">
+                    <input
+                      v-model="newPassword"
+                      :type="showPassword ? 'text' : 'password'"
+                      autocomplete="new-password"
+                      placeholder="Enter new password"
+                    />
+                    <button type="button" @click="showPassword = !showPassword" :aria-label="showPassword ? 'Hide password' : 'Show password'">
+                      <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                  </div>
+                </label>
+                <button type="submit" class="btn btn--primary">Update Password</button>
+                <p v-if="passwordQueued" class="inline-feedback">Password update queued for secure confirmation.</p>
+              </form>
+            </div>
+
+            <div class="device-section">
+              <h3>Authorized Devices</h3>
+              <div class="device-table" role="table" aria-label="Authorized devices">
+                <div class="device-row device-row--head" role="row">
+                  <span>Device</span>
+                  <span>Location</span>
+                  <span>Last active</span>
+                  <span>Action</span>
+                </div>
+                <div v-for="device in devices" :key="device.name" class="device-row" role="row">
+                  <span>
+                    <i :class="device.icon"></i>
+                    {{ device.name }}
+                  </span>
+                  <span>{{ device.location }}</span>
+                  <span>{{ device.lastActive }}</span>
+                  <button type="button">Revoke</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="roles-permissions" class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <p class="eyebrow">Permissions</p>
+                <h2>Roles &amp; Access</h2>
+              </div>
+              <button type="button" class="btn btn--secondary" @click="roleDraftOpen = !roleDraftOpen">
+                {{ roleDraftOpen ? 'Close editor' : 'Create role' }}
+              </button>
+            </div>
+
+            <div class="roles-grid">
+              <article v-for="role in roles" :key="role.id" class="role-card">
+                <div class="role-card__top">
+                  <div>
+                    <h3>{{ role.name }}</h3>
+                    <p>{{ role.description }}</p>
+                  </div>
+                  <span class="role-count">{{ role.users }} users</span>
+                </div>
+                <div class="permission-chips" :aria-label="`${role.name} permissions`">
+                  <span v-for="permission in role.permissions" :key="permission">{{ permission }}</span>
+                </div>
+                <div class="role-card__actions">
+                  <button type="button">Edit role</button>
+                  <button type="button">Audit access</button>
+                </div>
+              </article>
+            </div>
+
+            <form v-if="roleDraftOpen" class="role-editor" @submit.prevent="roleDraftOpen = false">
+              <label class="field">
+                <span>Role name</span>
+                <input v-model="roleDraft.name" type="text" placeholder="e.g. Compliance Reviewer" />
+              </label>
+              <label class="field">
+                <span>Access level</span>
+                <select v-model="roleDraft.level">
+                  <option>Read only</option>
+                  <option>Reviewer</option>
+                  <option>Approver</option>
+                  <option>Administrator</option>
+                </select>
+              </label>
+              <button type="submit" class="btn btn--primary">Save Role Draft</button>
+            </form>
+          </section>
+
+          <section id="notification-preferences" class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <p class="eyebrow">Channels</p>
+                <h2>Notification Preferences</h2>
+              </div>
+            </div>
+
+            <div class="notification-list">
+              <div v-for="item in notificationPreferences" :key="item.id" class="notification-row">
+                <div>
+                  <h3>{{ item.title }}</h3>
+                  <p>{{ item.description }}</p>
+                </div>
+                <div class="channel-toggles" :aria-label="`${item.title} channels`">
+                  <label class="switch-field">
+                    <span>Email</span>
+                    <input v-model="item.email" type="checkbox" />
+                    <span class="switch-control" aria-hidden="true"></span>
+                  </label>
+                  <label class="switch-field">
+                    <span>Mobile</span>
+                    <input v-model="item.mobile" type="checkbox" />
+                    <span class="switch-control" aria-hidden="true"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="integrations" class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <p class="eyebrow">Connected systems</p>
+                <h2>Integrations</h2>
+              </div>
+            </div>
+
+            <div class="integrations-list">
+              <article v-for="integration in integrations" :key="integration.id" class="integration-row">
+                <div class="integration-row__icon">
+                  <i :class="integration.icon"></i>
+                </div>
+                <div>
+                  <h3>{{ integration.name }}</h3>
+                  <p>{{ integration.description }}</p>
+                </div>
+                <div class="integration-row__status">
+                  <span :class="['status-pill', integration.connected ? 'status-pill--connected' : 'status-pill--muted']">
+                    {{ integration.connected ? 'Connected' : 'Available' }}
+                  </span>
+                  <button type="button" class="btn btn--secondary">
+                    {{ integration.connected ? 'Manage' : 'Connect' }}
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <div class="save-panel">
+            <button type="button" class="btn btn--primary btn--large" @click="saveSettings">
+              Save Settings
+            </button>
+            <p v-if="savedAt">Saved locally at {{ savedAt }}</p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Tab Navigation -->
-    <div class="absa-settings__tabs">
-      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-        class="absa-settings__tab" :class="{ 'absa-settings__tab--active': activeTab === tab.id }">
-        <i :class="tab.icon" style="font-size:12px"></i>
-        {{ tab.name }}
-        <span v-if="tab.id === 'notifications' && notificationCount > 0" class="absa-settings__tab-badge">{{ notificationCount }}</span>
-      </button>
-    </div>
-
-    <!-- Tab Content -->
-    <div class="absa-settings__content">
-      <KeepAlive>
-        <component :is="activeComponent" />
-      </KeepAlive>
-    </div>
-  </div>
+  </section>
 </template>
+
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, Teleport } from 'vue';
-import { useRoute } from 'vue-router';
-import { Modal } from '@/components/ui';
+import { computed, reactive, ref } from 'vue'
+import { decodeJWT } from '@/services/decodeJWT.js'
 
-import {
-  useSettingsBase,
-  useSettingsProfile,
-  useSettingsModules,
-  useSettingsEmail, NOTIFICATION_TYPES,
-  useSettingsNotifications,
-  useSettingsAiAgents,
-  useSettingsIntegrations,
-  useSettingsRoles,
-  useSettingsBranding,
-  useSettingsCurrency,
-  useSettingsAudit,
-  useSettingsGoals
-} from '@/composables/settings'
+const activeTab = ref('personal')
+const isEditing = ref(false)
+const newPassword = ref('')
+const showPassword = ref(false)
+const passwordQueued = ref(false)
+const savedAt = ref('')
 
-import SettingsProfile from './components/SettingsProfile.vue'
-import SettingsEmail from './components/SettingsEmail.vue'
-import SettingsModules from './components/SettingsModules.vue'
-import SettingsAiAgents from './components/SettingsAiAgents.vue'
-import SettingsIntegrations from './components/SettingsIntegrations.vue'
-import SettingsNotifications from './components/SettingsNotifications.vue'
-import SettingsRoles from './components/SettingsRoles.vue'
-import SettingsAudit from './components/SettingsAudit.vue'
-
-import SettingsBranding from './components/SettingsBranding.vue'
-import SettingsCurrency from './components/SettingsCurrency.vue'
-
-const route = useRoute()
-
-const componentMap = {
-  'profile': SettingsProfile, 'email': SettingsEmail, 'modules': SettingsModules,
-  'ai-agents': SettingsAiAgents, 'integrations': SettingsIntegrations,
-  'notifications': SettingsNotifications, 'roles': SettingsRoles,
-  'audit': SettingsAudit,
-  'branding': SettingsBranding, 'currency': SettingsCurrency
-}
-const activeComponent = computed(() => componentMap[activeTab.value] || SettingsProfile)
-
-// â”€â”€ Shared Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const base = useSettingsBase()
-const {
-  getTenantId, getUserRole, getUserEmail, tenantId, userRole, userEmail,
-  formatCurrency, formatCurrencyCompact, currencyCode,
-  settingsConfirmState, openSettingsConfirm, closeSettingsConfirm, handleSettingsConfirm,
-  brandPrefs, saveBrandPrefs, logAudit,
-  hasPermission, initializeRBAC, isAdmin, isSuperAdmin,
-  createRole, updateRole,
-  dashboardStore, authStore, pricingStore, fetchModules,
-  DEFAULT_ROLES, PERMISSION_ENTITIES, PERMISSION_TYPES, ALL_PERMISSIONS,
-  getPermissionsForEntity, ORGANIZATION_TYPES, ACCESS_SCOPES,
-  FONT_FAMILIES, FONT_SIZES, THEME_MODES,
-  UI_CARD_RADIUS_OPTIONS, UI_BUTTON_RADIUS_OPTIONS, UI_INPUT_RADIUS_OPTIONS,
-  UI_BUTTON_STYLE_OPTIONS, UI_CARD_ELEVATION_OPTIONS, UI_PATTERN_OPTIONS,
-  UI_VISUAL_STYLE_OPTIONS, UI_VISUAL_STYLE_PRESETS,
-  DEFAULT_BRAND_COLORS, DEFAULT_UI_PREFERENCES, ORIGINAL_UI_PREFERENCES,
-  uiPreferencesForm, isUIPreferencesLoading,
-  ALL_POS_ADDONS, activeSubscriptionKPIs,
-  activeTab, tabs,
-  selectedTierId, customMonths, customUsers, customBranches,
-  selectedModuleIds, moduleInputs, expandedModuleDetails,
-  selectedStorageId, showCalculatorSuccess,
-  config, totals, selectedModulesCount, activeCycle,
-  toggleModuleDetails, isModuleSelected, calculateModulePrice, formatDiscount, formatStorage,
-  isTierCapacityExceeded, toggleModuleSelection,
-  handleUpgradeSubscription, selectTier,
-  incrementUsers, decrementUsers, incrementBranches, decrementBranches,
-  incrementMonths, decrementMonths,
-  availablePermissions,
-  isInitializing, fetchOwnerSubscription, ownerSubscription,
-  applyUIPreferences,
-} = base
-
-// â”€â”€ Profile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const profileModule = useSettingsProfile()
-const {
-  profile, fetchTenantDetailsForSettings, updateProfile,
-  handleLogoUpload, removeCompanyLogo,
-  showProfilePassword, showProfileConfirmPassword,
-  isPressingProfilePassword, isPressingProfileConfirm,
-  profileNewPasswordType, profileConfirmPasswordType
-} = profileModule
-
-// â”€â”€ Modules / Subscription â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const modulesModule = useSettingsModules()
-const {
-  availableModules, allModuleCards,
-  subscribedModules, pendingModules, subscriptionDetails,
-  enrichedSubscriptions, subscriptionTotals, // NOTE: confirm these are exported from useSettingsModules
-  modulePaymentPlans, moduleSubscriptionDetails,
-  branchesCount, storageUsage,
-  unsubscribingModules, subscribingModules,
-  filteredModules, activeModulesList, inactiveModulesList,
-  fetchSubscribedModules, fetchOwnerRequests, fetchSubscriptionDetails,
-  fetchBranches, fetchStorageUsage,
-  getPaymentPlanLabel, getModulePlanTotal, getModulePaymentPlan,
-  getModuleDueDate, isModuleDueSoon, formatDueDate, getModuleSubscriptionInfo,
-  addPending, removePending, isModulePending, isModuleSubscribed,
-  upgradeModule, requestModule, cancelPendingRequest,
-  handleUnsubscribeModule, handleSubscribeModule,
-  savePaymentPlansCache
-} = modulesModule
-
-// â”€â”€ Email â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const emailModule = useSettingsEmail()
-const {
-  emailConfigurations, showEmailConfigForm, editingEmailConfig,
-  savingEmailConfig, showEmailPassword, emailConfigForm,
-  showTestEmailPrompt, testEmailRecipient, pendingTestEmailConfigId,
-  testEmailSending, isValidTestEmailRecipient,
-  openNewEmailConfig, cancelEmailConfig, saveEmailConfig,
-  editEmailConfig, deleteEmailConfig, testEmailConfig,
-  testSavedEmailConfig,
-  closeTestEmailPrompt, confirmTestEmailPrompt, loadEmailConfigurations,
-  toggleNotifType,
-} = emailModule
-
-// â”€â”€ Notifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const notifModule = useSettingsNotifications()
-const {
-  notifications, autoSendEnabled, whatsAppNumber, notificationEmail,
-  selectedCategory, filterEquipment, filterProduct, filterLeads,
-  scheduleType, scheduleTime, scheduleDay, testSendResults, showTestResults,
-  stockAlerts, channelWhatsapp, channelEmail,
-  notifSearch, notifSeverity, collapsedNotifCategories, expandedNotifs,
-  notificationCount,
-  inventoryItems, showItemSettingsPanel, selectedItem, selectedItemSettings,
-  globalLowStockThreshold, globalCriticalStockThreshold,
-  groupedNotifications, filteredGroupedNotifications,
-  clearAdvancedFilters,
-  getCategoryIcon, getNotifStatusClass, getCategoryMeta,
-  getSeverityBorder, getSeverityDot, countBySeverity,
-  toggleNotifCategory, notifKey, isNotifExpanded, toggleNotifExpanded,
-  getNotifDetailText, truncateText, formatNotifRelative, formatDate,
-  loadNotifications, loadStockAlerts, dismissNotification,
-  resolveNotification, dismissAllNotifications,
-  saveNotificationSettings, sendTest,
-  fetchInventoryForSettings, openItemSettingsPanel, openItemSettings, saveItemSettings,
-  fetchGlobalStockSettings, saveGlobalStockSettings,
-  exportNotificationsExcel, exportNotificationsPDF,
-} = notifModule
-
-// â”€â”€ AI Agents â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const aiModule = useSettingsAiAgents()
-const { aiAgents, saveAgentSettings } = aiModule
-
-// â”€â”€ Integrations (Telegram) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const integModule = useSettingsIntegrations()
-const {
-  telegramConfig, telegramSuccess, telegramError,
-  telegramConversations, telegramConversationsLoading, showTokenField,
-  loadTelegramConfig, saveTelegramConfig, disableTelegramBot, loadTelegramConversations
-} = integModule
-
-// â”€â”€ Roles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const rolesModule = useSettingsRoles()
-const {
-  visibleTenantRoles: visibleTenantRolesBase, tenantRoles,
-  showRoleModal, editingRole, roleForm, roleFormErrors,
-  rbacSuccess: rbacRoleSuccess, rbacFeedbackMessage: rbacRoleFeedback,
-  rbacLoading, // NOTE: confirm this is exported from useSettingsRoles (or move to useSettingsBase)
-  originalRoleForm,
-  expandedAddons,
-  ENTITIES_WITH_ADDONS, POS_ADDON_FEATURES, ASSET_SCOPE_FIELDS,
-  ADMIN_ONLY_ROLE_IDS, ADMIN_ONLY_ROLE_NAMES,
-  isRoleDirty,
-  getPosAddon, togglePosAddon, syncPosPermsToLocalStorage,
-  hasAddon, toggleAddon, isAddonOpen,
-  openRoleModal, closeRoleModal,
-  togglePermission, toggleAllEntityPermissions, hasEntityPermission,
-  setAssetScope,
-  saveRole: saveRoleBase,
-  handleDeleteRole
-} = rolesModule
-
-
-// Helper: count selected permissions per entity
-function getEntityPermissionsSelected(entityId) {
-  const perms = roleForm.value?.permissions?.[entityId]
-  return Array.isArray(perms) ? perms.length : 0
+function getJwtValue(methodName, fallback) {
+  try {
+    return decodeJWT()?.[methodName]?.() || fallback
+  } catch {
+    return fallback
+  }
 }
 
+const defaultEmail = getJwtValue('getUserEmail', 'sbwalya@uniplexity.ai')
+const defaultRole = getJwtValue('getUserRole', 'Senior KYC Analyst')
+const derivedName = defaultEmail.includes('@')
+  ? defaultEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
+  : 'Sarah Bwalya'
 
-
-// Organizations module removed
-
-// Roles success banner
-const rbacSuccess = computed(() => !!rbacRoleSuccess.value)
-const rbacFeedbackMessage = computed(() => rbacRoleFeedback.value)
-
-
-const brandingModule = useSettingsBranding()
-const {
-  showColorPicker, selectedVisualStyleName,
-  resetUIPreferences, updateBrandColor, previewThemeMode,
-  applyVisualStylePreset, saveUIPreferences
-} = brandingModule
-
-// â”€â”€ Currency â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const currencyModule = useSettingsCurrency()
-const {
-  currencySettings, currencySuccess, currencyError, currencyLoading,
-  currencySymbols, formatCurrencyPreview, updateCurrency,
-  saveCurrencySettings, loadCurrencySettings
-} = currencyModule
-
-// â”€â”€ Audit â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const auditModule = useSettingsAudit()
-const {
-  auditLogs, auditTotal, auditPage, auditLimit, isLoadingAudit,
-  auditModuleFilter, showAuditChart, auditTotalPages,
-  AUDIT_SENSITIVE, FLAG_DELETE_THRESHOLD, FLAG_UPDATE_THRESHOLD,
-  auditIsFlagged, auditFlags, auditActionTotals, auditChartModules,
-  fetchAuditLogs, auditPrevPage, auditNextPage
-} = auditModule
-
-// â”€â”€ Goals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const goalsModule = useSettingsGoals()
-const {
-  companyGoals, showAddGoalModal, showEditGoalModal, activeGoalMenu, editingGoal, goalForm,
-  activeGoalsCount, achievedGoalsCount, aiInsightsCount,
-  toggleGoalActions, closeGoalModal, editGoal, saveGoal, deleteGoal,
-  duplicateGoal, generateAIInsights, getSmartRecommendation,
-  getGoalStatusClass, getGoalPriorityClass, getProgressBarClass,
-  getRiskLevelClass, getDaysLeft
-} = goalsModule
-
-// â”€â”€ Header "Save/Processing" flags â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const notificationsLoading = ref(false)
-const telegramLoading = ref(false)
-
-
-const visibleTenantRoles = computed(() => {
-  const hasHealthcare = subscribedModules.value.some(m => m.id === 'healthcare');
-  return (visibleTenantRolesBase.value || []).filter(r => {
-    const id = String(r?.id || '').toLowerCase().trim();
-    if (!hasHealthcare && HEALTHCARE_ROLE_IDS.has(id)) return false;
-    return true;
-  });
-});
-
-// Save role, then push POS + Healthcare addon caches to localStorage so the
-// POS and Healthcare modules immediately reflect the new permissions.
-async function saveRole() {
-  await saveRoleBase(createRole, updateRole);
-  syncPosPermsToLocalStorage();
-  syncHealthPermsToLocalStorage();
-}
-
-// â”€â”€ Modal blur (dims the page behind any open modal/dialog) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-const isAnyModalOpen = computed(() => {
-  return showRoleModal.value ||
-    showAddGoalModal.value || showEditGoalModal.value ||
-    showItemSettingsPanel.value || !!settingsConfirmState.value ||
-    showTestEmailPrompt.value
+const profile = reactive({
+  fullName: derivedName || 'Sarah Bwalya',
+  email: defaultEmail,
+  department: 'High-Risk Compliance',
+  role: defaultRole === 'User' ? 'Senior KYC Analyst' : defaultRole,
+  employeeId: 'UX-7742-KYC',
+  timezone: 'Lusaka, Zambia (GMT+2)',
 })
 
-watch(isAnyModalOpen, (isOpen) => {
-  if (isOpen) document.body.classList.add('scoped-modal-open')
-  else document.body.classList.remove('scoped-modal-open')
-}, { immediate: true })
-
-onBeforeUnmount(() => {
-  document.body.classList.remove('scoped-modal-open')
+const userInitials = computed(() => {
+  return profile.fullName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase())
+    .join('') || 'SB'
 })
 
-// â”€â”€ Auto-select a pricing tier based on saved subscription / business type â”€
-function autoSelectTier() {
-  if (selectedTierId.value) return
-  const sub = ownerSubscription.value
-  if (sub && sub.tier && config.value?.tiers?.[sub.tier]) {
-    selectTier(sub.tier)
-    return
-  }
-  if (profile.value?.business_type) {
-    const type = profile.value.business_type.toLowerCase()
-    if (type.includes('micro') || type.includes('informal')) selectTier('micro')
-    else if (type.includes('small') || type.includes('start')) selectTier('small')
-    else if (type.includes('medium') || type.includes('grow')) selectTier('medium')
-    else if (type.includes('enter') || type.includes('large') || type.includes('corp')) selectTier('enterprise')
-  }
-}
+const tabs = [
+  { id: 'personal', label: 'Personal Information', icon: 'fas fa-user', sectionId: 'personal-information' },
+  { id: 'security', label: 'Security & Authentication', icon: 'fas fa-lock', sectionId: 'security-authentication' },
+  { id: 'roles', label: 'Roles', icon: 'fas fa-id-badge', sectionId: 'roles-permissions' },
+  { id: 'notifications', label: 'Notifications', icon: 'fas fa-bell', sectionId: 'notification-preferences' },
+  { id: 'integrations', label: 'Integrations', icon: 'fas fa-plug', sectionId: 'integrations' },
+]
 
-// â”€â”€ Header Save / Reset actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-function saveActiveTab() {
-  switch (activeTab.value) {
-    case 'branding':
-      saveUIPreferences()
-      logAudit('update', 'settings', { resource_type: 'branding' })
-      break
-    case 'currency':
-      saveCurrencySettings()
-      logAudit('update', 'settings', { resource_type: 'currency' })
-      break
-    case 'notifications':
-      saveNotificationSettings()
-      logAudit('update', 'settings', { resource_type: 'notifications' })
-      break
-    case 'integrations':
-      saveTelegramConfig()
-      logAudit('update', 'settings', { resource_type: 'integrations' })
-      break
-    default:
-      break
-  }
-}
+const activeTabLabel = computed(() => tabs.find(tab => tab.id === activeTab.value)?.label || 'Personal Information')
 
-function resetActiveTab() {
-  openSettingsConfirm({
-    title: 'Discard Unsaved Changes',
-    message: 'Are you sure you want to discard unsaved changes in this section?',
-    detail: 'Current edits in the active tab will be lost.',
-    variant: 'warning',
-    confirmLabel: 'Discard',
-    onConfirm: () => {
-      switch (activeTab.value) {
-        case 'branding':
-          uiPreferencesForm.value = { ...DEFAULT_UI_PREFERENCES }
-          break
-        case 'notifications':
-          loadNotifications()
-          break
-        case 'integrations':
-          loadTelegramConfig()
-          break
-        default:
-          break
-      }
-    },
+const devices = [
+  { name: 'Chrome on Windows', location: 'Lusaka, Zambia (Current)', lastActive: 'Now', icon: 'fas fa-desktop' },
+  { name: 'iPhone 15 Pro', location: 'Lusaka, Zambia', lastActive: '2h ago', icon: 'fas fa-mobile-screen' },
+]
+
+const roleDraftOpen = ref(false)
+const roleDraft = reactive({
+  name: '',
+  level: 'Reviewer',
+})
+
+const roles = [
+  {
+    id: 'admin',
+    name: 'Administrator',
+    description: 'Full settings ownership, user management, and system configuration.',
+    users: 2,
+    permissions: ['All modules', 'Users', 'Billing', 'Audit logs'],
+  },
+  {
+    id: 'kyc-analyst',
+    name: 'KYC Analyst',
+    description: 'Can review customers, update cases, and receive risk notifications.',
+    users: 14,
+    permissions: ['Cases', 'Documents', 'Risk signals'],
+  },
+  {
+    id: 'approver',
+    name: 'Compliance Approver',
+    description: 'Can approve escalations, review exceptions, and revoke sessions.',
+    users: 5,
+    permissions: ['Approvals', 'Security', 'Reports'],
+  },
+]
+
+const notificationPreferences = reactive([
+  {
+    id: 'case-alerts',
+    title: 'Case alerts',
+    description: 'New assignments, status changes, and SLA risk updates.',
+    email: true,
+    mobile: true,
+  },
+  {
+    id: 'approval-requests',
+    title: 'Approval requests',
+    description: 'Reviews that require your decision or escalation.',
+    email: true,
+    mobile: true,
+  },
+  {
+    id: 'risk-thresholds',
+    title: 'Risk threshold changes',
+    description: 'Material changes in KYC risk score, flags, or sanctions match confidence.',
+    email: false,
+    mobile: true,
+  },
+  {
+    id: 'reports',
+    title: 'Reports',
+    description: 'Scheduled compliance, portfolio, and operational summary reports.',
+    email: false,
+    mobile: true,
+  },
+])
+
+const integrations = [
+  {
+    id: 'core-banking',
+    name: 'Core Banking',
+    description: 'Sync customer profile, account, and branch context into KYC workflows.',
+    connected: true,
+    icon: 'fas fa-building-columns',
+  },
+  {
+    id: 'email',
+    name: 'Email Gateway',
+    description: 'Send approval notices, case assignments, and scheduled reports.',
+    connected: true,
+    icon: 'fas fa-envelope',
+  },
+  {
+    id: 'document-store',
+    name: 'Document Store',
+    description: 'Archive KYC files, verification documents, and audit attachments.',
+    connected: false,
+    icon: 'fas fa-folder-open',
+  },
+  {
+    id: 'webhooks',
+    name: 'Webhook Events',
+    description: 'Publish case, risk, and approval events to downstream systems.',
+    connected: false,
+    icon: 'fas fa-code-branch',
+  },
+]
+
+function goToSection(tab) {
+  activeTab.value = tab.id
+  requestAnimationFrame(() => {
+    const target = document.getElementById(tab.sectionId)
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   })
 }
 
-// â”€â”€ Lifecycle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-onMounted(async () => {
-  isInitializing.value = true
-
-  try {
-    // 1. Handle tab query parameter
-    const tabParam = route.query.tab
-    const validTabs = ['profile', 'branding', 'currency', 'notifications', 'roles', 'organizations', 'modules', 'goals', 'ai-agents', 'integrations']
-    if (tabParam && validTabs.includes(tabParam)) activeTab.value = tabParam
-
-    // 2. Initialize core services & configs
-    if (!pricingStore.config) await pricingStore.fetchConfig()
-    await fetchGlobalStockSettings()
-    await loadCurrencySettings()
-
-    // 3. Fetch domain data
-    await fetchSubscribedModules()
-    await fetchOwnerRequests()
-    await fetchSubscriptionDetails()
-    await fetchOwnerSubscription()
-    await fetchTenantDetailsForSettings()
-    await fetchBranches()
-    await fetchStorageUsage()
-    await loadNotifications()
-    try { await loadStockAlerts() } catch (e) { console.warn('loadStockAlerts initial error', e) }
-
-    // 4. Auto-select tier once data is in, and keep re-checking as data settles
-    autoSelectTier()
-    watch([profile, config], () => {
-      if (!selectedTierId.value) autoSelectTier()
-    }, { deep: true })
-
-    // 5. Telegram + Email + RBAC
-    await loadTelegramConfig()
-    watch(activeTab, (newTab) => {
-      if (newTab === 'integrations') { loadTelegramConfig(); loadTelegramConversations() }
-      if (newTab === 'audit') fetchAuditLogs()
-    })
-
-    await loadEmailConfigurations()
-    await initializeRBAC()
-
-    // 6. Final sync of selected module ids for the calculator
-    selectedModuleIds.clear()
-    subscribedModules.value.forEach(m => selectedModuleIds.add(m.id))
-  } catch (err) {
-    console.error('[Settings] Error during initialization:', err)
-  } finally {
-    isInitializing.value = false
-  }
-})
-
-watch(auditModuleFilter, () => { auditPage.value = 1; fetchAuditLogs() })
+function saveSettings() {
+  savedAt.value = new Intl.DateTimeFormat('en-ZM', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date())
+  isEditing.value = false
+}
 </script>
 
-
 <style scoped>
-/* --- ABSA Settings Shell --- */
-.absa-settings {
-  padding: 10px 20px;
-  max-width: 1400px;
+.absa-profile-settings {
+  min-height: 100%;
+  color: var(--absa-text-primary, #111827);
+}
+
+.settings-shell {
+  max-width: 972px;
   margin: 0 auto;
 }
 
-.absa-settings__breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 600; color: #9CA3AF;
-  margin-bottom: 12px; font-family: 'Space Mono', monospace;
+.settings-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: var(--absa-text-muted, #9ca3af);
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.absa-settings__breadcrumb-current { color: #BE0F2C; }
-
-.absa-settings__actions {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+.settings-breadcrumb a {
+  color: var(--absa-text-secondary, #4b5563);
+  text-decoration: none;
 }
 
-.absa-settings__title {
-  font-size: 1.5rem; font-weight: 900; color: #111827;
-  margin: 0; letter-spacing: -0.02em;
+.settings-breadcrumb strong {
+  color: var(--absa-maroon, #be0f2c);
 }
 
-.absa-settings__btns { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.absa-settings__btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 6px; font-size: 0.75rem;
-  font-weight: 700; cursor: pointer; transition: all 150ms ease;
-  border: 1px solid #E8E8EC; background: #FFFFFF; color: #4B5563;
-  font-family: 'Montserrat', system-ui, sans-serif;
+.settings-layout {
+  display: grid;
+  grid-template-columns: 256px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
 }
 
-.absa-settings__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
-
-.absa-settings__btn--primary {
-  background: linear-gradient(135deg, #BE0F2C, #8B0015); color: #FFFFFF;
-  border-color: transparent; box-shadow: 0 4px 14px rgba(190, 15, 44, 0.25);
+.settings-tabs {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.absa-settings__btn--primary:hover { opacity: 0.9; }
-
-.absa-settings__btn--primary:disabled { opacity: 0.55; cursor: not-allowed; }
-
-.absa-settings__btn--outline { background: #FFFFFF; }
-
-.absa-settings__spin { animation: absaSpin 1s linear infinite; }
-@keyframes absaSpin { to { transform: rotate(360deg); } }
-
-/* Tabs */
-.absa-settings__tabs {
-  display: flex; gap: 2px; overflow-x: auto;
-  border-bottom: 2px solid #E8E8EC; margin-bottom: 24px;
-  padding: 0 4px;
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
 }
 
-.absa-settings__tab {
-  padding: 10px 16px; font-size: 0.7rem; font-weight: 700;
-  font-family: 'Space Mono', monospace; text-transform: uppercase;
-  letter-spacing: 0.04em; border: none; background: transparent;
-  color: #9CA3AF; cursor: pointer; transition: all 150ms ease;
-  border-bottom: 2px solid transparent; margin-bottom: -2px;
-  white-space: nowrap; display: flex; align-items: center; gap: 6px;
+.settings-tab:hover {
+  background: var(--absa-surface-hover, #f3f4f6);
 }
 
-.absa-settings__tab:hover { color: #4B5563; }
-
-.absa-settings__tab--active {
-  color: #BE0F2C; border-bottom-color: #BE0F2C;
+.settings-tab--active {
+  background: var(--absa-maroon, #be0f2c);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(190, 15, 44, 0.18);
 }
 
-.absa-settings__tab-badge {
-  background: #DC2626; color: #FFF; font-size: 0.55rem;
-  padding: 1px 6px; border-radius: 999px; font-weight: 800;
+.settings-tab__icon {
+  width: 20px;
+  text-align: center;
 }
 
-.absa-settings__content { min-height: 60vh; }
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 700px;
+}
 
-@media (max-width: 768px) {
-  .absa-settings { padding: 10px; }
-  .absa-settings__actions { flex-direction: column; align-items: flex-start; }
-  .absa-settings__tabs { gap: 0; }
-  .absa-settings__tab { padding: 8px 12px; font-size: 0.6rem; }
+.settings-card,
+.save-panel {
+  background: var(--absa-surface-card, #fff);
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
+}
+
+.settings-card {
+  padding: 25px;
+  scroll-margin-top: 88px;
+}
+
+.settings-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--absa-maroon, #be0f2c);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2 {
+  margin-bottom: 0;
+  color: var(--absa-text-primary, #111827);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h3, h4 {
+  margin-bottom: 0;
+  color: var(--absa-text-primary, #111827);
+  font-weight: 600;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 48px;
+}
+
+.avatar-panel {
+  text-align: center;
+}
+
+.avatar-ring {
+  width: 128px;
+  height: 128px;
+  padding: 4px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(190, 15, 44, 0.12), rgba(139, 0, 21, 0.28));
+  box-shadow: 0 14px 32px rgba(17, 24, 39, 0.14);
+}
+
+.avatar {
+  display: grid;
+  width: 120px;
+  height: 120px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--absa-maroon-gradient, linear-gradient(135deg, #be0f2c 0%, #8b0015 100%));
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.avatar-action,
+.mfa-card button,
+.device-row button {
+  border: 0;
+  background: transparent;
+  color: var(--absa-maroon, #be0f2c);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.avatar-action {
+  margin-top: 16px;
+  font-size: 0.78rem;
+}
+
+.form-grid,
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field span {
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--absa-divider, #d9d9df);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--absa-text-primary, #111827);
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0 12px;
+  outline: none;
+  transition: border 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.field input[readonly],
+.field select:disabled {
+  background: #fafafa;
+  color: #374151;
+  opacity: 1;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--absa-maroon, #be0f2c);
+  box-shadow: var(--absa-ring-focus, 0 0 0 3px rgba(190, 15, 44, 0.25));
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border-radius: 9px;
+  padding: 0 18px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border 160ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--primary {
+  border: 1px solid var(--absa-maroon, #be0f2c);
+  background: var(--absa-maroon, #be0f2c);
+  color: #fff;
+}
+
+.btn--secondary {
+  border: 1px solid var(--absa-divider, #d9d9df);
+  background: #fff;
+  color: var(--absa-maroon, #be0f2c);
+}
+
+.btn--large {
+  min-height: 52px;
+  min-width: 232px;
+  padding: 0 32px;
+  border-radius: 14px;
+  font-size: 1rem;
+}
+
+.security-grid {
+  grid-template-columns: 309px 309px;
+  gap: 32px;
+}
+
+.mfa-card {
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 14px;
+  padding: 16px;
+  background: linear-gradient(180deg, #fff 0%, #fff7f8 100%);
+}
+
+.mfa-card,
+.password-panel {
+  min-height: 158px;
+}
+
+.mfa-card__top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.mfa-card__icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--absa-maroon-soft, #fde8ec);
+  color: var(--absa-maroon, #be0f2c);
+}
+
+.mfa-card h3,
+.notification-row h3 {
+  margin-bottom: 2px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.mfa-card span {
+  color: var(--absa-success, #16a34a);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.mfa-card p,
+.notification-row p,
+.save-panel p {
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.password-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 44px;
+}
+
+.password-input button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--absa-text-muted, #9ca3af);
+  cursor: pointer;
+}
+
+.inline-feedback {
+  margin-bottom: 0;
+  color: var(--absa-success, #16a34a);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.device-section {
+  margin-top: 24px;
+}
+
+.device-section h3 {
+  margin-bottom: 12px;
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.device-table {
+  overflow: hidden;
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 12px;
+}
+
+.device-row {
+  display: grid;
+  grid-template-columns: 2fr 1.65fr 1fr 0.75fr;
+  min-height: 44px;
+  align-items: center;
+  border-top: 1px solid var(--absa-border-light, #e8e8ec);
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.83rem;
+}
+
+.device-row:first-child {
+  border-top: 0;
+}
+
+.device-row > * {
+  padding: 0 12px;
+}
+
+.device-row span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--absa-text-primary, #111827);
+  font-weight: 800;
+}
+
+.device-row--head {
+  min-height: 38px;
+  background: #fafafa;
+  color: var(--absa-text-muted, #9ca3af);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roles-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.role-card {
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 14px;
+  padding: 16px;
+  background: #fff;
+}
+
+.role-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.role-card h3,
+.integration-row h3 {
+  margin-bottom: 4px;
+  color: var(--absa-text-primary, #111827);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.role-card p,
+.integration-row p {
+  margin-bottom: 0;
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.role-count {
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--absa-maroon-soft, #fde8ec);
+  color: var(--absa-maroon, #be0f2c);
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.permission-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.permission-chips span {
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 999px;
+  background: #fafafa;
+  color: var(--absa-text-secondary, #4b5563);
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.role-card__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.role-card__actions button {
+  border: 0;
+  background: transparent;
+  color: var(--absa-maroon, #be0f2c);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0;
+}
+
+.role-editor {
+  display: grid;
+  grid-template-columns: 1fr 1fr max-content;
+  gap: 14px;
+  align-items: end;
+  margin-top: 16px;
+  border-top: 1px solid var(--absa-border-light, #e8e8ec);
+  padding-top: 16px;
+}
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  min-height: 79px;
+  border-top: 1px solid var(--absa-border-light, #e8e8ec);
+}
+
+.notification-row:first-child {
+  border-top: 0;
+}
+
+.notification-row p {
+  margin-bottom: 0;
+}
+
+.channel-toggles {
+  display: grid;
+  grid-template-columns: 76px 84px;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.switch-field {
+  position: relative;
+  display: grid;
+  grid-template-columns: max-content 40px;
+  align-items: center;
+  gap: 8px;
+  color: var(--absa-text-secondary, #4b5563);
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch-field input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch-control {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.08);
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+
+.switch-control::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(17, 24, 39, 0.22);
+  content: '';
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.switch-field input:checked + .switch-control {
+  background: var(--absa-maroon, #be0f2c);
+  box-shadow: inset 0 0 0 1px rgba(190, 15, 44, 0.2);
+}
+
+.switch-field input:checked + .switch-control::after {
+  transform: translateX(16px);
+}
+
+.switch-field input:focus-visible + .switch-control {
+  box-shadow: var(--absa-ring-focus, 0 0 0 3px rgba(190, 15, 44, 0.25));
+}
+
+.integrations-list {
+  display: grid;
+  gap: 12px;
+}
+
+.integration-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid var(--absa-border-light, #e8e8ec);
+  border-radius: 14px;
+  padding: 14px;
+  background: #fff;
+}
+
+.integration-row__icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--absa-maroon-soft, #fde8ec);
+  color: var(--absa-maroon, #be0f2c);
+}
+
+.integration-row__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.status-pill--connected {
+  background: var(--absa-success-soft, #dcfce7);
+  color: var(--absa-success, #16a34a);
+}
+
+.status-pill--muted {
+  background: var(--absa-neutral-soft, #f3f4f6);
+  color: var(--absa-neutral, #6b7280);
+}
+
+.save-panel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 100px;
+  padding: 24px 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.save-panel p {
+  margin-bottom: 0;
+  font-weight: 800;
+}
+
+@media (max-width: 980px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-content {
+    max-width: none;
+  }
+
+  .settings-tabs {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .settings-tab {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .security-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .role-editor,
+  .integration-row {
+    grid-template-columns: 1fr;
+  }
+
+  .integration-row__status {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 760px) {
+  .settings-card {
+    padding: 18px;
+  }
+
+  .settings-card__header,
+  .profile-grid,
+  .notification-row,
+  .save-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .profile-grid,
+  .form-grid,
+  .security-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .avatar-panel {
+    text-align: left;
+  }
+
+  .device-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 12px 0;
+  }
+
+  .device-row--head {
+    display: none;
+  }
+
+  .channel-toggles {
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+  }
+
+  .role-card__top,
+  .role-card__actions,
+  .integration-row__status {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 </style>

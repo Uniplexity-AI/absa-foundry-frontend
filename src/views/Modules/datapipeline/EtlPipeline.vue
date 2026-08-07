@@ -29,6 +29,9 @@
     </div>
 
     <!-- ═══ System Health Cards ═══ -->
+    <LoadingSkeleton v-if="loading" type="stats" />
+    <LoadingSkeleton v-if="loading" type="table" :count="4" />
+    <template v-else>
     <div class="absa-etl__health-grid">
       <div class="absa-metric-bg absa-etl__health-card">
         <div class="absa-etl__health-top">
@@ -38,8 +41,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
         </div>
         <div class="absa-etl__health-label">PostgreSQL Cluster</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">Active</div>
-        <div class="absa-etl__health-stat">99.98% uptime</div>
+        <div class="absa-etl__health-value absa-etl__health-value--green">--</div>
+        <div class="absa-etl__health-stat">Connect to backend</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__health-card">
@@ -50,8 +53,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
         </div>
         <div class="absa-etl__health-label">Redis Cache</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">Healthy</div>
-        <div class="absa-etl__health-stat">0.4ms Latency</div>
+        <div class="absa-etl__health-value absa-etl__health-value--green">--</div>
+        <div class="absa-etl__health-stat">Connect to backend</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__health-card">
@@ -62,8 +65,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--amber"></span>
         </div>
         <div class="absa-etl__health-label">API Gateway</div>
-        <div class="absa-etl__health-value absa-etl__health-value--amber">Stable</div>
-        <div class="absa-etl__health-stat">Load Balance 72%</div>
+        <div class="absa-etl__health-value absa-etl__health-value--amber">--</div>
+        <div class="absa-etl__health-stat">Connect to backend</div>
       </div>
     </div>
 
@@ -72,7 +75,7 @@
       <div class="absa-etl__quality-header">
         <div>
           <h3 class="absa-etl__quality-title">Quality Score Trend</h3>
-          <p class="absa-etl__quality-sub">Data Integrity Score: <strong>98.4</strong> &bull; Last scan: 2 mins ago</p>
+          <p class="absa-etl__quality-sub">Data Integrity Score: <strong>--</strong> &bull; Connect to backend</p>
         </div>
         <div class="absa-etl__quality-legend">
           <span class="absa-etl__legend-label">
@@ -155,7 +158,7 @@
         </table>
       </div>
       <div class="absa-etl__pagination">
-        <span>Showing 1-4 of 8842 executions</span>
+        <span>Showing {{ executionHistory.length }} executions</span>
         <div class="absa-etl__page-btns">
           <button disabled><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
           <button class="absa-etl__page-btn--active">1</button>
@@ -174,46 +177,51 @@
         <div class="absa-etl__stat-icon absa-etl__stat-icon--blue">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
         </div>
-        <div class="absa-etl__stat-value">+14.2 GB</div>
+        <div class="absa-etl__stat-value">--</div>
         <div class="absa-etl__stat-label">Storage Growth</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--up">2.4%</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--green">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <div class="absa-etl__stat-value">99.1%</div>
+        <div class="absa-etl__stat-value">--</div>
         <div class="absa-etl__stat-label">Average Quality</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--up">+0.3%</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--amber">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         </div>
-        <div class="absa-etl__stat-value">02</div>
+        <div class="absa-etl__stat-value">--</div>
         <div class="absa-etl__stat-label">Failed Retries</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">Active</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--red">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <div class="absa-etl__stat-value">118ms</div>
+        <div class="absa-etl__stat-value">--</div>
         <div class="absa-etl__stat-label">Gateway Latency</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--up absa-etl__stat-trend--warn">High</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
       </div>
     </div>
+    </template>
   </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
 
-const qualityPoints = [97, 98, 97.5, 98.2, 99, 98.8, 98.4, 98.6, 99.1, 98.4]
+const loading = ref(true)
+onMounted(() => { setTimeout(() => { loading.value = false }, 2000) })
+
+const qualityPoints = []
 
 const qualityLine = computed(() => {
   const w = 800; const h = 160; const min = 90
@@ -226,12 +234,7 @@ const qualityArea = computed(() => {
   return `0,${h} ${pts.join(' ')} ${w},${h}`
 })
 
-const executionHistory = ref([
-  { id: 1, runId: '#RUN-8842', batchId: 'BTH-2026-07-20-04', duration: '14m 32s', rowsReceived: '1.2M', rowsValid: '1.18M', rowsLoaded: '1.18M', rowsRejected: 2400, qualityScore: 99.2, qualityClass: 'good', status: 'RUNNING', statusClass: 'running' },
-  { id: 2, runId: '#RUN-8841', batchId: 'BTH-2026-07-20-03', duration: '12m 08s', rowsReceived: '1.1M', rowsValid: '1.09M', rowsLoaded: '1.09M', rowsRejected: 1100, qualityScore: 99.5, qualityClass: 'good', status: 'COMPLETED', statusClass: 'completed' },
-  { id: 3, runId: '#RUN-8840', batchId: 'BTH-2026-07-20-02', duration: '18m 45s', rowsReceived: '980K', rowsValid: '890K', rowsLoaded: '890K', rowsRejected: 90000, qualityScore: 91.2, qualityClass: 'warning', status: 'FAILED', statusClass: 'failed' },
-  { id: 4, runId: '#RUN-8839', batchId: 'BTH-2026-07-20-01', duration: '10m 15s', rowsReceived: '1.05M', rowsValid: '1.04M', rowsLoaded: '1.04M', rowsRejected: 500, qualityScore: 99.8, qualityClass: 'good', status: 'COMPLETED', statusClass: 'completed' }
-])
+const executionHistory = ref([])
 </script>
 
 <style scoped>

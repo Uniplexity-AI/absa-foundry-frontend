@@ -1,7 +1,7 @@
 <template>
   <div class="absa-db-page">
     <!-- Content Area -->
-    <div v-if="!loading">
+    <div>
       <!-- Breadcrumb -->
       <div class="absa-db-breadcrumb">
         <span>Home</span>
@@ -11,45 +11,35 @@
         <span class="absa-db-breadcrumb__current">Portfolio Overview</span>
       </div>
 
-        <!-- ═══ 4 KPI Summary Cards ═══ -->
-        <div class="absa-db-kpi-grid">
-          <div class="absa-db-kpi-card">
+        <!-- Error Banner -->
+        <div v-if="customerStore.error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+          <span class="text-red-700 text-sm font-medium">Could not load portfolio data</span>
+          <button @click="customerStore.fetchPortfolio()" class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-medium">
+            Retry
+          </button>
+        </div>
+
+        <!-- ═══ 4 KPI Summary Cards (reactive) ═══ -->
+        <LoadingSkeleton v-if="pageLoading" type="stats" />
+        <div v-else class="absa-db-kpi-grid">
+          <div class="absa-db-kpi-card cursor-pointer" @click="customerStore.clearFilters()">
             <div class="absa-db-kpi-card__label">TOTAL CUSTOMERS</div>
-            <div class="absa-db-kpi-card__value">1,240</div>
-            <div class="absa-db-kpi-card__trend absa-db-kpi-card__trend--up">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-              +2.4%
-            </div>
+            <div class="absa-db-kpi-card__value">{{ customerStore.portfolio.total.toLocaleString() }}</div>
             <div class="absa-db-kpi-card__accent absa-db-kpi-card__accent--blue"></div>
           </div>
-
-          <div class="absa-db-kpi-card">
+          <div class="absa-db-kpi-card cursor-pointer" @click="customerStore.setFilter('state', 'AT_RISK')">
             <div class="absa-db-kpi-card__label">AT RISK</div>
-            <div class="absa-db-kpi-card__value">68 <span class="absa-db-kpi-card__pct">| 5.5%</span></div>
-            <div class="absa-db-kpi-card__trend absa-db-kpi-card__trend--down">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-              +4 since last snapshot
-            </div>
+            <div class="absa-db-kpi-card__value">{{ customerStore.portfolio.atRisk }} <span class="absa-db-kpi-card__pct">| {{ customerStore.portfolio.atRiskPct }}%</span></div>
             <div class="absa-db-kpi-card__accent absa-db-kpi-card__accent--red"></div>
           </div>
-
-          <div class="absa-db-kpi-card">
+          <div class="absa-db-kpi-card cursor-pointer" @click="customerStore.setFilter('state', 'DORMANT')">
             <div class="absa-db-kpi-card__label">DORMANT</div>
-            <div class="absa-db-kpi-card__value">42 <span class="absa-db-kpi-card__pct">3.4%</span></div>
-            <div class="absa-db-kpi-card__trend absa-db-kpi-card__trend--neutral">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Stable across 3 periods
-            </div>
+            <div class="absa-db-kpi-card__value">{{ customerStore.portfolio.dormant }} <span class="absa-db-kpi-card__pct">{{ customerStore.portfolio.dormantPct }}%</span></div>
             <div class="absa-db-kpi-card__accent absa-db-kpi-card__accent--amber"></div>
           </div>
-
           <div class="absa-db-kpi-card">
             <div class="absa-db-kpi-card__label">ACTIONS DUE TODAY</div>
-            <div class="absa-db-kpi-card__value">12</div>
-            <div class="absa-db-kpi-card__subtags">
-              <span class="absa-db-kpi-card__tag absa-db-kpi-card__tag--urgent">8 URGENT</span>
-              <span class="absa-db-kpi-card__tag absa-db-kpi-card__tag--routine">4 ROUTINE</span>
-            </div>
+            <div class="absa-db-kpi-card__value">{{ customerStore.portfolio.actionsDue }}</div>
             <div class="absa-db-kpi-card__accent absa-db-kpi-card__accent--maroon"></div>
           </div>
         </div>
@@ -57,40 +47,34 @@
         <!-- ═══ Two-Column: Alerts + Ledger ═══ -->
         <div class="absa-db-two-col">
           <!-- Critical Alerts Panel -->
-          <div class="absa-db-alerts">
+          <LoadingSkeleton v-if="pageLoading" type="card" />
+          <div v-else class="absa-db-alerts">
             <div class="absa-db-alerts__header">
               <h3 class="absa-db-alerts__title">Critical Alerts</h3>
               <span class="absa-db-alerts__badge">5 NEW</span>
             </div>
             <div class="absa-db-alerts__list">
-              <div class="absa-db-alert-item" v-for="alert in criticalAlerts" :key="alert.id">
-                <div class="absa-db-alert-item__icon" :class="'absa-db-alert-item__icon--' + alert.severity">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </div>
-                <div class="absa-db-alert-item__body">
-                  <div class="absa-db-alert-item__top">
-                    <span class="absa-db-alert-item__customer">{{ alert.customer }}</span>
-                    <span class="absa-db-alert-item__time">{{ alert.time }}</span>
-                  </div>
-                  <div class="absa-db-alert-item__event">{{ alert.event }}</div>
-                  <div class="absa-db-alert-item__detail">{{ alert.detail }}</div>
-                  <button class="absa-db-alert-item__ack">ACKNOWLEDGE</button>
-                </div>
+              <div v-if="customerStore.customers.length === 0" class="p-6 text-center text-sm text-gray-400">
+                No alerts — connect to backend to populate.
+              </div>
+              <div v-else class="p-6 text-center text-sm text-gray-400">
+                Alerts will appear here when risk thresholds are triggered.
               </div>
             </div>
           </div>
 
           <!-- Predictive Lifecycle Ledger -->
-          <div class="absa-db-ledger">
+          <LoadingSkeleton v-if="pageLoading" type="table" :count="4" />
+          <div v-else class="absa-db-ledger">
             <div class="absa-db-ledger__header">
               <h3 class="absa-db-ledger__title">Predictive Lifecycle Ledger</h3>
               <div class="absa-db-ledger__filters">
                 <select class="absa-db-ledger__select">
-                  <option>All States</option>
-                  <option>Active</option>
-                  <option>At Risk</option>
-                  <option>Churned</option>
-                  <option>Dormant</option>
+                  <option value="">All States</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="AT_RISK">At Risk</option>
+                  <option value="CHURNED">Churned</option>
+                  <option value="DORMANT">Dormant</option>
                 </select>
               </div>
             </div>
@@ -107,35 +91,35 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="row in ledgerData" :key="row.id">
+                  <tr v-for="row in customerStore.customers.slice(0, 5)" :key="row.customerId">
                     <td>
-                      <div class="absa-db-ledger__name">{{ row.name }}</div>
+                      <div class="absa-db-ledger__name">{{ row.fullName }}</div>
                       <div class="absa-db-ledger__id">{{ row.customerId }}</div>
                     </td>
                     <td>
-                      <span class="absa-db-ledger__state" :class="'absa-db-ledger__state--' + row.stateClass">{{ row.state }}</span>
+                      <StateBadge :state="row.state" size="sm" />
                     </td>
                     <td>
                       <div class="absa-db-ledger__health">
                         <div class="absa-db-ledger__health-bar">
-                          <div class="absa-db-ledger__health-fill" :class="'absa-db-ledger__health-fill--' + row.healthClass" :style="{ width: row.health + '%' }"></div>
+                          <div class="absa-db-ledger__health-fill" :style="{ width: (row.healthScore || 0) + '%' }"></div>
                         </div>
-                        <span class="absa-db-ledger__health-val" :class="'absa-db-ledger__health-val--' + row.healthClass">{{ row.health }}</span>
+                        <span class="absa-db-ledger__health-val">{{ row.healthScore || '--' }}</span>
                       </div>
                     </td>
                     <td>
-                      <span class="absa-db-ledger__churn" :class="'absa-db-ledger__churn--' + row.churnClass">{{ row.churnProb }}%</span>
+                      <span class="absa-db-ledger__churn">{{ row.churnProbability ? Math.round(row.churnProbability * 100) + '%' : '--' }}</span>
                     </td>
-                    <td class="absa-db-ledger__clv">ZMW {{ row.clv }}</td>
+                    <td class="absa-db-ledger__clv">ZMW {{ row.clv ? (row.clv / 1000).toFixed(1) + 'K' : '--' }}</td>
                     <td>
-                      <span class="absa-db-ledger__action" :class="'absa-db-ledger__action--' + row.actionClass">{{ row.action }}</span>
+                      <span class="absa-db-ledger__action">{{ row.state === 'AT_RISK' ? 'REVIEW' : row.state === 'CHURNED' ? 'RETENTION' : '--' }}</span>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div class="absa-db-ledger__pagination">
-              <span>Showing 1-4 of 1,240</span>
+              <span>Showing {{ Math.min(customerStore.customers.length, 5) }} of {{ customerStore.pagination.total }}</span>
               <div class="absa-db-ledger__page-btns">
                 <button disabled><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
                 <button class="absa-db-ledger__page-btn--active">1</button>
@@ -150,7 +134,7 @@
         </div>
 
         <!-- ═══ Bottom Row: AI + Health ═══ -->
-        <div class="absa-db-bottom">
+        <div v-if="!pageLoading" class="absa-db-bottom">
           <!-- AI Recommendation Engine -->
           <div class="absa-db-ai-card">
             <div class="absa-db-ai-card__header">
@@ -164,14 +148,14 @@
             </div>
             <div class="absa-db-ai-card__body">
               <p class="absa-db-ai-card__prediction">
-                <strong>Increased dormancy predicted</strong> for segment <em>"HNI-Retail"</em> within the next 60 days unless proactive outreach is initiated. Recommend scheduling personalized relationship reviews for the top 25 accounts in this segment.
+                <strong>AI recommendations</strong> will surface here once the prediction engine processes portfolio data from the backend.
               </p>
               <div class="absa-db-ai-card__confidence">
                 <span>AI Confidence</span>
                 <div class="absa-db-ai-card__conf-bar">
-                  <div class="absa-db-ai-card__conf-fill" style="width:87%"></div>
+                  <div class="absa-db-ai-card__conf-fill" style="width:0%"></div>
                 </div>
-                <span class="absa-db-ai-card__conf-pct">87%</span>
+                <span class="absa-db-ai-card__conf-pct">--</span>
               </div>
             </div>
           </div>
@@ -191,22 +175,22 @@
                       stroke-dasharray="213.6" stroke-dashoffset="28" stroke-linecap="round"
                       transform="rotate(-90 40 40)"/>
                   </svg>
-                  <span class="absa-db-health-card__score-val">+3.4<span class="absa-db-health-card__score-unit">pts</span></span>
+                  <span class="absa-db-health-card__score-val">--<span class="absa-db-health-card__score-unit">pts</span></span>
                 </div>
                 <div class="absa-db-health-card__score-info">
-                  <p class="absa-db-health-card__score-label">Overall portfolio health improved by <strong>+3.4 pts</strong> since last quarter.</p>
+                  <p class="absa-db-health-card__score-label">Portfolio health score computed from aggregated customer metrics by the prediction engine.</p>
                   <div class="absa-db-health-card__score-items">
                     <div class="absa-db-health-card__score-item absa-db-health-card__score-item--good">
                       <span class="absa-db-health-card__score-dot"></span>
-                      Active <strong>78%</strong>
+                      Active <strong>{{ customerStore.portfolio.activePct }}%</strong>
                     </div>
                     <div class="absa-db-health-card__score-item absa-db-health-card__score-item--warn">
                       <span class="absa-db-health-card__score-dot"></span>
-                      At Risk <strong>5.5%</strong>
+                      At Risk <strong>{{ customerStore.portfolio.atRiskPct }}%</strong>
                     </div>
                     <div class="absa-db-health-card__score-item absa-db-health-card__score-item--crit">
                       <span class="absa-db-health-card__score-dot"></span>
-                      Churned <strong>2.1%</strong>
+                      Churned <strong>{{ customerStore.portfolio.churnedPct }}%</strong>
                     </div>
                   </div>
                 </div>
@@ -246,12 +230,6 @@
 
         <!-- Dashboard Widgets -->
         <DashboardWidgets class="absa-db-widgets" />
-    </div>
-
-    <!-- Loading State -->
-    <div class="absa-db-loading" v-else>
-      <div class="absa-db-loading__spinner"></div>
-      <p>Loading Portfolio Overview...</p>
     </div>
 
     <!-- ═══ Popups (from existing) ═══ -->
@@ -303,6 +281,9 @@ import KpiSection from '@/components/ui/KpiSection.vue';
 import KpiCard from '@/components/ui/KpiCard.vue';
 import DashboardWidgets from '@/components/ui/DashboardWidgets.vue';
 import { useDashboardWidgets } from '@/composables/useDashboardWidgets';
+import StateBadge from '@/components/absa/StateBadge.vue';
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue';
+import { useCustomerStore } from '@/stores/customerStore';
 // Widget components to be implemented: RevenueWidget, PendingTasksWidget
 import '@/assets/main.css';
 import { useCurrency } from '@/composables/useCurrency.js';
@@ -317,14 +298,23 @@ const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC();
 const userRole = ref(getUserRole() || 'user');
 const companyName = ref(localStorage.getItem('company_name') || '');
 const subscribedModules = ref([]);
-const loading = ref(true);
-const kpiLoading = ref(true);
+const loading = ref(false);
+const kpiLoading = ref(false);
 const showKpis = ref(false);
 const showApprovalPopup = ref(false);
 const showModulePopup = ref(false);
 const cards = getModuleCards();
 
 const canAccessSettings = computed(() => isAdmin.value || isSuperAdmin.value || hasPermission('settings', 'read'));
+
+const customerStore = useCustomerStore();
+const pageLoading = ref(true);
+
+// Fetch portfolio data on mount
+onMounted(async () => {
+  await customerStore.fetchPortfolio();
+  pageLoading.value = false;
+});
 
 const greeting = computed(() => {
   const hour = new Date().getHours();
@@ -358,93 +348,6 @@ const { registerWidgets } = useDashboardWidgets()
 registerWidgets([
   // { id: 'revenue', label: 'Revenue', icon: 'fas fa-chart-line', component: RevenueWidget },
   // { id: 'pending-tasks', label: 'Pending Tasks', icon: 'fas fa-tasks', component: PendingTasksWidget },
-])
-
-// ─── Mock Dashboard Data (Portfolio Overview) ──────────────────
-const criticalAlerts = ref([
-  {
-    id: 1,
-    customer: 'M. Kapambwe',
-    time: '2h ago',
-    event: 'Health Score drop -25',
-    detail: 'Significant decrease in incoming wire transfers over last 30 days.',
-    severity: 'critical'
-  },
-  {
-    id: 2,
-    customer: 'J. Phiri',
-    time: '4h ago',
-    event: 'State Transition: At Risk',
-    detail: 'Churn probability exceeds 45% threshold.',
-    severity: 'warning'
-  },
-  {
-    id: 3,
-    customer: 'P. Lungu',
-    time: 'Yesterday',
-    event: 'Large Withdrawal Detected',
-    detail: 'Withdrawal of ZMW 450,000 from Savings account.',
-    severity: 'info'
-  }
-])
-
-const ledgerData = ref([
-  {
-    id: 1,
-    name: 'Mwenda Kapambwe',
-    customerId: '994022/11/1',
-    state: 'Churned',
-    stateClass: 'churned',
-    health: 22,
-    healthClass: 'critical',
-    churnProb: 92,
-    churnClass: 'high',
-    clv: '1.2M',
-    action: 'RETENTION CALL',
-    actionClass: 'critical'
-  },
-  {
-    id: 2,
-    name: 'Joseph Phiri',
-    customerId: '884512/08/3',
-    state: 'At Risk',
-    stateClass: 'atrisk',
-    health: 45,
-    healthClass: 'warning',
-    churnProb: 48,
-    churnClass: 'mid',
-    clv: '0.8M',
-    action: 'BALANCE REVIEW',
-    actionClass: 'warning'
-  },
-  {
-    id: 3,
-    name: 'Patricia Lungu',
-    customerId: '772301/04/2',
-    state: 'Active',
-    stateClass: 'active',
-    health: 88,
-    healthClass: 'good',
-    churnProb: 3,
-    churnClass: 'low',
-    clv: '4.5M',
-    action: 'UPSELL OPPORTUNITY',
-    actionClass: 'success'
-  },
-  {
-    id: 4,
-    name: 'Sibongile Banda',
-    customerId: '661890/02/7',
-    state: 'Dormant',
-    stateClass: 'dormant',
-    health: 35,
-    healthClass: 'warning',
-    churnProb: 22,
-    churnClass: 'low',
-    clv: '0.3M',
-    action: 'KYC UPDATE',
-    actionClass: 'info'
-  }
 ])
 
 // ─── KPI Definitions ───────────────────────────────────────────
@@ -581,7 +484,10 @@ async function fetchKpis() {
 
   const results = await Promise.allSettled(
     fetchers.map(async ({ key, url, transform }) => {
-      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+      const ctrl = new AbortController()
+      const t = setTimeout(() => ctrl.abort(), 5000)
+      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }, signal: ctrl.signal })
+      clearTimeout(t)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       const { value, trend } = transform(data)
@@ -606,10 +512,11 @@ async function fetchModules() {
   companyName.value = localStorage.getItem('company_name') || companyName.value
 
   try {
-    await initializeRBAC()
     const endpoint = `${API_BASE_URL}/modules-manager/owner/modules`
-
-    const res = await fetch(endpoint)
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 5000)
+    const res = await fetch(endpoint, { signal: ctrl.signal })
+    clearTimeout(t)
     if (!res.ok) throw new Error(`Failed to fetch modules: ${res.statusText}`)
     const data = await res.json()
 
@@ -642,7 +549,7 @@ async function fetchModules() {
       }
     }
   } catch (err) {
-    console.error('Error fetching modules:', err)
+    if (err.name !== 'AbortError') console.error('Error fetching modules:', err)
     subscribedModules.value = cards.filter(c => c.free === true)
   }
 }
@@ -651,8 +558,8 @@ async function fetchModules() {
 const MODULE_EXPIRY_DAYS = 30;
 
 async function checkModuleExpiration() {
-  const tenantId = getTenantId();
   try {
+    const tenantId = localStorage.getItem('tenant_id') || 'default'
     const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules?tenant_id=${tenantId}`);
     if (!res.ok) throw new Error(`Failed to fetch modules: ${res.statusText}`);
     const data = await res.json();
@@ -683,8 +590,8 @@ async function checkModuleExpiration() {
 }
 
 async function unsubscribeExpiredModules(expiredModuleIds) {
-  const tenantId = getTenantId();
   try {
+    const tenantId = localStorage.getItem('tenant_id') || 'default'
     const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules/unsubscribe?tenant_id=${tenantId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

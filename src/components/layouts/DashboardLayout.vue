@@ -35,18 +35,32 @@
           <span>Dashboard</span>
         </router-link>
 
-        <router-link to="/dashboard/crm" class="absa-nav-item" active-class="absa-nav-item--active" title="My Customers">
+        <router-link v-if="false" to="/dashboard/crm" class="absa-nav-item" active-class="absa-nav-item--active" title="My Customers">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>My Customers</span>
         </router-link>
 
-        <router-link to="/portfolio" class="absa-nav-item" active-class="absa-nav-item--active" title="Portfolio">
+        <router-link to="/portfolio" class="absa-nav-item" active-class="absa-nav-item--active" title="Portfolio Overview">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span>Portfolio</span>
+          <span>Portfolio Overview</span>
+        </router-link>
+        <router-link to="/dashboard/models" class="absa-nav-item" active-class="absa-nav-item--active" title="Model Performance">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Model Performance</span>
         </router-link>
 
-        <!-- Dynamic module items from config -->
-        <template v-for="item in visibleModules" :key="item.id">
+        <router-link to="/dashboard/etl-pipeline" class="absa-nav-item" active-class="absa-nav-item--active" title="ETL Pipeline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          <span>ETL Pipeline</span>
+        </router-link>
+
+        <router-link to="/dashboard/etl-run-history" class="absa-nav-item" active-class="absa-nav-item--active" title="ETL Run History">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>ETL Run History</span>
+        </router-link>
+
+        <!-- Dynamic module items (hidden for demo) -->
+        <template v-if="false" v-for="item in visibleModules" :key="item.id">
           <router-link
             v-if="item.route && !item.adminPage"
             :to="item.route"
@@ -62,17 +76,17 @@
 
       <!-- AI Assistant + Bottom -->
       <div class="absa-sidebar__bottom">
-        <button class="absa-sidebar__ai-btn" @click="$router.push('/dashboard/ai')" title="AI Assistant">
+        <button v-if="false" class="absa-sidebar__ai-btn" @click="$router.push('/dashboard/ai')" title="AI Assistant">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span>AI Assistant</span>
         </button>
 
-        <router-link to="/dashboard/settings" class="absa-nav-item absa-nav-item--bottom" active-class="absa-nav-item--active" title="Settings">
+        <router-link v-if="false" to="/dashboard/settings" class="absa-nav-item absa-nav-item--bottom" active-class="absa-nav-item--active" title="Settings">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </router-link>
 
-        <a class="absa-nav-item absa-nav-item--bottom" href="#" title="Support">
+        <a v-if="false" class="absa-nav-item absa-nav-item--bottom" href="#" title="Support">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           <span>Support</span>
         </a>
@@ -96,6 +110,12 @@
           <div class="absa-search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input class="absa-search__input" type="text" placeholder="Search customer, account or ID..." />
+          </div>
+          <div class="period-selector flex items-center gap-2 mr-2">
+            <span class="text-sm font-medium text-gray-600 hidden xl:inline whitespace-nowrap">Data Snapshot:</span>
+            <select v-model="selectedPeriod" class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm bg-white focus:ring-2 focus:ring-[var(--absa-maroon,#BE0F2C)] focus:border-transparent">
+              <option value="latest">Latest (August 6, 2026)</option>
+            </select>
           </div>
           <button class="absa-icon-btn" aria-label="Notifications">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -140,6 +160,7 @@ const breadcrumbTitle = computed(() => {
 
 // ── Sidebar Collapse State ──
 const collapsed = ref(false)
+const selectedPeriod = ref('latest')
 
 function toggleSidebar() {
   collapsed.value = !collapsed.value
@@ -231,9 +252,10 @@ const visibleModules = computed(() => {
 
 async function fetchSubscribedModules() {
   try {
-    await initializeRBAC()
-
-    const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules`)
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 5000)
+    const res = await fetch(`${API_BASE_URL}/modules-manager/owner/modules`, { signal: ctrl.signal })
+    clearTimeout(t)
     if (!res.ok) return
     const data = await res.json()
 

@@ -25,6 +25,10 @@
         </div>
       </div>
 
+      <LoadingSkeleton v-if="loading" type="stats" />
+      <LoadingSkeleton v-if="loading" type="table" :count="4" />
+      <template v-else>
+
       <!-- Bento Grid: Health Cards + Quality Trend -->
       <div class="absa-etl-grid">
         <!-- System Health Cards -->
@@ -66,9 +70,9 @@
           <div class="absa-etl-quality__footer">
             <div class="absa-etl-quality__score">
               <span class="absa-etl-quality__dot"></span>
-              Data Integrity Score: <strong>98.4</strong>
+              Data Integrity Score: <strong>--</strong>
             </div>
-            <span class="absa-etl-quality__scan">Last scan: 2 mins ago</span>
+            <span class="absa-etl-quality__scan">Connect to backend</span>
           </div>
         </div>
       </div>
@@ -99,7 +103,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="run in executionHistory" :key="run.id">
+              <tr v-for="run in executionHistory" :key="run.id" class="cursor-pointer hover:bg-gray-50 transition-colors" @click="viewRun(run)">
                 <td class="absa-etl-table__run-id">
                   <div class="absa-etl-table__run-divider" :class="'absa-etl-table__run-divider--' + run.statusClass"></div>
                   <span class="absa-etl-table__run-text">#RUN-{{ run.runId }}</span>
@@ -174,88 +178,68 @@
       <div class="absa-etl-bottom-cards">
         <div class="absa-etl-bottom-card">
           <div class="absa-etl-bottom-card__label">STORAGE GROWTH</div>
-          <div class="absa-etl-bottom-card__value">+14.2 GB</div>
+          <div class="absa-etl-bottom-card__value">--</div>
           <div class="absa-etl-bottom-card__trend">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 0l5 6H0z" fill="#4caf50"/></svg>
-            <span class="absa-etl-bottom-card__trend-up">2.4%</span>
+            <span class="absa-etl-bottom-card__trend-up">--</span>
           </div>
           <div class="absa-etl-bottom-card__progress">
-            <div class="absa-etl-bottom-card__progress-fill" style="width: 65%"></div>
+            <div class="absa-etl-bottom-card__progress-fill" style="width: 0%"></div>
           </div>
-          <div class="absa-etl-bottom-card__sub">6.2TB of 10TB Allocated</div>
+          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
         </div>
         <div class="absa-etl-bottom-card">
           <div class="absa-etl-bottom-card__label">AVERAGE QUALITY</div>
-          <div class="absa-etl-bottom-card__value">99.1%</div>
+          <div class="absa-etl-bottom-card__value">--</div>
           <div class="absa-etl-bottom-card__trend">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 0l5 6H0z" fill="#4caf50"/></svg>
-            <span class="absa-etl-bottom-card__trend-up">0.3%</span>
+            <span class="absa-etl-bottom-card__trend-up">--</span>
           </div>
           <div class="absa-etl-bottom-card__chart">
             <div class="absa-etl-bottom-card__chart-bar" v-for="(h, i) in qualityChartBars" :key="i" :style="{ height: h + '%', opacity: 0.2 + i * 0.15 }"></div>
           </div>
-          <div class="absa-etl-bottom-card__sub">Based on last 50 batches</div>
+          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
         </div>
         <div class="absa-etl-bottom-card">
           <div class="absa-etl-bottom-card__label">FAILED RETRIES</div>
-          <div class="absa-etl-bottom-card__value">02</div>
+          <div class="absa-etl-bottom-card__value">--</div>
           <div class="absa-etl-bottom-card__trend">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M0 0l5 6 5-6H0z" fill="#ba1a1a"/></svg>
-            <span class="absa-etl-bottom-card__trend-down">Active</span>
+            <span class="absa-etl-bottom-card__trend-down">--</span>
           </div>
           <div class="absa-etl-bottom-card__badges">
-            <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--dark">BT</span>
-            <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--red">ETL</span>
+            <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--dark">--</span>
           </div>
-          <div class="absa-etl-bottom-card__sub">Requires manual intervention</div>
+          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
         </div>
         <div class="absa-etl-bottom-card">
           <div class="absa-etl-bottom-card__label">GATEWAY LATENCY</div>
-          <div class="absa-etl-bottom-card__value">118ms</div>
+          <div class="absa-etl-bottom-card__value">--</div>
           <div class="absa-etl-bottom-card__trend">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <span class="absa-etl-bottom-card__trend-warn">High</span>
+            <span class="absa-etl-bottom-card__trend-warn">--</span>
           </div>
           <div class="absa-etl-bottom-card__bar">
-            <div class="absa-etl-bottom-card__bar-fill" style="width: 78%"></div>
+            <div class="absa-etl-bottom-card__bar-fill" style="width: 0%"></div>
           </div>
-          <div class="absa-etl-bottom-card__sub">Peak load during batch processing</div>
+          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
         </div>
       </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
 
-const healthCards = ref([
-  {
-    label: 'PostgreSQL Cluster',
-    value: 'Active',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
-    statusColor: 'green',
-    stat: '99.98%'
-  },
-  {
-    label: 'Redis Cache',
-    value: 'Healthy',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-    statusColor: 'green',
-    stat: '0.4ms Latency'
-  },
-  {
-    label: 'API Gateway',
-    value: 'Stable',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
-    statusColor: 'amber',
-    stat: 'Load Balance 72%'
-  }
-])
+const loading = ref(true)
 
-const qualityBars = ref([70, 65, 80, 85, 75, 92, 88, 94, 90, 98])
+const router = useRouter()
 
-const qualityChartBars = ref([30, 55, 40, 65, 80])
+const healthCards = ref([])
+
+const qualityBars = ref([])
+
+const qualityChartBars = ref([])
 
 const openMenuId = ref(null)
 
@@ -265,6 +249,7 @@ function toggleMenu(id) {
 
 function viewRun(run) {
   openMenuId.value = null
+  router.push(`/dashboard/etl-run-history/batch/${run.batchId || run.runId}`)
 }
 
 function retryRun(run) {
@@ -275,69 +260,13 @@ function handleClickOutside() {
   openMenuId.value = null
 }
 
-import { onMounted, onUnmounted } from 'vue'
-
-onMounted(() => document.addEventListener('click', handleClickOutside))
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  setTimeout(() => { loading.value = false }, 2000)
+})
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
-const executionHistory = ref([
-  {
-    id: 1,
-    runId: '8842',
-    batchId: 'BT-2023-Q4-M11',
-    duration: '04m 12s',
-    rowsReceived: '840K',
-    rowsValid: '792K',
-    rowsLoaded: '--',
-    rowsRejected: 1200,
-    qualityScore: 99.2,
-    qualityClass: 'good',
-    status: 'COMPLETED',
-    statusClass: 'completed'
-  },
-  {
-    id: 2,
-    runId: '8841',
-    batchId: 'BT-2023-Q4-M10',
-    duration: '12m 08s',
-    rowsReceived: '1.1M',
-    rowsValid: '1.09M',
-    rowsLoaded: '1.09M',
-    rowsRejected: 1100,
-    qualityScore: 99.5,
-    qualityClass: 'good',
-    status: 'COMPLETED',
-    statusClass: 'completed'
-  },
-  {
-    id: 3,
-    runId: '8840',
-    batchId: 'BT-2023-Q4-M09',
-    duration: '18m 45s',
-    rowsReceived: '980K',
-    rowsValid: '890K',
-    rowsLoaded: '890K',
-    rowsRejected: 90000,
-    qualityScore: 91.2,
-    qualityClass: 'warning',
-    status: 'FAILED',
-    statusClass: 'failed'
-  },
-  {
-    id: 4,
-    runId: '8839',
-    batchId: 'BT-2023-Q4-M08',
-    duration: '10m 15s',
-    rowsReceived: '1.05M',
-    rowsValid: '1.04M',
-    rowsLoaded: '1.04M',
-    rowsRejected: 500,
-    qualityScore: 99.8,
-    qualityClass: 'good',
-    status: 'COMPLETED',
-    statusClass: 'completed'
-  }
-])
+const executionHistory = ref([])
 </script>
 
 <style scoped>

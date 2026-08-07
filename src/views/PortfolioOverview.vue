@@ -24,76 +24,83 @@
         </div>
       </div>
 
-      <!-- KPI Cards -->
-      <div class="flex gap-6 w-full">
+      <!-- KPI Cards (reactive) -->
+      <LoadingSkeleton v-if="pageLoading" type="stats" />
+      <div v-else class="flex gap-6 w-full">
         <!-- Total Customers -->
         <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] flex flex-col">
           <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">TOTAL CUSTOMERS</span>
-          <div class="relative h-10 w-full">
-            <span class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">1,240</span>
-            <div class="absolute left-[91.55px] top-[17px] flex items-center">
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" class="mr-[-0.01px]">
-                <path d="M4 0l4 5H0z" fill="#2e7d32"/>
-              </svg>
-              <span class="text-[#2e7d32] text-[12px] font-bold tracking-[0.6px] leading-[16px]">2.4%</span>
-            </div>
+          <div v-if="customerStore.loading" class="h-10">
+            <div class="h-8 w-20 bg-gray-100 rounded animate-pulse"></div>
           </div>
-          <div class="pt-4 w-full">
-            <div class="bg-[#f3f4f5] h-8 rounded-[2px] w-full flex items-end gap-[2px] px-1 pb-1">
-              <div class="bg-[#dc0037] opacity-20 w-[21.58px] rounded-t-[2px]" style="height: 11.19px"></div>
-              <div class="bg-[#dc0037] opacity-30 w-[21.56px] rounded-t-[2px]" style="height: 15.39px"></div>
-              <div class="bg-[#dc0037] opacity-50 w-[21.58px] rounded-t-[2px]" style="height: 12.59px"></div>
-              <div class="bg-[#dc0037] opacity-40 w-[21.56px] rounded-t-[2px]" style="height: 16.8px"></div>
-              <div class="bg-[#dc0037] opacity-60 w-[21.58px] rounded-t-[2px]" style="height: 21px"></div>
-              <div class="bg-[#dc0037] opacity-80 w-[21.56px] rounded-t-[2px]" style="height: 18.19px"></div>
-              <div class="bg-[#dc0037] w-[21.58px] rounded-t-[2px]" style="height: 25.19px"></div>
-            </div>
+          <div v-else class="relative h-10 w-full">
+            <span class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.total.toLocaleString() }}</span>
           </div>
         </div>
 
         <!-- At Risk -->
         <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[41px] flex flex-col">
           <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">AT RISK</span>
-          <div class="flex items-baseline gap-2">
-            <span class="text-[#ed6c02] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">68</span>
-            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| 5.5%</span>
+          <div v-if="customerStore.loading" class="h-10">
+            <div class="h-8 w-16 bg-gray-100 rounded animate-pulse"></div>
           </div>
-          <div class="pt-4 w-full">
-            <span class="text-[#5d3f3f] text-[12px] font-normal italic leading-[16px]">+4 since last snapshot</span>
+          <div v-else class="flex items-baseline gap-2">
+            <span class="text-[#ed6c02] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.atRisk }}</span>
+            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| {{ customerStore.portfolio.atRiskPct }}%</span>
           </div>
         </div>
 
         <!-- Dormant -->
         <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[41px] flex flex-col">
           <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">DORMANT</span>
-          <div class="flex items-baseline gap-2">
-            <span class="text-[#757575] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">42</span>
-            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| 3.4%</span>
+          <div v-if="customerStore.loading" class="h-10">
+            <div class="h-8 w-16 bg-gray-100 rounded animate-pulse"></div>
           </div>
-          <div class="pt-4 w-full">
-            <span class="text-[#5d3f3f] text-[12px] font-normal italic leading-[16px]">Stable across 3 periods</span>
+          <div v-else class="flex items-baseline gap-2">
+            <span class="text-[#757575] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.dormant }}</span>
+            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| {{ customerStore.portfolio.dormantPct }}%</span>
           </div>
         </div>
 
         <!-- Actions Due Today -->
         <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[38px] flex flex-col">
           <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">ACTIONS DUE TODAY</span>
-          <div class="flex items-baseline">
-            <span class="text-[#dc0037] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">12</span>
+          <div v-if="customerStore.loading" class="h-10">
+            <div class="h-8 w-12 bg-gray-100 rounded animate-pulse"></div>
           </div>
-          <div class="pt-4 w-full">
-            <div class="flex gap-2">
-              <span class="bg-[#ffdad6] text-[#93000a] text-[10px] font-bold px-2 py-0.5 rounded-[2px] leading-[15px]">8 URGENT</span>
-              <span class="bg-[#e7e8e9] text-[#5d3f3f] text-[10px] font-bold px-2 py-0.5 rounded-[2px] leading-[15px]">4 ROUTINE</span>
-            </div>
+          <div v-else class="flex items-baseline">
+            <span class="text-[#dc0037] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.actionsDue }}</span>
           </div>
         </div>
+      </div>
+
+      <!-- Charts Section -->
+      <LoadingSkeleton v-if="pageLoading" type="block" />
+      <div v-else class="flex gap-6 w-full" style="min-height: 320px">
+        <div class="bg-white border border-[#e7bcbc] rounded-[6px] p-6 flex flex-col" style="width: 40%">
+          <h3 class="text-[#191c1d] text-lg font-bold mb-4">State Distribution</h3>
+          <div class="flex-1 flex items-center justify-center">
+            <Doughnut :data="doughnutData" :options="chartOptions" />
+          </div>
+        </div>
+        <div class="bg-white border border-[#e7bcbc] rounded-[6px] p-6 flex flex-col" style="width: 60%">
+          <h3 class="text-[#191c1d] text-lg font-bold mb-4">Health Score Distribution</h3>
+          <div class="flex-1 flex items-center justify-center">
+            <Bar :data="histogramData" :options="chartOptions" />
+          </div>
+        </div>
+      </div>
+
+      <div v-if="customerStore.error" class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
+        <span class="text-red-700 text-sm font-medium">Could not load portfolio data</span>
+        <button @click="customerStore.fetchPortfolio()" class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 hover:bg-red-200 font-medium">Retry</button>
       </div>
 
       <!-- Two-column grid: Alerts + Table -->
       <div class="grid grid-cols-3 gap-6 w-full" style="grid-template-rows: 500px">
         <!-- Critical Alerts -->
-        <div class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-1">
+        <LoadingSkeleton v-if="pageLoading" type="card" />
+        <div v-else class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-1">
           <div class="border-b border-[#e7bcbc] px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
@@ -106,81 +113,15 @@
             <span class="bg-[#dc0037] text-white text-[10px] font-bold px-2 py-0.5 rounded-[12px] leading-[15px]">5 NEW</span>
           </div>
           <div class="flex-1 overflow-auto relative">
-            <!-- Alert 1 -->
-            <div class="bg-[rgba(255,218,214,0.3)] border-l-4 border-[#dc0037] mx-4 my-4 pl-5 pr-4 py-4 rounded-[2px]">
-              <div class="flex justify-between items-start">
-                <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px]">M. Kapambwe</span>
-                <span class="text-[#5d3f3f] text-[10px] font-normal">2h ago</span>
-              </div>
-              <div class="pt-1">
-                <span class="text-[#dc0037] text-[14px] font-medium leading-[20px]">Health Score drop -25</span>
-              </div>
-              <div class="pb-3">
-                <p class="text-[#5d3f3f] text-[12px] font-normal leading-[16px]">Significant decrease in incoming wire transfers over last 30 days.</p>
-              </div>
-              <button class="w-full bg-[#dc0037] text-white text-[10px] font-bold tracking-[1px] uppercase py-1.5 rounded-[2px] leading-[15px]">ACKNOWLEDGE</button>
-            </div>
-            <!-- Alert 2 -->
-            <div class="bg-[#f3f4f5] border-l-4 border-[#ed6c02] mx-4 mb-4 pl-5 pr-4 py-4 rounded-[2px]">
-              <div class="flex justify-between items-start">
-                <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px]">J. Phiri</span>
-                <span class="text-[#5d3f3f] text-[10px] font-normal">4h ago</span>
-              </div>
-              <div class="pt-1">
-                <span class="text-[#ed6c02] text-[14px] font-medium leading-[20px]">State Transition: At Risk</span>
-              </div>
-              <div class="pb-3">
-                <p class="text-[#5d3f3f] text-[12px] font-normal leading-[16px]">Churn probability exceeds 45% threshold.</p>
-              </div>
-              <button class="w-full border border-[#926e6e] text-[#191c1d] text-[10px] font-bold tracking-[1px] uppercase py-[7px] rounded-[2px] leading-[15px]">ACKNOWLEDGE</button>
-            </div>
-            <!-- Alert 3 -->
-            <div class="bg-[#f3f4f5] border-l-4 border-[#dc0037] mx-4 mb-4 pl-5 pr-4 py-4 rounded-[2px]">
-              <div class="flex justify-between items-start">
-                <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px]">P. Lungu</span>
-                <span class="text-[#5d3f3f] text-[10px] font-normal">Yesterday</span>
-              </div>
-              <div class="pt-1">
-                <span class="text-[#dc0037] text-[14px] font-medium leading-[20px]">Large Withdrawal Detected</span>
-              </div>
-              <div class="pb-3">
-                <p class="text-[#5d3f3f] text-[12px] font-normal leading-[16px]">Withdrawal of ZMW 450,000 from Savings account.</p>
-              </div>
-              <button class="w-full border border-[#926e6e] text-[#191c1d] text-[10px] font-bold tracking-[1px] uppercase py-[7px] rounded-[2px] leading-[15px]">ACKNOWLEDGE</button>
-            </div>
-            <!-- Alert 4 -->
-            <div class="bg-[#f3f4f5] border-l-4 border-[#ed6c02] mx-4 mb-4 pl-5 pr-4 py-4 rounded-[2px]">
-              <div class="flex justify-between items-start">
-                <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px]">S. Banda</span>
-                <span class="text-[#5d3f3f] text-[10px] font-normal">Yesterday</span>
-              </div>
-              <div class="pt-1">
-                <span class="text-[#ed6c02] text-[14px] font-medium leading-[20px]">Profile Incomplete</span>
-              </div>
-              <div class="pb-3">
-                <p class="text-[#5d3f3f] text-[12px] font-normal leading-[16px]">KYC documentation expiring in 15 days.</p>
-              </div>
-              <button class="w-full border border-[#926e6e] text-[#191c1d] text-[10px] font-bold tracking-[1px] uppercase py-[7px] rounded-[2px] leading-[15px]">ACKNOWLEDGE</button>
-            </div>
-            <!-- Alert 5 -->
-            <div class="bg-[rgba(255,218,214,0.3)] border-l-4 border-[#dc0037] mx-4 mb-4 pl-5 pr-4 py-4 rounded-[2px]">
-              <div class="flex justify-between items-start">
-                <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px]">K. Mulenga</span>
-                <span class="text-[#5d3f3f] text-[10px] font-normal">Yesterday</span>
-              </div>
-              <div class="pt-1">
-                <span class="text-[#dc0037] text-[14px] font-medium leading-[20px]">Zero Activity (90 Days)</span>
-              </div>
-              <div class="pb-3">
-                <p class="text-[#5d3f3f] text-[12px] font-normal leading-[16px]">Customer moved to Dormant state automatically.</p>
-              </div>
-              <button class="w-full bg-[#dc0037] text-white text-[10px] font-bold tracking-[1px] uppercase py-1.5 rounded-[2px] leading-[15px]">ACKNOWLEDGE</button>
+            <div class="p-6 text-center text-sm text-gray-400">
+              Alerts surface when risk thresholds are crossed.
             </div>
           </div>
         </div>
 
         <!-- Predictive Lifecycle Ledger -->
-        <div class="bg-white border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-2">
+        <LoadingSkeleton v-if="pageLoading" type="table" :count="5" />
+        <div v-else class="bg-white border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-2">
           <div class="bg-white border-b border-[#e7bcbc] px-6 py-4 flex items-center justify-between">
             <h3 class="text-[#191c1d] text-[18px] font-bold leading-[28px]">Predictive Lifecycle Ledger</h3>
             <div class="flex gap-2">
@@ -221,186 +162,43 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Row 1: Mwenda Kapambwe - Churned -->
-                <tr class="border-t border-[#e7bcbc]">
+                <tr v-for="row in customerStore.customers.slice(0, 5)" :key="row.customerId" class="border-t border-[#e7bcbc]">
                   <td class="pl-5 py-3">
                     <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 bg-[#dc0037] rounded-full"></div>
+                      <div class="w-1 h-8 rounded-full"
+                        :style="{ backgroundColor: row.state === 'CHURNED' ? '#dc0037' : row.state === 'AT_RISK' ? '#ed6c02' : row.state === 'DORMANT' ? '#757575' : '#2e7d32' }"></div>
                       <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">Mwenda<br/>Kapambwe</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: 994022/11/1</div>
+                        <div class="text-[#191c1d] text-sm font-bold leading-5">{{ row.fullName }}</div>
+                        <div class="text-[#5d3f3f] text-xs font-normal">ID: {{ row.customerId }}</div>
                       </div>
                     </div>
                   </td>
                   <td class="pl-8 py-3">
-                    <div class="flex gap-2 items-center">
-                      <div class="w-2 h-2 bg-[#ba1a1a] rounded-full"></div>
-                      <span class="text-[#191c1d] text-xs font-semibold">Churned</span>
-                    </div>
+                    <StateBadge :state="row.state" size="sm" />
                   </td>
                   <td class="px-5 py-3">
                     <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">12%</span>
+                      <span class="text-[#191c1d] text-xs font-normal">{{ row.healthScore || '--' }}%</span>
                       <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="bg-[#ba1a1a] h-full rounded" style="width: 12%"></div>
+                        <div class="h-full rounded" :style="{ width: (row.healthScore || 0) + '%', backgroundColor: (row.healthScore || 0) >= 70 ? '#2e7d32' : (row.healthScore || 0) >= 40 ? '#ed6c02' : '#dc0037' }"></div>
                       </div>
                     </div>
                   </td>
                   <td class="px-5 py-3">
-                    <span class="text-[#ba1a1a] text-xs font-bold">92.4%</span>
+                    <span class="text-xs font-bold" :style="{ color: (row.churnProbability || 0) > 0.6 ? '#dc0037' : (row.churnProbability || 0) > 0.3 ? '#ed6c02' : '#2e7d32' }">{{ row.churnProbability ? Math.round(row.churnProbability * 100) + '%' : '--' }}</span>
                   </td>
                   <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">1.2M</span>
+                    <span class="text-[#191c1d] text-xs font-medium">{{ row.clv ? (row.clv / 1000).toFixed(1) + 'K' : '--' }}</span>
                   </td>
                   <td class="px-5 py-3">
-                    <button class="bg-[#dc0037] text-white text-[10px] font-bold tracking-[1px] uppercase px-5 py-1 rounded leading-[14px]">RETENTION<br/>CALL</button>
-                  </td>
-                </tr>
-                <!-- Row 2: Joseph Phiri - At Risk -->
-                <tr class="border-t border-[#e7bcbc]">
-                  <td class="pl-5 py-3">
-                    <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 bg-[#ed6c02] rounded-full"></div>
-                      <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">Joseph<br/>Phiri</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: 882103/42/1</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pl-8 py-3">
-                    <div class="flex gap-2 items-center">
-                      <div class="w-2 h-2 bg-[#ed6c02] rounded-full"></div>
-                      <span class="text-[#191c1d] text-xs font-semibold">At Risk</span>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">34%</span>
-                      <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="bg-[#ed6c02] h-full rounded" style="width: 34%"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#ed6c02] text-xs font-bold">46.8%</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">0.8M</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <button class="border border-[#dc0037] text-[#dc0037] text-[10px] font-bold tracking-[1px] uppercase px-5 py-1 rounded leading-[14px]">BALANCE<br/>REVIEW</button>
-                  </td>
-                </tr>
-                <!-- Row 3: Patricia Lungu - Active -->
-                <tr class="border-t border-[#e7bcbc]">
-                  <td class="pl-5 py-3">
-                    <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 bg-[#2e7d32] rounded-full"></div>
-                      <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">Patricia<br/>Lungu</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: 774102/55/1</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pl-8 py-3">
-                    <div class="flex gap-2 items-center">
-                      <div class="w-2 h-2 bg-[#2e7d32] rounded-full"></div>
-                      <span class="text-[#191c1d] text-xs font-semibold">Active</span>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">82%</span>
-                      <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="bg-[#2e7d32] h-full rounded" style="width: 82%"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#2e7d32] text-xs font-bold">2.1%</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">4.5M</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <button class="border border-[#e7bcbc] text-[#5d3f3f] text-[10px] font-bold tracking-[1px] uppercase px-4 py-1 rounded leading-[14px]">UPSELL<br/>OPPORTUNITY</button>
-                  </td>
-                </tr>
-                <!-- Row 4: Sibongile Banda - Dormant -->
-                <tr class="border-t border-[#e7bcbc]">
-                  <td class="pl-5 py-3">
-                    <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 bg-[#757575] rounded-full"></div>
-                      <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">Sibongile<br/>Banda</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: 662031/10/1</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pl-8 py-3">
-                    <div class="flex gap-2 items-center">
-                      <div class="w-2 h-2 bg-[#757575] rounded-full"></div>
-                      <span class="text-[#191c1d] text-xs font-semibold">Dormant</span>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">45%</span>
-                      <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="bg-[#757575] h-full rounded" style="width: 45%"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#5d3f3f] text-xs font-bold">15.4%</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">0.3M</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <button class="border border-[#e7bcbc] text-[#5d3f3f] text-[10px] font-bold tracking-[1px] uppercase px-4 py-1 rounded leading-[14px]">KYC UPDATE</button>
-                  </td>
-                </tr>
-                <!-- Row 5: Kelvin Mulenga - At Risk -->
-                <tr class="border-t border-[#e7bcbc]">
-                  <td class="pl-5 py-3">
-                    <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 bg-[#ed6c02] rounded-full"></div>
-                      <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">Kelvin<br/>Mulenga</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: 554201/09/1</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pl-8 py-3">
-                    <div class="flex gap-2 items-center">
-                      <div class="w-2 h-2 bg-[#ed6c02] rounded-full"></div>
-                      <span class="text-[#191c1d] text-xs font-semibold">At Risk</span>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">48%</span>
-                      <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="bg-[#ed6c02] h-full rounded" style="width: 48%"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#ed6c02] text-xs font-bold">32.2%</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">0.6M</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <button class="border border-[#dc0037] text-[#dc0037] text-[10px] font-bold tracking-[1px] uppercase px-4 py-1 rounded leading-[14px]">RE-<br/>ENGAGEMENT</button>
+                    <span class="text-[#5d3f3f] text-xs font-medium">{{ row.state === 'AT_RISK' ? 'REVIEW' : row.state === 'CHURNED' ? 'RETENTION' : row.state === 'DORMANT' ? 'KYC' : 'UPSELL' }}</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="border-t border-[#e7bcbc] px-4 py-4 flex items-center justify-between">
-            <span class="text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Showing 5 of 1,240 customers</span>
+            <span class="text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Showing {{ Math.min(customerStore.customers.length, 5) }} of {{ customerStore.pagination.total }} customers</span>
             <div class="flex gap-2">
               <button class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[2px] px-[9px] py-[5px] opacity-50 text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Previous</button>
               <button class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[2px] px-[9px] py-[5px] text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Next</button>
@@ -420,7 +218,7 @@
           <div class="flex flex-col gap-[3px]">
             <h4 class="text-white text-[14px] font-bold leading-[20px]">AI Recommendation Engine</h4>
             <p class="text-white text-[12px] font-normal leading-[19.5px]">
-              System predicts a <strong>5.2% increase</strong> in dormancy for segment 'HNI-Retail' within 60 days unless proactive outreach is initiated for accounts with declining transaction frequency.
+              System predicts risk patterns across portfolio segments based on real-time transaction data and behavioral scoring.
             </p>
           </div>
         </div>
@@ -435,7 +233,7 @@
           <div class="flex flex-col gap-[3px]">
             <h4 class="text-[#191c1d] text-[14px] font-bold leading-[20px]">Portfolio Health Trend</h4>
             <p class="text-[#5d3f3f] text-[12px] font-normal leading-[19.5px]">
-              Overall portfolio health score has improved by <strong>+3.4 pts</strong> since the last quarter, primarily driven by the success of the 'Fixed Deposit Retention' campaign.
+              Overall portfolio health score reflects aggregated customer health metrics computed by the prediction engine.
             </p>
           </div>
         </div>
@@ -445,4 +243,62 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useCustomerStore } from '@/stores/customerStore'
+import StateBadge from '@/components/absa/StateBadge.vue'
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import { Doughnut, Bar } from 'vue-chartjs'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+const customerStore = useCustomerStore()
+const pageLoading = ref(true)
+
+const doughnutData = computed(() => ({
+  labels: ['Active', 'At Risk', 'Dormant', 'Churned'],
+  datasets: [{
+    data: [
+      customerStore.portfolio.active || 0,
+      customerStore.portfolio.atRisk || 0,
+      customerStore.portfolio.dormant || 0,
+      customerStore.portfolio.churned || 0,
+    ],
+    backgroundColor: ['var(--absa-success, #16A34A)', 'var(--absa-warning, #F59E0B)', '#6B7280', 'var(--absa-critical, #DC2626)'],
+    borderWidth: 0,
+  }],
+}))
+
+const histogramData = computed(() => {
+  const bins = Array(10).fill(0)
+  customerStore.customers.forEach((c) => {
+    const score = c.healthScore ?? 0
+    const idx = Math.min(Math.floor(score / 10), 9)
+    bins[idx]++
+  })
+  return {
+    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'],
+    datasets: [{
+      label: 'Customers',
+      data: bins,
+      backgroundColor: 'rgba(190, 15, 44, 0.7)',
+      borderRadius: 4,
+    }],
+  }
+})
+
+const chartOptions = computed(() => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } },
+}))
+
+onMounted(async () => {
+  console.time('⏱ PortfolioOverview.onMounted')
+  console.log('📊 PortfolioOverview: fetching portfolio...')
+  await customerStore.fetchPortfolio()
+  pageLoading.value = false
+  console.log('📊 PortfolioOverview: done — customers:', customerStore.customers.length, 'loading:', customerStore.loading, 'error:', customerStore.error)
+  console.timeEnd('⏱ PortfolioOverview.onMounted')
+})
 </script>

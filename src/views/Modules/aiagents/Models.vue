@@ -7,7 +7,7 @@
       <svg width="12" height="12" viewBox="0 0 6 10" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M1 1l4 4-4 4"/></svg>
       <span>Models</span>
       <svg width="12" height="12" viewBox="0 0 6 10" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M1 1l4 4-4 4"/></svg>
-      <span class="absa-models__breadcrumb-current">Churn-Propensity-V4.2.1</span>
+      <span class="absa-models__breadcrumb-current">Model Performance</span>
     </div>
 
     <!-- Header -->
@@ -17,8 +17,8 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           CHAMPION MODEL
         </div>
-        <h1 class="absa-models__title">Churn-Propensity-V4.2.1</h1>
-        <p class="absa-models__subtitle">Deployed &bull; Last trained: July 18, 2026 &bull; Traffic: 100%</p>
+        <h1 class="absa-models__title">Model Performance</h1>
+        <p class="absa-models__subtitle">Connect to backend to view deployed model metrics</p>
       </div>
       <div class="absa-models__header-right">
         <div class="absa-models__search">
@@ -37,19 +37,19 @@
     </div>
 
     <!-- ═══ Model Metrics Cards ═══ -->
+    <LoadingSkeleton v-if="loading" type="stats" />
+    <LoadingSkeleton v-if="loading" type="table" :count="4" />
+    <template v-else>
     <div class="absa-models__kpi-grid">
       <div class="absa-metric-bg absa-accent-left-success absa-models__kpi">
         <div class="absa-models__kpi-header">
           <span class="absa-models__kpi-badge">AUC-ROC</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 5"/></svg>
         </div>
-        <div class="absa-models__kpi-value">0.892</div>
+        <div class="absa-models__kpi-value">--</div>
         <div class="absa-models__kpi-label">Area Under Curve</div>
         <div class="absa-models__kpi-trend-row">
-          <div class="absa-models__kpi-trend absa-models__kpi-trend--up">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            +0.4%
-          </div>
+          <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">--</div>
           <span class="absa-models__kpi-threshold">Threshold: 0.70</span>
         </div>
       </div>
@@ -59,12 +59,9 @@
           <span class="absa-models__kpi-badge">F1 SCORE</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 14"/></svg>
         </div>
-        <div class="absa-models__kpi-value">0.764</div>
+        <div class="absa-models__kpi-value">--</div>
         <div class="absa-models__kpi-label">Harmonic Mean</div>
-        <div class="absa-models__kpi-trend absa-models__kpi-trend--down">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-          -1.2%
-        </div>
+        <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">--</div>
       </div>
 
       <div class="absa-metric-bg absa-accent-left-maroon absa-models__kpi">
@@ -72,7 +69,7 @@
           <span class="absa-models__kpi-badge">PRECISION / RECALL</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#BE0F2C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="6" height="13" rx="1"/><rect x="10" y="9" width="6" height="10" rx="1"/><rect x="19" y="3" width="6" height="16" rx="1"/><rect x="28" y="10" width="6" height="9" rx="1"/></svg>
         </div>
-        <div class="absa-models__kpi-value">0.74 / 0.79</div>
+        <div class="absa-models__kpi-value">-- / --</div>
         <div class="absa-models__kpi-label">Precision / Recall</div>
         <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -221,7 +218,7 @@
         </table>
       </div>
       <div class="absa-models__pagination">
-        <span>Showing latest 50 of 4,211 predictions</span>
+        <span>Showing {{ predictionLogs.length }} predictions</span>
         <div class="absa-models__page-btns">
           <button disabled>
             <svg width="10" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1l-4 4 4 4"/></svg>
@@ -232,16 +229,21 @@
         </div>
       </div>
     </div>
+    </template>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+
+const loading = ref(true)
+onMounted(() => { setTimeout(() => { loading.value = false }, 2000) })
 
 const perfDates = ref(['Jul 12', 'Jul 14', 'Jul 16', 'Jul 18', 'Jul 20'])
-const precisionValues = [0.72, 0.74, 0.75, 0.73, 0.74]
-const recallValues = [0.77, 0.78, 0.80, 0.79, 0.79]
+const precisionValues = []
+const recallValues = []
 
 const precisionPoints = computed(() => {
   const w = 600; const h = 200
@@ -257,20 +259,9 @@ const precisionAreaPoints = computed(() => {
   return `0,${h} ${pts.join(' ')} ${w},${h}`
 })
 
-const driftFeatures = ref([
-  { name: 'balance_avg_90d', trainingMean: 'K 12,450.00', currentMean: 'K 11,210.00', shiftPct: 30, psi: '0.042', status: 'LOW', statusClass: 'good' },
-  { name: 'inflow_freq_m1', trainingMean: '4.2', currentMean: '1.8', shiftPct: 75, psi: '0.321', status: 'ALERT', statusClass: 'critical' },
-  { name: 'customer_tenure_yrs', trainingMean: '6.1', currentMean: '6.2', shiftPct: 10, psi: '0.015', status: 'LOW', statusClass: 'good' },
-  { name: 'digital_engagement_score', trainingMean: '72.4', currentMean: '88.9', shiftPct: 55, psi: '0.185', status: 'WARN', statusClass: 'warning' }
-])
+const driftFeatures = ref([])
 
-const predictionLogs = ref([
-  { id: 1, timestamp: '2025-11-24 14:22:11.002', correlationId: 'req-99x-a21b', customerId: 'ZM-8821992', probPct: 89, probDisplay: '0.892', probClass: 'critical', className: 'HIGH', latency: 12 },
-  { id: 2, timestamp: '2025-11-24 14:22:10.884', correlationId: 'req-99x-c33a', customerId: 'ZM-1029381', probPct: 11, probDisplay: '0.114', probClass: 'good', className: 'LOW', latency: 14 },
-  { id: 3, timestamp: '2025-11-24 14:22:10.551', correlationId: 'req-99x-b99s', customerId: 'ZM5561223', probPct: 45, probDisplay: '0.452', probClass: 'warning', className: 'MED', latency: 11 },
-  { id: 4, timestamp: '2025-11-24 14:22:09.912', correlationId: 'req-99x-f112', customerId: 'ZM9900881', probPct: 92, probDisplay: '0.921', probClass: 'critical', className: 'HIGH', latency: 18 },
-  { id: 5, timestamp: '2025-11-24 14:22:08.442', correlationId: 'req-99x-z88p', customerId: 'ZM-7761122', probPct: 8, probDisplay: '0.082', probClass: 'good', className: 'LOW', latency: 9 }
-])
+const predictionLogs = ref([])
 
 const openDropdown = ref(null)
 

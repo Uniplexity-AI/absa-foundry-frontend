@@ -15,7 +15,7 @@
             </svg>
             <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Mwenda Kapambwe</span>
           </div>
-          <h1 class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">Mwenda Kapambwe (ID: 994022/11/1)</h1>
+          <h1 class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customer.fullName || 'Loading...' }} (ID: {{ customer.customerId || '...' }})</h1>
         </div>
         <button class="bg-[#77021e] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] flex items-center gap-2 px-4 py-[9px] rounded-[2px] text-white text-[16px] font-normal leading-[24px]">
           <svg width="9" height="11" viewBox="0 0 9 11" fill="none">
@@ -28,50 +28,66 @@
         </button>
       </div>
 
-      <!-- Main Content Grid -->
-      <div class="grid grid-cols-12 gap-x-6 gap-y-12 w-full max-w-[1600px]">
+      <!-- Error Banner -->
+      <div v-if="loadError" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 flex items-center justify-between max-w-[1600px] mx-auto">
+        <span class="text-red-700 text-sm font-medium">Could not load customer data</span>
+        <button @click="handleRetry" class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors font-medium">Retry</button>
+      </div>
+
+      <!-- Skeleton Loading -->
+      <div v-if="pageLoading" class="grid grid-cols-12 gap-x-6 gap-y-6 w-full max-w-[1600px]">
+        <div class="col-span-4"><LoadingSkeleton type="card" /></div>
+        <div class="col-span-8"><LoadingSkeleton type="block" /></div>
+        <div class="col-span-12"><LoadingSkeleton type="block" /></div>
+        <div class="col-span-4"><LoadingSkeleton type="card" /></div>
+        <div class="col-span-8"><LoadingSkeleton type="block" /></div>
+      </div>
+
+      <!-- Main Content -->
+      <div v-if="!pageLoading" class="grid grid-cols-12 gap-x-6 gap-y-12 w-full max-w-[1600px]">
         <!-- Row 1: Profile Card (4 cols) + AI Intelligence Hub (8 cols) -->
         <!-- Profile Card -->
         <div class="col-span-4 row-start-1">
-          <div class="bg-white border border-[#e3bebc] rounded-[6px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] overflow-clip flex flex-col h-[522px]">
+          <LoadingSkeleton v-if="pageLoading" type="card" />
+          <div v-else class="bg-white border border-[#e3bebc] rounded-[6px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] overflow-clip flex flex-col h-[522px]">
             <div class="bg-[#77021e] h-[96px] flex items-center px-6">
-              <span class="text-white text-[16px] font-bold leading-[24px]">994022/11/1</span>
+              <span class="text-white text-[16px] font-bold leading-[24px]">{{ customer.customerId || '...' }}</span>
             </div>
             <div class="flex flex-col items-start p-6 relative -mt-[48px]">
               <div class="bg-white border-4 border-white rounded-full shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] size-[80px] flex items-center justify-center overflow-clip">
                 <div class="bg-[#ffb3b0] rounded-full size-full flex items-center justify-center">
-                  <span class="text-[#77021e] text-[28px] font-bold">MK</span>
+                  <span class="text-[#77021e] text-[28px] font-bold">{{ initials }}</span>
                 </div>
               </div>
               <div class="pt-4 w-full">
-                <h2 class="text-[#0b1c30] text-[24px] font-semibold tracking-[-0.24px] leading-[32px]">Mwenda Kapambwe</h2>
+                <h2 class="text-[#0b1c30] text-[24px] font-semibold tracking-[-0.24px] leading-[32px]">{{ customer.fullName || 'Loading...' }}</h2>
               </div>
               <div class="py-3 w-full">
-                <p class="text-[#191414] text-[14px] font-normal leading-[20px]">Verified Private Client</p>
+                <p class="text-[#191414] text-[14px] font-normal leading-[20px]">{{ customer.segment || '...' }}</p>
               </div>
-              <div class="bg-[#ffdad6] rounded-[12px] px-3 py-[4px]">
-                <span class="text-[#93000a] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Churned</span>
+              <div>
+                <StateBadge :state="customer.state || 'ACTIVE'" size="md" />
               </div>
               <div class="flex flex-col gap-[7px] pt-6 w-full">
                 <div class="border-b border-[#e3bebc] flex items-center justify-between pb-[9px] pt-2">
                   <span class="text-[#5d5f5f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">Account #</span>
-                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">ZMK-8820-192</span>
+                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">{{ customer.accountNumber || '...' }}</span>
                 </div>
                 <div class="border-b border-[#e3bebc] flex items-center justify-between pb-[9px] pt-2">
                   <span class="text-[#5d5f5f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">Branch</span>
-                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Lusaka Main</span>
+                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">{{ customer.branch || '...' }}</span>
                 </div>
                 <div class="border-b border-[#e3bebc] flex items-center justify-between pb-[9px] pt-2">
                   <span class="text-[#5d5f5f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">ID Number</span>
-                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">994022/11/1</span>
+                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">{{ customer.idNumber || '...' }}</span>
                 </div>
                 <div class="border-b border-[#e3bebc] flex items-center justify-between pb-[9px] pt-2">
                   <span class="text-[#5d5f5f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">Tenure</span>
-                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">8 Years</span>
+                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">{{ customer.tenureYears ? customer.tenureYears + ' Years' : '...' }}</span>
                 </div>
                 <div class="flex items-center justify-between py-2">
                   <span class="text-[#5d5f5f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">Assigned RM</span>
-                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Tina Tembo</span>
+                  <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px]">{{ customer.assignedRM || '...' }}</span>
                 </div>
               </div>
             </div>
@@ -79,7 +95,8 @@
         </div>
 
         <!-- AI Intelligence Hub -->
-        <div class="col-span-8 row-start-1 bg-white border border-[#e7bcbc] rounded-[6px] p-[25px] grid grid-cols-2 gap-x-6 gap-y-6">
+        <LoadingSkeleton v-if="pageLoading" type="block" />
+        <div v-else class="col-span-8 row-start-1 bg-white border border-[#e7bcbc] rounded-[6px] p-[25px] grid grid-cols-2 gap-x-6 gap-y-6">
           <div class="col-span-2 border-b border-[#e7bcbc] pb-[17px] flex items-center justify-between">
             <div class="flex items-center gap-2">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -93,129 +110,76 @@
           </div>
 
           <!-- Health Score Gauge -->
-          <div class="border-r border-[#e7bcbc] h-[399px] relative">
+          <div class="border-r border-[#e7bcbc] flex flex-col items-center justify-center gap-4 px-4 py-6">
             <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">AI Health Score</span>
-            <div class="absolute left-1/2 -translate-x-1/2 top-[40px] size-[192px]">
-              <svg viewBox="0 0 192 192" class="size-full">
-                <circle cx="96" cy="96" r="83" fill="none" stroke="#f5d5d5" stroke-width="12"/>
-                <path d="M96 13 A83 83 0 0 1 161 143" fill="none" stroke="#ba1a1a" stroke-width="12" stroke-linecap="round"/>
-              </svg>
-              <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span class="text-[#ba1a1a] text-[40px] font-bold tracking-[-0.8px] leading-[48px]">22</span>
-                <span class="text-[#ba1a1a] text-[12px] font-bold tracking-[0.6px] uppercase leading-[16px]">CRITICAL</span>
-              </div>
-            </div>
-            <div class="absolute top-[256px] left-0 right-6 flex justify-center">
-              <div class="bg-[rgba(255,218,214,0.2)] rounded-[12px] flex items-center gap-1 px-3 py-[4px]">
-                <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
-                  <path d="M7 8L0 0h14L7 8z" fill="#ba1a1a"/>
-                </svg>
-                <span class="text-[#ba1a1a] text-[12px] font-bold tracking-[0.6px]">-12 pts vs last month</span>
-              </div>
-            </div>
-            <div class="absolute top-[315px] left-0 right-6 flex flex-col gap-3">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[#5d3f3f] text-[14px] font-normal leading-[20px]">Churn Risk</span>
-                <span class="text-[#ba1a1a] text-[14px] font-bold leading-[20px]">High</span>
-              </div>
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[#5d3f3f] text-[14px] font-normal leading-[20px]">CLV Percentile</span>
-                <span class="text-[#191c1d] text-[14px] font-bold leading-[20px]">85th</span>
-              </div>
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[#5d3f3f] text-[14px] font-normal leading-[20px]">Behavioral Score</span>
-                <span class="text-[#ba1a1a] text-[14px] font-bold leading-[20px]">Low</span>
-              </div>
-            </div>
+            <HealthScoreGauge
+              :score="healthScore"
+              :trend="healthTrend"
+              :previous-score="previousHealthScore"
+              :loading="predictionStore.loading"
+              :error="predictionStore.error"
+              @retry="predictionStore.fetchHealthScore(customerId)"
+            />
           </div>
 
-          <!-- Key Risk Drivers -->
-          <div class="flex flex-col gap-6 pl-[4px] pb-[134px]">
-            <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Key Risk Drivers</span>
-            <div class="flex flex-col gap-6 w-full">
-              <div class="flex flex-col gap-2 w-full">
-                <div class="flex items-start justify-between w-full">
-                  <span class="text-[#191c1d] text-[14px] font-normal leading-[20px]">Salary Inflow</span>
-                  <span class="text-[#ba1a1a] text-[14px] font-bold leading-[20px]">-42%</span>
-                </div>
-                <div class="bg-[#e7e8e9] h-2 rounded-[12px] w-full overflow-clip">
-                  <div class="bg-[#ba1a1a] h-full rounded-[12px]" style="width: 85%"></div>
-                </div>
-                <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">Major decrease in monthly deposits detected.</span>
-              </div>
-              <div class="flex flex-col gap-2 w-full">
-                <div class="flex items-start justify-between w-full">
-                  <span class="text-[#191c1d] text-[14px] font-normal leading-[20px]">Digital Activity</span>
-                  <span class="text-[#5d3f3f] text-[14px] font-bold leading-[20px]">Low</span>
-                </div>
-                <div class="bg-[#e7e8e9] h-2 rounded-[12px] w-full overflow-clip">
-                  <div class="bg-[#926e6e] h-full rounded-[12px]" style="width: 25%"></div>
-                </div>
-                <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">No mobile app logins in the last 45 days.</span>
-              </div>
-              <div class="flex flex-col gap-2 w-full">
-                <div class="flex items-start justify-between w-full">
-                  <span class="text-[#191c1d] text-[14px] font-normal leading-[20px]">Withdrawal Volume</span>
-                  <span class="text-[#ba1a1a] text-[14px] font-bold leading-[20px]">Spike</span>
-                </div>
-                <div class="bg-[#e7e8e9] h-2 rounded-[12px] w-full overflow-clip">
-                  <div class="bg-[rgba(186,26,26,0.6)] h-full rounded-[12px]" style="width: 65%"></div>
-                </div>
-                <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">Recent lump-sum exit to external institution.</span>
+          <!-- Churn Probability + Predictions Empty State -->
+          <div class="flex flex-col gap-6 pl-[4px] py-6 justify-center">
+            <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Churn Risk Assessment</span>
+
+            <!-- Empty predictions state -->
+            <div v-if="churnProbability === null && !predictionStore.loading" class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <span class="text-amber-800 text-sm">Predictions not yet computed for this customer. Run batch prediction to generate health score and churn probability.</span>
+            </div>
+
+            <ChurnProbabilityBar
+              v-else
+              :probability="churnProbability"
+              :loading="predictionStore.loading"
+              :error="predictionStore.error"
+              @retry="predictionStore.fetchChurnProbability(customerId)"
+            />
+
+            <!-- Key Risk Drivers (populated by backend) -->
+            <div v-if="churnProbability !== null" class="flex flex-col gap-4 mt-2">
+              <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Key Risk Drivers</span>
+              <div class="p-4 bg-gray-50 rounded-lg text-sm text-gray-400 text-center">
+                Risk drivers will be surfaced by the prediction engine.
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Row 2: State Timeline -->
-        <div class="col-span-12 row-start-2 bg-white border border-[#e7bcbc] rounded-[6px] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] p-[25px] flex flex-col gap-12 h-[163px]">
+        <!-- Row 2: State Timeline + Markov Matrix -->
+        <LoadingSkeleton v-if="pageLoading" type="block" />
+        <div v-else class="col-span-12 row-start-2 bg-white border border-[#e7bcbc] rounded-[6px] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] p-[25px] flex flex-col gap-6">
           <span class="text-[#5d3f3f] text-[12px] font-bold tracking-[2.4px] uppercase leading-[16px]">LIFECYCLE JOURNEY (12 MONTHS)</span>
-          <div class="relative px-8 w-full">
-            <div class="absolute bg-[#e7bcbc] h-[2px] left-8 right-8 top-1/2 -translate-y-1/2"></div>
-            <div class="flex items-center justify-between w-full">
-              <div class="relative flex flex-col items-center">
-                <div class="bg-[#b8063f] rounded-full size-4 shadow-[0px_0px_0px_4px_rgba(184,6,63,0.2)]"></div>
-                <div class="absolute top-[28px] left-1/2 -translate-x-1/2 w-[96px] text-center">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px] block">Active</span>
-                  <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">12m ago</span>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div class="bg-[#b8063f] rounded-full size-4 shadow-[0px_0px_0px_4px_rgba(184,6,63,0.2)]"></div>
-                <div class="absolute top-[28px] left-1/2 -translate-x-1/2 w-[96px] text-center">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px] block">Active</span>
-                  <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">6m ago</span>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div class="bg-[#b8063f] rounded-full size-4 shadow-[0px_0px_0px_4px_rgba(184,6,63,0.2)]"></div>
-                <div class="absolute top-[28px] left-1/2 -translate-x-1/2 w-[96px] text-center">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px] block">Active</span>
-                  <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">4m ago</span>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div class="absolute bg-[#a71935] rounded-[2px] px-2 py-1 -top-[36px] left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <span class="text-[10px] text-white font-bold leading-[15px]">Transition</span>
-                </div>
-                <div class="bg-[#a71935] rounded-full size-5 shadow-[0px_0px_0px_4px_rgba(167,25,53,0.2)]"></div>
-                <div class="absolute top-[32px] left-1/2 -translate-x-1/2 w-[96px] text-center">
-                  <span class="text-[#a71935] text-[12px] font-bold tracking-[0.6px] leading-[16px] block">At Risk</span>
-                  <span class="text-[#5d3f3f] text-[10px] font-normal leading-[15px]">2m ago</span>
-                </div>
-              </div>
-              <div class="relative flex flex-col items-center">
-                <div class="bg-[#2e3132] border-4 border-white rounded-full shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] size-[28px]"></div>
-                <div class="absolute top-[32px] left-1/2 -translate-x-1/2 w-[96px] text-center">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px] block">Churned</span>
-                  <span class="text-[#ae0029] text-[10px] font-bold leading-[15px]">Current</span>
-                </div>
-              </div>
+          <StateTimeline
+            :transitions="timeline"
+            :loading="customerStore.loading"
+            :error="customerStore.error"
+            @retry="customerStore.fetchCustomerTimeline(customerId)"
+          />
+
+          <!-- Collapsible Markov Matrix -->
+          <details class="mt-2">
+            <summary class="cursor-pointer font-semibold text-sm text-gray-700 hover:text-[#77021e] transition-colors py-2 select-none">
+              Advanced: State Transition Probabilities
+            </summary>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <MarkovMatrix
+                :matrix="markovMatrix"
+                :loading="predictionStore.loading"
+                :error="predictionStore.error"
+                @retry="predictionStore.fetchMarkovMatrix()"
+              />
             </div>
-          </div>
+          </details>
         </div>
 
-        <!-- Row 3: NBA Recommendations (4 cols — 1/3 bento) -->
+        <!-- Row 3: NBA + Action History -->
+        <LoadingSkeleton v-if="pageLoading" type="card" />
+        <LoadingSkeleton v-if="pageLoading" type="block" />
+        <template v-else>
         <div class="col-span-4 row-start-3 self-end mb-6 border border-[#ae0029] rounded-[6px] overflow-clip shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] flex h-[360px]" style="background: linear-gradient(135deg, #dc2337 0%, #a9192a 20%, #760e1d 40%, #440f17 70%, #2b1013 85%, #121010 100%)">
           <div class="bg-[rgba(0,0,0,0.1)] border-r border-[rgba(255,255,255,0.1)] w-[130px] flex flex-col items-center justify-center px-4 py-4">
             <div class="pb-2">
@@ -230,39 +194,10 @@
               <p class="text-[#ffeded] text-[11px] font-normal text-center opacity-80 leading-[16px]">Recommended by<br>AI-Lifecycle Engine</p>
             </div>
           </div>
-          <div class="flex-1 flex flex-col p-4 overflow-clip">
-            <div class="flex items-start justify-between w-full">
-              <div class="flex flex-col gap-1">
-                <div class="bg-[rgba(255,255,255,0.2)] rounded-[2px] px-2 py-[2px]">
-                  <span class="text-[#ffeded] text-[9px] font-bold tracking-[1px] uppercase leading-[14px]">PRIORITY 1</span>
-                </div>
-                <h4 class="text-[#ffeded] text-[16px] font-bold leading-[22px]">Immediate Retention<br>Call</h4>
-              </div>
-              <div class="flex flex-col items-end">
-                <div class="opacity-70 text-right whitespace-nowrap">
-                  <span class="text-[#ffeded] text-[9px] font-bold uppercase tracking-[1px] leading-[13px] block">AI</span>
-                  <span class="text-[#ffeded] text-[9px] font-bold uppercase tracking-[1px] leading-[13px] block">CONFIDENCE</span>
-                </div>
-                <span class="text-[#ffeded] text-[18px] font-bold leading-[24px]">92%</span>
-              </div>
-            </div>
-            <p class="text-[#ffeded] text-[13px] font-normal leading-[18px] pt-3">
-              High risk of customer attrition. The AI predicts a 45% chance of re-engagement if contacted within the next 48 hours with a customized "Prestige Loyalty" offer.
+          <div class="flex-1 flex flex-col p-4 overflow-clip items-center justify-center">
+            <p class="text-[#ffeded] text-[13px] font-normal leading-[18px] text-center opacity-70">
+              NBA recommendations will surface here once the AI engine processes this customer's behavioral data.
             </p>
-            <div class="flex-1"></div>
-            <div class="flex items-center">
-              <button class="bg-white rounded-[4px] flex items-center gap-1.5 px-4 py-[7px] text-[#ae0029] text-[13px] font-bold leading-[18px]">
-                <svg width="14" height="14" viewBox="0 0 19 19" fill="none">
-                  <rect x="1.5" y="1.5" width="16" height="16" rx="3" stroke="#ae0029" stroke-width="2"/>
-                  <line x1="5.5" y1="9.5" x2="13.5" y2="9.5" stroke="#ae0029" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="9.5" y1="5.5" x2="9.5" y2="13.5" stroke="#ae0029" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                Log Action
-              </button>
-              <button class="ml-3 bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.2)] rounded-[4px] px-[18px] py-[8px] text-white text-[13px] font-bold leading-[18px]">
-                Dismiss
-              </button>
-            </div>
           </div>
         </div>
 
@@ -282,71 +217,69 @@
             </div>
           </div>
 
-          <div class="relative w-full pl-11 flex-1 overflow-y-auto">
-            <div class="absolute bg-[#e7e8e9] w-[2px] left-[21px] top-2 bottom-2"></div>
-
-            <!-- Entry 1 -->
-            <div class="relative pb-8">
-              <div class="bg-[#f3f4f5] rounded-[4px] p-[13px] flex flex-col gap-1 w-full">
-                <div class="flex items-center justify-between w-full">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">General Inquiry</span>
-                  <span class="text-[#191414] text-[10px] font-normal leading-[15px]">June 10, 2024</span>
-                </div>
-                <p class="text-[#191414] text-[14px] font-normal leading-[20px]">
-                  Logged by RM Sarah Bwalaya. Customer queried interest rates on fixed deposits but expressed frustration with app performance.
-                </p>
-              </div>
-              <div class="absolute bg-white border-2 border-[#ae0029] rounded-full size-6 flex items-center justify-center p-[2px] left-[-22px] top-1 -translate-x-1/2">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ae0029" stroke-width="2.5" stroke-linecap="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Entry 2 -->
-            <div class="relative pb-8">
-              <div class="bg-[#f3f4f5] rounded-[4px] p-[13px] flex flex-col gap-1 w-full opacity-80">
-                <div class="flex items-center justify-between w-full">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">Cross-sell: Credit Card</span>
-                  <span class="text-[#191414] text-[10px] font-normal leading-[15px]">May 15, 2024</span>
-                </div>
-                <p class="text-[#191414] text-[14px] font-normal leading-[20px]">
-                  Inbound call center lead. Product offered: Absa Infinite Card. Customer declined citing high annual fees.
-                </p>
-              </div>
-              <div class="absolute bg-white border-2 border-[#e7bcbc] rounded-full size-6 flex items-center justify-center p-[2px] left-[-22px] top-1 -translate-x-1/2">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5d3f3f" stroke-width="2.5" stroke-linecap="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2"/>
-                  <line x1="2" y1="10" x2="22" y2="10"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Entry 3 -->
-            <div class="relative">
-              <div class="bg-[#f3f4f5] rounded-[4px] p-[13px] flex flex-col gap-1 w-full opacity-60">
-                <div class="flex items-center justify-between w-full">
-                  <span class="text-[#191c1d] text-[12px] font-bold tracking-[0.6px] leading-[16px]">KYC Update</span>
-                  <span class="text-[#191414] text-[10px] font-normal leading-[15px]">April 02, 2024</span>
-                </div>
-                <p class="text-[#191414] text-[14px] font-normal leading-[20px]">
-                  Routine identity verification completed at Lusaka Main Branch.
-                </p>
-              </div>
-              <div class="absolute bg-white border-2 border-[#e7bcbc] rounded-full size-6 flex items-center justify-center p-[2px] left-[-22px] top-1 -translate-x-1/2">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#5d3f3f" stroke-width="2.5" stroke-linecap="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              </div>
-            </div>
+          <div class="relative w-full pl-11 flex-1 overflow-y-auto flex items-center justify-center">
+            <p class="text-[#5d3f3f] text-[12px] font-normal">Action history will be populated from the backend.</p>
           </div>
         </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useCustomerStore } from '@/stores/customerStore'
+import { usePredictionStore } from '@/stores/predictionStore'
+import StateBadge from '@/components/absa/StateBadge.vue'
+import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import HealthScoreGauge from '@/components/absa/HealthScoreGauge.vue'
+import ChurnProbabilityBar from '@/components/absa/ChurnProbabilityBar.vue'
+import StateTimeline from '@/components/absa/StateTimeline.vue'
+import MarkovMatrix from '@/components/absa/MarkovMatrix.vue'
+
+const route = useRoute()
+const customerStore = useCustomerStore()
+const predictionStore = usePredictionStore()
+
+const customerId = computed(() => route.params.id)
+const loading = computed(() => customerStore.loading || predictionStore.loading)
+const loadError = computed(() => customerStore.error || predictionStore.error)
+const pageLoading = ref(true)
+
+const customer = computed(() => customerStore.selectedCustomer || {})
+const timeline = computed(() => customerStore.timeline || [])
+const healthData = computed(() => predictionStore.getHealthScore(customerId.value) || {})
+const healthScore = computed(() => healthData.value.score ?? null)
+const healthTrend = computed(() => healthData.value.trend ?? 'stable')
+const previousHealthScore = computed(() => healthData.value.previousScore ?? null)
+const churnProbability = computed(() => predictionStore.getChurnProbability(customerId.value) ?? null)
+const markovMatrix = computed(() => predictionStore.markovMatrix)
+
+const initials = computed(() => {
+  const name = customer.value.fullName || ''
+  const parts = name.split(' ')
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  return (name[0] || '?').toUpperCase()
+})
+
+onMounted(async () => {
+  await Promise.all([
+    customerStore.fetchCustomerDetail(customerId.value),
+    customerStore.fetchCustomerTimeline(customerId.value),
+    predictionStore.fetchHealthScore(customerId.value),
+    predictionStore.fetchChurnProbability(customerId.value),
+    predictionStore.fetchMarkovMatrix(),
+  ])
+  pageLoading.value = false
+})
+
+function handleRetry() {
+  customerStore.fetchCustomerDetail(customerId.value)
+  customerStore.fetchCustomerTimeline(customerId.value)
+  predictionStore.fetchHealthScore(customerId.value)
+  predictionStore.fetchChurnProbability(customerId.value)
+  predictionStore.fetchMarkovMatrix()
+}
 </script>

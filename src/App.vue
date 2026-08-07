@@ -112,6 +112,8 @@ const devBypass = DEV_BYPASS;
 // const route = useRoute();
 const route = router.currentRoute;
 const showInstallToast = ref(false);
+const isMfeModalOpen = ref(false);
+const mfePortalLink = ref(null);
 let autoHideTimer = null;
 
 

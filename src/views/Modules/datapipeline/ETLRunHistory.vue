@@ -1,246 +1,160 @@
 <template>
-  <div class="absa-etl-run-history">
-    <div class="absa-etl-content">
-      <!-- Page Header -->
-      <div class="absa-etl-header">
-        <div>
-          <div class="absa-etl-breadcrumb">
-            <span>Home</span>
-            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"><path d="M1 1l4 4-4 4" stroke="#5d3f3f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Operations</span>
-            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"><path d="M1 1l4 4-4 4" stroke="#5d3f3f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="absa-etl-breadcrumb--active">ETL Execution Logs</span>
-          </div>
-          <h2 class="absa-etl-header__title absa-etl-header__title--red">ETL Run History</h2>
-        </div>
-        <div class="absa-etl-header__actions">
-          <button class="absa-etl-btn absa-etl-btn--outline">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  <div class="etl-page">
+    <div class="etl-page__content">
+      <!-- 1. Page Header -->
+      <AbsaSectionHeader
+        title="Data Pipeline Health"
+        color="passion"
+        size="lg"
+      >
+        <template #overline>Home &nbsp;›&nbsp; Operations &nbsp;›&nbsp; ETL Execution Logs</template>
+        <template #actions>
+          <AbsaButton variant="outline" size="md">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Export Logs
-          </button>
-          <button class="absa-etl-btn absa-etl-btn--primary">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </AbsaButton>
+          <AbsaButton variant="hope" size="md">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Trigger Manual Run
-          </button>
+          </AbsaButton>
+        </template>
+      </AbsaSectionHeader>
+
+      <!-- 2. Primary Operational KPIs -->
+      <div class="etl-page__section">
+        <div class="etl-page__kpi-grid">
+        <EtlStatCard label="TODAY'S RUNS" :value="store.kpis?.todays_runs ?? '--'" :sub-label="`${store.kpis?.success_rate ?? 0}% success rate`" variant="plain" />
+        <EtlStatCard label="SUCCESSFUL" :value="store.kpis?.successful_runs ?? '--'" sub-label="Completed without errors" variant="plain" />
+        <EtlStatCard label="FAILED" :value="String(store.kpis?.failed_runs ?? '--').padStart(2,'0')" sub-label="Needs investigation" variant="plain" />
+        <EtlStatCard label="RUNNING" :value="String(store.kpis?.running_runs ?? 0).padStart(2,'0')" sub-label="In progress" variant="plain" />
+        <EtlStatCard label="AVG QUALITY" :value="store.kpis?.avg_quality ?? '--'" sub-label="Today's average" variant="plain" />
+        <EtlStatCard label="AVG DURATION" :value="store.kpis?.avg_duration ?? '--'" sub-label="Today's average" variant="plain" />
         </div>
       </div>
 
-      <LoadingSkeleton v-if="loading" type="stats" />
-      <LoadingSkeleton v-if="loading" type="table" :count="4" />
-      <template v-else>
+      <!-- 3. Quality Trend — full width -->
+      <EtlQualityTrend
+        :points="store.qualityTrend"
+        :sla="store.statusPanel?.sla_threshold ?? 95"
+        :last-scan="store.statusPanel?.current_status_since ? `Since ${store.statusPanel.current_status_since}` : 'No data'"
+      />
 
-      <!-- Bento Grid: Health Cards + Quality Trend -->
-      <div class="absa-etl-grid">
-        <!-- System Health Cards -->
-        <div class="absa-etl-health-cards">
-          <div class="absa-etl-health-card" v-for="card in healthCards" :key="card.label">
-            <div class="absa-etl-health-card__body">
-              <div class="absa-etl-health-card__icon">
-                <div v-html="card.icon"></div>
+      <!-- 4. Current ETL Status -->
+      <div class="etl-page__section">
+        <div class="etl-page__status-panel">
+          <div class="etl-page__status-item">
+            <span class="etl-page__status-label">Current Status</span>
+            <span class="etl-page__status-dot" :class="statusDotClass"></span>
+            <span class="etl-page__status-value">{{ store.statusPanel?.current_status ?? 'Unknown' }}</span>
+            <span class="etl-page__status-meta">
+              <template v-if="store.statusPanel?.current_status_since">Since {{ store.statusPanel.current_status_since }}</template>
+              <template v-if="store.statusPanel?.current_pipeline"> · Pipeline: {{ store.statusPanel.current_pipeline }}</template>
+            </span>
+          </div>
+          <div class="etl-page__status-divider"></div>
+          <div class="etl-page__status-item">
+            <span class="etl-page__status-label">Last Successful Run</span>
+            <span class="etl-page__status-value etl-page__status-value--em">{{ store.statusPanel?.last_successful_run ? '#' + store.statusPanel.last_successful_run : '--' }}</span>
+            <span class="etl-page__status-meta">{{ store.statusPanel?.last_successful_duration ?? '--' }} · {{ store.statusPanel?.last_successful_rows ?? '--' }} · {{ store.statusPanel?.last_successful_quality ?? '--' }}% quality</span>
+          </div>
+          <div class="etl-page__status-divider"></div>
+          <div class="etl-page__status-item">
+            <span class="etl-page__status-label">Latest Quality</span>
+            <span class="etl-page__status-value etl-page__status-value--em">{{ store.statusPanel?.latest_quality ?? '--' }}%</span>
+            <span class="etl-page__status-meta">
+              <template v-if="store.statusPanel">Above SLA ({{ store.statusPanel.sla_threshold }}%) · {{ store.statusPanel.latest_quality_rows ?? '--' }} processed</template>
+            </span>
+          </div>
+          <div class="etl-page__status-divider"></div>
+          <div class="etl-page__status-item">
+            <span class="etl-page__status-label">Last Failure</span>
+            <span class="etl-page__status-value">{{ store.statusPanel?.last_failure_run ? '#' + store.statusPanel.last_failure_run : 'None' }}</span>
+            <span class="etl-page__status-meta" :class="{ 'etl-page__status-meta--warn': store.statusPanel?.last_failure_run }">
+              {{ store.statusPanel?.last_failure_detail ?? 'No recent failures' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Execution History -->
+      <div v-if="store.loading" class="etl-page__loading">Loading pipeline history…</div>
+      <div v-else-if="store.isEmpty" class="etl-page__empty">No pipeline runs found.</div>
+      <div v-else-if="store.error" class="etl-page__error">Failed to load: {{ store.error }}</div>
+      <EtlExecutionTable
+        v-else
+        :rows="store.runs"
+        :open-menu-id="openMenuId"
+        @toggle-menu="toggleMenu"
+        @view-run="viewRun"
+        @retry-run="retryRun"
+      />
+
+      <!-- Pagination -->
+      <div v-if="store.totalPages > 1" class="etl-page__pagination">
+        <button :disabled="store.page <= 1" @click="store.setPage(store.page - 1)">← Prev</button>
+        <span>Page {{ store.page }} of {{ store.totalPages }}</span>
+        <button :disabled="store.page >= store.totalPages" @click="store.setPage(store.page + 1)">Next →</button>
+      </div>
+
+      <!-- 6. Infrastructure Health -->
+      <div class="etl-page__section">
+        <h3 class="etl-page__section-title">Infrastructure Health</h3>
+        <div class="etl-page__infra-grid">
+          <EtlHealthCard
+            v-for="card in healthCards"
+            :key="card.label"
+            :label="card.label"
+            :value="card.value"
+            :icon="card.icon"
+            :status-color="card.statusColor"
+            :stat="card.stat"
+          />
+        </div>
+      </div>
+
+      <!-- 7. System Metrics -->
+      <div class="etl-page__section">
+        <h3 class="etl-page__section-title">System Metrics</h3>
+        <div class="etl-page__metrics-grid">
+          <EtlStatCard label="STORAGE GROWTH" value="+14.2 GB" sub-label="6.2TB of 10TB Allocated" :trend="2.4" trend-label="2.4%" variant="progress" :progress-pct="65" />
+          <EtlStatCard label="AVERAGE QUALITY" value="99.1%" sub-label="Based on last 50 batches" :trend="0.3" trend-label="0.3%" variant="chart" :chart-bars="qualityChartBars" />
+          <EtlStatCard label="FAILED RETRIES" value="02" sub-label="Requires manual intervention" :trend="-1" trend-label="Active" variant="badges">
+            <template #badges>
+              <div class="absa-etl-bottom-card__badges">
+                <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--dark">BT</span>
+                <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--red">ETL</span>
               </div>
-              <div>
-                <div class="absa-etl-health-card__label">{{ card.label }}</div>
-                <div class="absa-etl-health-card__value">{{ card.value }}</div>
-              </div>
-            </div>
-            <div class="absa-etl-health-card__status">
-              <div class="absa-etl-health-card__dot" :class="'absa-etl-health-card__dot--' + card.statusColor"></div>
-              <div class="absa-etl-health-card__stat" :class="'absa-etl-health-card__stat--' + card.statusColor">{{ card.stat }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quality Score Trend -->
-        <div class="absa-etl-quality">
-          <div class="absa-etl-quality__header">
-            <h3 class="absa-etl-quality__title">Quality Score Trend</h3>
-            <div class="absa-etl-quality__toggles">
-              <span class="absa-etl-quality__toggle absa-etl-quality__toggle--active">24 HOURS</span>
-              <span class="absa-etl-quality__toggle">7 DAYS</span>
-            </div>
-          </div>
-          <div class="absa-etl-quality__chart">
-            <div class="absa-etl-quality__bars">
-              <div class="absa-etl-quality__bar" v-for="(bar, i) in qualityBars" :key="i"
-                :style="{ height: bar + '%', background: 'rgba(174,0,41,0.2)', borderTop: '2px solid var(--inspire, #77021e)' }"
-                :title="bar + '%'">
-              </div>
-            </div>
-          </div>
-          <div class="absa-etl-quality__footer">
-            <div class="absa-etl-quality__score">
-              <span class="absa-etl-quality__dot"></span>
-              Data Integrity Score: <strong>--</strong>
-            </div>
-            <span class="absa-etl-quality__scan">Connect to backend</span>
-          </div>
+            </template>
+          </EtlStatCard>
+          <EtlStatCard label="GATEWAY LATENCY" value="118ms" sub-label="Peak load during batch processing" :trend="0" trend-label="High" variant="bar" :progress-pct="78" />
         </div>
       </div>
-
-      <!-- Execution History Table -->
-      <div class="absa-etl-table-section">
-        <div class="absa-etl-table-section__header">
-          <h3 class="absa-etl-table-section__title">Execution History</h3>
-          <div class="absa-etl-table-section__filter">
-            <span class="absa-etl-table-section__filter-label">Filter by:</span>
-            <div class="absa-etl-table-section__dropdown">
-              <span>All Statuses</span>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#191c1d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="absa-etl-table-wrap">
-          <table class="absa-etl-table">
-            <thead>
-              <tr>
-                <th>RUN ID</th>
-                <th>BATCH ID</th>
-                <th>DURATION</th>
-                <th>ROWS (RCV/VAL/LD/REJ)</th>
-                <th>QUALITY<br/>SCORE</th>
-                <th>STATUS</th>
-                <th>ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="run in executionHistory" :key="run.id" class="cursor-pointer hover:bg-gray-50 transition-colors" @click="viewRun(run)">
-                <td class="absa-etl-table__run-id">
-                  <div class="absa-etl-table__run-divider" :class="'absa-etl-table__run-divider--' + run.statusClass"></div>
-                  <span class="absa-etl-table__run-text">#RUN-{{ run.runId }}</span>
-                </td>
-                <td class="absa-etl-table__batch">{{ run.batchId }}</td>
-                <td class="absa-etl-table__duration">{{ run.duration }}</td>
-                <td>
-                  <div class="absa-etl-table__rows">
-                    <span>{{ run.rowsReceived }}</span>
-                    <span class="absa-etl-table__sep">/</span>
-                    <span class="absa-etl-table__valid">{{ run.rowsValid }}</span>
-                    <span class="absa-etl-table__sep">/</span>
-                    <span>{{ run.rowsLoaded }}</span>
-                    <span class="absa-etl-table__sep">/</span>
-                    <span class="absa-etl-table__rejected" :class="{ 'absa-etl-table__rejected--warn': run.rowsRejected > 0 }">{{ run.rowsRejected }}</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="absa-etl-table__quality">
-                    <div class="absa-etl-table__quality-bar">
-                      <div class="absa-etl-table__quality-fill" :class="'absa-etl-table__quality-fill--' + run.qualityClass" :style="{ width: run.qualityScore + '%' }"></div>
-                    </div>
-                    <span class="absa-etl-table__quality-val" :class="'absa-etl-table__quality-val--' + run.qualityClass">{{ run.qualityScore }}%</span>
-                  </div>
-                </td>
-                <td>
-                  <span class="absa-etl-table__status" :class="'absa-etl-table__status--' + run.statusClass">
-                    <span class="absa-etl-table__status-dot" :class="'absa-etl-table__status-dot--' + run.statusClass"></span>
-                    {{ run.status }}
-                  </span>
-                </td>
-                <td class="absa-etl-table__action-cell">
-                  <div class="absa-etl-table__action-wrap">
-                    <button class="absa-etl-table__action-btn" @click.stop="toggleMenu(run.id)">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                    </button>
-                    <div class="absa-etl-table__dropdown" v-if="openMenuId === run.id" @click.stop>
-                      <button class="absa-etl-table__dropdown-item" @click="viewRun(run)">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        View
-                      </button>
-                      <button class="absa-etl-table__dropdown-item" v-if="run.statusClass === 'failed'" @click="retryRun(run)">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                        Retry
-                      </button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="absa-etl-table-section__pagination">
-          <span>Showing 1-4 of 8842 executions</span>
-          <div class="absa-etl-table-section__page-btns">
-            <button disabled class="absa-etl-table-section__page-nav">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button class="absa-etl-table-section__page-btn absa-etl-table-section__page-btn--active">1</button>
-            <button class="absa-etl-table-section__page-btn">2</button>
-            <button class="absa-etl-table-section__page-btn">3</button>
-            <button class="absa-etl-table-section__page-btn">...</button>
-            <button class="absa-etl-table-section__page-btn">2211</button>
-            <button class="absa-etl-table-section__page-nav">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bottom Detail Cards -->
-      <div class="absa-etl-bottom-cards">
-        <div class="absa-etl-bottom-card">
-          <div class="absa-etl-bottom-card__label">STORAGE GROWTH</div>
-          <div class="absa-etl-bottom-card__value">--</div>
-          <div class="absa-etl-bottom-card__trend">
-            <span class="absa-etl-bottom-card__trend-up">--</span>
-          </div>
-          <div class="absa-etl-bottom-card__progress">
-            <div class="absa-etl-bottom-card__progress-fill" style="width: 0%"></div>
-          </div>
-          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
-        </div>
-        <div class="absa-etl-bottom-card">
-          <div class="absa-etl-bottom-card__label">AVERAGE QUALITY</div>
-          <div class="absa-etl-bottom-card__value">--</div>
-          <div class="absa-etl-bottom-card__trend">
-            <span class="absa-etl-bottom-card__trend-up">--</span>
-          </div>
-          <div class="absa-etl-bottom-card__chart">
-            <div class="absa-etl-bottom-card__chart-bar" v-for="(h, i) in qualityChartBars" :key="i" :style="{ height: h + '%', opacity: 0.2 + i * 0.15 }"></div>
-          </div>
-          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
-        </div>
-        <div class="absa-etl-bottom-card">
-          <div class="absa-etl-bottom-card__label">FAILED RETRIES</div>
-          <div class="absa-etl-bottom-card__value">--</div>
-          <div class="absa-etl-bottom-card__trend">
-            <span class="absa-etl-bottom-card__trend-down">--</span>
-          </div>
-          <div class="absa-etl-bottom-card__badges">
-            <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--dark">--</span>
-          </div>
-          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
-        </div>
-        <div class="absa-etl-bottom-card">
-          <div class="absa-etl-bottom-card__label">GATEWAY LATENCY</div>
-          <div class="absa-etl-bottom-card__value">--</div>
-          <div class="absa-etl-bottom-card__trend">
-            <span class="absa-etl-bottom-card__trend-warn">--</span>
-          </div>
-          <div class="absa-etl-bottom-card__bar">
-            <div class="absa-etl-bottom-card__bar-fill" style="width: 0%"></div>
-          </div>
-          <div class="absa-etl-bottom-card__sub">Connect to backend</div>
-        </div>
-      </div>
-      </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
-
-const loading = ref(true)
+import { AbsaButton, AbsaSectionHeader } from '@/components/ui'
+import EtlHealthCard from './EtlHealthCard.vue'
+import EtlQualityTrend from './EtlQualityTrend.vue'
+import EtlStatCard from './EtlStatCard.vue'
+import EtlExecutionTable from './EtlExecutionTable.vue'
+import { useETLStore } from '@/stores/etlStore'
 
 const router = useRouter()
+const store = useETLStore()
 
-const healthCards = ref([])
+// ── Status dot colour ──
+const statusDotClass = computed(() => {
+  const s = (store.statusPanel?.current_status ?? '').toLowerCase()
+  if (s === 'operational') return 'etl-page__status-dot--ok'
+  if (s === 'processing') return 'etl-page__status-dot--warn'
+  return 'etl-page__status-dot--err'
+})
 
-const qualityBars = ref([])
-
-const qualityChartBars = ref([])
-
+// ── Execution table menu ──
 const openMenuId = ref(null)
 
 function toggleMenu(id) {
@@ -249,7 +163,7 @@ function toggleMenu(id) {
 
 function viewRun(run) {
   openMenuId.value = null
-  router.push(`/dashboard/etl-run-history/batch/${run.batchId || run.runId}`)
+  router.push(`/dashboard/etl-run-history/batch/${run.runId}`)
 }
 
 function retryRun(run) {
@@ -262,902 +176,113 @@ function handleClickOutside() {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-  setTimeout(() => { loading.value = false }, 2000)
+  store.loadDashboard()
 })
+
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 
-const executionHistory = ref([])
+// ── System metrics (local — no backend endpoint yet) ──
+const qualityChartBars = ref([30, 55, 40, 65, 80])
+
+// ── Infrastructure (local — no backend endpoint yet) ──
+const healthCards = ref([
+  {
+    label: 'PostgreSQL Cluster',
+    value: 'Healthy',
+    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+    statusColor: 'good',
+    stat: '99.98% uptime · 18 ms'
+  },
+  {
+    label: 'Redis Cache',
+    value: 'Healthy',
+    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    statusColor: 'good',
+    stat: '0.4ms latency · 512 MB'
+  },
+  {
+    label: 'API Gateway',
+    value: 'Stable',
+    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+    statusColor: 'warn',
+    stat: 'Load 72% · 118ms'
+  }
+])
 </script>
 
 <style scoped>
-.absa-etl-run-history {
-  min-height: 100vh;
-  background: #f8f9fa;
-  display: flex;
-  flex-direction: column;
-}
+.etl-page { min-height: 100vh; background: #F8F8FA; display: flex; flex-direction: column; }
+.etl-page__content { max-width: 1600px; margin: 0 auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; width: 100%; flex: 1; }
+.etl-page__section { display: flex; flex-direction: column; gap: 12px; }
+.etl-page__section-title { font-family: 'Public Sans',system-ui,sans-serif; font-size: 16px; font-weight: 700; color: var(--absa-enrich, #131010); line-height: 22px; margin: 0; }
 
-/* ═══ Content Area ═══ */
-.absa-etl-content {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 100%;
-  flex: 1;
-}
+.etl-page__kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 
-/* ═══ Page Header ═══ */
-.absa-etl-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding-bottom: 4px;
-}
+.etl-page__status-panel { display: flex; align-items: center; gap: 0; background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 16px 24px; }
+.etl-page__status-item { display: flex; flex-direction: column; gap: 2px; padding: 0 24px; flex: 1; }
+.etl-page__status-divider { width: 1px; height: 40px; background: #E8E8EC; flex-shrink: 0; }
+.etl-page__status-label { font-family: 'Inter',system-ui,sans-serif; font-size: 10px; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; }
+.etl-page__status-value { font-family: 'Public Sans',system-ui,sans-serif; font-size: 14px; font-weight: 600; color: var(--absa-enrich, #131010); display: flex; align-items: center; gap: 6px; }
+.etl-page__status-value--em { font-size: 16px; font-weight: 700; color: var(--absa-passion, #DC0037); }
+.etl-page__status-meta { font-family: 'Public Sans',system-ui,sans-serif; font-size: 11px; color: #9CA3AF; }
+.etl-page__status-meta--warn { color: var(--absa-inspire, #77021E); }
+.etl-page__status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.etl-page__status-dot--ok { background: var(--absa-passion, #DC0037); }
+.etl-page__status-dot--warn { background: var(--absa-energy, #FF780F); }
+.etl-page__status-dot--err { background: var(--absa-inspire, #77021E); }
 
-.absa-etl-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 8px;
-}
-
-.absa-etl-breadcrumb span {
+/* ── Loading / Empty / Error ── */
+.etl-page__loading,
+.etl-page__empty,
+.etl-page__error {
+  text-align: center;
+  padding: 40px 16px;
   font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-breadcrumb--active {
-  color: #77021e !important;
-  font-weight: 700 !important;
-}
-
-.absa-etl-breadcrumb svg {
-  margin: 0 4px;
-}
-
-.absa-etl-header__title {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: #191c1d;
-  letter-spacing: -0.32px;
-  line-height: 40px;
-  margin: 0;
-}
-
-.absa-etl-header__title--red {
-  color: #dc0037;
-}
-
-.absa-etl-header__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.absa-etl-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 17px;
-  border-radius: 2px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  cursor: pointer;
-  transition: all 150ms ease;
-  white-space: nowrap;
-}
-
-.absa-etl-btn--outline {
-  border: 1px solid #dc0037;
-  background: transparent;
-  color: #191c1d;
-}
-
-.absa-etl-btn--outline:hover {
-  background: rgba(220, 0, 55, 0.04);
-}
-
-.absa-etl-btn--primary {
-  border: none;
-  background: #BE0F2C;
-  color: #fff;
-}
-
-.absa-etl-btn--primary:hover {
-  background: #A01028;
-}
-
-/* ═══ Bento Grid ═══ */
-.absa-etl-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 355px;
-  gap: 24px;
-}
-
-/* ═══ System Health Cards ═══ */
-.absa-etl-health-cards {
-  grid-column: 1 / span 4;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.absa-etl-health-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  font-size: 14px;
+  color: #9CA3AF;
   background: #fff;
-  border: 1px solid #e7bcbc;
+  border: 1px solid #E8E8EC;
   border-radius: 4px;
-  padding: 29.83px 21px;
 }
+.etl-page__error { color: var(--absa-inspire, #77021E); border-color: rgba(119,2,30,0.2); }
 
-.absa-etl-health-card__body {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.absa-etl-health-card__icon {
+/* ── Pagination ── */
+.etl-page__pagination {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5d3f3f;
-}
-
-.absa-etl-health-card__label {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-health-card__value {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: #191c1d;
-  line-height: 32px;
-}
-
-.absa-etl-health-card__status {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.absa-etl-health-card__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.absa-etl-health-card__dot--green {
-  background: #4caf50;
-}
-
-.absa-etl-health-card__dot--amber {
-  background: #ffc107;
-}
-
-.absa-etl-health-card__stat {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 15px;
-}
-
-.absa-etl-health-card__stat--green {
-  color: #4caf50;
-}
-
-.absa-etl-health-card__stat--amber {
-  color: #ffc107;
-}
-
-/* ═══ Quality Score Trend ═══ */
-.absa-etl-quality {
-  grid-column: 5 / span 8;
-  background: #fff;
-  border: 1px solid #e7bcbc;
-  border-radius: 4px;
-  position: relative;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.absa-etl-quality__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.absa-etl-quality__title {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: #191c1d;
-  line-height: 32px;
-  margin: 0;
-}
-
-.absa-etl-quality__toggles {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.absa-etl-quality__toggle {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: #5d3f3f;
-  padding: 4px 8px;
-  border-radius: 2px;
-  cursor: pointer;
-  line-height: 15px;
-}
-
-.absa-etl-quality__toggle--active {
-  background: rgba(174, 0, 41, 0.1);
-  color: #ae0029;
-}
-
-.absa-etl-quality__chart {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  padding: 16px 0;
-  min-height: 200px;
-}
-
-.absa-etl-quality__bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  width: 100%;
-  height: 168px;
-}
-
-.absa-etl-quality__bar {
-  flex: 1;
-  min-width: 0;
-}
-
-.absa-etl-quality__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #e7bcbc;
-  padding-top: 17px;
-}
-
-.absa-etl-quality__score {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-quality__score strong {
-  font-weight: 400;
-  color: #191c1d;
-}
-
-.absa-etl-quality__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  background: #ae0029;
-}
-
-.absa-etl-quality__scan {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-/* ═══ Execution History Table Section ═══ */
-.absa-etl-table-section {
-  background: #fff;
-  border: 1px solid #e7bcbc;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.absa-etl-table-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px 17px;
-  background: #f3f4f5;
-  border-bottom: 1px solid #e7bcbc;
-}
-
-.absa-etl-table-section__title {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #191c1d;
-  line-height: 28px;
-  margin: 0;
-}
-
-.absa-etl-table-section__filter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.absa-etl-table-section__filter-label {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-table-section__dropdown {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff;
-  border: 1px solid #e7bcbc;
-  border-radius: 2px;
-  padding: 5px 9px;
-  cursor: pointer;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #191c1d;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-table-wrap {
-  overflow-x: auto;
-}
-
-.absa-etl-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.825rem;
-}
-
-.absa-etl-table thead th {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  text-align: left;
-  padding: 24px 24px 24.5px;
-  background: #f3f4f5;
-  border-bottom: 1px solid #e7bcbc;
-  white-space: nowrap;
-}
-
-.absa-etl-table tbody tr {
-  border-bottom: 1px solid #e7bcbc;
-}
-
-.absa-etl-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.absa-etl-table tbody td {
-  padding: 16px 24px;
-  vertical-align: middle;
-}
-
-.absa-etl-table__run-id {
-  display: flex;
-  align-items: center;
   gap: 16px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #ae0029;
-  line-height: 24px;
-}
-
-.absa-etl-table__run-divider {
-  width: 1.39px;
-  height: 32px;
-  border-radius: 0;
-  flex-shrink: 0;
-}
-
-.absa-etl-table__run-divider--completed {
-  background: #ae0029;
-}
-
-.absa-etl-table__run-divider--failed {
-  background: #dc2626;
-}
-
-.absa-etl-table__run-divider--running {
-  background: #2563eb;
-}
-
-.absa-etl-table__run-text {
-  white-space: nowrap;
-}
-
-.absa-etl-table__batch {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #191c1d;
-  line-height: 20px;
-  white-space: nowrap;
-}
-
-.absa-etl-table__duration {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 14px;
-  font-style: italic;
-  font-weight: 400;
-  color: #5d3f3f;
-  line-height: 20px;
-  white-space: nowrap;
-}
-
-.absa-etl-table__rows {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #191c1d;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-  white-space: nowrap;
-}
-
-.absa-etl-table__sep {
-  color: #5d3f3f;
-}
-
-.absa-etl-table__valid {
-  color: #191c1d;
-}
-
-.absa-etl-table__rejected {
-  font-weight: 700;
-}
-
-.absa-etl-table__rejected--warn {
-  color: #ba1a1a;
-}
-
-.absa-etl-table__quality {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.absa-etl-table__quality-bar {
-  width: 60px;
-  height: 6px;
-  background: #e5e7eb;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.absa-etl-table__quality-fill {
-  height: 100%;
-  border-radius: 3px;
-}
-
-.absa-etl-table__quality-fill--good {
-  background: #16a34a;
-}
-
-.absa-etl-table__quality-fill--warning {
-  background: #f59e0b;
-}
-
-.absa-etl-table__quality-val {
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.absa-etl-table__quality-val--good {
-  color: #16a34a;
-}
-
-.absa-etl-table__quality-val--warning {
-  color: #d97706;
-}
-
-.absa-etl-table__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
-
-.absa-etl-table__status--completed {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.absa-etl-table__status--running {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-.absa-etl-table__status--failed {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.absa-etl-table__status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.absa-etl-table__status-dot--completed {
-  background: #16a34a;
-}
-
-.absa-etl-table__status-dot--running {
-  background: #2563eb;
-  animation: absaPulse 1.5s ease-in-out infinite;
-}
-
-.absa-etl-table__status-dot--failed {
-  background: #dc2626;
-}
-
-@keyframes absaPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.absa-etl-table__action-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #5d3f3f;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.absa-etl-table__action-btn:hover {
-  color: #dc0037;
-}
-
-.absa-etl-table__action-cell {
-  position: relative;
-}
-
-.absa-etl-table__action-wrap {
-  position: relative;
-  display: inline-block;
-}
-
-.absa-etl-table__dropdown {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  z-index: 20;
-  background: #fff;
-  border: 1px solid #e7bcbc;
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  min-width: 120px;
-  padding: 4px 0;
-  margin-top: 4px;
-}
-
-.absa-etl-table__dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 8px 16px;
-  border: none;
-  background: none;
+  padding: 12px 0;
   font-family: 'Public Sans', system-ui, sans-serif;
   font-size: 13px;
-  font-weight: 500;
-  color: #191c1d;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.1s ease;
-}
-
-.absa-etl-table__dropdown-item:hover {
-  background: #f8f9fa;
-  color: #dc0037;
-}
-
-/* ═══ Pagination ═══ */
-.absa-etl-table-section__pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  border-top: 1px solid #e7bcbc;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  color: #5d3f3f;
-  line-height: 16px;
-}
-
-.absa-etl-table-section__page-btns {
-  display: flex;
-  gap: 4px;
-}
-
-.absa-etl-table-section__page-btn,
-.absa-etl-table-section__page-nav {
-  min-width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e7bcbc;
-  border-radius: 2px;
-  background: #fff;
-  color: #5d3f3f;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 150ms ease;
+  color: var(--absa-enrich, #131010);
 }
-
-.absa-etl-table-section__page-btn:hover,
-.absa-etl-table-section__page-nav:hover {
-  border-color: #dc0037;
-  color: #dc0037;
-}
-
-.absa-etl-table-section__page-btn:disabled,
-.absa-etl-table-section__page-nav:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.absa-etl-table-section__page-btn--active {
-  background: #dc0037 !important;
-  color: #fff !important;
-  border-color: #dc0037 !important;
-}
-
-.absa-etl-table-section__page-nav {
-  border: none;
-  background: none;
-}
-
-/* ═══ Bottom Detail Cards ═══ */
-.absa-etl-bottom-cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.absa-etl-bottom-card {
-  background: #fff;
-  border: 1px solid #e7bcbc;
+.etl-page__pagination button {
+  padding: 6px 16px;
+  border: 1px solid #E8E8EC;
   border-radius: 4px;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.absa-etl-bottom-card__label {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #5d3f3f;
-  letter-spacing: 0.6px;
-  line-height: 16px;
-}
-
-.absa-etl-bottom-card__value {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 24px;
+  background: #fff;
+  color: var(--absa-enrich, #131010);
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 600;
-  color: #191c1d;
-  line-height: 32px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
 }
+.etl-page__pagination button:hover:not(:disabled) { border-color: var(--absa-passion, #DC0037); }
+.etl-page__pagination button:disabled { opacity: 0.4; cursor: default; }
 
-.absa-etl-bottom-card__trend {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 4px;
-}
+.etl-page__infra-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.etl-page__metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-.absa-etl-bottom-card__trend-up {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #4caf50;
-  line-height: 16px;
-}
+.absa-etl-bottom-card__badges { display: flex; gap: 0; margin: 4px 0; }
+.absa-etl-bottom-card__badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-family: 'Public Sans',system-ui,sans-serif; font-size: 10px; font-weight: 700; color: #fff; line-height: 15px; }
+.absa-etl-bottom-card__badge:last-child { margin-left: -8px; }
+.absa-etl-bottom-card__badge--dark { background: var(--absa-enrich, #131010); }
+.absa-etl-bottom-card__badge--red  { background: var(--absa-passion, #DC0037); }
 
-.absa-etl-bottom-card__trend-down {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #ba1a1a;
-  line-height: 16px;
-}
-
-.absa-etl-bottom-card__trend-warn {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #ffc107;
-  line-height: 16px;
-}
-
-.absa-etl-bottom-card__progress {
-  height: 4px;
-  background: #e7bcbc;
-  border-radius: 2px;
-  overflow: hidden;
-  margin: 4px 0;
-}
-
-.absa-etl-bottom-card__progress-fill {
-  height: 100%;
-  background: #dc0037;
-  border-radius: 2px;
-}
-
-.absa-etl-bottom-card__sub {
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  color: #5d3f3f;
-  line-height: 15px;
-}
-
-.absa-etl-bottom-card__chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 40px;
-  margin: 4px 0;
-}
-
-.absa-etl-bottom-card__chart-bar {
-  flex: 1;
-  background: #ae0029;
-  border-radius: 1px;
-  min-height: 4px;
-}
-
-.absa-etl-bottom-card__badges {
-  display: flex;
-  gap: 0;
-  margin: 4px 0;
-}
-
-.absa-etl-bottom-card__badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 15px;
-}
-
-.absa-etl-bottom-card__badge:last-child {
-  margin-left: -8px;
-}
-
-.absa-etl-bottom-card__badge--dark {
-  background: #0b1c30;
-}
-
-.absa-etl-bottom-card__badge--red {
-  background: #dc0037;
-}
-
-.absa-etl-bottom-card__bar {
-  height: 32px;
-  background: rgba(255, 193, 7, 0.1);
-  border-radius: 2px;
-  overflow: hidden;
-  margin: 4px 0;
-  position: relative;
-}
-
-.absa-etl-bottom-card__bar-fill {
-  height: 100%;
-  background: rgba(255, 193, 7, 0.4);
-  border-right: 2px solid #ffc107;
-  border-radius: 2px;
-}
-
-/* ═══ Responsive ═══ */
-@media (max-width: 1200px) {
-  .absa-etl-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-
-  .absa-etl-health-cards {
-    grid-column: 1;
-  }
-
-  .absa-etl-quality {
-    grid-column: 1;
-  }
-
-}
-
-@media (max-width: 768px) {
-  .absa-etl-content {
-    padding: 16px;
-  }
-
-  .absa-etl-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .absa-etl-health-cards {
-    grid-column: 1;
-  }
-
-  .absa-etl-quality {
-    grid-column: 1;
-  }
-
-  .absa-etl-bottom-cards {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 1400px) { .etl-page__kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) { .etl-page__content { padding: 16px; gap: 16px; } .etl-page__kpi-grid { grid-template-columns: repeat(2, 1fr); } .etl-page__infra-grid { grid-template-columns: 1fr; } .etl-page__metrics-grid { grid-template-columns: repeat(2, 1fr); } .etl-page__status-panel { flex-wrap: wrap; gap: 12px; } .etl-page__status-divider { display: none; } }
+@media (max-width: 768px) { .etl-page__kpi-grid { grid-template-columns: 1fr; } .etl-page__metrics-grid { grid-template-columns: 1fr; } }
 </style>

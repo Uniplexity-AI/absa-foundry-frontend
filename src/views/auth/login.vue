@@ -1,1053 +1,656 @@
 <template>
-  <div class="absa-login">
-    <!-- ── Left: Login Form ── -->
-    <div class="absa-login__form-panel">
-      <div class="absa-login__form-inner">
-        <!-- Header -->
-        <div class="absa-login__header">
-          <div class="absa-pill-badge absa-pill-badge--login">
-            <span class="absa-pill-badge__dot"></span>
-            ACCESS_CONTROL_V2.1
-          </div>
+  <div class="login">
+    <!-- Background: gradient + grid pattern -->
+    <div class="login__bg"></div>
+    <div class="login__pattern"></div>
 
-          <router-link to="/" class="absa-login__logo-link">
-            <img src="/logo_red.png" alt="ABSA Intelligence Unit" class="absa-login__logo" />
-          </router-link>
+    <!-- Main Content -->
+    <main class="login__canvas">
+      <!-- Header -->
+      <header class="login__header">
+        <div class="login__logo-wrap">
+          <img
+            alt="Absa Logo"
+            class="login__logo"
+            src="/src/assets/absa-logo.png"
+          />
+        </div>
+        <h1 class="login__title">Customer Lifecycle Prediction System</h1>
+        <p class="login__subtitle">Enterprise Decision Intelligence Platform</p>
+        <p class="login__overline">Internal Operations Platform</p>
+      </header>
 
-          <h2 class="absa-login__title">Welcome <span class="absa-login__title-accent">Back</span></h2>
-          <p class="absa-login__subtitle">Authenticate to access system modules.</p>
+      <!-- Auth Card -->
+      <div class="login__card">
+        <!-- Error Message Banner -->
+        <div v-if="errorMessage" class="login__error-banner">
+          <svg class="login__error-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="2"/>
+            <line x1="15" y1="9" x2="9" y2="15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="9" y1="9" x2="15" y2="15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <p class="login__error-text">{{ errorMessage }}</p>
         </div>
 
-        <div class="absa-login__form-card">
-          <!-- Google Sign-In -->
-          <div class="absa-login__google-btn">
-            <GoogleLogin
-              :callback="handleGoogleLogin"
-              @error="handleGoogleError"
-              prompt
-              theme="outline"
-              size="large"
-              shape="rectangular"
+        <!-- Success Message Banner -->
+        <div v-if="successMessage" class="login__success-banner">
+          <svg class="login__success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="2"/>
+            <polyline points="8 12 11 15 17 9" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="login__success-text">{{ successMessage }}</p>
+        </div>
+
+        <!-- Form -->
+        <form class="login__form" @submit.prevent="handleSubmit">
+          <!-- Username -->
+          <div class="login__field">
+            <label class="login__label" for="username">Username</label>
+            <input
+              id="username"
+              v-model="formData.email"
+              type="text"
+              required
+              class="login__input"
+              :class="{ 'login__input--error': errors.email }"
+              placeholder="Enter AD Username"
+              autocomplete="username"
+              autofocus
             />
+            <p v-if="errors.email" class="login__field-error">{{ errors.email }}</p>
           </div>
 
-          <!-- Divider -->
-          <div class="absa-login__divider">
-            <span class="absa-login__divider-text">or continue with credentials</span>
-          </div>
-
-          <!-- Error Message -->
-          <div v-if="errorMessage" class="absa-alert absa-alert--error">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            <span>{{ errorMessage }}</span>
-          </div>
-
-          <!-- Success Message -->
-          <div v-if="successMessage" class="absa-alert absa-alert--success">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>{{ successMessage }}</span>
-          </div>
-
-          <!-- Info Message -->
-          <div v-if="hasIntendedRoute" class="absa-alert absa-alert--info">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            <div>
-              <p class="absa-alert__title">MODULE_LOCKED</p>
-              <p class="absa-alert__desc">Authentication required for access.</p>
+          <!-- Password -->
+          <div class="login__field">
+            <label class="login__label" for="password">Password</label>
+            <div class="login__password-wrap">
+              <input
+                id="password"
+                v-model="formData.password"
+                :type="showPassword ? 'text' : 'password'"
+                required
+                class="login__input"
+                :class="{ 'login__input--error': errors.password }"
+                placeholder="Enter AD Password"
+                autocomplete="current-password"
+                @keyup="checkCapsLock"
+                @keydown="checkCapsLock"
+              />
+              <button
+                type="button"
+                class="login__toggle-vis"
+                @click="showPassword = !showPassword"
+                aria-label="Toggle password visibility"
+              >
+                <!-- Eye on (visible) -->
+                <svg v-if="!showPassword" class="login__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <!-- Eye off (hidden) -->
+                <svg v-else class="login__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
             </div>
+            <!-- Caps Lock Warning -->
+            <p v-if="capsLockOn" class="login__caps-warn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M6 10l6-4 6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="12" y1="10" x2="12" y2="18" stroke="currentColor" stroke-width="2"/>
+                <line x1="8" y1="18" x2="16" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Caps Lock is ON
+            </p>
+            <p v-if="errors.password" class="login__field-error">{{ errors.password }}</p>
           </div>
 
-          <form class="absa-login__form" @submit.prevent="handleSubmit">
-            <!-- Email or Username -->
-            <div class="absa-field" :class="{ 'absa-field--error': errors.email }">
-              <label for="email" class="absa-field__label">Email or Username</label>
-              <div class="absa-field__input-wrap">
-                <Mail class="absa-field__icon" />
-                <input
-                  id="email"
-                  v-model="formData.email"
-                  type="text"
-                  required
-                  class="absa-field__input"
-                  placeholder="Enter email or username"
-                  autocomplete="username"
-                />
-              </div>
-              <p v-if="errors.email" class="absa-field__error">{{ errors.email }}</p>
-            </div>
-
-            <!-- Password -->
-            <div class="absa-field" :class="{ 'absa-field--error': errors.password }">
-              <label for="password" class="absa-field__label">Access Key</label>
-              <div class="absa-field__input-wrap">
-                <Lock class="absa-field__icon" />
-                <input
-                  id="password"
-                  v-model="formData.password"
-                  :type="showPassword ? 'text' : 'password'"
-                  required
-                  class="absa-field__input"
-                  placeholder="••••••••••••"
-                />
-                <button type="button" class="absa-field__toggle" @click="showPassword = !showPassword">
-                  <Eye v-if="!showPassword" class="absa-field__toggle-icon" />
-                  <EyeOff v-else class="absa-field__toggle-icon" />
-                </button>
-              </div>
-              <p v-if="errors.password" class="absa-field__error">{{ errors.password }}</p>
-            </div>
-
-            <!-- Forgot Password -->
-            <div class="absa-login__forgot">
-              <router-link to="/forgot-password" class="absa-login__forgot-link">
-                Recover Password
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-              </router-link>
-            </div>
-
-            <!-- Submit -->
-            <button
-              type="submit"
-              :disabled="loading"
-              class="absa-btn absa-btn--primary absa-btn--block"
-            >
-              <Loader2 v-if="loading" class="absa-btn__spinner" />
-              {{ loading ? 'AUTHENTICATING...' : 'Initiate Session' }}
-              <svg v-if="!loading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-          </form>
-
-          <div class="absa-login__footer-link">
-            <p>New to the network?</p>
-            <router-link to="/terms-acceptance" class="absa-login__create-link">
-              Create Account
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Right: Brand Panel ── -->
-    <div class="absa-login__brand-panel">
-      <div class="absa-login__brand-bg">
-        <img
-          src="/logo_white.png"
-          alt="Logo Background"
-          class="absa-login__brand-watermark"
-        />
-        <div class="absa-login__brand-gradient-1"></div>
-        <div class="absa-login__brand-gradient-2"></div>
-        <div class="absa-login__brand-gradient-3"></div>
-        <div class="absa-login__brand-grid"></div>
+          <!-- Submit -->
+          <button
+            type="submit"
+            :disabled="loading"
+            class="login__submit"
+          >
+            <svg v-if="loading" class="login__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="2.5"/>
+              <path d="M12 2a10 10 0 0 1 10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <span>{{ loading ? 'Signing In...' : 'Sign In' }}</span>
+          </button>
+        </form>
       </div>
 
-      <div class="absa-login__brand-content">
-        <div class="absa-login__brand-accent-line">
-          <div class="absa-login__brand-status">
-            <span class="absa-login__brand-dot"></span>
-            NODE STATUS: ONLINE
-          </div>
-          <h2 class="absa-login__brand-title">
-            Predictive Customer<br />
-            <span class="absa-login__brand-title-highlight">Lifecycle Intelligence</span>
-          </h2>
-          <p class="absa-login__brand-quote">
-            "Transform customer retention from reactive outreach to proactive AI precision."
-          </p>
-        </div>
+      <!-- Security Warning -->
+      <p class="login__security">Unauthorised access is prohibited and monitored.</p>
+    </main>
 
-        <div class="absa-login__brand-features">
-          <div class="absa-login__brand-feature">
-            <div class="absa-login__brand-check">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>AI-Driven Retention</span>
-          </div>
-          <div class="absa-login__brand-feature">
-            <div class="absa-login__brand-check">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Real-Time Risk Scoring</span>
-          </div>
-          <div class="absa-login__brand-feature">
-            <div class="absa-login__brand-check">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span>Bank-Grade Security</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="absa-login__brand-footer">
-        <div>01001011 01010101 01001100 01000001</div>
-        <div>01010100 01000101 01000011 01001000</div>
-      </div>
-    </div>
   </div>
 </template>
 
-<script>
-// Keep existing script exactly as is, just wrapped in defineComponent
-import { defineComponent, reactive, ref, computed } from 'vue'
+<script setup>
+import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import router from '@/router'
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  LogIn,
-  Loader2
-} from 'lucide-vue-next'
-
-import axios from 'axios'
 import { login, API_BASE_URL } from '@/services/api'
-import { GoogleLogin } from 'vue3-google-login'
 import { decodeJWT } from '@/services/decodeJWT'
 
-export default defineComponent({
-  name: 'Login',
-  components: {
-    Mail,
-    Lock,
-    Eye,
-    EyeOff,
-    LogIn,
-    Loader2,
-    GoogleLogin
-  },
-  setup() {
-    const loading = ref(false)
-    const showPassword = ref(false)
-    const errorMessage = ref('')
-    const successMessage = ref('')
-    
-    // Check if user is trying to access a specific module
-    const hasIntendedRoute = computed(() => {
-      return !!localStorage.getItem('intended_route')
-    })
+const router = useRouter()
+const loading = ref(false)
+const showPassword = ref(false)
+const capsLockOn = ref(false)
+const errorMessage = ref('')
+const successMessage = ref('')
 
-    const formData = reactive({
-      email: '',
-      password: ''
-    })
-
-    const errors = reactive({
-      email: '',
-      password: ''
-    })
-
-    const handleGoogleError = (err) => {
-      console.error('Google Login Error:', err)
-      errorMessage.value = 'Google Login failed. Please try again or check your popup settings.'
-    }
-
-    const handleGoogleLogin = async (response) => {
-      loading.value = true
-      errorMessage.value = ''
-      successMessage.value = ''
-      
-      try {
-        console.log('Google response:', response)
-        
-        if (!response.credential) {
-          throw new Error('No credential received from Google')
-        }
-
-        const result = await axios.post(`${API_BASE_URL}/auth/google-signin`, {
-          id_token: response.credential 
-        })
-
-        const data = result.data
-        console.log('Backend response:', data)
-        
-        // Verify the token contains real user data (guard against backend accepting fake users)
-        const token = data.access_token
-        if (!token) throw new Error('No token received')
-
-        let claims
-        try {
-          claims = JSON.parse(atob(token.split('.')[1]))
-        } catch {
-          throw new Error('Invalid token format')
-        }
-
-        if (!claims.sub && !claims.user_id && !claims.username) {
-          throw new Error('Invalid credentials')
-        }
-
-        // Populate from JWT claims if response body doesn't include them
-        if (claims.role && !data.role) data.role = claims.role
-        if (claims.email && !data.email) data.email = claims.email
-        if (claims.sub && !data.user_id) data.user_id = claims.sub
-        if (claims.username && !data.name) data.name = claims.username
-        if (claims.company_name && !data.company_name) data.company_name = claims.company_name
-        if (claims.tenant_id && !data.tenant_id) data.tenant_id = claims.tenant_id
-
-        localStorage.setItem('token', data.access_token)
-        localStorage.setItem('user_id', data.user_id)
-        localStorage.setItem('email', data.email)
-        localStorage.setItem('userName', data.name)
-        localStorage.setItem('role', data.role)
-        localStorage.setItem('company_name', data.company_name)
-
-        if (data.role === 'sub_account') {
-          localStorage.setItem('active_subaccount_id', data.user_id)
-          localStorage.setItem('active_subaccount_email', data.email)
-          localStorage.setItem('active_subaccount_name', data.name)
-        }
-        
-        await fetchAndStoreBranches(data.tenant_id)
-        
-        successMessage.value = data.message || 'Login successful!'
-        
-        setTimeout(() => {
-          const intended = localStorage.getItem('intended_route')
-          if (intended) {
-            localStorage.removeItem('intended_route')
-            router.push(intended)
-            return
-          }
-          router.push('/dashboard/home')
-        }, 1000)
-
-      } catch (error) {
-        console.error('Google sign-in error:', error)
-        // Standardize error message to avoid exposing backend details
-        errorMessage.value = 'Google sign-in failed. Please try again.'
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const validateForm = () => {
-      let isValid = true
-      errors.email = ''
-      errors.password = ''
-
-      if (!formData.email.trim()) {
-        errors.email = 'Email or username is required'
-        isValid = false
-      }
-
-      if (!formData.password) {
-        errors.password = 'Password is required'
-        isValid = false
-      }
-
-      return isValid
-    }
-
-    const handleSubmit = async () => {
-      if (!validateForm()) return
-
-      loading.value = true
-      errorMessage.value = ''
-      successMessage.value = ''
-
-      try {
-        // POST /auth/login — API Gateway expects { username, password }
-        const response = await login(formData.email, formData.password)
-
-        // Verify the token contains real user data (guard against backend accepting fake users)
-        const token = response.access_token || localStorage.getItem('token')
-        if (!token) throw new Error('No token received')
-
-        let claims
-        try {
-          claims = JSON.parse(atob(token.split('.')[1]))
-        } catch {
-          throw new Error('Invalid token format')
-        }
-
-        if (!claims.sub && !claims.user_id && !claims.username) {
-          // Token lacks identity claims — backend issued a phantom token
-          localStorage.removeItem('token')
-          localStorage.removeItem('refresh_token')
-          throw new Error('Invalid credentials')
-        }
-
-        // Populate localStorage from JWT claims if response body doesn't include them
-        if (claims.role && !response.role) response.role = claims.role
-        if (claims.email && !response.email) response.email = claims.email
-        if (claims.sub && !response.user_id) response.user_id = claims.sub
-        if (claims.username && !response.name) response.name = claims.username
-        if (claims.company_name && !response.company_name) response.company_name = claims.company_name
-        if (claims.tenant_id && !response.tenant_id) response.tenant_id = claims.tenant_id
-
-        // Standard response: { access_token, refresh_token, token_type, expires_in }
-        // The login() function in services/api.js already stores token + refresh_token
-        // Additional user metadata from the JWT or extended response:
-        if (response.user_id) localStorage.setItem('user_id', response.user_id)
-        if (response.role) localStorage.setItem('role', response.role)
-        if (response.email) localStorage.setItem('email', response.email)
-        if (response.company_name) localStorage.setItem('company_name', response.company_name)
-        if (response.tenant_id) localStorage.setItem('tenant_id', response.tenant_id)
-        if (response.name) localStorage.setItem('userName', response.name)
-        
-        if (response.role === 'sub_account') {
-          localStorage.setItem('active_subaccount_id', response.user_id)
-          localStorage.setItem('active_subaccount_email', response.email)
-          localStorage.setItem('active_subaccount_name', response.name)
-        }
-
-        if (response.tenant_id) {
-          await fetchAndStoreBranches(response.tenant_id)
-        }
-
-        successMessage.value = 'Login successful!'
-
-        setTimeout(() => {
-          const intended = localStorage.getItem('intended_route')
-          if (intended) {
-            localStorage.removeItem('intended_route')
-            router.push(intended)
-            return
-          }
-          router.push('/dashboard/home')
-        }, 1000)
-
-      } catch (error) {
-        console.error('Login error:', error)
-        // Standardize error message for security and clarity
-        errorMessage.value = 'Login failed. Invalid credentials.'
-        errors.password = 'Invalid credentials'
-      } finally {
-        loading.value = false
-      }
-    }
-
-    const fetchAndStoreBranches = async (tenantId) => {
-      const { setBranches } = decodeJWT()
-      try {
-        const res = await fetch(`${API_BASE_URL}/subaccounts/branches/list?tenant_id=${tenantId}`)
-        if (res.ok) {
-          const data = await res.json()
-          const branchList = Array.isArray(data) ? data : []
-          setBranches(branchList)
-          console.log('Branches loaded:', branchList.length)
-        }
-      } catch (e) {
-        console.warn('Failed to fetch branches during login:', e)
-        setBranches([])
-      }
-    }
-
-    return {
-      formData,
-      errors,
-      loading,
-      showPassword,
-      errorMessage,
-      successMessage,
-      hasIntendedRoute,
-      handleSubmit,
-      handleGoogleLogin,
-      handleGoogleError
-    }
-  }
+const formData = reactive({
+  email: '',
+  password: ''
 })
+
+const errors = reactive({
+  email: '',
+  password: ''
+})
+
+// ── Caps Lock Detection ──
+const checkCapsLock = (e) => {
+  capsLockOn.value = e.getModifierState('CapsLock')
+}
+
+// ── Form Validation ──
+const validateForm = () => {
+  let isValid = true
+  errors.email = ''
+  errors.password = ''
+
+  if (!formData.email.trim()) {
+    errors.email = 'Email or username is required'
+    isValid = false
+  }
+
+  if (!formData.password) {
+    errors.password = 'Password is required'
+    isValid = false
+  }
+
+  return isValid
+}
+
+// ── Form Submit ──
+const handleSubmit = async () => {
+  if (!validateForm()) return
+
+  loading.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+
+  try {
+    const response = await login(formData.email, formData.password)
+    const token = response.access_token || localStorage.getItem('token')
+    if (!token) throw new Error('No token received')
+
+    let claims
+    try {
+      claims = JSON.parse(atob(token.split('.')[1]))
+    } catch {
+      throw new Error('Invalid token format')
+    }
+
+    if (!claims.sub && !claims.user_id && !claims.username) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('refresh_token')
+      throw new Error('Invalid credentials')
+    }
+
+    if (claims.role && !response.role) response.role = claims.role
+    if (claims.email && !response.email) response.email = claims.email
+    if (claims.sub && !response.user_id) response.user_id = claims.sub
+    if (claims.username && !response.name) response.name = claims.username
+    if (claims.company_name && !response.company_name) response.company_name = claims.company_name
+    if (claims.tenant_id && !response.tenant_id) response.tenant_id = claims.tenant_id
+
+    if (response.user_id) localStorage.setItem('user_id', response.user_id)
+    if (response.role) localStorage.setItem('role', response.role)
+    if (response.email) localStorage.setItem('email', response.email)
+    if (response.company_name) localStorage.setItem('company_name', response.company_name)
+    if (response.tenant_id) localStorage.setItem('tenant_id', response.tenant_id)
+    if (response.name) localStorage.setItem('userName', response.name)
+
+    if (response.role === 'sub_account') {
+      localStorage.setItem('active_subaccount_id', response.user_id)
+      localStorage.setItem('active_subaccount_email', response.email)
+      localStorage.setItem('active_subaccount_name', response.name)
+    }
+
+    if (response.tenant_id) {
+      await fetchAndStoreBranches(response.tenant_id)
+    }
+
+    successMessage.value = 'Login successful!'
+
+    setTimeout(() => {
+      const intended = localStorage.getItem('intended_route')
+      if (intended) {
+        localStorage.removeItem('intended_route')
+        router.push(intended)
+        return
+      }
+      router.push('/dashboard/home')
+    }, 1000)
+  } catch (error) {
+    console.error('Login error:', error)
+    errorMessage.value = 'Invalid username or password. Please verify your Active Directory credentials or contact IT Support.'
+    errors.password = 'Invalid credentials'
+  } finally {
+    loading.value = false
+  }
+}
+
+// ── Branches ──
+const fetchAndStoreBranches = async (tenantId) => {
+  const { setBranches } = decodeJWT()
+  try {
+    const res = await fetch(`${API_BASE_URL}/subaccounts/branches/list?tenant_id=${tenantId}`)
+    if (res.ok) {
+      const data = await res.json()
+      const branchList = Array.isArray(data) ? data : []
+      setBranches(branchList)
+    }
+  } catch (e) {
+    console.warn('Failed to fetch branches during login:', e)
+    setBranches([])
+  }
+}
 </script>
 
 <style scoped>
-/* ════════════════════════════════════════════════════════
-   ABSA Login Page — Maroon Design System
-   References: absa-colors.css, patterns.css, pages.css
-   ════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   Absa Enterprise Core V3 — Login Page
+   Token reference (from spec):
+     surface:        #fff8f7    surface-container-low: #faf2f1
+     surface-container-highest: #e9e1e0
+     surface-container-lowest:  #ffffff
+     on-surface:     #1e1b1b    on-surface-variant: #5d3f3f
+     outline:        #926e6e    outline-variant: #e7bcbc
+     primary:        #ae0029    primary-container: #dc0037 (Passion)
+     secondary:      #b90734    (Power)
+     error:          #ba1a1a    on-error: #ffffff
+     inverse-surface:#332f2f    inverse-on-surface: #f7efee
+   ═══════════════════════════════════════════════════════ */
 
-/* ── Root Layout ── */
-.absa-login {
+.login {
+  --_bg:      #fff8f7;
+  --_scl:     #faf2f1;   /* surface-container-low */
+  --_sch:     #e9e1e0;   /* surface-container-highest */
+  --_sc:      #ffffff;   /* surface-container-lowest (card bg) */
+  --_pri:     #ae0029;   /* primary */
+  --_pric:    #dc0037;   /* primary-container (Passion) */
+  --_sec:     #b90734;   /* secondary (Power) */
+  --_ons:     #1e1b1b;   /* on-surface (Enrich) */
+  --_onsv:    #5d3f3f;   /* on-surface-variant */
+  --_out:     #926e6e;   /* outline */
+  --_outv:    #e7bcbc;   /* outline-variant */
+  --_err:     #ba1a1a;   /* error */
+  --_onerr:   #ffffff;   /* on-error */
+  --_invsf:   #332f2f;   /* inverse-surface */
+  --_invons:  #f7efee;   /* inverse-on-surface */
+  --_font:    'Source Sans 3', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --_sp-xs:   4px;
+  --_sp-sm:   8px;
+  --_sp-md:   16px;
+  --_sp-lg:   24px;
+  --_sp-xl:   32px;
+  --_sp-2xl:  40px;
+  --_r-sm:    4px;
+  --_r-md:    8px;
+  --_r-lg:    12px;
+
+  position: relative;
   min-height: 100vh;
   display: flex;
-  font-family: var(--absa-font-main, 'Montserrat', 'Inter', system-ui, sans-serif);
-  background: var(--absa-white, #FFFFFF);
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--_font);
+  color: var(--_ons);
   overflow: hidden;
 }
 
-/* ── Left: Form Panel ── */
-.absa-login__form-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 10;
-  background: var(--absa-white, #FFFFFF);
-  border-right: 1px solid var(--absa-border-light, #E8E8EC);
-}
-
-.absa-login__form-panel::before {
-  content: '';
+/* ── Background Gradient ── */
+.login__bg {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: radial-gradient(var(--absa-maroon, #BE0F2C) 1px, transparent 1px);
-  background-size: 24px 24px;
+  z-index: 0;
+  background: linear-gradient(to bottom right, var(--_scl), var(--_sch));
 }
 
-.absa-login__form-inner {
+/* ── Grid Pattern ── */
+.login__pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(30,27,27,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,27,27,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Canvas ── */
+.login__canvas {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 420px;
-  padding: 32px 24px;
+  max-width: 480px;
+  padding: var(--_sp-lg);
 }
 
 /* ── Header ── */
-.absa-login__header {
+.login__header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: var(--_sp-2xl);
+  width: 100%;
 }
 
-.absa-pill-badge--login {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--absa-maroon-soft, #FDE8EC);
-  color: var(--absa-maroon, #BE0F2C);
-  font-size: 0.675rem;
-  font-weight: 800;
-  padding: 4px 14px;
-  border-radius: 20px;
-  margin-bottom: 18px;
-  letter-spacing: 0.04em;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-}
-
-.absa-login__logo-link {
-  display: block;
-  margin-bottom: 18px;
-}
-
-.absa-login__logo {
-  height: 44px;
-  margin: 0 auto;
-  object-fit: contain;
-  transition: transform 0.2s ease;
-}
-
-.absa-login__logo-link:hover .absa-login__logo {
-  transform: scale(1.05);
-}
-
-.absa-login__title {
-  font-size: 1.75rem;
-  font-weight: 900;
-  color: var(--absa-text-primary, #111827);
-  margin: 0 0 6px 0;
-  letter-spacing: -0.02em;
-}
-
-.absa-login__title-accent {
-  color: var(--absa-maroon, #BE0F2C);
-}
-
-.absa-login__subtitle {
-  font-size: 0.825rem;
-  color: var(--absa-text-muted, #9CA3AF);
-  margin: 0;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-}
-
-/* ── Form Card ── */
-.absa-login__form-card {
-  background: var(--absa-surface-card, #FFFFFF);
-  border: var(--absa-border-card, 1px solid #E8E8EC);
-  border-radius: var(--absa-radius-card, 12px);
-  padding: 28px;
-  box-shadow: var(--absa-shadow-card, 0 2px 8px rgba(0,0,0,0.06));
-}
-
-/* ── Google Button ── */
-.absa-login__google-btn {
+.login__logo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 22px;
+  margin-bottom: var(--_sp-lg);
 }
 
-.absa-login__google-btn :deep(> div) {
-  display: flex !important;
-  justify-content: center !important;
-  width: 100% !important;
+.login__logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 1px 3px rgba(30,27,27,0.08);
 }
 
-.absa-login__google-btn :deep(iframe) {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* ── Divider ── */
-.absa-login__divider {
-  position: relative;
-  text-align: center;
-  margin-bottom: 22px;
-}
-
-.absa-login__divider::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 1px;
-  background: var(--absa-border-light, #E8E8EC);
-}
-
-.absa-login__divider-text {
-  position: relative;
-  display: inline-block;
-  padding: 0 14px;
-  background: var(--absa-surface-card, #FFFFFF);
-  color: var(--absa-text-muted, #9CA3AF);
-  font-size: 0.7rem;
+/* headline-lg-mobile / headline-lg */
+.login__title {
+  font-family: var(--_font);
+  font-size: 28px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  line-height: 36px;
+  color: var(--_ons);
+  margin: 0 0 var(--_sp-xs);
+  letter-spacing: -0.01em;
+}
+@media (min-width: 768px) {
+  .login__title {
+    font-size: 32px;
+    line-height: 40px;
+  }
 }
 
-/* ── Alerts ── */
-.absa-alert {
-  padding: 12px 14px;
-  font-size: 0.775rem;
+/* body-lg */
+.login__subtitle {
+  font-family: var(--_font);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--_onsv);
+  margin: 0 0 var(--_sp-xs);
+}
+
+/* label-md */
+.login__overline {
+  font-family: var(--_font);
+  font-size: 14px;
   font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: var(--_onsv);
+}
+
+/* ── Card ── */
+.login__card {
+  width: 100%;
+  background: var(--_scl);              /* surface-container-low */
+  border: 1px solid rgba(231,188,188,0.3);
+  border-radius: var(--_r-lg);          /* 12px */
+  box-shadow: 0px 4px 20px rgba(30,27,27,0.05);
+  padding: var(--_sp-xl);
+  margin-bottom: var(--_sp-lg);
+}
+
+/* ── Error Banner ── */
+.login__error-banner {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 18px;
-  border-radius: var(--absa-radius-sm, 6px);
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+  gap: var(--_sp-sm);
+  background: var(--_err);
+  border-left: 4px solid #ffffff;
+  padding: 10px;
+  border-radius: 0 var(--_r-sm) var(--_r-sm) 0;
+  margin-bottom: var(--_sp-lg);
 }
 
-.absa-alert--error {
-  background: var(--absa-critical-soft, #FEE2E2);
-  color: var(--absa-critical, #DC2626);
-  border-left: 3px solid var(--absa-critical, #DC2626);
+.login__error-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.absa-alert--success {
-  background: var(--absa-success-soft, #DCFCE7);
-  color: var(--absa-success, #16A34A);
-  border-left: 3px solid var(--absa-success, #16A34A);
-}
-
-.absa-alert--info {
-  background: var(--absa-info-soft, #DBEAFE);
-  color: var(--absa-info, #2563EB);
-  border-left: 3px solid var(--absa-info, #2563EB);
-}
-
-.absa-alert__title {
-  font-weight: 800;
-  margin: 0 0 2px 0;
-  font-size: 0.75rem;
-}
-
-.absa-alert__desc {
+.login__error-text {
+  font-family: var(--_font);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--_onerr);
   margin: 0;
-  opacity: 0.85;
-  font-size: 0.7rem;
 }
 
-/* ── Form Fields ── */
-.absa-login__form {
+/* ── Success Banner ── */
+.login__success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_sp-sm);
+  background: #0f9d58;
+  border-radius: var(--_r-sm);
+  padding: 10px;
+  margin-bottom: var(--_sp-lg);
+}
+
+.login__success-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.login__success-text {
+  font-family: var(--_font);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ── Form ── */
+.login__form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--_sp-lg);
 }
 
-.absa-field__label {
-  display: block;
-  font-size: 0.675rem;
-  font-weight: 800;
-  color: var(--absa-text-secondary, #4B5563);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-}
-
-.absa-field__input-wrap {
+/* ── Field ── */
+.login__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_sp-sm);
   position: relative;
 }
 
-.absa-field__icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  color: var(--absa-text-muted, #9CA3AF);
-  pointer-events: none;
-  transition: color 0.15s;
+/* label-md */
+.login__label {
+  font-family: var(--_font);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: var(--_ons);
 }
 
-.absa-field__input-wrap:focus-within .absa-field__icon {
-  color: var(--absa-maroon, #BE0F2C);
-}
-
-.absa-field__input {
+/* Input — 1px Enrich 20% border, 4px radius */
+.login__input {
   width: 100%;
-  padding: 11px 12px 11px 38px;
-  background: var(--absa-surface-page, #F8F8FA);
-  border: var(--absa-border-input, 1px solid #D9D9DF);
-  font-size: 0.8rem;
-  color: var(--absa-text-primary, #111827);
+  height: 42px;
+  padding: 0 12px;
+  font-family: var(--_font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--_ons);
+  background: #ffffff;
+  border: 1px solid rgba(30,27,27,0.2);
+  border-radius: var(--_r-sm);
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  border-radius: var(--absa-radius-sm, 6px);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.absa-field__input::placeholder {
-  color: var(--absa-text-muted, #9CA3AF);
+.login__input::placeholder {
+  color: var(--_out);
+  opacity: 0.7;
 }
 
-.absa-field__input:focus {
-  border-color: var(--absa-maroon, #BE0F2C);
-  box-shadow: var(--absa-ring-focus, 0 0 0 3px rgba(190, 15, 44, 0.25));
-  background: var(--absa-white, #FFFFFF);
+.login__input:focus {
+  border-color: var(--_pric);
+  border-width: 2px;
+  padding: 0 11px;                      /* compensate for 2px border */
+  box-shadow: 0 0 0 1px var(--_pric);
 }
 
-.absa-field--error .absa-field__input {
-  border-color: var(--absa-critical, #DC2626);
-  background: var(--absa-critical-soft, #FEE2E2);
+.login__input--error {
+  border-color: var(--_err);
 }
 
-.absa-field__error {
-  margin: 4px 0 0 0;
-  font-size: 0.675rem;
-  color: var(--absa-critical, #DC2626);
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
+.login__input--error:focus {
+  border-color: var(--_err);
+  box-shadow: 0 0 0 1px var(--_err);
 }
 
-/* ── Password Toggle ── */
-.absa-field__toggle {
+/* ── Password wrapper ── */
+.login__password-wrap {
+  position: relative;
+}
+
+.login__password-wrap .login__input {
+  padding-right: 42px;
+}
+
+.login__password-wrap .login__input:focus {
+  padding-right: 41px;
+}
+
+/* Toggle visibility — secondary (Power) color */
+.login__toggle-vis {
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  inset: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  color: var(--_sec);
+  transition: color 0.15s ease;
+}
+
+.login__toggle-vis:hover {
+  color: var(--_pri);
+}
+
+.login__toggle-icon {
+  display: block;
+}
+
+/* ── Caps Lock Warning ── */
+.login__caps-warn {
   display: flex;
   align-items: center;
-}
-
-.absa-field__toggle-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--absa-text-muted, #9CA3AF);
-  transition: color 0.15s;
-}
-
-.absa-field__toggle:hover .absa-field__toggle-icon {
-  color: var(--absa-maroon, #BE0F2C);
-}
-
-/* ── Forgot Password ── */
-.absa-login__forgot {
-  text-align: right;
-}
-
-.absa-login__forgot-link {
-  display: inline-flex;
-  align-items: center;
   gap: 4px;
-  font-size: 0.725rem;
-  font-weight: 700;
-  color: var(--absa-text-secondary, #4B5563);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  transition: color 0.15s;
+  font-family: var(--_font);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--_err);
+  margin: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
 }
 
-.absa-login__forgot-link:hover {
-  color: var(--absa-maroon, #BE0F2C);
+/* ── Field Error ── */
+.login__field-error {
+  font-family: var(--_font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--_err);
+  margin: -4px 0 0;
 }
 
-/* ── Buttons ── */
-.absa-btn {
-  display: inline-flex;
+/* ── Submit Button (Primary: Passion bg, Serene text, 4px radius) ── */
+.login__submit {
+  width: 100%;
+  height: 48px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  padding: 12px 24px;
+  gap: var(--_sp-sm);
+  background: var(--_pric);
+  color: #ffffff;
+  font-family: var(--_font);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.01em;
   border: none;
-  border-radius: var(--absa-radius-sm, 6px);
+  border-radius: var(--_r-sm);
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
-  font-family: var(--absa-font-main, 'Montserrat', system-ui, sans-serif);
-  letter-spacing: 0.02em;
-  text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
-.absa-btn--primary {
-  background: var(--absa-maroon-gradient, linear-gradient(135deg, #BE0F2C 0%, #8B0015 100%));
-  color: var(--absa-text-inverse, #FFFFFF);
-  box-shadow: 0 4px 14px rgba(190, 15, 44, 0.3);
+.login__submit:hover {
+  background: var(--_sec);              /* Passion → Power */
 }
 
-.absa-btn--primary:hover {
-  background: var(--absa-maroon-deep, #8B0015);
+.login__submit:focus-visible {
+  outline: 2px solid var(--_pric);
+  outline-offset: 2px;
 }
 
-.absa-btn--primary:active {
-  transform: scale(0.98);
-}
-
-.absa-btn--primary:disabled {
-  opacity: 0.7;
+.login__submit:disabled {
+  opacity: 0.9;
   cursor: not-allowed;
 }
 
-.absa-btn--block {
-  width: 100%;
+.login__spinner {
+  animation: loginSpin 1s linear infinite;
 }
 
-.absa-btn__spinner {
-  animation: absa-spin 0.8s linear infinite;
-  width: 16px;
-  height: 16px;
-}
-
-@keyframes absa-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Footer Link ── */
-.absa-login__footer-link {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--absa-border-light, #E8E8EC);
+/* ── Security Warning ── */
+.login__security {
   text-align: center;
-}
-
-.absa-login__footer-link p {
-  font-size: 0.8rem;
-  color: var(--absa-text-secondary, #4B5563);
-  margin: 0 0 8px 0;
-}
-
-.absa-login__create-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: var(--absa-maroon, #BE0F2C);
-  text-decoration: none;
-  text-transform: uppercase;
-  padding: 8px 18px;
-  border: 1px solid var(--absa-maroon, #BE0F2C);
-  border-radius: var(--absa-radius-sm, 6px);
-  transition: background 0.15s, color 0.15s;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  letter-spacing: 0.04em;
-}
-
-.absa-login__create-link:hover {
-  background: var(--absa-maroon, #BE0F2C);
-  color: var(--absa-text-inverse, #FFFFFF);
-}
-
-/* ════════════════════════════════════════════════════════
-   Right: Brand Panel
-   ════════════════════════════════════════════════════════ */
-
-.absa-login__brand-panel {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .absa-login__brand-panel {
-    display: flex;
-    align-items: center;
-  }
-}
-
-/* ── Brand Background ── */
-.absa-login__brand-bg {
-  position: absolute;
-  inset: 0;
-  background: var(--absa-maroon-deep, #8B0015);
-}
-
-.absa-login__brand-watermark {
-  position: absolute;
-  inset: 0;
-  width: 120%;
-  max-width: none;
-  opacity: 0.08;
-  filter: blur(2px);
-  transform: translateX(20%);
-  mix-blend-mode: overlay;
-  object-fit: contain;
-}
-
-.absa-login__brand-gradient-1 {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 30%, rgba(190, 15, 44, 0.5) 0%, transparent 50%);
-}
-
-.absa-login__brand-gradient-2 {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 80% 70%, rgba(190, 15, 44, 0.35) 0%, transparent 50%);
-}
-
-.absa-login__brand-gradient-3 {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #8B0015 0%, rgba(190, 15, 44, 0.25) 50%, #8B0015 100%);
-}
-
-.absa-login__brand-grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.1;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-/* ── Brand Content ── */
-.absa-login__brand-content {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  padding: 0 64px;
-}
-
-.absa-login__brand-accent-line {
-  border-left: 4px solid var(--absa-maroon, #BE0F2C);
-  padding-left: 32px;
-  margin-bottom: 40px;
-}
-
-.absa-login__brand-status {
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  font-size: 0.675rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.absa-login__brand-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--absa-success, #16A34A);
-}
-
-.absa-login__brand-title {
-  font-size: 2.75rem;
-  font-weight: 900;
-  color: var(--absa-text-inverse, #FFFFFF);
-  margin: 0 0 20px 0;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.absa-login__brand-title-highlight {
-  background: linear-gradient(135deg, var(--absa-maroon-light, #E84D5B), var(--absa-white, #FFFFFF));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.absa-login__brand-quote {
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.55);
-  line-height: 1.6;
-  font-style: italic;
-  font-weight: 300;
-  max-width: 420px;
-  margin: 0;
-}
-
-/* ── Brand Features ── */
-.absa-login__brand-features {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-left: 36px;
-}
-
-.absa-login__brand-feature {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  font-size: 0.8rem;
+  font-family: var(--_font);
+  font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.15s;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: var(--_onsv);
+  margin: 0;
+  padding: 0 var(--_sp-md);
 }
 
-.absa-login__brand-feature:hover {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.absa-login__brand-check {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--absa-radius-sm, 6px);
-  background: rgba(190, 15, 44, 0.35);
-  border: 1px solid rgba(190, 15, 44, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--absa-white, #FFFFFF);
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
-
-.absa-login__brand-feature:hover .absa-login__brand-check {
-  background: var(--absa-maroon, #BE0F2C);
-}
-
-/* ── Brand Footer (Binary decoration) ── */
-.absa-login__brand-footer {
-  position: absolute;
-  bottom: 28px;
-  right: 28px;
-  font-family: var(--absa-font-mono, 'Space Mono', monospace);
-  font-size: 0.575rem;
-  color: rgba(190, 15, 44, 0.18);
-  text-align: right;
-  pointer-events: none;
-  user-select: none;
-  z-index: 10;
-}
-
-/* ── Responsive ── */
-@media (max-width: 1023px) {
-  .absa-login__form-panel {
-    border-right: none;
-  }
-
-  .absa-login__form-inner {
-    padding: 24px 20px;
-  }
-
-  .absa-login__brand-panel {
-    display: none;
-  }
+/* ═══ Animations ═══ */
+@keyframes loginSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 </style>

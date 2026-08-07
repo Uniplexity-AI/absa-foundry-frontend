@@ -5,8 +5,8 @@ import router from '@/router';
 // Ensure HTTPS for production to avoid mixed content issues
 const RAW_API_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  (window.location.hostname === 'localhost'
-    ? 'http://100.82.12.85:8080'
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8080'
     : 'https://ub-app-backend-692487163735.europe-west1.run.app');
 
 

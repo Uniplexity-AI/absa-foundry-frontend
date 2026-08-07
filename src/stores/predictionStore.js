@@ -1,13 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import axios from 'axios'
+import { API_BASE_URL } from '@/services/api'
 
-const API_BASE = 'http://100.82.12.85'
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 5000 })
 
-function fetchWithTimeout(url, options = {}, timeoutMs = 5000) {
-  const ctrl = new AbortController()
-  const t = setTimeout(() => ctrl.abort(), timeoutMs)
-  return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(t))
-}
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+
+const DEFAULT_AS_OF_DATE = '2026-07-27'
 
 // ── Store ───────────────────────────────────────────────────────
 export const usePredictionStore = defineStore('prediction', () => {
@@ -23,16 +27,13 @@ export const usePredictionStore = defineStore('prediction', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/predictions/${customerId}/churn`)
-      if (res.ok) {
-        const data = await res.json()
-        predictions.value = { ...predictions.value, [customerId]: data.probability ?? data.churnProbability ?? data }
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const { data } = await api.get(`/api/v1/predictions/${customerId}/churn`, {
+        params: { as_of_date: DEFAULT_AS_OF_DATE },
+      })
+      predictions.value = { ...predictions.value, [customerId]: data.churn_probability ?? data.probability ?? data }
     } catch (e) {
       console.warn('fetchChurnProbability failed:', e.message)
-      error.value = e.message || 'Failed to load churn probability'
+      error.value = e.response?.data?.detail || e.message || 'Failed to load churn probability'
     } finally {
       loading.value = false
     }
@@ -42,16 +43,13 @@ export const usePredictionStore = defineStore('prediction', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/predictions/${customerId}/health`)
-      if (res.ok) {
-        const data = await res.json()
-        healthScores.value = { ...healthScores.value, [customerId]: data }
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const { data } = await api.get(`/api/v1/predictions/${customerId}/health`, {
+        params: { as_of_date: DEFAULT_AS_OF_DATE },
+      })
+      healthScores.value = { ...healthScores.value, [customerId]: data }
     } catch (e) {
       console.warn('fetchHealthScore failed:', e.message)
-      error.value = e.message || 'Failed to load health score'
+      error.value = e.response?.data?.detail || e.message || 'Failed to load health score'
     } finally {
       loading.value = false
     }
@@ -61,15 +59,13 @@ export const usePredictionStore = defineStore('prediction', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/predictions/markov-matrix`)
-      if (res.ok) {
-        markovMatrix.value = await res.json()
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const { data } = await api.get('/api/v1/predictions/markov-matrix', {
+        params: { as_of_date: DEFAULT_AS_OF_DATE },
+      })
+      markovMatrix.value = data
     } catch (e) {
       console.warn('fetchMarkovMatrix failed:', e.message)
-      error.value = e.message || 'Failed to load Markov matrix'
+      error.value = e.response?.data?.detail || e.message || 'Failed to load Markov matrix'
       markovMatrix.value = null
     } finally {
       loading.value = false

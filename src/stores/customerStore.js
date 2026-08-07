@@ -1,13 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import axios from 'axios'
+import { API_BASE_URL } from '@/services/api'
 
-const API_BASE = 'http://100.82.12.85'
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 5000 })
 
-function fetchWithTimeout(url, options = {}, timeoutMs = 5000) {
-  const ctrl = new AbortController()
-  const t = setTimeout(() => ctrl.abort(), timeoutMs)
-  return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(t))
-}
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+
+const DEFAULT_AS_OF_DATE = '2026-07-27'
 
 // ── Store ───────────────────────────────────────────────────────
 export const useCustomerStore = defineStore('customer', () => {
@@ -20,27 +24,28 @@ export const useCustomerStore = defineStore('customer', () => {
   const error = ref(null)
   const timeline = ref([])
 
+  // Raw portfolio summary from API (aggregate counts)
+  const _portfolioSummary = ref({ total_customers: 0, by_state: {} })
+
   // ── Computed ──
   const portfolio = computed(() => {
-    if (customers.value.length === 0) {
-      return { total: 0, active: 0, activePct: 0, atRisk: 0, atRiskPct: 0, dormant: 0, dormantPct: 0, churned: 0, churnedPct: 0, actionsDue: 0 }
-    }
-    const total = customers.value.length
-    const active = customers.value.filter((c) => c.state === 'ACTIVE').length
-    const atRisk = customers.value.filter((c) => c.state === 'AT_RISK').length
-    const dormant = customers.value.filter((c) => c.state === 'DORMANT').length
-    const churned = customers.value.filter((c) => c.state === 'CHURNED').length
+    const ps = _portfolioSummary.value
+    const byState = ps.by_state || {}
+    const active = byState.ACTIVE || { count: 0, pct: 0 }
+    const atRisk = byState.AT_RISK || { count: 0, pct: 0 }
+    const dormant = byState.DORMANT || { count: 0, pct: 0 }
+    const churned = byState.CHURNED || { count: 0, pct: 0 }
     return {
-      total,
-      active,
-      activePct: total ? Math.round((active / total) * 1000) / 10 : 0,
-      atRisk,
-      atRiskPct: total ? Math.round((atRisk / total) * 1000) / 10 : 0,
-      dormant,
-      dormantPct: total ? Math.round((dormant / total) * 1000) / 10 : 0,
-      churned,
-      churnedPct: total ? Math.round((churned / total) * 1000) / 10 : 0,
-      actionsDue: atRisk + dormant, // simple heuristic
+      total: ps.total_customers || 0,
+      active: active.count,
+      activePct: active.pct,
+      atRisk: atRisk.count,
+      atRiskPct: atRisk.pct,
+      dormant: dormant.count,
+      dormantPct: dormant.pct,
+      churned: churned.count,
+      churnedPct: churned.pct,
+      actionsDue: atRisk.count + dormant.count,
     }
   })
 
@@ -53,37 +58,54 @@ export const useCustomerStore = defineStore('customer', () => {
       const q = filters.value.search.toLowerCase()
       list = list.filter(
         (c) =>
-          c.fullName?.toLowerCase().includes(q) ||
           c.customerId?.toLowerCase().includes(q) ||
-          c.accountNumber?.toLowerCase().includes(q),
+          c.fullName?.toLowerCase().includes(q),
       )
-    }
-    if (filters.value.branch) {
-      list = list.filter((c) => c.branch === filters.value.branch)
     }
     pagination.value.total = list.length
     const start = (pagination.value.page - 1) * pagination.value.limit
     return list.slice(start, start + pagination.value.limit)
   })
 
+  // ── Helpers ──
+  function _mapCustomer(raw) {
+    const id = raw.customer_id
+    return {
+      customerId: id,
+      fullName: `Customer ${id.replace('CUST', '')}`,
+      state: raw.state,
+      healthScore: raw.health_score,
+      churnProbability: raw.churn_probability ?? null,
+      clv: raw.clv ?? null,
+      branch: raw.branch_code ?? null,
+      segment: raw.segment ?? null,
+      previousState: raw.previous_state,
+      isTransition: raw.is_transition,
+      computedAt: raw.computed_at,
+      _raw: raw,
+    }
+  }
+
   // ── Actions ──
   async function fetchPortfolio(params = {}) {
     loading.value = true
     error.value = null
+    const dateParams = { as_of_date: params.as_of_date || DEFAULT_AS_OF_DATE }
+
     try {
-      const qs = new URLSearchParams(params).toString()
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/customers/portfolio?${qs}`)
-      if (res.ok) {
-        const data = await res.json()
-        customers.value = data.customers || []
-        pagination.value.total = data.total || customers.value.length
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const [portfolioRes, listRes] = await Promise.all([
+        api.get('/api/v1/customers/portfolio', { params: dateParams }),
+        api.get('/api/v1/customers', { params: { ...dateParams, limit: 500, offset: 0 } }),
+      ])
+
+      _portfolioSummary.value = portfolioRes.data
+      customers.value = (listRes.data || []).map(_mapCustomer)
+      pagination.value.total = customers.value.length
     } catch (e) {
       console.warn('fetchPortfolio failed:', e.message)
-      error.value = e.message || 'Failed to load portfolio data'
+      error.value = e.response?.data?.detail || e.message || 'Failed to load portfolio data'
       customers.value = []
+      _portfolioSummary.value = { total_customers: 0, by_state: {} }
       pagination.value.total = 0
     } finally {
       loading.value = false
@@ -94,15 +116,13 @@ export const useCustomerStore = defineStore('customer', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/customers/${id}`)
-      if (res.ok) {
-        selectedCustomer.value = await res.json()
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const { data } = await api.get(`/api/v1/customers/${id}`, {
+        params: { as_of_date: DEFAULT_AS_OF_DATE },
+      })
+      selectedCustomer.value = _mapCustomer(data)
     } catch (e) {
       console.warn('fetchCustomerDetail failed:', e.message)
-      error.value = e.message || 'Failed to load customer data'
+      error.value = e.response?.data?.detail || e.message || 'Failed to load customer data'
       selectedCustomer.value = null
     } finally {
       loading.value = false
@@ -112,12 +132,8 @@ export const useCustomerStore = defineStore('customer', () => {
   async function fetchCustomerTimeline(id) {
     error.value = null
     try {
-      const res = await fetchWithTimeout(`${API_BASE}/api/v1/customers/${id}/timeline`)
-      if (res.ok) {
-        timeline.value = await res.json()
-      } else {
-        throw new Error(`HTTP ${res.status}`)
-      }
+      const { data } = await api.get(`/api/v1/customers/${id}/timeline`)
+      timeline.value = data?.timeline || data || []
     } catch (e) {
       console.warn('fetchCustomerTimeline failed:', e.message)
       error.value = e.message || 'Failed to load timeline'

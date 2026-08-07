@@ -41,8 +41,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
         </div>
         <div class="absa-etl__health-label">PostgreSQL Cluster</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">--</div>
-        <div class="absa-etl__health-stat">Connect to backend</div>
+        <div class="absa-etl__health-value absa-etl__health-value--green">{{ pgStatus }}</div>
+        <div class="absa-etl__health-stat">Avg Duration: {{ pgLatency }}</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__health-card">
@@ -53,8 +53,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
         </div>
         <div class="absa-etl__health-label">Redis Cache</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">--</div>
-        <div class="absa-etl__health-stat">Connect to backend</div>
+        <div class="absa-etl__health-value absa-etl__health-value--green">{{ redisStatus }}</div>
+        <div class="absa-etl__health-stat">Memory: {{ redisMemory }}</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__health-card">
@@ -65,8 +65,8 @@
           <span class="absa-etl__health-dot absa-etl__health-dot--amber"></span>
         </div>
         <div class="absa-etl__health-label">API Gateway</div>
-        <div class="absa-etl__health-value absa-etl__health-value--amber">--</div>
-        <div class="absa-etl__health-stat">Connect to backend</div>
+        <div class="absa-etl__health-value absa-etl__health-value--amber">{{ gatewayStatus }}</div>
+        <div class="absa-etl__health-stat">Uptime: {{ gatewayUptime }}</div>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
       <div class="absa-etl__quality-header">
         <div>
           <h3 class="absa-etl__quality-title">Quality Score Trend</h3>
-          <p class="absa-etl__quality-sub">Data Integrity Score: <strong>--</strong> &bull; Connect to backend</p>
+          <p class="absa-etl__quality-sub">Data Integrity Score: <strong>{{ avgQuality }}</strong> &bull; {{ qualityTrend.length }} data points</p>
         </div>
         <div class="absa-etl__quality-legend">
           <span class="absa-etl__legend-label">
@@ -177,36 +177,36 @@
         <div class="absa-etl__stat-icon absa-etl__stat-icon--blue">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
         </div>
-        <div class="absa-etl__stat-value">--</div>
-        <div class="absa-etl__stat-label">Storage Growth</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
+        <div class="absa-etl__stat-value">{{ totalRuns }}</div>
+        <div class="absa-etl__stat-label">Total Runs</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">{{ executionHistory.length }} shown</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--green">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <div class="absa-etl__stat-value">--</div>
+        <div class="absa-etl__stat-value">{{ avgQuality }}</div>
         <div class="absa-etl__stat-label">Average Quality</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">{{ qualityTrend.length }} runs tracked</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--amber">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         </div>
-        <div class="absa-etl__stat-value">--</div>
+        <div class="absa-etl__stat-value">{{ failedRetries }}</div>
         <div class="absa-etl__stat-label">Failed Retries</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">Last 24h</div>
       </div>
 
       <div class="absa-metric-bg absa-etl__stat-card">
         <div class="absa-etl__stat-icon absa-etl__stat-icon--red">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <div class="absa-etl__stat-value">--</div>
-        <div class="absa-etl__stat-label">Gateway Latency</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">--</div>
+        <div class="absa-etl__stat-value">{{ pgLatency }}</div>
+        <div class="absa-etl__stat-label">Avg Query Latency</div>
+        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">PostgreSQL</div>
       </div>
     </div>
     </template>
@@ -217,24 +217,75 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import { useETLStore } from '@/stores/etlStore'
 
-const loading = ref(true)
-onMounted(() => { setTimeout(() => { loading.value = false }, 2000) })
+const store = useETLStore()
+const loading = computed(() => store.loading)
 
-const qualityPoints = []
+// ── System Health from KPIs ──
+const pgStatus = computed(() => store.statusPanel?.current_status || '--')
+const redisStatus = computed(() => store.statusPanel?.current_status || '--')
+const gatewayStatus = computed(() => store.statusPanel?.current_status || '--')
+const pgLatency = computed(() => {
+  const v = store.kpis?.avg_duration
+  return v || '--'
+})
+const redisMemory = computed(() => '--')
+const gatewayUptime = computed(() => {
+  const v = store.statusPanel?.current_status_since
+  return v ? new Date(v).toLocaleDateString() : '--'
+})
+
+// ── Quality Trend ──
+const qualityTrend = computed(() => store.qualityTrend || [])
+const qualityPoints = computed(() => qualityTrend.value.map(r => r.value ?? 0))
 
 const qualityLine = computed(() => {
   const w = 800; const h = 160; const min = 90
-  return qualityPoints.map((v, i) => `${(i / (qualityPoints.length - 1)) * w},${h - ((v - min) / (100 - min)) * h}`).join(' ')
+  const pts = qualityPoints.value
+  if (pts.length < 2) return '0,0 800,0'
+  return pts.map((v, i) => `${(i / (pts.length - 1)) * w},${h - ((Math.max(v, min) - min) / (100 - min)) * h}`).join(' ')
 })
 
 const qualityArea = computed(() => {
   const w = 800; const h = 160; const min = 90
-  const pts = qualityPoints.map((v, i) => `${(i / (qualityPoints.length - 1)) * w},${h - ((v - min) / (100 - min)) * h}`)
-  return `0,${h} ${pts.join(' ')} ${w},${h}`
+  const pts = qualityPoints.value
+  if (pts.length < 2) return `0,${h} 800,${h}`
+  const line = pts.map((v, i) => `${(i / (pts.length - 1)) * w},${h - ((Math.max(v, min) - min) / (100 - min)) * h}`)
+  return `0,${h} ${line.join(' ')} ${w},${h}`
 })
 
-const executionHistory = ref([])
+const avgQuality = computed(() => {
+  const pts = qualityPoints.value
+  if (pts.length === 0) return '--'
+  return (pts.reduce((a, b) => a + b, 0) / pts.length).toFixed(1) + '%'
+})
+
+// ── Execution History ──
+const executionHistory = computed(() =>
+  store.runs.map(r => ({
+    id: r.id || r.runId,
+    runId: (r.runId || '').slice(0, 12) || '--',
+    batchId: (r.batchId || '').slice(0, 12) || '--',
+    duration: r.duration || '--',
+    rowsReceived: r.rowsReceived ?? '--',
+    rowsValid: r.rowsValid ?? '--',
+    rowsLoaded: r.rowsLoaded ?? '--',
+    rowsRejected: r.rowsRejected ?? 0,
+    qualityScore: r.qualityScore ?? 0,
+    qualityClass: (r.qualityScore ?? 0) >= 95 ? 'green' : (r.qualityScore ?? 0) >= 80 ? 'amber' : 'red',
+    status: r.status || 'UNKNOWN',
+    statusClass: r.status === 'COMPLETED' ? 'green' : r.status === 'FAILED' ? 'red' : 'amber',
+  }))
+)
+
+// ── Bottom Stats ──
+const totalRuns = computed(() => store.totalRuns || '--')
+const failedRetries = computed(() => store.kpis?.failed_runs || 0)
+
+onMounted(() => {
+  store.loadDashboard()
+})
 </script>
 
 <style scoped>

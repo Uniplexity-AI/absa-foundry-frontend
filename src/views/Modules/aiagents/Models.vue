@@ -18,7 +18,7 @@
           CHAMPION MODEL
         </div>
         <h1 class="absa-models__title">Model Performance</h1>
-        <p class="absa-models__subtitle">Connect to backend to view deployed model metrics</p>
+        <p class="absa-models__subtitle">{{ modelCount }} model{{ modelCount !== 1 ? 's' : '' }} deployed · champion: churn_v1</p>
       </div>
       <div class="absa-models__header-right">
         <div class="absa-models__search">
@@ -46,11 +46,11 @@
           <span class="absa-models__kpi-badge">AUC-ROC</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 5"/></svg>
         </div>
-        <div class="absa-models__kpi-value">--</div>
+        <div class="absa-models__kpi-value">{{ aucRoc === '--' ? '--' : aucRoc + '%' }}</div>
         <div class="absa-models__kpi-label">Area Under Curve</div>
         <div class="absa-models__kpi-trend-row">
-          <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">--</div>
-          <span class="absa-models__kpi-threshold">Threshold: 0.70</span>
+          <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">Log Loss: {{ logLoss }}</div>
+          <span class="absa-models__kpi-threshold">Brier: {{ brierScore }}</span>
         </div>
       </div>
 
@@ -59,9 +59,12 @@
           <span class="absa-models__kpi-badge">F1 SCORE</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 14"/></svg>
         </div>
-        <div class="absa-models__kpi-value">--</div>
+        <div class="absa-models__kpi-value">{{ f1Score === '--' ? '--' : f1Score + '%' }}</div>
         <div class="absa-models__kpi-label">Harmonic Mean</div>
-        <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">--</div>
+        <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Champion
+        </div>
       </div>
 
       <div class="absa-metric-bg absa-accent-left-maroon absa-models__kpi">
@@ -69,7 +72,7 @@
           <span class="absa-models__kpi-badge">PRECISION / RECALL</span>
           <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#BE0F2C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="6" height="13" rx="1"/><rect x="10" y="9" width="6" height="10" rx="1"/><rect x="19" y="3" width="6" height="16" rx="1"/><rect x="28" y="10" width="6" height="9" rx="1"/></svg>
         </div>
-        <div class="absa-models__kpi-value">-- / --</div>
+        <div class="absa-models__kpi-value">{{ precisionVal === '--' ? '--' : precisionVal + '%' }} / {{ recallVal === '--' ? '--' : recallVal + '%' }}</div>
         <div class="absa-models__kpi-label">Precision / Recall</div>
         <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -237,30 +240,69 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import { useModelsStore } from '@/stores/modelsStore'
 
-const loading = ref(true)
-onMounted(() => { setTimeout(() => { loading.value = false }, 2000) })
+const store = useModelsStore()
+const loading = computed(() => store.loading)
 
 const perfDates = ref(['Jul 12', 'Jul 14', 'Jul 16', 'Jul 18', 'Jul 20'])
-const precisionValues = []
-const recallValues = []
+const precisionValues = ref([])
+const recallValues = ref([])
+
+// ── KPI metrics from champion churn model ──
+const aucRoc = computed(() => {
+  const m = store.championChurn
+  if (m?.metrics?.auc != null) return (m.metrics.auc * 100).toFixed(1)
+  return '--'
+})
+const f1Score = computed(() => {
+  const m = store.championChurn
+  const p = m?.metrics?.precision
+  const r = m?.metrics?.recall
+  if (p != null && r != null && (p + r) > 0) return ((2 * p * r) / (p + r) * 100).toFixed(1)
+  return '--'
+})
+const precisionVal = computed(() => {
+  const m = store.championChurn
+  if (m?.metrics?.precision != null) return (m.metrics.precision * 100).toFixed(1)
+  return '--'
+})
+const recallVal = computed(() => {
+  const m = store.championChurn
+  if (m?.metrics?.recall != null) return (m.metrics.recall * 100).toFixed(1)
+  return '--'
+})
+const logLoss = computed(() => {
+  const m = store.championChurn
+  if (m?.metrics?.log_loss != null) return m.metrics.log_loss.toFixed(4)
+  return '--'
+})
+const brierScore = computed(() => {
+  const m = store.championChurn
+  if (m?.metrics?.brier != null) return m.metrics.brier.toFixed(4)
+  return '--'
+})
+
+const modelCount = computed(() => store.modelCount)
 
 const precisionPoints = computed(() => {
-  const w = 600; const h = 200
-  return precisionValues.map((v, i) => `${(i / (precisionValues.length - 1)) * w},${h - v * h}`).join(' ')
+  const w = 600; const h = 200; const vals = precisionValues.value
+  if (vals.length < 2) return '0,0 600,0'
+  return vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`).join(' ')
 })
 const recallPoints = computed(() => {
-  const w = 600; const h = 200
-  return recallValues.map((v, i) => `${(i / (recallValues.length - 1)) * w},${h - v * h}`).join(' ')
+  const w = 600; const h = 200; const vals = recallValues.value
+  if (vals.length < 2) return '0,0 600,0'
+  return vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`).join(' ')
 })
 const precisionAreaPoints = computed(() => {
-  const w = 600; const h = 200
-  const pts = precisionValues.map((v, i) => `${(i / (precisionValues.length - 1)) * w},${h - v * h}`)
+  const w = 600; const h = 200; const vals = precisionValues.value
+  if (vals.length < 2) return `0,${h} 0,${h} ${w},${h}`
+  const pts = vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`)
   return `0,${h} ${pts.join(' ')} ${w},${h}`
 })
 
 const driftFeatures = ref([])
-
 const predictionLogs = ref([])
 
 const openDropdown = ref(null)
@@ -268,24 +310,24 @@ const openDropdown = ref(null)
 function toggleDropdown(idx) {
   openDropdown.value = openDropdown.value === idx ? null : idx
 }
-
 function handleView(log) {
   console.log('View prediction:', log.id)
   openDropdown.value = null
 }
-
 function handleRetry(log) {
   console.log('Retry prediction:', log.id)
   openDropdown.value = null
 }
-
 function handleClickOutside(e) {
   if (openDropdown.value !== null && !e.target.closest('.absa-models__action-cell')) {
     openDropdown.value = null
   }
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
+onMounted(() => {
+  store.fetchModels()
+  document.addEventListener('click', handleClickOutside)
+})
 onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 </script>
 

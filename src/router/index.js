@@ -43,9 +43,17 @@ import BrandStrategySubpage from '@/views/Modules/strategic/BrandStrategySubpage
 
 // Define routes
 const routes = [
-  // Homepage route - must be publicly accessible and meet Google requirements
+  // Root — splash initialisation before login
   {
     path: '/',
+    name: 'InitialisationScreen',
+    component: () => import('@/views/InitialisationScreen.vue'),
+    meta: { requiresAuth: false, isPublic: true }
+  },
+
+  // Landing page (accessible at /landing if needed)
+  {
+    path: '/landing',
     name: 'LandingPage',
     component: LandingPage,
     meta: {
@@ -142,6 +150,7 @@ const routes = [
       { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue') },
       { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue') },
       { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue') },
+      { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue') },
      
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue') },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue') },

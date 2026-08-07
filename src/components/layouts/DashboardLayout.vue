@@ -30,20 +30,25 @@
 
       <!-- Primary Navigation -->
       <nav class="absa-sidebar__nav">
-        <router-link to="/dashboard/home" class="absa-nav-item" active-class="absa-nav-item--active" title="Dashboard">
+        <!-- ── Customer Lifecycle ── -->
+        <div class="absa-sidebar__section-label" v-show="!collapsed">CUSTOMER LIFECYCLE</div>
+        <router-link to="/dashboard/home" class="absa-nav-item" active-class="absa-nav-item--active" title="Dashboard Home">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           <span>Dashboard</span>
         </router-link>
 
-        <router-link v-if="false" to="/dashboard/crm" class="absa-nav-item" active-class="absa-nav-item--active" title="My Customers">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>My Customers</span>
+        <router-link to="/dashboard/portfolio" class="absa-nav-item" active-class="absa-nav-item--active" title="Portfolio Overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Portfolio</span>
         </router-link>
 
-        <router-link to="/portfolio" class="absa-nav-item" active-class="absa-nav-item--active" title="Portfolio Overview">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span>Portfolio Overview</span>
+        <router-link to="/dashboard/branch-manager" class="absa-nav-item" active-class="absa-nav-item--active" title="Branch Manager">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Branch Manager</span>
         </router-link>
+
+        <!-- ── AI & Data Pipeline ── -->
+        <div class="absa-sidebar__section-label" v-show="!collapsed" style="margin-top:8px">AI &amp; DATA</div>
         <router-link to="/dashboard/models" class="absa-nav-item" active-class="absa-nav-item--active" title="Model Performance">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           <span>Model Performance</span>
@@ -56,22 +61,8 @@
 
         <router-link to="/dashboard/etl-run-history" class="absa-nav-item" active-class="absa-nav-item--active" title="ETL Run History">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span>ETL Run History</span>
+          <span>Run History</span>
         </router-link>
-
-        <!-- Dynamic module items (hidden for demo) -->
-        <template v-if="false" v-for="item in visibleModules" :key="item.id">
-          <router-link
-            v-if="item.route && !item.adminPage"
-            :to="item.route"
-            class="absa-nav-item"
-            active-class="absa-nav-item--active"
-            :title="item.title"
-          >
-            <i :class="item.icon" class="absa-nav-item__icon"></i>
-            <span>{{ item.title }}</span>
-          </router-link>
-        </template>
       </nav>
 
       <!-- AI Assistant + Bottom -->
@@ -150,10 +141,15 @@ const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
 
 const breadcrumbTitle = computed(() => {
   const map = {
-    'UserManagement': 'User Management',
-    'ModelsMonitoring': 'Model Monitoring',
+    'DashboardHome': 'Dashboard',
+    'PortfolioOverview': 'Portfolio Overview',
+    'CustomerDetail': 'Customer Detail',
+    'BranchManagerDashboard': 'Branch Manager',
+    'ModelsMonitoring': 'Model Performance',
+    'EtlPipeline': 'ETL Pipeline',
     'EtlRunHistory': 'ETL Run History',
-    'BranchManagerDashboard': 'Dashboard',
+    'BatchExecutionDetail': 'Batch Execution Detail',
+    'UserManagement': 'User Management',
   }
   return map[route.name] || 'Dashboard'
 })
@@ -352,7 +348,7 @@ async function fetchSubscribedModules() {
 .absa-sidebar__brand-name {
   font-size: 1rem;
   font-weight: 900;
-  color: #BE0F2C;
+  color: var(--absa-passion, #DC0037);
 }
 
 .absa-sidebar__brand-sub {
@@ -383,9 +379,9 @@ async function fetchSubscribedModules() {
 }
 
 .absa-sidebar__toggle:hover {
-  background: #FDE8EC;
-  border-color: #BE0F2C;
-  color: #BE0F2C;
+  background: rgba(220, 0, 55, 0.08);
+  border-color: var(--absa-passion, #DC0037);
+  color: var(--absa-passion, #DC0037);
 }
 
 .absa-sidebar--collapsed .absa-sidebar__toggle {
@@ -426,7 +422,8 @@ async function fetchSubscribedModules() {
   gap: 10px;
   padding: 10px 14px;
   margin-bottom: 6px;
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  /* Passion-to-Inspire gradient — elegant, premium per brand guide */
+  background: linear-gradient(135deg, var(--absa-passion, #DC0037), var(--absa-inspire, #77021E));
   color: #FFFFFF;
   border: none;
   border-radius: 8px;
@@ -456,6 +453,16 @@ async function fetchSubscribedModules() {
   display: none;
 }
 
+/* ── Section Labels ── */
+.absa-sidebar__section-label {
+  padding: 12px 14px 6px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #9CA3AF;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* ── Nav Items ── */
 .absa-nav-item {
   display: flex;
@@ -475,8 +482,8 @@ async function fetchSubscribedModules() {
 .absa-nav-item:hover { background: #F3F4F6; color: #111827; }
 
 .absa-nav-item--active {
-  background: #FDE8EC;
-  color: #BE0F2C;
+  background: rgba(220, 0, 55, 0.08);
+  color: var(--absa-passion, #DC0037);
   font-weight: 700;
 }
 
@@ -551,7 +558,8 @@ async function fetchSubscribedModules() {
 .absa-topbar__avatar {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #BE0F2C, #8B0015);
+  /* Passion-to-Power gradient per brand guide */
+  background: linear-gradient(135deg, var(--absa-passion, #DC0037), var(--absa-power, #B50232));
   color: #FFFFFF;
   font-size: 0.75rem; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
@@ -582,8 +590,8 @@ async function fetchSubscribedModules() {
 }
 
 .absa-search:focus-within {
-  border-color: #BE0F2C;
-  box-shadow: 0 0 0 3px rgba(190, 15, 44, 0.12);
+  border-color: var(--absa-passion, #DC0037);
+  box-shadow: 0 0 0 3px rgba(220, 0, 55, 0.12);
   background: #FFFFFF;
 }
 

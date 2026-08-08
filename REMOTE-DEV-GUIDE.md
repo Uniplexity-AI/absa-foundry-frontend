@@ -45,6 +45,11 @@ const RAW_API_URL = 'http://100.82.12.85:8080'
 | `GET /api/v1/predictions/markov-matrix?as_of_date=2026-07-27` | `{states, matrix: [[...]], steady_state}` |
 | `GET /api/v1/models` | `{models: [{model_id, metrics: {auc, brier, log_loss}}]}` |
 | `GET /api/etl/runs?limit=5` | `{kpis, status, quality_trend, runs}` |
+| `GET /api/v1/recommendations/{id}?as_of_date=2026-07-27` | 6 product recommendations with scores |
+| `GET /api/v1/recommendations/campaigns/list` | Active campaign catalog |
+| `GET /api/v1/insights/reason-codes/{id}?as_of_date=2026-07-27` | Structured reason codes |
+| `GET /api/v1/insights/explain-decision/{id}` | Decision explanation |
+| `GET /api/v1/insights/llm-explain/{id}?as_of_date=2026-07-27` | LLM natural language explanation (qwen2.5-coder:7b, ~120s) |
 
 ## Which Store Calls What
 

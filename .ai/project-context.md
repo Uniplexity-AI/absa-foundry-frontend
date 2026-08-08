@@ -49,10 +49,13 @@ The frontend for ABSA Bank Zambia's AI-driven banking analytics platform. It pro
 
 | Backend Service | Port | Frontend Usage |
 |----------------|------|----------------|
-| API Gateway | `:8080` | Auth (`/auth/*`), admin (`/admin/*`) |
+| API Gateway | `:8080` | All API calls — 15 routes proxying to all services |
 | Feature Engineering | `:8002` | Feature snapshots (`/features/*`) |
-| Prediction Service | TBD | Churn, CLV, health scores |
-| Decision Intelligence | TBD | NBA recommendations |
+| Customer State (L1) | `:8003` | Portfolio, customer list, detail, timeline (via gateway) |
+| Prediction (L2) | `:8004` | Churn probability, health score, Markov matrix (via gateway) |
+| Decision Intelligence (L3) | `:8005` | NBA recommendations, routing (via gateway) |
+
+**Remote devs:** Use Tailscale IP `100.82.12.85` instead of `localhost`. See `REMOTE-DEV-GUIDE.md`.
 
 ## Business Constraints
 

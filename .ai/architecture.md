@@ -1,48 +1,52 @@
 # Architecture — ABSA Foundry Frontend
 
-## Component Tree
+**Last updated:** 2026-08-07  
+**Backend:** 5 services on Tailscale `100.82.12.85` (ports 8002-8005, 8080)
+
+---
+
+## 1. Component Tree
 
 ```
 App.vue
 ├── AuthLayout
 │   ├── LoginView
-│   └── ForgotPasswordView
+│   ├── ForgotPasswordView
+│   └── ResetPasswordView
 │
 └── DashboardLayout
-    ├── Sidebar (navigation)
-    ├── TopBar (user menu, notifications)
+    ├── Sidebar (2 groups: CUSTOMER LIFECYCLE + AI & DATA)
+    ├── TopBar (search, period selector, user menu)
     └── <router-view>
-        ├── Dashboard (home)
-        ├── PortfolioOverview
-        ├── CustomerDetail
-        ├── Modules/
-        │   ├── datapipeline/
-        │   │   └── ETLRunHistory
-        │   ├── aiagents/
-        │   │   └── Models
-        │   ├── managers/
-        │   │   └── BranchManagerDashboard
-        │   └── ... (to be expanded)
-        └── Admin/
-            ├── UserManagement
-            └── SystemConfig
+        ├── DashboardHome       → /dashboard/home
+        ├── PortfolioOverview   → /dashboard/portfolio
+        ├── CustomerDetail      → /dashboard/customer/:id
+        ├── BranchManager       → /dashboard/branch-manager (not yet wired)
+        ├── Models              → /dashboard/models
+        ├── EtlPipeline         → /dashboard/etl-pipeline
+        ├── ETLRunHistory       → /dashboard/etl-run-history
+        └── BatchExecutionDetail → /dashboard/etl-run-history/batch/:runId
 ```
 
-## Routing Structure
+---
+
+## 2. Routing
 
 ```
-/                          → Dashboard home
-/login                     → LoginView
-/portfolio                 → PortfolioOverview
-/customer/:id              → CustomerDetail
-/etl/history               → ETLRunHistory
-/models                    → Models (AI agents)
-/branch-manager            → BranchManagerDashboard
-/admin/users               → UserManagement
-/admin/config              → SystemConfig
+/dashboard                         → redirect → /dashboard/home
+/dashboard/home                    → DashboardHome
+/dashboard/portfolio               → PortfolioOverview
+/dashboard/customer/:id            → CustomerDetail
+/dashboard/branch-manager          → BranchManagerDashboard
+/dashboard/models                  → Models
+/dashboard/etl-pipeline            → EtlPipeline
+/dashboard/etl-run-history        → ETLRunHistory
+/dashboard/etl-run-history/batch/:id → BatchExecutionDetail
 ```
 
-## Data Flow
+---
+
+## 3. Data Flow
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -51,37 +55,70 @@ App.vue
 └───────────────────────┬─────────────────────────────┘
                         │ calls
 ┌───────────────────────▼─────────────────────────────┐
-│              src/services/api.js                     │
-│  Axios instance + interceptors (JWT, refresh, 401)   │
+│              Pinia Store (axios.create)              │
+│  customerStore | predictionStore | modelsStore      │
+│  etlStore | authStore | dashboardStore              │
 └───────────────────────┬─────────────────────────────┘
-                        │ HTTP
+                        │ HTTP /api/v1/*
+┌───────────────────────▼─────────────────────────────┐
+│     src/services/api.js — Axios + JWT interceptor    │
+│  API_BASE_URL: localhost:8080 or 100.82.12.85:8080  │
+└───────────────────────┬─────────────────────────────┘
+                        │
 ┌───────────────────────▼─────────────────────────────┐
 │           API Gateway (:8080)                        │
 │  Auth → RBAC → Rate Limit → Route → Backend Service  │
 └─────────────────────────────────────────────────────┘
 ```
 
-## State Management (Pinia)
+---
 
-| Store | Purpose | Key State |
-|-------|---------|-----------|
-| `useAuthStore` | Authentication | `user`, `token`, `refreshToken`, `isAuthenticated` |
-| `usePortfolioStore` | Portfolio overview | `customers[]`, `metrics`, `filters` |
-| `useCustomerStore` | Single customer | `customer`, `features`, `predictions`, `nba` |
-| `useETLStore` | ETL monitoring | `runs[]`, `quality`, `audit` |
+## 4. State Management (Pinia)
 
-## API Integration Pattern
+| Store | Key State | APIs Called | Pages |
+|-------|-----------|-------------|-------|
+| `customerStore` | customers[], selectedCustomer, portfolio, timeline | 4 endpoints | DashboardHome, Portfolio, CustomerDetail |
+| `predictionStore` | predictions{}, healthScores{}, markovMatrix | 3 endpoints | CustomerDetail |
+| `modelsStore` | models[], championChurn, championCLV | 1 endpoint | Models |
+| `etlStore` | runs[], kpis, statusPanel, qualityTrend | 1 endpoint | EtlPipeline, ETLRunHistory |
+| `authStore` | user, token, isAuthenticated | /auth/* | Login, DashboardLayout |
 
-```javascript
-// src/services/api.js — all backend calls go through here
-import axios from 'axios'
+---
 
-// JWT interceptor attached automatically
-// 401 → auto-refresh → retry
-// Refresh failure → redirect /login
+## 5. Sidebar Structure
 
-export async function login(username, password) { ... }
-export async function logout() { ... }
-export async function getFeatures(customerId) { ... }
-export async function getPortfolio(filters) { ... }
 ```
+ABSA INTELLIGENCE UNIT
+
+CUSTOMER LIFECYCLE
+  ▣  Dashboard           → /dashboard/home
+  ▨  Portfolio           → /dashboard/portfolio
+  ⌂  Branch Manager      → /dashboard/branch-manager
+
+AI & DATA
+  ◫  Model Performance   → /dashboard/models
+  ⛭  ETL Pipeline        → /dashboard/etl-pipeline
+  ◷  Run History         → /dashboard/etl-run-history
+
+──
+  ⏻  Logout
+```
+
+---
+
+## 6. Reusable Components
+
+| Component | Purpose |
+|-----------|---------|
+| `LoadingSkeleton` | Stats, table, card loading states |
+| `StateBadge` | Customer state icon + label (ACTIVE, AT_RISK, DORMANT, CHURNED) |
+| `HealthScoreGauge` | 0-100 gauge with trend indicator |
+| `ChurnProbabilityBar` | Horizontal bar with color coding |
+| `StateTimeline` | Vertical timeline of state transitions |
+| `MarkovMatrix` | 4×4 transition probability grid |
+| `AbsaCard` | Branded card container |
+| `AbsaButton` | Primary/outline styled buttons |
+| `AbsaBadge` | Status/category badges |
+| `AbsaStatCard` | KPI metric cards |
+| `AbsaSectionHeader` | Section title with accent bar |
+| `AbsaGradientBg` | ABSA red gradient background |

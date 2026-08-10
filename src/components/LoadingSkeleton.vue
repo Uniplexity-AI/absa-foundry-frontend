@@ -51,8 +51,8 @@
   </div>
 
   <!-- Context-aware inline block -->
-  <div v-else-if="type === 'block'" class="animate-pulse">
-    <div class="bg-white border border-gray-200 p-6">
+  <div v-else-if="type === 'block'" class="animate-pulse h-full">
+    <div class="bg-white border border-gray-200 p-6 h-full">
       <div class="h-4 bg-gray-200 rounded-none w-1/3 mb-4"></div>
       <div class="space-y-3">
         <div class="h-3 bg-gray-200 rounded-none w-full"></div>

@@ -1092,3 +1092,18 @@ html[data-ui-visual-style="glassmorphism"] .superadmin-main :is(
   -webkit-backdrop-filter: blur(var(--ui-surface-blur)) saturate(145%);
   box-shadow: var(--ui-raised-shadow), var(--ui-inset-highlight) !important;
 }
+
+/* --- ABSA Global Background Patterns --- */
+.global-mesh-bg {
+  background-color: #ffffff;
+  background-image: linear-gradient(#f3f4f6 1px, transparent 1px), 
+                    linear-gradient(90deg, #f3f4f6 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+
+.global-dotted-bg {
+  background-color: #ffffff !important;
+  background-image: radial-gradient(circle, #f3f4f6 1.5px, transparent 1.5px) !important;
+  background-size: 14px 14px !important;
+}
+/* --------------------------------------- */

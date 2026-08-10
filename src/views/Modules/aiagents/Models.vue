@@ -1,519 +1,435 @@
 <template>
-  <div class="absa-models">
-    <div class="absa-models__content">
-    <!-- Breadcrumb -->
-    <div class="absa-models__breadcrumb">
-      <span>Home</span>
-      <svg width="12" height="12" viewBox="0 0 6 10" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M1 1l4 4-4 4"/></svg>
-      <span>Models</span>
-      <svg width="12" height="12" viewBox="0 0 6 10" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M1 1l4 4-4 4"/></svg>
-      <span class="absa-models__breadcrumb-current">Model Performance</span>
-    </div>
-
-    <!-- Header -->
-    <div class="absa-models__header">
-      <div>
-        <div class="absa-models__champion-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc0037" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          CHAMPION MODEL
-        </div>
-        <h1 class="absa-models__title">Model Performance</h1>
-        <p class="absa-models__subtitle">{{ modelCount }} model{{ modelCount !== 1 ? 's' : '' }} deployed · champion: churn_v1</p>
-      </div>
-      <div class="absa-models__header-right">
-        <div class="absa-models__search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Search prediction log..." class="absa-models__search-input" />
-        </div>
-        <button class="absa-models__btn absa-models__btn--outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export Report
-        </button>
-        <button class="absa-models__btn absa-models__btn--primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          Retrain Model
-        </button>
-      </div>
-    </div>
-
-    <!-- ═══ Model Metrics Cards ═══ -->
-    <LoadingSkeleton v-if="loading" type="stats" />
-    <LoadingSkeleton v-if="loading" type="table" :count="4" />
-    <template v-else>
-    <div class="absa-models__kpi-grid">
-      <div class="absa-metric-bg absa-accent-left-success absa-models__kpi">
-        <div class="absa-models__kpi-header">
-          <span class="absa-models__kpi-badge">AUC-ROC</span>
-          <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 5"/></svg>
-        </div>
-        <div class="absa-models__kpi-value">{{ aucRoc === '--' ? '--' : aucRoc + '%' }}</div>
-        <div class="absa-models__kpi-label">Area Under Curve</div>
-        <div class="absa-models__kpi-trend-row">
-          <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">Log Loss: {{ logLoss }}</div>
-          <span class="absa-models__kpi-threshold">Brier: {{ brierScore }}</span>
-        </div>
-      </div>
-
-      <div class="absa-metric-bg absa-accent-left-warning absa-models__kpi">
-        <div class="absa-models__kpi-header">
-          <span class="absa-models__kpi-badge">F1 SCORE</span>
-          <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 15 8 12 14 16 22 8 28 11 35 14"/></svg>
-        </div>
-        <div class="absa-models__kpi-value">{{ f1Score === '--' ? '--' : f1Score + '%' }}</div>
-        <div class="absa-models__kpi-label">Harmonic Mean</div>
-        <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Champion
-        </div>
-      </div>
-
-      <div class="absa-metric-bg absa-accent-left-maroon absa-models__kpi">
-        <div class="absa-models__kpi-header">
-          <span class="absa-models__kpi-badge">PRECISION / RECALL</span>
-          <svg width="36" height="20" viewBox="0 0 36 20" fill="none" stroke="#BE0F2C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="6" height="13" rx="1"/><rect x="10" y="9" width="6" height="10" rx="1"/><rect x="19" y="3" width="6" height="16" rx="1"/><rect x="28" y="10" width="6" height="9" rx="1"/></svg>
-        </div>
-        <div class="absa-models__kpi-value">{{ precisionVal === '--' ? '--' : precisionVal + '%' }} / {{ recallVal === '--' ? '--' : recallVal + '%' }}</div>
-        <div class="absa-models__kpi-label">Precision / Recall</div>
-        <div class="absa-models__kpi-trend absa-models__kpi-trend--neutral">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Stable
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ Performance Over Time (30D) ═══ -->
-    <div class="absa-chart-container absa-models__chart">
-      <div class="absa-models__chart-header">
-        <h3 class="absa-models__chart-title">Performance Over Time (30D)</h3>
-        <div class="absa-models__chart-legend">
-          <span class="absa-models__legend-item"><span class="absa-models__legend-dot absa-models__legend-dot--green"></span> Precision</span>
-          <span class="absa-models__legend-item"><span class="absa-models__legend-dot absa-models__legend-dot--maroon"></span> Recall</span>
-        </div>
-      </div>
-      <div class="absa-models__perf-chart">
-        <div class="absa-models__perf-y">
-          <span>1.0</span><span>0.8</span><span>0.6</span><span>0.4</span><span>0.2</span><span>0</span>
-        </div>
-        <div class="absa-models__perf-area">
-          <svg viewBox="0 0 600 200" class="absa-models__perf-svg" preserveAspectRatio="none">
-            <!-- Grid lines -->
-            <line v-for="i in 5" :key="'gl'+i" x1="0" :y1="i*40" x2="600" :y2="i*40" stroke="#F4F4F6" stroke-width="1"/>
-            <!-- Precision line -->
-            <polyline :points="precisionPoints" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Recall line -->
-            <polyline :points="recallPoints" fill="none" stroke="#BE0F2C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Area under precision -->
-            <polygon :points="precisionAreaPoints" fill="rgba(22,163,74,0.08)"/>
-          </svg>
-        </div>
-      </div>
-      <div class="absa-models__perf-x">
-        <span v-for="d in perfDates" :key="d">{{ d }}</span>
-      </div>
-    </div>
-
-    <!-- ═══ Feature Drift Monitor (PSI) ═══ -->
-    <div class="absa-models__section">
-      <div class="absa-models__section-header">
-        <div>
-          <h3 class="absa-models__section-title">Feature Drift Monitor (PSI)</h3>
-          <p class="absa-models__section-desc">Analyzing shift between Training Distribution and Current Inference Logs</p>
-        </div>
-        <span class="absa-models__section-badge">Threshold: 0.20 PSI</span>
-      </div>
-      <div class="absa-models__table-wrap">
-        <table class="absa-models__table">
-          <thead class="absa-table-header">
-            <tr>
-              <th>FEATURE NAME</th>
-              <th>TRAINING MEAN</th>
-              <th>CURRENT MEAN</th>
-              <th>DISTRIBUTION SHIFT</th>
-              <th>DRIFT SCORE (PSI)</th>
-              <th>STATUS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="f in driftFeatures" :key="f.name">
-              <td class="absa-models__feature-name">{{ f.name }}</td>
-              <td class="absa-models__table-val">{{ f.trainingMean }}</td>
-              <td class="absa-models__table-val">{{ f.currentMean }}</td>
-              <td>
-                <div class="absa-models__shift-bar-viz">
-                  <div class="absa-models__shift-bar-track">
-                    <div class="absa-models__shift-bar-fill" :style="{ width: f.shiftPct + '%' }" :class="'absa-models__shift-bar-fill--' + f.statusClass"></div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <span class="absa-models__psi-val" :class="'absa-models__psi-val--' + f.statusClass">{{ f.psi }}</span>
-              </td>
-              <td>
-                <span class="absa-models__status-pill" :class="'absa-models__status-pill--' + f.statusClass">{{ f.status }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ═══ Live Prediction Log ═══ -->
-    <div class="absa-models__section">
-      <div class="absa-models__section-header">
-        <div>
-          <h3 class="absa-models__section-title">Live Prediction Log</h3>
-          <p class="absa-models__section-desc">Real-time inference stream from production endpoint</p>
-        </div>
-        <div class="absa-models__section-actions">
-          <button class="absa-models__btn absa-models__btn--outline">Export Logs</button>
-          <div class="absa-models__dropdown-select">
-            <span>Last 1 Hour</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  <div class="w-full pt-10 px-6 pb-6 space-y-6 global-mesh-bg">
+    <!-- Loading Skeleton -->
+    <template v-if="loading">
+      <div class="min-h-screen flex flex-col space-y-6">
+        <LoadingSkeleton type="block" />
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          <div class="space-y-4">
+            <LoadingSkeleton type="kpi" />
+            <LoadingSkeleton type="kpi" />
+            <LoadingSkeleton type="kpi" />
           </div>
-          <button class="absa-models__btn-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          </button>
+          <div class="lg:col-span-3">
+            <LoadingSkeleton type="block" />
+          </div>
         </div>
+        <LoadingSkeleton type="table" :count="4" />
+        <LoadingSkeleton type="table" :count="4" />
       </div>
-      <div class="absa-models__table-wrap">
-        <table class="absa-models__table">
-          <thead class="absa-table-header">
-            <tr>
-              <th>TIMESTAMP</th>
-              <th>CORRELATION ID</th>
-              <th>CUSTOMER ID</th>
-              <th>PROB (CHURN)</th>
-              <th>CLASS</th>
-              <th>LATENCY</th>
-              <th style="width: 48px;"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(log, idx) in predictionLogs" :key="log.id">
-              <td class="absa-models__table-mono">{{ log.timestamp }}</td>
-              <td class="absa-models__correlation">{{ log.correlationId }}</td>
-              <td class="absa-models__table-val">{{ log.customerId }}</td>
-              <td>
-                <div class="absa-models__prob-bar-group">
-                  <div class="absa-models__prob-track">
-                    <div class="absa-models__prob-fill" :class="'absa-models__prob-fill--' + log.probClass" :style="{ width: log.probPct + '%' }"></div>
-                  </div>
-                  <span class="absa-models__prob-num" :class="'absa-models__prob-num--' + log.probClass">{{ log.probDisplay }}</span>
-                </div>
-              </td>
-              <td>
-                <span class="absa-models__class-pill" :class="'absa-models__class-pill--' + log.className.toLowerCase()">{{ log.className }}</span>
-              </td>
-              <td class="absa-models__table-mono">{{ log.latency }}ms</td>
-              <td>
-                <div class="absa-models__action-cell" @click.stop>
-                  <button class="absa-models__action-dots" @click="toggleDropdown(idx)">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#6B7280"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
-                  </button>
-                  <div v-if="openDropdown === idx" class="absa-models__dropdown">
-                    <button class="absa-models__dropdown-item" @click="handleView(log)">View</button>
-                    <button v-if="log.className === 'HIGH'" class="absa-models__dropdown-item" @click="handleRetry(log)">Retry</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="absa-models__pagination">
-        <span>Showing {{ predictionLogs.length }} predictions</span>
-        <div class="absa-models__page-btns">
-          <button disabled>
-            <svg width="10" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 1l-4 4 4 4"/></svg>
-          </button>
-          <button>
-            <svg width="10" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4-4 4"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
     </template>
-    </div>
+    <template v-else>
+      <!-- Dashboard Title Area -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4">
+        <div class="flex items-center gap-4">
+          <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ modelDetails.name || '—' }}</h2>
+          <span v-if="modelDetails.status" class="text-[#DC0037] text-xs font-bold uppercase tracking-wider">
+            {{ modelDetails.status }}
+          </span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="flex items-center gap-2 bg-white border border-[#DC0037] text-[#DC0037] hover:bg-brand-pink px-4 py-2 rounded-md text-sm font-semibold transition-colors">
+            <i class="fa-solid fa-download"></i> Export Report
+          </button>
+          <button class="flex items-center gap-2 bg-[#DC0037] text-white hover:bg-[#95052A] px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm">
+            <i class="fa-solid fa-rotate-right"></i> Retrain Model
+          </button>
+        </div>
+      </div>
+
+      <!-- Top Metrics Row -->
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Small Metric Cards Column -->
+        <div class="flex flex-col gap-6 lg:w-64 flex-shrink-0">
+          <!-- AUC-ROC -->
+          <div class="p-5 rounded-md border border-brand-subtle shadow-sm flex flex-col justify-between h-[150px] global-dotted-bg">
+            <div class="flex justify-between items-start">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">AUC-ROC</h3>
+              <span v-if="modelMetrics.aucRoc.change != null" class="text-xs font-semibold text-brand-green flex items-center gap-1">
+                <i class="fa-solid fa-arrow-up text-[10px]"></i> {{ modelMetrics.aucRoc.change }}%
+              </span>
+            </div>
+            <div>
+              <div class="text-3xl font-bold text-gray-900 mb-2">{{ modelMetrics.aucRoc.value != null ? modelMetrics.aucRoc.value : '—' }}</div>
+              <div class="h-10 w-full relative">
+                <canvas ref="sparklineAucCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- F1 Score -->
+          <div class="p-5 rounded-md border border-brand-subtle shadow-sm flex flex-col justify-between h-[150px] global-dotted-bg">
+            <div class="flex justify-between items-start">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">F1 Score</h3>
+              <span v-if="modelMetrics.f1Score.change != null" class="text-xs font-semibold text-brand-red flex items-center gap-1">
+                <i class="fa-solid fa-arrow-down text-[10px]"></i> {{ modelMetrics.f1Score.change }}%
+              </span>
+            </div>
+            <div>
+              <div class="text-3xl font-bold text-gray-900 mb-2">{{ modelMetrics.f1Score.value != null ? modelMetrics.f1Score.value : '—' }}</div>
+              <div class="h-10 w-full relative">
+                <canvas ref="sparklineF1Canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precision / Recall -->
+          <div class="p-5 rounded-md border border-brand-subtle shadow-sm flex flex-col justify-between h-[150px] global-dotted-bg">
+            <div class="flex justify-between items-start">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Precision /<br/>Recall</h3>
+              <span class="text-xs font-semibold text-gray-500">Stable</span>
+            </div>
+            <div>
+              <div class="text-3xl font-bold text-gray-900 mb-3">{{ modelMetrics.precision.value != null ? modelMetrics.precision.value + ' / ' + modelMetrics.recall.value : '—' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Chart Area -->
+        <div class="flex-grow p-6 rounded-md border border-brand-subtle shadow-sm global-dotted-bg">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Performance Over Time (30D)</h3>
+            <div class="flex items-center gap-4 text-sm font-medium">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-brand-red"></span>
+                <span class="text-gray-700">Precision</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#DC0037]/40"></span>
+                <span class="text-gray-700">Recall</span>
+              </div>
+            </div>
+          </div>
+          <div class="relative w-full h-[360px]">
+            <canvas ref="mainChartCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Drift Monitor -->
+      <div class="rounded-md border border-brand-subtle shadow-sm overflow-hidden global-dotted-bg">
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Feature Drift Monitor (PSI)</h3>
+            <p class="text-sm text-gray-500 mt-1">Analyzing shift between Training Distribution and Current Inference Logs</p>
+          </div>
+          <div class="text-gray-600 px-3 py-1.5 rounded text-xs font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i> Threshold: 0.20 PSI
+          </div>
+        </div>
+        <div class="overflow-x-auto table-container">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th class="p-4 pl-6 font-semibold">Feature Name</th>
+                <th class="p-4 font-semibold">Training Mean</th>
+                <th class="p-4 font-semibold">Current Mean</th>
+                <th class="p-4 font-semibold">Distribution Shift</th>
+                <th class="p-4 font-semibold">Drift Score (PSI)</th>
+                <th class="p-4 pr-6 font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm divide-y divide-gray-100">
+              <tr v-if="featureDriftList.length === 0">
+                <td colspan="6" class="p-12 text-center text-body-md text-secondary">No feature drift data available</td>
+              </tr>
+              <tr v-for="(row, index) in featureDriftList" :key="index" class="transition-colors">
+                <td class="p-4 pl-6 font-medium text-gray-900">
+                  <div class="flex items-center gap-3">
+                    <div class="w-0.5 h-4 bg-[#DC0037] rounded-full"></div>
+                    {{ row.name }}
+                  </div>
+                </td>
+                <td class="p-4 text-gray-600">{{ row.trainMean }}</td>
+                <td class="p-4 text-gray-600">{{ row.currentMean }}</td>
+                <td class="p-4">
+                  <div class="flex items-center gap-1">
+                    <div :class="['h-4 w-2 rounded-sm', row.invertShift ? 'bg-brand-pink' : 'bg-brand-red']"></div>
+                    <div :class="['h-4 w-2 rounded-sm', row.invertShift ? 'bg-brand-red' : 'bg-brand-pink']"></div>
+                  </div>
+                </td>
+                <td :class="['p-4', row.scoreColor || 'text-gray-900']">{{ row.score }}</td>
+                <td class="p-4 pr-6">
+                  <span :class="['inline-flex items-center px-2 py-0.5 rounded text-xs font-bold', row.badgeClass]">
+                    {{ row.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Live Prediction Log -->
+      <div class="rounded-md border border-brand-subtle shadow-sm overflow-hidden mb-10 global-dotted-bg">
+        <div class="p-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Live Prediction Log</h3>
+            <p class="text-sm text-gray-500 mt-1">Real-time inference stream from production endpoint</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button class="flex items-center gap-2 bg-white border border-[#DC0037] text-[#DC0037] hover:bg-brand-pink px-3 py-1.5 rounded text-sm font-semibold transition-colors">
+              <i class="fa-solid fa-download text-xs"></i> Export Logs
+            </button>
+            <div class="relative">
+              <select v-model="selectedTimeframe" class="appearance-none bg-white border border-gray-300 text-gray-700 py-1.5 pl-3 pr-8 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#DC0037] focus:border-[#DC0037] cursor-pointer">
+                <option>Last 1 Hour</option>
+                <option>Last 24 Hours</option>
+                <option>Last 7 Days</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                <i class="fa-solid fa-chevron-down text-[10px]"></i>
+              </div>
+            </div>
+            <button class="text-gray-500 hover:text-brand-red ml-2">
+              <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto table-container">
+          <table class="w-full text-left border-collapse whitespace-nowrap">
+            <thead>
+              <tr class="border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <th class="p-4 pl-6 font-semibold">Timestamp</th>
+                <th class="p-4 font-semibold">Correlation ID</th>
+                <th class="p-4 font-semibold">Customer ID</th>
+                <th class="p-4 font-semibold">Prob (Churn)</th>
+                <th class="p-4 font-semibold">Class</th>
+                <th class="p-4 pr-6 font-semibold">Latency</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm divide-y divide-gray-100 font-mono">
+              <tr v-if="predictionLogs.length === 0">
+                <td colspan="6" class="p-12 text-center text-body-md text-secondary font-sans">No prediction logs available</td>
+              </tr>
+              <tr v-for="(log, idx) in predictionLogs" :key="idx" class="transition-colors">
+                <td class="p-4 pl-6 text-gray-500">{{ log.timestamp }}</td>
+                <td class="p-4 text-[#DC0037] font-medium">{{ log.correlationId }}</td>
+                <td class="p-4 text-gray-700">{{ log.customerId }}</td>
+                <td class="p-4 text-gray-900 font-sans">{{ log.prob }}</td>
+                <td :class="['p-4 font-bold font-sans', log.classColor]">{{ log.class }}</td>
+                <td class="p-4 pr-6 text-gray-600 font-sans">{{ log.latency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination Footer -->
+        <div class="p-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500 font-medium">
+          <span>Showing latest 50 of 4,211 predictions</span>
+          <div class="flex items-center gap-4">
+            <button class="hover:text-brand-red disabled:opacity-50"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="hover:text-brand-red"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
-import { useModelsStore } from '@/stores/modelsStore'
+import { ref, onMounted, watch, nextTick } from 'vue'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
+import Chart from 'chart.js/auto'
 
-const store = useModelsStore()
-const loading = computed(() => store.loading)
+const loading = ref(true)
+onMounted(() => { setTimeout(() => loading.value = false, 800) })
 
-const perfDates = ref(['Jul 12', 'Jul 14', 'Jul 16', 'Jul 18', 'Jul 20'])
-const precisionValues = ref([])
-const recallValues = ref([])
+// Interactive State
+const selectedTimeframe = ref('Last 1 Hour')
 
-// ── KPI metrics from champion churn model ──
-const aucRoc = computed(() => {
-  const m = store.championChurn
-  if (m?.metrics?.auc != null) return (m.metrics.auc * 100).toFixed(1)
-  return '--'
-})
-const f1Score = computed(() => {
-  const m = store.championChurn
-  const p = m?.metrics?.precision
-  const r = m?.metrics?.recall
-  if (p != null && r != null && (p + r) > 0) return ((2 * p * r) / (p + r) * 100).toFixed(1)
-  return '--'
-})
-const precisionVal = computed(() => {
-  const m = store.championChurn
-  if (m?.metrics?.precision != null) return (m.metrics.precision * 100).toFixed(1)
-  return '--'
-})
-const recallVal = computed(() => {
-  const m = store.championChurn
-  if (m?.metrics?.recall != null) return (m.metrics.recall * 100).toFixed(1)
-  return '--'
-})
-const logLoss = computed(() => {
-  const m = store.championChurn
-  if (m?.metrics?.log_loss != null) return m.metrics.log_loss.toFixed(4)
-  return '--'
-})
-const brierScore = computed(() => {
-  const m = store.championChurn
-  if (m?.metrics?.brier != null) return m.metrics.brier.toFixed(4)
-  return '--'
+// Model Details
+const modelDetails = ref({ name: null, status: null })
+
+// Sparkline metric cards
+const modelMetrics = ref({
+  aucRoc: { value: null, change: null },
+  f1Score: { value: null, change: null },
+  precision: { value: null, recall: { value: null } },
 })
 
-const modelCount = computed(() => store.modelCount)
+// Feature Drift Table — starts empty
+const featureDriftList = ref([])
 
-const precisionPoints = computed(() => {
-  const w = 600; const h = 200; const vals = precisionValues.value
-  if (vals.length < 2) return '0,0 600,0'
-  return vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`).join(' ')
-})
-const recallPoints = computed(() => {
-  const w = 600; const h = 200; const vals = recallValues.value
-  if (vals.length < 2) return '0,0 600,0'
-  return vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`).join(' ')
-})
-const precisionAreaPoints = computed(() => {
-  const w = 600; const h = 200; const vals = precisionValues.value
-  if (vals.length < 2) return `0,${h} 0,${h} ${w},${h}`
-  const pts = vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - v * h}`)
-  return `0,${h} ${pts.join(' ')} ${w},${h}`
-})
-
-const driftFeatures = ref([])
+// Live Prediction Logs — starts empty
 const predictionLogs = ref([])
 
-const openDropdown = ref(null)
+// Chart References
+const sparklineAucCanvas = ref(null)
+const sparklineF1Canvas = ref(null)
+const mainChartCanvas = ref(null)
 
-function toggleDropdown(idx) {
-  openDropdown.value = openDropdown.value === idx ? null : idx
-}
-function handleView(log) {
-  console.log('View prediction:', log.id)
-  openDropdown.value = null
-}
-function handleRetry(log) {
-  console.log('Retry prediction:', log.id)
-  openDropdown.value = null
-}
-function handleClickOutside(e) {
-  if (openDropdown.value !== null && !e.target.closest('.absa-models__action-cell')) {
-    openDropdown.value = null
+watch(loading, async (val) => {
+  if (!val) {
+    await nextTick()
+    initCharts()
   }
-}
-
-onMounted(() => {
-  store.fetchModels()
-  document.addEventListener('click', handleClickOutside)
 })
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+
+function initCharts() {
+  // Sparkline Configurations
+  const sparklineOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    scales: {
+      x: { display: false },
+      y: { display: false, min: 0 }
+    },
+    elements: {
+      point: { radius: 0 },
+      line: { tension: 0.4, borderWidth: 2 }
+    },
+    layout: { padding: 0 }
+  }
+
+  // AUC-ROC Sparkline
+  new Chart(sparklineAucCanvas.value, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        data: [],
+        borderColor: '#DC0037',
+        fill: false
+      }]
+    },
+    options: sparklineOptions
+  })
+
+  // F1 Score Sparkline
+  new Chart(sparklineF1Canvas.value, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        data: [],
+        borderColor: '#DC0037',
+        fill: false
+      }]
+    },
+    options: sparklineOptions
+  })
+
+  // Main Performance Chart
+  new Chart(mainChartCanvas.value, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Precision',
+          data: [],
+          borderColor: '#DC0037',
+          borderWidth: 2,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        },
+        {
+          label: 'Recall',
+          data: [],
+          borderColor: 'rgba(220, 0, 55, 0.4)',
+          borderWidth: 2,
+          borderDash: [4, 4],
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          titleColor: '#333',
+          bodyColor: '#666',
+          borderColor: '#e5e7eb',
+          borderWidth: 1,
+          padding: 10,
+          boxPadding: 4,
+          usePointStyle: true,
+        }
+      },
+      scales: {
+        x: {
+          display: false,
+          grid: { display: false }
+        },
+        y: {
+          display: false,
+          min: 0,
+          max: 100,
+          grid: {
+            color: '#f3f4f6',
+            drawBorder: false,
+          }
+        }
+      },
+      layout: {
+        padding: { top: 20, bottom: 20 }
+      }
+    }
+  })
+}
 </script>
 
-<style scoped>
-/* ═══ Models Page ═══ */
-.absa-models__content {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 100%;
-  flex: 1;
-}
-.absa-models__breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 600; color: #9CA3AF;
-  margin-bottom: 14px; font-family: 'Space Mono', monospace;
-}
-.absa-models__breadcrumb-current { color: #BE0F2C; }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
-/* Header */
-.absa-models__header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
-}
-.absa-models__champion-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800;
-  color: #BE0F2C; background: #FDE8EC; padding: 3px 12px;
-  border-radius: 999px; letter-spacing: 0.06em; margin-bottom: 8px;
-}
-.absa-models__title { font-size: 1.5rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
-.absa-models__subtitle { font-size: 0.7rem; color: #9CA3AF; margin: 0; font-family: 'Space Mono', monospace; }
-
-.absa-models__header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.absa-models__search {
-  display: flex; align-items: center; gap: 8px;
-  background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px;
-  padding: 7px 14px; color: #9CA3AF; width: 240px;
-}
-.absa-models__search-input { border: none; background: transparent; font-size: 0.7rem; color: #111827; outline: none; width: 100%; font-family: 'Space Mono', monospace; }
-.absa-models__search-input::placeholder { color: #9CA3AF; }
-
-.absa-models__btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 6px; font-size: 0.7rem;
-  font-weight: 700; cursor: pointer; transition: all 150ms ease;
-  border: 1px solid #E8E8EC; background: #FFF; color: #4B5563;
-  font-family: 'Montserrat', system-ui, sans-serif; white-space: nowrap;
-}
-.absa-models__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-models__btn--primary { background: #BE0F2C; color: #FFF; border-color: transparent; }
-.absa-models__btn--primary:hover { background: #A01028; color: #FFF; border-color: transparent; }
-.absa-models__btn--outline { background: #FFF; }
-.absa-models__btn-icon {
-  display: flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border: 1px solid #E8E8EC; border-radius: 6px;
-  background: #FFF; cursor: pointer; transition: all 150ms ease;
-}
-.absa-models__btn-icon:hover { border-color: #BE0F2C; }
-
-/* Dropdown select */
-.absa-models__dropdown-select {
-  display: flex; align-items: center; gap: 6px;
-  padding: 8px 12px; border: 1px solid #E8E8EC; border-radius: 6px;
-  font-size: 0.7rem; font-weight: 600; color: #4B5563;
-  background: #FFF; cursor: pointer; font-family: 'Space Mono', monospace;
+:root {
+  --brand-red: #DC0037;
+  --brand-dark: #131010;
+  --brand-gray: #f5f5f5;
+  --brand-border: #e5e7eb;
+  --brand-text: #333333;
+  --brand-muted: #6b7280;
+  --brand-bg: #fafafa;
+  --brand-pink: rgba(220, 0, 55, 0.1);
+  --brand-green: #FF780F;
+  --brand-warn: #FF780F;
 }
 
-/* KPI Cards */
-.absa-models__kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.absa-models__kpi { padding: 20px; }
-.absa-models__kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-.absa-models__kpi-badge { font-family: 'Space Mono', monospace; font-size: 0.525rem; font-weight: 800; color: #9CA3AF; background: #F3F4F6; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.06em; }
-.absa-models__kpi-value { font-size: 1.75rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; margin-bottom: 2px; }
-.absa-models__kpi-label { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-.absa-models__kpi-trend-row { display: flex; align-items: center; gap: 12px; }
-.absa-models__kpi-trend { display: flex; align-items: center; gap: 4px; font-size: 0.6rem; font-weight: 700; font-family: 'Space Mono', monospace; }
-.absa-models__kpi-trend--up { color: #16A34A; }
-.absa-models__kpi-trend--down { color: #DC2626; }
-.absa-models__kpi-trend--neutral { color: #6B7280; }
-.absa-models__kpi-threshold { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #D1D5DB; }
-
-/* Performance Chart */
-.absa-models__chart { margin-bottom: 24px; }
-.absa-models__chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.absa-models__chart-title { font-size: 0.85rem; font-weight: 800; color: #111827; margin: 0; }
-.absa-models__chart-legend { display: flex; gap: 16px; font-size: 0.675rem; font-weight: 600; color: #6B7280; }
-.absa-models__legend-item { display: flex; align-items: center; gap: 6px; }
-.absa-models__legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-.absa-models__legend-dot--green { background: #16A34A; }
-.absa-models__legend-dot--maroon { background: #BE0F2C; }
-
-.absa-models__perf-chart { display: flex; gap: 12px; height: 200px; }
-.absa-models__perf-y { display: flex; flex-direction: column; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.575rem; color: #9CA3AF; padding: 0 4px; }
-.absa-models__perf-area { flex: 1; position: relative; }
-.absa-models__perf-svg { width: 100%; height: 100%; }
-.absa-models__perf-x { display: flex; justify-content: space-between; padding-left: 40px; padding-top: 8px; font-family: 'Space Mono', monospace; font-size: 0.575rem; color: #9CA3AF; }
-
-/* Sections */
-.absa-models__section { margin-bottom: 24px; }
-.absa-models__section-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; }
-.absa-models__section-title { font-size: 0.9rem; font-weight: 800; color: #111827; margin: 0; }
-.absa-models__section-desc { font-size: 0.65rem; color: #9CA3AF; margin: 2px 0 0 0; font-family: 'Space Mono', monospace; }
-.absa-models__section-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.absa-models__section-badge { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 800; color: #BE0F2C; background: #FDE8EC; padding: 4px 12px; border-radius: 999px; letter-spacing: 0.04em; white-space: nowrap; }
-
-/* Table */
-.absa-models__table-wrap { background: #FFF; border: 1px solid #E8E8EC; border-radius: 12px; overflow: hidden; }
-.absa-models__table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
-.absa-models__table th { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 800; color: #9CA3AF; letter-spacing: 0.06em; text-align: left; padding: 12px 20px; }
-.absa-models__table td { padding: 13px 20px; border-bottom: 1px solid #F3F4F6; vertical-align: middle; }
-.absa-models__table tbody tr:hover { background: #F9FAFB; }
-.absa-models__table-val { font-weight: 700; color: #111827; }
-.absa-models__table-mono { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #6B7280; }
-.absa-models__feature-name { font-weight: 700; color: #111827; font-family: 'Space Mono', monospace; font-size: 0.675rem; }
-.absa-models__correlation { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #BE0F2C; }
-
-/* Shift bars */
-.absa-models__shift-bar-viz { display: flex; align-items: center; }
-.absa-models__shift-bar-track { width: 80px; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
-.absa-models__shift-bar-fill { height: 100%; border-radius: 3px; }
-.absa-models__shift-bar-fill--good { background: #16A34A; }
-.absa-models__shift-bar-fill--warning { background: #F59E0B; }
-.absa-models__shift-bar-fill--critical { background: #DC2626; }
-
-.absa-models__psi-val { font-weight: 800; font-size: 0.75rem; }
-.absa-models__psi-val--good { color: #16A34A; }
-.absa-models__psi-val--warning { color: #D97706; }
-.absa-models__psi-val--critical { color: #DC2626; }
-
-/* Status Pills */
-.absa-models__status-pill { font-family: 'Space Mono', monospace; font-size: 0.55rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; letter-spacing: 0.04em; }
-.absa-models__status-pill--good { background: #DCFCE7; color: #16A34A; }
-.absa-models__status-pill--warning { background: #FEF3C7; color: #D97706; }
-.absa-models__status-pill--critical { background: #FEE2E2; color: #DC2626; }
-
-/* Probability bars */
-.absa-models__prob-bar-group { display: flex; align-items: center; gap: 8px; }
-.absa-models__prob-track { width: 60px; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
-.absa-models__prob-fill { height: 100%; border-radius: 3px; }
-.absa-models__prob-fill--critical { background: #DC2626; }
-.absa-models__prob-fill--warning { background: #F59E0B; }
-.absa-models__prob-fill--good { background: #16A34A; }
-.absa-models__prob-num { font-weight: 800; font-size: 0.7rem; }
-.absa-models__prob-num--critical { color: #DC2626; }
-.absa-models__prob-num--warning { color: #D97706; }
-.absa-models__prob-num--good { color: #16A34A; }
-
-.absa-models__class-pill { font-family: 'Space Mono', monospace; font-size: 0.55rem; font-weight: 800; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.04em; }
-.absa-models__class-pill--high { background: #FEE2E2; color: #DC2626; }
-.absa-models__class-pill--med { background: #FEF3C7; color: #D97706; }
-.absa-models__class-pill--low { background: #DCFCE7; color: #16A34A; }
-
-/* Action dropdown */
-.absa-models__action-cell { position: relative; }
-.absa-models__action-dots {
-  background: none; border: none; cursor: pointer; padding: 4px; border-radius: 4px; display: flex;
-  transition: background 150ms ease;
+/* Custom Utilities and Pattern Definitions */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, #f0f0f0 1px, transparent 1px), linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+  background-size: 20px 20px;
 }
-.absa-models__action-dots:hover { background: #F3F4F6; }
-.absa-models__dropdown {
-  position: absolute; right: 0; top: 100%; z-index: 10;
-  background: #FFF; border: 1px solid #E8E8EC; border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08); min-width: 100px;
-  overflow: hidden;
-}
-.absa-models__dropdown-item {
-  display: block; width: 100%; text-align: left;
-  padding: 8px 16px; font-size: 0.7rem; font-weight: 600; color: #374151;
-  background: none; border: none; cursor: pointer; font-family: 'Montserrat', system-ui, sans-serif;
-  transition: background 100ms ease;
-}
-.absa-models__dropdown-item:hover { background: #F9FAFB; color: #BE0F2C; }
-.absa-models__dropdown-item + .absa-models__dropdown-item { border-top: 1px solid #F3F4F6; }
 
-/* Pagination */
-.absa-models__pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #F3F4F6; font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #9CA3AF; }
-.absa-models__page-btns { display: flex; gap: 4px; }
-.absa-models__page-btns button { min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E8EC; border-radius: 6px; background: #FFF; color: #4B5563; font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: all 150ms ease; }
-.absa-models__page-btns button:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-models__page-btns button:disabled { opacity: 0.35; cursor: not-allowed; }
+.text-brand-red { color: var(--brand-red); }
+.text-brand-green { color: var(--brand-green); }
+.text-brand-text { color: var(--brand-text); }
 
-/* Responsive */
-@media (max-width: 1200px) { .absa-models__kpi-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) { .absa-models__kpi-grid { grid-template-columns: 1fr; } .absa-models__header { flex-direction: column; } .absa-models__header-right { width: 100%; } .absa-models__search { width: 100%; } }
+.bg-brand-red { background-color: var(--brand-red); }
+.bg-brand-pink { background-color: var(--brand-pink); }
+
+.border-brand-subtle {
+  border-color: rgba(220, 0, 55, 0.2);
+}
+
+.card-outline {
+  border: 1px solid var(--brand-red);
+  border-opacity: 0.2;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1; 
+  border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; 
+}
 </style>

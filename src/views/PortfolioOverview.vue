@@ -1,304 +1,403 @@
 <template>
-  <div class="min-h-screen bg-[#f8f9fa]">
-    <div class="max-w-[1600px] mx-auto p-8 flex flex-col gap-8">
-      <!-- Breadcrumbs + Period Selector -->
-      <div class="flex items-end justify-between w-full">
-        <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-0">
-            <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] leading-[16px] cursor-pointer hover:text-[#77021e] hover:underline transition-colors duration-150">Home</span>
-            <svg class="mx-1" width="6" height="10" viewBox="0 0 6 10" fill="none">
-              <path d="M1 1l4 4-4 4" stroke="#5d3f3f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="text-[#77021e] text-[12px] font-bold tracking-[0.6px] leading-[16px] cursor-pointer hover:text-[#77021e] hover:underline transition-colors duration-150">Dashboard</span>
-          </div>
-          <h1 class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">Portfolio Overview</h1>
+  <div class="global-mesh-bg text-on-background w-full p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto pt-20">
+    <!-- Loading Skeleton -->
+    <template v-if="loading">
+      <div class="min-h-[calc(100vh-6rem)] flex flex-col">
+        <div class="mb-8">
+          <LoadingSkeleton type="stats" />
         </div>
-        <div class="flex items-center gap-3">
-          <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] leading-[16px]">Data Snapshot:</span>
-          <div class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[4px] flex items-center gap-2 px-[17px] py-[9px]">
-            <span class="text-[#191c1d] text-[14px] font-semibold">Latest (July 20, 2026)</span>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-              <path d="M1 1l4 4 4-4" stroke="#191c1d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="grid grid-cols-12 gap-4 md:gap-gutter flex-1 mb-8 min-h-0">
+          <div class="col-span-12 lg:col-span-4">
+            <div class="h-full"><LoadingSkeleton type="block" /></div>
           </div>
+          <div class="col-span-12 lg:col-span-8">
+            <div class="h-full"><LoadingSkeleton type="block" /></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 md:gap-gutter">
+          <LoadingSkeleton type="card" />
+          <LoadingSkeleton type="card" />
+        </div>
+      </div>
+    </template>
+
+    <!-- Main Content -->
+    <template v-else>
+      <!-- Page Title & Snapshot -->
+      <div class="mb-6 flex justify-end items-end">
+        <div class="flex items-center gap-3">
+          <span class="text-body-md text-secondary">Data Snapshot:</span>
+          <select v-model="selectedSnapshot" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#DC0037] focus:border-[#DC0037] sm:text-sm rounded-md shadow-sm bg-white">
+            <option v-for="option in snapshotOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
         </div>
       </div>
 
-      <!-- KPI Cards (reactive) -->
-      <LoadingSkeleton v-if="pageLoading" type="stats" />
-      <div v-else class="flex gap-6 w-full">
+      <!-- Top Stats Row -->
+      <div class="grid grid-cols-4 gap-4 md:gap-gutter mb-8">
         <!-- Total Customers -->
-        <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] flex flex-col">
-          <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">TOTAL CUSTOMERS</span>
-          <div v-if="customerStore.loading" class="h-10">
-            <div class="h-8 w-20 bg-gray-100 rounded animate-pulse"></div>
-          </div>
-          <div v-else class="relative h-10 w-full">
-            <span class="text-[#191c1d] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.total.toLocaleString() }}</span>
+        <div class="card-container p-card-padding">
+          <div class="card-content flex flex-col h-full justify-between">
+            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Total Customers</h3>
+            <div class="flex items-baseline gap-2 mb-4">
+              <span class="text-metric-lg font-metric-lg text-on-surface">{{ portfolio.total != null ? portfolio.total : '—' }}</span>
+              <span class="text-body-md font-body-md text-[#FF780F] font-semibold flex items-center">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+                {{ portfolio.activePct }}% active
+              </span>
+            </div>
+            <div class="flex items-end gap-1.5 h-12 mt-auto">
+              <div v-if="totalCustomersSparkline.length === 0" class="w-full h-full flex items-center justify-center text-label-sm text-secondary">—</div>
+              <div v-for="(h, i) in totalCustomersSparkline" :key="i" class="w-1/6 bg-primary rounded-t" :style="{ height: h + '%' }"></div>
+            </div>
           </div>
         </div>
 
         <!-- At Risk -->
-        <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[41px] flex flex-col">
-          <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">AT RISK</span>
-          <div v-if="customerStore.loading" class="h-10">
-            <div class="h-8 w-16 bg-gray-100 rounded animate-pulse"></div>
-          </div>
-          <div v-else class="flex items-baseline gap-2">
-            <span class="text-[#ed6c02] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.atRisk }}</span>
-            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| {{ customerStore.portfolio.atRiskPct }}%</span>
+        <div class="card-container p-card-padding">
+          <div class="card-content flex flex-col h-full justify-between">
+            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">At Risk</h3>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-metric-lg font-metric-lg text-[#FF780F]">{{ portfolio.atRisk != null ? portfolio.atRisk : '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.atRiskPct }}%</span>
+            </div>
+            <p class="text-body-md font-body-md text-secondary mt-auto">+4 since last snapshot</p>
           </div>
         </div>
 
         <!-- Dormant -->
-        <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[41px] flex flex-col">
-          <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">DORMANT</span>
-          <div v-if="customerStore.loading" class="h-10">
-            <div class="h-8 w-16 bg-gray-100 rounded animate-pulse"></div>
-          </div>
-          <div v-else class="flex items-baseline gap-2">
-            <span class="text-[#757575] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.dormant }}</span>
-            <span class="text-[#5d3f3f] text-[12px] font-medium opacity-60 tracking-[0.6px] leading-[16px]">| {{ customerStore.portfolio.dormantPct }}%</span>
-          </div>
-        </div>
-
-        <!-- Actions Due Today -->
-        <div class="flex-1 bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] p-[25px] pb-[38px] flex flex-col">
-          <span class="text-[#5d3f3f] text-[12px] font-semibold tracking-[0.6px] uppercase leading-[16px] pb-2">ACTIONS DUE TODAY</span>
-          <div v-if="customerStore.loading" class="h-10">
-            <div class="h-8 w-12 bg-gray-100 rounded animate-pulse"></div>
-          </div>
-          <div v-else class="flex items-baseline">
-            <span class="text-[#dc0037] text-[32px] font-bold tracking-[-0.32px] leading-[40px]">{{ customerStore.portfolio.actionsDue }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Charts Section -->
-      <LoadingSkeleton v-if="pageLoading" type="block" />
-      <div v-else class="flex gap-6 w-full" style="min-height: 320px">
-        <div class="bg-white border border-[#e7bcbc] rounded-[6px] p-6 flex flex-col" style="width: 40%">
-          <h3 class="text-[#191c1d] text-lg font-bold mb-4">State Distribution</h3>
-          <div class="flex-1 flex items-center justify-center">
-            <Doughnut :data="doughnutData" :options="chartOptions" />
-          </div>
-        </div>
-        <div class="bg-white border border-[#e7bcbc] rounded-[6px] p-6 flex flex-col" style="width: 60%">
-          <h3 class="text-[#191c1d] text-lg font-bold mb-4">Health Score Distribution</h3>
-          <div class="flex-1 flex items-center justify-center">
-            <Bar :data="histogramData" :options="chartOptions" />
-          </div>
-        </div>
-      </div>
-
-      <div v-if="customerStore.error" class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
-        <span class="text-red-700 text-sm font-medium">Could not load portfolio data</span>
-        <button @click="customerStore.fetchPortfolio()" class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700 hover:bg-red-200 font-medium">Retry</button>
-      </div>
-
-      <!-- Two-column grid: Alerts + Table -->
-      <div class="grid grid-cols-3 gap-6 w-full" style="grid-template-rows: 500px">
-        <!-- Critical Alerts -->
-        <LoadingSkeleton v-if="pageLoading" type="card" />
-        <div v-else class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-1">
-          <div class="border-b border-[#e7bcbc] px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <path d="M10 0L20 16H0L10 0z" fill="#dc0037" opacity="0.8"/>
-                <rect x="9" y="5" width="2" height="5" fill="white"/>
-                <rect x="9" y="11" width="2" height="2" fill="white"/>
-              </svg>
-              <h3 class="text-[#191c1d] text-[18px] font-bold leading-[28px]">Critical Alerts</h3>
+        <div class="card-container p-card-padding">
+          <div class="card-content flex flex-col h-full justify-between">
+            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Dormant</h3>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-metric-lg font-metric-lg text-[#B50232]">{{ portfolio.dormant != null ? portfolio.dormant : '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.dormantPct }}%</span>
             </div>
-            <span class="bg-[#dc0037] text-white text-[10px] font-bold px-2 py-0.5 rounded-[12px] leading-[15px]">5 NEW</span>
-          </div>
-          <div class="flex-1 overflow-auto relative">
-            <div class="p-6 text-center text-sm text-gray-400">
-              Alerts surface when risk thresholds are crossed.
-            </div>
+            <p class="text-body-md font-body-md text-secondary mt-auto">Stable across 3 periods</p>
           </div>
         </div>
 
-        <!-- Predictive Lifecycle Ledger -->
-        <LoadingSkeleton v-if="pageLoading" type="table" :count="5" />
-        <div v-else class="bg-white border border-[#e7bcbc] rounded-[6px] flex flex-col h-[500px] overflow-hidden p-px col-span-2">
-          <div class="bg-white border-b border-[#e7bcbc] px-6 py-4 flex items-center justify-between">
-            <h3 class="text-[#191c1d] text-[18px] font-bold leading-[28px]">Predictive Lifecycle Ledger</h3>
-            <div class="flex gap-2">
-              <button class="border border-[#e7bcbc] rounded-[2px] p-[7px] pb-[11px] flex items-center justify-center">
-                <svg width="10.5" height="7" viewBox="0 0 10.5 7" fill="none">
-                  <path d="M0 0h10.5v1.5H0zM0 6h10.5v1H0z" fill="#5d3f3f"/>
+        <!-- Churned -->
+        <div class="card-container p-card-padding">
+          <div class="card-content flex flex-col h-full justify-between">
+            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Churned</h3>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-metric-lg font-metric-lg text-[#DC0037]">{{ portfolio.churned != null ? portfolio.churned : '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.churnedPct }}%</span>
+            </div>
+            <p class="text-body-md font-body-md text-secondary mt-auto">Last 90 days</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row: Donut + Histogram -->
+      <div class="grid grid-cols-12 gap-4 md:gap-gutter mb-8">
+        <div class="col-span-12 lg:col-span-5 card-container p-card-padding">
+          <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-4">State Distribution</h3>
+          <div class="h-64">
+            <Doughnut :data="donutChartData" :options="donutChartOptions" />
+          </div>
+        </div>
+        <div class="col-span-12 lg:col-span-7 card-container p-card-padding">
+          <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-4">Health Score Distribution</h3>
+          <div class="h-64">
+            <Bar :data="histogramChartData" :options="histogramChartOptions" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Grid Layout -->
+      <div class="grid grid-cols-12 gap-4 md:gap-gutter">
+        <!-- Left Column: Critical Alerts -->
+        <div class="col-span-12 lg:col-span-4 flex flex-col gap-4 md:gap-gutter overflow-y-auto">
+          <div class="card-container flex flex-col h-[500px]">
+            <div class="card-content border-b border-gray-200 p-4 flex justify-between items-center bg-white z-10">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-[#DC0037]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                 </svg>
-              </button>
-              <button class="border border-[#e7bcbc] rounded-[2px] p-[7px] pb-[11px] flex items-center justify-center">
-                <svg width="9.333" height="9.333" viewBox="0 0 10 10" fill="none">
-                  <circle cx="5" cy="5" r="1.5" fill="#5d3f3f"/>
-                  <circle cx="5" cy="1" r="1.5" fill="#5d3f3f"/>
-                  <circle cx="5" cy="9" r="1.5" fill="#5d3f3f"/>
-                  <circle cx="1" cy="5" r="1.5" fill="#5d3f3f"/>
-                  <circle cx="9" cy="5" r="1.5" fill="#5d3f3f"/>
-                </svg>
-              </button>
+                <h3 class="text-headline-md font-headline-md">Critical Alerts</h3>
+              </div>
+              <span class="text-label-sm font-label-sm text-[#DC0037]">
+                {{ alerts.length }} NEW
+              </span>
             </div>
-          </div>
-          <div class="flex-1 overflow-auto">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr class="bg-[#e7e8e9]">
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">NAME</th>
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">STATE</th>
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">
-                    <span class="flex items-center gap-1">
-                      HEALTH
-                      <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                        <circle cx="4" cy="4" r="3.5" fill="#5d3f3f" opacity="0.5"/>
-                        <path d="M4 2v2.5M4 5.5v.5" stroke="white" stroke-width="0.8"/>
-                      </svg>
-                    </span>
-                  </th>
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">CHURN<br/>PROB</th>
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">CLV<br/>(ZMW)</th>
-                  <th class="text-[#5d3f3f] text-xs font-bold tracking-[0.5791px] uppercase text-left px-5 py-4">ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="row in customerStore.customers.slice(0, 5)" :key="row.customerId" class="border-t border-[#e7bcbc]">
-                  <td class="pl-5 py-3">
-                    <div class="flex gap-3 items-center">
-                      <div class="w-1 h-8 rounded-full"
-                        :style="{ backgroundColor: row.state === 'CHURNED' ? '#dc0037' : row.state === 'AT_RISK' ? '#ed6c02' : row.state === 'DORMANT' ? '#757575' : '#2e7d32' }"></div>
-                      <div>
-                        <div class="text-[#191c1d] text-sm font-bold leading-5">{{ row.fullName }}</div>
-                        <div class="text-[#5d3f3f] text-xs font-normal">ID: {{ row.customerId }}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="pl-8 py-3">
-                    <StateBadge :state="row.state" size="sm" />
-                  </td>
-                  <td class="px-5 py-3">
-                    <div class="w-24">
-                      <span class="text-[#191c1d] text-xs font-normal">{{ row.healthScore || '--' }}%</span>
-                      <div class="bg-[#e1e3e4] h-1.5 rounded w-full mt-1">
-                        <div class="h-full rounded" :style="{ width: (row.healthScore || 0) + '%', backgroundColor: (row.healthScore || 0) >= 70 ? '#2e7d32' : (row.healthScore || 0) >= 40 ? '#ed6c02' : '#dc0037' }"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-xs font-bold" :style="{ color: (row.churnProbability || 0) > 0.6 ? '#dc0037' : (row.churnProbability || 0) > 0.3 ? '#ed6c02' : '#2e7d32' }">{{ row.churnProbability ? Math.round(row.churnProbability * 100) + '%' : '--' }}</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#191c1d] text-xs font-medium">{{ row.clv ? (row.clv / 1000).toFixed(1) + 'K' : '--' }}</span>
-                  </td>
-                  <td class="px-5 py-3">
-                    <span class="text-[#5d3f3f] text-xs font-medium">{{ row.state === 'AT_RISK' ? 'REVIEW' : row.state === 'CHURNED' ? 'RETENTION' : row.state === 'DORMANT' ? 'KYC' : 'UPSELL' }}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="border-t border-[#e7bcbc] px-4 py-4 flex items-center justify-between">
-            <span class="text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Showing {{ Math.min(customerStore.customers.length, 5) }} of {{ customerStore.pagination.total }} customers</span>
-            <div class="flex gap-2">
-              <button class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[2px] px-[9px] py-[5px] opacity-50 text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Previous</button>
-              <button class="bg-[#f8f9fa] border border-[#e7bcbc] rounded-[2px] px-[9px] py-[5px] text-[#5d3f3f] text-[12px] font-medium leading-[16px]">Next</button>
+            <div class="card-content flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+              <div v-if="alerts.length === 0" class="text-body-md text-secondary text-center py-8">No critical alerts</div>
+              <!-- Alerts List -->
+              <div 
+                v-for="(alert, index) in alerts" 
+                :key="index" 
+                class="py-1"
+              >
+                <div class="flex justify-between items-start mb-1">
+                  <h4 class="font-bold text-body-md text-on-surface">{{ alert.name }}</h4>
+                  <span class="text-label-sm text-secondary">{{ alert.time }}</span>
+                </div>
+                <p :class="['text-body-md font-bold mb-1', alert.titleColorClass]">{{ alert.title }}</p>
+                <p class="text-body-md text-secondary mb-3">{{ alert.description }}</p>
+                <button 
+                  v-if="alert.actionable" 
+                  :class="[
+                    'w-full text-body-md font-bold py-2 px-4 rounded shadow-sm transition-colors',
+                    alert.buttonClass
+                  ]"
+                  @click="acknowledgeAlert(index)"
+                >
+                  Acknowledge
+                </button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Center/Right Column: Main Content Area -->
+        <div class="col-span-12 lg:col-span-8 flex flex-col gap-4 overflow-y-auto">
+          <!-- Predictive Lifecycle Ledger -->
+          <div class="card-container h-[500px]">
+            <div class="card-content h-full flex flex-col">
+              <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
+                <h3 class="text-headline-md font-headline-md">Predictive Lifecycle Ledger</h3>
+                <div class="flex gap-2">
+                  <button class="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                  </button>
+                  <button class="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="overflow-x-auto flex-1">
+                <table class="min-w-full divide-y divide-outline-variant">
+                  <thead>
+                    <tr class="border-b border-outline-variant bg-white">
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">Name</th>
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">State</th>
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">Health ↑</th>
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">Churn Prob</th>
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">CLV (ZMW)</th>
+                      <th class="p-4 text-label-caps font-label-caps text-on-surface" scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-outline-variant">
+                    <tr v-if="ledgerCustomers.length === 0">
+                      <td colspan="6" class="p-12 text-center text-body-md text-secondary">No customer data available</td>
+                    </tr>
+                    <tr v-for="customer in ledgerCustomers" :key="customer.id">
+                      <td class="p-4 whitespace-nowrap">
+                        <div>
+                            <router-link :to="`/dashboard/customer/${encodeURIComponent(customer.id)}`" class="font-bold text-body-md text-on-surface hover:text-[#DC0037] transition-colors">{{ customer.name }}</router-link>
+                            <div class="text-label-sm text-secondary">ID: {{ customer.id }}</div>
+                          </div>
+                      </td>
+                      <td class="p-4 whitespace-nowrap">
+                        <div class="flex items-center text-body-md">
+                          <span :class="['w-2 h-2 rounded-full mr-2', customer.dotColorClass]"></span> {{ customer.state }}
+                        </div>
+                      </td>
+                      <td class="p-4 whitespace-nowrap">
+                        <div class="text-body-md font-bold mb-1">{{ customer.health }}%</div>
+                        <div class="progress-bar-container">
+                          <div :class="['progress-bar-fill', customer.progressFillClass]" :style="{ width: customer.health + '%' }"></div>
+                        </div>
+                      </td>
+                      <td :class="['p-4 whitespace-nowrap text-body-md font-bold', customer.churnProbColorClass]">
+                        {{ customer.churnProb }}%
+                      </td>
+                      <td class="p-4 whitespace-nowrap text-body-md">{{ customer.clv }}</td>
+                      <td class="p-4 whitespace-nowrap">
+                        <button :class="['text-body-md font-bold py-1.5 px-3 rounded shadow-sm transition-colors w-full', customer.actionBtnClass]">
+                          {{ customer.actionText }}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Pagination -->
+              <div class="p-4 border-t border-gray-200 bg-white flex items-center justify-between mt-auto">
+                <span class="text-body-md text-secondary">Showing 5 of 1,240 customers</span>
+                <div class="flex gap-2">
+                  <button class="px-3 py-1 border border-gray-300 rounded text-body-md text-secondary bg-gray-50 cursor-not-allowed">Previous</button>
+                  <button class="px-3 py-1 border border-gray-300 rounded text-body-md text-on-surface hover:bg-gray-50">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <!-- Contextual Insight Footer -->
-      <div class="flex gap-6 w-full">
+      <!-- Bottom Row: AI & Trend -->
+      <div class="grid grid-cols-2 gap-4 md:gap-gutter mt-8">
         <!-- AI Recommendation -->
-        <div class="flex-1 border border-[#e7bcbc] rounded-[6px] p-[25px] flex gap-6 items-start" style="background-image: url(&quot;data:image/svg+xml;utf8,<svg viewBox='0 0 466 132' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><g transform='matrix(43.196 12.143 -42.868 17.711 34.042 10.57)' opacity='1'><rect height='44.318' width='107.39' fill='url(%23grad)' id='quad' shape-rendering='crispEdges'/><use href='%23quad' transform='scale(1 -1)'/><use href='%23quad' transform='scale(-1 1)'/><use href='%23quad' transform='scale(-1 -1)'/></g><defs><linearGradient id='grad' gradientUnits='userSpaceOnUse' x2='5' y2='5'><stop stop-color='rgba(220,35,55,1)' offset='0'/><stop stop-color='rgba(169,25,42,1)' offset='0.19952'/><stop stop-color='rgba(118,14,29,1)' offset='0.39904'/><stop stop-color='rgba(68,15,23,1)' offset='0.69952'/><stop stop-color='rgba(43,16,19,1)' offset='0.84976'/><stop stop-color='rgba(18,16,16,1)' offset='1'/></linearGradient></defs></svg>&quot;); background-repeat: no-repeat; background-position: center;">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <circle cx="11" cy="11" r="10" stroke="white" stroke-width="1.5" opacity="0.8"/>
-            <path d="M11 7v4M11 14v1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <div class="flex flex-col gap-[3px]">
-            <h4 class="text-white text-[14px] font-bold leading-[20px]">AI Recommendation Engine</h4>
-            <p class="text-white text-[12px] font-normal leading-[19.5px]">
-              System predicts risk patterns across portfolio segments based on real-time transaction data and behavioral scoring.
+        <div class="rounded p-6 flex flex-col relative overflow-hidden shadow-lg text-white min-h-[200px]" style="background: linear-gradient(135deg, #95052A 0%, #131010 50%, #000000 100%);">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+          <div class="relative z-10">
+            <h3 class="text-label-caps font-label-caps uppercase text-white mb-4">AI Recommendation Engine</h3>
+            <p class="text-body-md text-white/80 leading-relaxed">
+              System predicts a <strong class="text-white font-bold">5.2% increase</strong> in dormancy for segment 'HNI-Retail' within 60 days unless proactive outreach is initiated for accounts with declining transaction frequency.
             </p>
           </div>
         </div>
+
         <!-- Portfolio Health Trend -->
-        <div class="flex-1 bg-[#f3f4f5] border border-[#e7bcbc] rounded-[6px] p-[25px] flex gap-6 items-center">
-          <div class="bg-[rgba(46,125,50,0.1)] h-16 w-[30px] rounded-[12px] flex items-center justify-center">
-            <svg width="25" height="15" viewBox="0 0 25 15" fill="none">
-              <path d="M0 12l6-6 5 4 8-8 6 6" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <circle cx="19" cy="2" r="2" fill="#2e7d32"/>
-            </svg>
-          </div>
-          <div class="flex flex-col gap-[3px]">
-            <h4 class="text-[#191c1d] text-[14px] font-bold leading-[20px]">Portfolio Health Trend</h4>
-            <p class="text-[#5d3f3f] text-[12px] font-normal leading-[19.5px]">
-              Overall portfolio health score reflects aggregated customer health metrics computed by the prediction engine.
-            </p>
+        <div class="card-container p-6 flex items-center min-h-[200px]">
+          <div class="card-content flex gap-4 items-start w-full">
+            <div class="flex-shrink-0 w-12 h-16 bg-[#FF780F]/10 rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-[#FF780F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-headline-md font-headline-md mb-2">Portfolio Health Trend</h3>
+              <p class="text-body-md text-secondary leading-relaxed">
+                Overall portfolio health score has improved by <strong class="text-on-surface font-bold">+3.4 pts</strong> since the last quarter, primarily driven by the success of the 'Fixed Deposit Retention' campaign.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useCustomerStore } from '@/stores/customerStore'
-import StateBadge from '@/components/absa/StateBadge.vue'
-import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { Doughnut, Bar } from 'vue-chartjs'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
 
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
-const customerStore = useCustomerStore()
-const pageLoading = ref(true)
+const loading = ref(true)
+onMounted(() => { setTimeout(() => loading.value = false, 800) })
 
-const doughnutData = computed(() => ({
+const selectedSnapshot = ref(null)
+const snapshotOptions = ref([])
+
+// Portfolio data matching store shape — starts empty
+const portfolio = ref({
+  total: null, active: null, activePct: null,
+  atRisk: null, atRiskPct: null,
+  dormant: null, dormantPct: null,
+  churned: null, churnedPct: null,
+})
+
+// Donut chart: State Distribution
+const donutChartData = computed(() => ({
   labels: ['Active', 'At Risk', 'Dormant', 'Churned'],
   datasets: [{
-    data: [
-      customerStore.portfolio.active || 0,
-      customerStore.portfolio.atRisk || 0,
-      customerStore.portfolio.dormant || 0,
-      customerStore.portfolio.churned || 0,
-    ],
-    backgroundColor: ['var(--absa-success, #16A34A)', 'var(--absa-warning, #F59E0B)', '#6B7280', 'var(--absa-critical, #DC2626)'],
+    data: [portfolio.value.active, portfolio.value.atRisk, portfolio.value.dormant, portfolio.value.churned],
+    backgroundColor: ['#FF780F', '#DC0037', '#B50232', '#77021E'],
     borderWidth: 0,
-  }],
+  }]
 }))
 
-const histogramData = computed(() => {
-  const bins = Array(10).fill(0)
-  customerStore.customers.forEach((c) => {
-    const score = c.healthScore ?? 0
-    const idx = Math.min(Math.floor(score / 10), 9)
-    bins[idx]++
-  })
-  return {
-    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'],
-    datasets: [{
-      label: 'Customers',
-      data: bins,
-      backgroundColor: 'rgba(190, 15, 44, 0.7)',
-      borderRadius: 4,
-    }],
-  }
-})
-
-const chartOptions = computed(() => ({
+const donutChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } },
-}))
+  plugins: { legend: { position: 'bottom' } },
+}
 
-onMounted(async () => {
-  console.time('⏱ PortfolioOverview.onMounted')
-  console.log('📊 PortfolioOverview: fetching portfolio...')
-  await customerStore.fetchPortfolio()
-  pageLoading.value = false
-  console.log('📊 PortfolioOverview: done — customers:', customerStore.customers.length, 'loading:', customerStore.loading, 'error:', customerStore.error)
-  console.timeEnd('⏱ PortfolioOverview.onMounted')
-})
+// Bar chart: Health Score Distribution (placeholder)
+const histogramChartData = {
+  labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
+  datasets: [{
+    label: 'Customers',
+    data: [],
+    backgroundColor: '#B50232',
+    borderRadius: 4,
+  }]
+}
+
+const histogramChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { display: false } },
+    y: { beginAtZero: true },
+  },
+}
+
+const alerts = ref([])
+const ledgerCustomers = ref([])
+const totalCustomersSparkline = ref([])
+
+const acknowledgeAlert = (index) => {
+  alerts.value.splice(index, 1)
+}
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap');
+
+body {
+  background-color: #fbf9f8;
+  color: #1a1a1a;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.rounded-custom {
+  border-radius: 0.25rem;
+}
+
+.bg-grid {
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1h18v18H1V1zm1 1v16h16V2H2z' fill='%23e5e7eb' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.bg-ai-gradient {
+  background-image: linear-gradient(135deg, #7c001b 0%, #1a0006 100%);
+}
+
+.card-container {
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, #f3f4f6 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+  border-radius: 0.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar-container {
+  width: 100px;
+  height: 6px;
+  background-color: #e5e5e5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #999; 
+}
+</style>

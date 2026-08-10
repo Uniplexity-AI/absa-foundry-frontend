@@ -1,288 +1,514 @@
 <template>
-  <div class="etl-page">
-    <div class="etl-page__content">
-      <!-- 1. Page Header -->
-      <AbsaSectionHeader
-        title="Data Pipeline Health"
-        color="passion"
-        size="lg"
-      >
-        <template #overline>Home &nbsp;›&nbsp; Operations &nbsp;›&nbsp; ETL Execution Logs</template>
-        <template #actions>
-          <AbsaButton variant="outline" size="md">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  <div class="dashboard-root global-mesh-bg w-full min-h-screen p-4 md:p-6 lg:p-8">
+    <!-- Loading Skeleton -->
+    <template v-if="loading">
+      <div class="min-h-screen flex flex-col space-y-8">
+        <div class="flex justify-end">
+          <LoadingSkeleton type="kpi" />
+        </div>
+        <div class="grid grid-cols-4 gap-4">
+          <LoadingSkeleton v-for="i in 4" :key="i" type="kpi" />
+        </div>
+        <LoadingSkeleton type="block" />
+        <LoadingSkeleton type="table" :count="5" />
+      </div>
+    </template>
+    <template v-else>
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-end gap-3 mb-8">
+          <button class="px-4 py-2 bg-surface text-on-surface border border-outline-variant rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors font-label text-sm font-semibold shadow-sm">
+            <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
             Export Logs
-          </AbsaButton>
-          <AbsaButton variant="hope" size="md">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+          <button class="px-4 py-2 bg-primary text-on-primary rounded flex items-center gap-2 hover:bg-primary-container transition-colors font-label text-sm font-semibold shadow-sm">
+            <span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
             Trigger Manual Run
-          </AbsaButton>
-        </template>
-      </AbsaSectionHeader>
-
-      <!-- 2. Primary Operational KPIs -->
-      <div class="etl-page__section">
-        <div class="etl-page__kpi-grid">
-        <EtlStatCard label="TODAY'S RUNS" :value="store.kpis?.todays_runs ?? '--'" :sub-label="`${store.kpis?.success_rate ?? 0}% success rate`" variant="plain" />
-        <EtlStatCard label="SUCCESSFUL" :value="store.kpis?.successful_runs ?? '--'" sub-label="Completed without errors" variant="plain" />
-        <EtlStatCard label="FAILED" :value="String(store.kpis?.failed_runs ?? '--').padStart(2,'0')" sub-label="Needs investigation" variant="plain" />
-        <EtlStatCard label="RUNNING" :value="String(store.kpis?.running_runs ?? 0).padStart(2,'0')" sub-label="In progress" variant="plain" />
-        <EtlStatCard label="AVG QUALITY" :value="store.kpis?.avg_quality ?? '--'" sub-label="Today's average" variant="plain" />
-        <EtlStatCard label="AVG DURATION" :value="store.kpis?.avg_duration ?? '--'" sub-label="Today's average" variant="plain" />
+          </button>
         </div>
-      </div>
 
-      <!-- 3. Quality Trend — full width -->
-      <EtlQualityTrend
-        :points="store.qualityTrend"
-        :sla="store.statusPanel?.sla_threshold ?? 95"
-        :last-scan="store.statusPanel?.current_status_since ? `Since ${store.statusPanel.current_status_since}` : 'No data'"
-      />
-
-      <!-- 4. Current ETL Status -->
-      <div class="etl-page__section">
-        <div class="etl-page__status-panel">
-          <div class="etl-page__status-item">
-            <span class="etl-page__status-label">Current Status</span>
-            <span class="etl-page__status-dot" :class="statusDotClass"></span>
-            <span class="etl-page__status-value">{{ store.statusPanel?.current_status ?? 'Unknown' }}</span>
-            <span class="etl-page__status-meta">
-              <template v-if="store.statusPanel?.current_status_since">Since {{ store.statusPanel.current_status_since }}</template>
-              <template v-if="store.statusPanel?.current_pipeline"> · Pipeline: {{ store.statusPanel.current_pipeline }}</template>
-            </span>
-          </div>
-          <div class="etl-page__status-divider"></div>
-          <div class="etl-page__status-item">
-            <span class="etl-page__status-label">Last Successful Run</span>
-            <span class="etl-page__status-value etl-page__status-value--em">{{ store.statusPanel?.last_successful_run ? '#' + store.statusPanel.last_successful_run : '--' }}</span>
-            <span class="etl-page__status-meta">{{ store.statusPanel?.last_successful_duration ?? '--' }} · {{ store.statusPanel?.last_successful_rows ?? '--' }} · {{ store.statusPanel?.last_successful_quality ?? '--' }}% quality</span>
-          </div>
-          <div class="etl-page__status-divider"></div>
-          <div class="etl-page__status-item">
-            <span class="etl-page__status-label">Latest Quality</span>
-            <span class="etl-page__status-value etl-page__status-value--em">{{ store.statusPanel?.latest_quality ?? '--' }}%</span>
-            <span class="etl-page__status-meta">
-              <template v-if="store.statusPanel">Above SLA ({{ store.statusPanel.sla_threshold }}%) · {{ store.statusPanel.latest_quality_rows ?? '--' }} processed</template>
-            </span>
-          </div>
-          <div class="etl-page__status-divider"></div>
-          <div class="etl-page__status-item">
-            <span class="etl-page__status-label">Last Failure</span>
-            <span class="etl-page__status-value">{{ store.statusPanel?.last_failure_run ? '#' + store.statusPanel.last_failure_run : 'None' }}</span>
-            <span class="etl-page__status-meta" :class="{ 'etl-page__status-meta--warn': store.statusPanel?.last_failure_run }">
-              {{ store.statusPanel?.last_failure_detail ?? 'No recent failures' }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. Execution History -->
-      <div v-if="store.loading" class="etl-page__loading">Loading pipeline history…</div>
-      <div v-else-if="store.isEmpty" class="etl-page__empty">No pipeline runs found.</div>
-      <div v-else-if="store.error" class="etl-page__error">Failed to load: {{ store.error }}</div>
-      <EtlExecutionTable
-        v-else
-        :rows="store.runs"
-        :open-menu-id="openMenuId"
-        @toggle-menu="toggleMenu"
-        @view-run="viewRun"
-        @retry-run="retryRun"
-      />
-
-      <!-- Pagination -->
-      <div v-if="store.totalPages > 1" class="etl-page__pagination">
-        <button :disabled="store.page <= 1" @click="store.setPage(store.page - 1)">← Prev</button>
-        <span>Page {{ store.page }} of {{ store.totalPages }}</span>
-        <button :disabled="store.page >= store.totalPages" @click="store.setPage(store.page + 1)">Next →</button>
-      </div>
-
-      <!-- 6. Infrastructure Health -->
-      <div class="etl-page__section">
-        <h3 class="etl-page__section-title">Infrastructure Health</h3>
-        <div class="etl-page__infra-grid">
-          <EtlHealthCard
-            v-for="card in healthCards"
-            :key="card.label"
-            :label="card.label"
-            :value="card.value"
-            :icon="card.icon"
-            :status-color="card.statusColor"
-            :stat="card.stat"
-          />
-        </div>
-      </div>
-
-      <!-- 7. System Metrics -->
-      <div class="etl-page__section">
-        <h3 class="etl-page__section-title">System Metrics</h3>
-        <div class="etl-page__metrics-grid">
-          <EtlStatCard label="STORAGE GROWTH" value="+14.2 GB" sub-label="6.2TB of 10TB Allocated" :trend="2.4" trend-label="2.4%" variant="progress" :progress-pct="65" />
-          <EtlStatCard label="AVERAGE QUALITY" value="99.1%" sub-label="Based on last 50 batches" :trend="0.3" trend-label="0.3%" variant="chart" :chart-bars="qualityChartBars" />
-          <EtlStatCard label="FAILED RETRIES" value="02" sub-label="Requires manual intervention" :trend="-1" trend-label="Active" variant="badges">
-            <template #badges>
-              <div class="absa-etl-bottom-card__badges">
-                <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--dark">BT</span>
-                <span class="absa-etl-bottom-card__badge absa-etl-bottom-card__badge--red">ETL</span>
+      <!-- Data Pipeline Health Section -->
+      <h2 class="text-headline-lg font-headline font-bold mb-4 text-on-surface">Data Pipeline Health</h2>
+      <div id="health-trend-container" class="relative w-full grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8 h-auto min-h-fit block md:grid">
+        <div id="health-column" class="relative lg:col-span-1 flex flex-col gap-4 w-full h-auto min-h-[220px]">
+          <div class="flex flex-col gap-4 w-full">
+            <div v-if="pipelineHealth.length === 0" class="bg-surface rounded border border-outline-variant p-5 text-center text-body-md text-secondary">No health data available</div>
+            <div v-for="svc in pipelineHealth" :key="svc.name" class="bg-surface rounded border border-outline-variant p-5 global-dotted-bg shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined">{{ svc.icon }}</span>
+                </div>
+                <div>
+                  <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-1">{{ svc.name }}</p>
+                  <p class="text-lg font-headline font-bold text-on-surface">{{ svc.status }}</p>
+                </div>
               </div>
-            </template>
-          </EtlStatCard>
-          <EtlStatCard label="GATEWAY LATENCY" value="118ms" sub-label="Peak load during batch processing" :trend="0" trend-label="High" variant="bar" :progress-pct="78" />
+              <div class="flex flex-col items-end">
+                <span class="w-3 h-3 rounded-full bg-[#FF780F] mb-1"></span>
+                <span class="text-xs text-[#FF780F] font-semibold">{{ svc.metric }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="trend-column" class="relative lg:col-span-3 flex flex-col w-full h-auto min-h-[220px]">
+          <div class="bg-surface rounded border border-outline-variant p-6 global-dotted-bg shadow-sm w-full h-auto min-h-[220px] flex flex-col justify-between">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-headline-md font-headline font-semibold text-on-surface">Quality Score Trend</h3>
+              <div class="flex gap-2 bg-surface-container-low p-1 rounded border border-outline-variant">
+                <button class="px-3 py-1 text-xs font-semibold rounded bg-surface shadow-sm">24 HOURS</button>
+                <button class="px-3 py-1 text-xs font-semibold rounded text-on-surface-variant">7 DAYS</button>
+              </div>
+            </div>
+            <div class="h-48 w-full relative mb-4">
+              <div v-if="qualityTrendData.length === 0" class="flex items-center justify-center h-full text-body-md text-secondary">No trend data available</div>
+              <div v-else class="absolute inset-0 flex items-end gap-1">
+                <div v-for="(val, i) in qualityTrendData" :key="i" class="w-full bg-primary rounded-t" :style="{ height: val + '%' }"></div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center pt-4 border-t border-outline-variant text-sm text-on-surface-variant">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-primary rounded-sm block"></span>
+                <span class="font-semibold text-on-surface">Data Integrity Score: {{ dataIntegrityScore != null ? dataIntegrityScore : '—' }}</span>
+              </div>
+              <span>{{ lastScanTime ? 'Last scan: ' + lastScanTime : '' }}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- Table Section -->
+      <section class="mb-8">
+        <div class="bg-surface rounded shadow-sm overflow-hidden global-dotted-bg">
+          <div class="p-5 flex justify-between items-center bg-surface">
+            <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold">Execution History</h3>
+            <div class="flex items-center gap-2 text-sm">
+              <span class="text-on-surface-variant">Filter by:</span>
+              <select class="border border-outline-variant rounded text-sm py-1 pl-2 pr-8 bg-surface">
+                <option>All Statuses</option>
+                <option>Running</option>
+                <option>Completed</option>
+                <option>Failed</option>
+              </select>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Run ID</th>
+                  <th class="p-4 font-semibold">Batch ID</th>
+                  <th class="p-4 font-semibold">Duration</th>
+                  <th class="p-4 font-semibold">Rows (RCV/VAL/LD/REJ)</th>
+                  <th class="p-4 font-semibold">Quality Score</th>
+                  <th class="p-4 font-semibold">Status</th>
+                  <th class="p-4 font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="executionRuns.length === 0">
+                  <td colspan="7" class="p-12 text-center text-body-md text-secondary">No execution runs recorded</td>
+                </tr>
+                <tr v-for="run in executionRuns" :key="run.id" class="hover:bg-surface-container-low transition-colors" :class="{ 'cursor-pointer': run.batchId }" @click="run.batchId && $router.push('/dashboard/etl-runhistory/batch/' + run.batchId)">
+                  <td class="p-4 font-semibold" :class="run.status === 'FAILED' ? 'text-primary' : 'text-on-surface'">{{ run.runId }}</td>
+                  <td class="p-4 text-on-surface-variant">{{ run.batchId }}</td>
+                  <td class="p-4">{{ run.duration }}</td>
+                  <td class="p-4">{{ run.rows }}</td>
+                  <td class="p-4">
+                    <div class="w-16 h-2 bg-surface-variant rounded-full overflow-hidden">
+                      <div class="h-full" :class="run.qualityColor" :style="{ width: run.quality + '%' }"></div>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    <span :class="['inline-flex items-center gap-1.5 text-xs font-bold', run.statusColor]">
+                      <span v-if="run.status === 'RUNNING'" class="w-1.5 h-1.5 rounded-full animate-pulse" :class="run.statusDot"></span>
+                      <span v-if="run.status === 'COMPLETED'" class="material-symbols-outlined text-[14px]">check</span>
+                      <span v-if="run.status === 'FAILED'" class="material-symbols-outlined text-[14px]">close</span>
+                      {{ run.status }}
+                    </span>
+                  </td>
+                  <td class="p-4 text-on-surface-variant">
+                    <button class="p-1 rounded hover:bg-surface-variant" @click.stop>
+                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div class="p-4 flex items-center justify-between bg-surface text-sm text-on-surface-variant">
+            <span>{{ pagination.total ? `Showing ${pagination.from} to ${pagination.to} of ${pagination.total} results` : 'No results' }}</span>
+            <div class="flex items-center gap-1">
+              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">
+                <span class="material-symbols-outlined text-[16px]" data-icon="chevron_left">chevron_left</span>
+              </button>
+              <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-semibold">1</button>
+              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">2</button>
+              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">3</button>
+              <span class="px-2">...</span>
+              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">32</button>
+              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">
+                <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Metrics Grid -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Storage Growth</p>
+          <div class="flex items-end gap-3 mb-2">
+            <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.storageGrowth.value != null ? '+' + footerMetrics.storageGrowth.value : '—' }}</span>
+            <span v-if="footerMetrics.storageGrowth.change != null" class="text-sm font-semibold text-[#FF780F] flex items-center">
+              <span class="material-symbols-outlined text-[16px]">trending_up</span> {{ footerMetrics.storageGrowth.change }}%
+            </span>
+          </div>
+          <div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden mt-4">
+            <div class="w-[75%] h-full bg-primary"></div>
+          </div>
+          <p class="text-[10px] text-on-surface-variant mt-2">{{ footerMetrics.storageGrowth.used ? footerMetrics.storageGrowth.used + ' of ' + footerMetrics.storageGrowth.total + ' Allocated' : '—' }}</p>
+        </div>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm flex flex-col justify-between global-dotted-bg">
+          <div>
+            <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Average Quality</p>
+            <div class="flex items-end gap-3">
+              <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.averageQuality.value != null ? footerMetrics.averageQuality.value + '%' : '—' }}</span>
+              <span v-if="footerMetrics.averageQuality.change != null" class="text-sm font-semibold text-[#FF780F] flex items-center">
+                <span class="material-symbols-outlined text-[16px]">arrow_upward</span> {{ footerMetrics.averageQuality.change }}%
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm flex flex-col justify-between global-dotted-bg">
+          <div>
+            <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Failed Retries</p>
+            <div class="flex items-end justify-between">
+              <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.failedRetries.count != null ? String(footerMetrics.failedRetries.count).padStart(2, '0') : '—' }}</span>
+              <span v-if="footerMetrics.failedRetries.status" class="text-xs font-semibold text-primary flex items-center gap-1 border border-primary-fixed px-2 py-0.5 rounded">
+                <span class="material-symbols-outlined text-[14px]">error</span> {{ footerMetrics.failedRetries.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Gateway Latency</p>
+          <div class="flex items-end justify-between mb-2">
+            <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.gatewayLatency.value != null ? footerMetrics.gatewayLatency.value : '—' }}</span>
+            <span v-if="footerMetrics.gatewayLatency.level" class="text-sm font-semibold text-primary flex items-center">
+              <span class="material-symbols-outlined text-[16px]">warning</span> {{ footerMetrics.gatewayLatency.level }}
+            </span>
+          </div>
+          <p class="text-[10px] text-on-surface-variant mt-2">{{ footerMetrics.gatewayLatency.note || '—' }}</p>
+        </div>
+      </section>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { AbsaButton, AbsaSectionHeader } from '@/components/ui'
-import EtlHealthCard from './EtlHealthCard.vue'
-import EtlQualityTrend from './EtlQualityTrend.vue'
-import EtlStatCard from './EtlStatCard.vue'
-import EtlExecutionTable from './EtlExecutionTable.vue'
-import { useETLStore } from '@/stores/etlStore'
+import { onMounted, nextTick, ref } from 'vue'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 
-const router = useRouter()
-const store = useETLStore()
-
-// ── Status dot colour ──
-const statusDotClass = computed(() => {
-  const s = (store.statusPanel?.current_status ?? '').toLowerCase()
-  if (s === 'operational') return 'etl-page__status-dot--ok'
-  if (s === 'processing') return 'etl-page__status-dot--warn'
-  return 'etl-page__status-dot--err'
+const loading = ref(true)
+onMounted(async () => {
+  await nextTick()
+  setTimeout(() => loading.value = false, 800)
 })
 
-// ── Execution table menu ──
-const openMenuId = ref(null)
-
-function toggleMenu(id) {
-  openMenuId.value = openMenuId.value === id ? null : id
-}
-
-function viewRun(run) {
-  openMenuId.value = null
-  router.push(`/dashboard/etl-run-history/batch/${run.runId}`)
-}
-
-function retryRun(run) {
-  openMenuId.value = null
-}
-
-function handleClickOutside() {
-  openMenuId.value = null
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  store.loadDashboard()
+// Data loaded from API — all start empty
+const pipelineHealth = ref([])
+const qualityTrendData = ref([])
+const dataIntegrityScore = ref(null)
+const lastScanTime = ref(null)
+const executionRuns = ref([])
+const pagination = ref({ page: 1, total: 0, from: 0, to: 0 })
+const footerMetrics = ref({
+  storageGrowth: { value: null, change: null, used: null, total: null },
+  averageQuality: { value: null, change: null, sparkline: [] },
+  failedRetries: { count: null, status: null },
+  gatewayLatency: { value: null, level: null, note: null },
 })
 
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+onMounted(async () => {
+  await nextTick()
 
-// ── System metrics (local — no backend endpoint yet) ──
-const qualityChartBars = ref([30, 55, 40, 65, 80])
+  console.group('🔍 [ETLRunHistory — Full DOM Diagnostic]')
 
-// ── Infrastructure (local — no backend endpoint yet) ──
-const healthCards = ref([
-  {
-    label: 'PostgreSQL Cluster',
-    value: 'Healthy',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
-    statusColor: 'good',
-    stat: '99.98% uptime · 18 ms'
-  },
-  {
-    label: 'Redis Cache',
-    value: 'Healthy',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-    statusColor: 'good',
-    stat: '0.4ms latency · 512 MB'
-  },
-  {
-    label: 'API Gateway',
-    value: 'Stable',
-    icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
-    statusColor: 'warn',
-    stat: 'Load 72% · 118ms'
+  // ── 1. ROOT ──
+  const root = document.querySelector('.dashboard-root')
+  if (root) {
+    const rs = getComputedStyle(root)
+    console.log('1. .dashboard-root:', {
+      display: rs.display, flexDirection: rs.flexDirection,
+      height: rs.height, position: rs.position,
+      color: rs.color, backgroundColor: rs.backgroundColor,
+    })
+  } else { console.warn('❌ .dashboard-root NOT FOUND') }
+
+  // ── 2. MAIN ──
+  const main = document.querySelector('main')
+  if (main) {
+    const ms = getComputedStyle(main)
+    console.log('2. <main>:', { display: ms.display, height: ms.height, position: ms.position })
   }
-])
+
+  // ── 3. SECTIONS ──
+  const allSections = document.querySelectorAll('section')
+  console.log(`3. <section> tags: ${allSections.length}`)
+  allSections.forEach((s, i) => {
+    const ss = getComputedStyle(s)
+    console.log(`   [${i}]:`, { height: ss.height, display: ss.display, position: ss.position, text: s.textContent?.substring(0, 40) })
+  })
+
+  // ── 4. HEALTH CONTAINER ──
+  const hc = document.getElementById('health-trend-container')
+  if (hc) {
+    const hcs = getComputedStyle(hc)
+    console.log('4. #health-trend-container:', {
+      display: hcs.display, height: hcs.height, position: hcs.position,
+      offsetHeight: hc.offsetHeight, children: hc.children.length,
+    })
+  } else { console.warn('❌ #health-trend-container NOT FOUND') }
+
+  // ── 5-6. COLUMNS ──
+  ;['health-column', 'trend-column'].forEach(id => {
+    const el = document.getElementById(id)
+    if (el) {
+      const cs = getComputedStyle(el)
+      console.log(`${id}:`, { display: cs.display, height: cs.height, offsetHeight: el.offsetHeight })
+    }
+  })
+
+  // ── 7. TABLE ──
+  const table = document.querySelector('table')
+  console.log('7. <table>:', table ? `found, ${table.rows.length} rows, ${table.offsetHeight}px` : 'NOT FOUND')
+
+  // ── 8. CSS VAR TEST ──
+  const test = document.createElement('div')
+  test.className = 'bg-surface text-on-surface'
+  test.style.cssText = 'position:absolute;left:-9999px'
+  document.body.appendChild(test)
+  const ts = getComputedStyle(test)
+  console.log('8. CSS var test:', { bg: ts.backgroundColor, color: ts.color })
+  document.body.removeChild(test)
+
+  // ── 9. PARENT CHAIN ──
+  const absa = document.querySelector('.absa-content')
+  if (absa) {
+    const as = getComputedStyle(absa)
+    console.log('9. .absa-content:', { display: as.display, height: as.height, position: as.position, overflow: as.overflow })
+  }
+
+  // ── 10. FIRST H2 ──
+  const h2 = document.querySelector('h2')
+  if (h2) console.log('10. First <h2>:', { text: h2.textContent, color: getComputedStyle(h2).color, opacity: getComputedStyle(h2).opacity })
+
+  console.groupEnd()
+
+  // Force canvas/SVG re-measurement after layout is fixed
+  window.dispatchEvent(new Event('resize'))
+})
 </script>
 
 <style scoped>
-.etl-page { min-height: 100vh; background: #F8F8FA; display: flex; flex-direction: column; }
-.etl-page__content { max-width: 1600px; margin: 0 auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; width: 100%; flex: 1; }
-.etl-page__section { display: flex; flex-direction: column; gap: 12px; }
-.etl-page__section-title { font-family: 'Public Sans',system-ui,sans-serif; font-size: 16px; font-weight: 700; color: var(--absa-enrich, #131010); line-height: 22px; margin: 0; }
-
-.etl-page__kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-
-.etl-page__status-panel { display: flex; align-items: center; gap: 0; background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 16px 24px; }
-.etl-page__status-item { display: flex; flex-direction: column; gap: 2px; padding: 0 24px; flex: 1; }
-.etl-page__status-divider { width: 1px; height: 40px; background: #E8E8EC; flex-shrink: 0; }
-.etl-page__status-label { font-family: 'Inter',system-ui,sans-serif; font-size: 10px; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; }
-.etl-page__status-value { font-family: 'Public Sans',system-ui,sans-serif; font-size: 14px; font-weight: 600; color: var(--absa-enrich, #131010); display: flex; align-items: center; gap: 6px; }
-.etl-page__status-value--em { font-size: 16px; font-weight: 700; color: var(--absa-passion, #DC0037); }
-.etl-page__status-meta { font-family: 'Public Sans',system-ui,sans-serif; font-size: 11px; color: #9CA3AF; }
-.etl-page__status-meta--warn { color: var(--absa-inspire, #77021E); }
-.etl-page__status-dot { width: 8px; height: 8px; border-radius: 50%; }
-.etl-page__status-dot--ok { background: var(--absa-passion, #DC0037); }
-.etl-page__status-dot--warn { background: var(--absa-energy, #FF780F); }
-.etl-page__status-dot--err { background: var(--absa-inspire, #77021E); }
-
-/* ── Loading / Empty / Error ── */
-.etl-page__loading,
-.etl-page__empty,
-.etl-page__error {
-  text-align: center;
-  padding: 40px 16px;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 14px;
-  color: #9CA3AF;
-  background: #fff;
-  border: 1px solid #E8E8EC;
-  border-radius: 4px;
+/* 1. RESET ALL CHILD POSITIONS TO NORMAL DOCUMENT FLOW */
+.dashboard-root,
+.dashboard-root main,
+.dashboard-root section,
+.dashboard-root div,
+.dashboard-root header,
+.dashboard-root table,
+.dashboard-root tr,
+.dashboard-root td,
+.dashboard-root th,
+.dashboard-root h1,
+.dashboard-root h2,
+.dashboard-root h3,
+.dashboard-root p,
+.dashboard-root span {
+  position: relative !important;
+  float: none !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  clear: both !important;
 }
-.etl-page__error { color: var(--absa-inspire, #77021E); border-color: rgba(119,2,30,0.2); }
 
-/* ── Pagination ── */
-.etl-page__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 12px 0;
-  font-family: 'Public Sans', system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--absa-enrich, #131010);
+/* 1b. Restore absolute positioning for chart histogram bars */
+#trend-column .absolute {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
 }
-.etl-page__pagination button {
-  padding: 6px 16px;
-  border: 1px solid #E8E8EC;
-  border-radius: 4px;
-  background: #fff;
-  color: var(--absa-enrich, #131010);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
+#trend-column .absolute > div {
+  position: static !important;
 }
-.etl-page__pagination button:hover:not(:disabled) { border-color: var(--absa-passion, #DC0037); }
-.etl-page__pagination button:disabled { opacity: 0.4; cursor: default; }
 
-.etl-page__infra-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.etl-page__metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+/* 2. RE-ESTABLISH ROOT & MAIN FLEX DIRECTION */
+.dashboard-root {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  background-color: #ffffff !important;
+}
 
-.absa-etl-bottom-card__badges { display: flex; gap: 0; margin: 4px 0; }
-.absa-etl-bottom-card__badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-family: 'Public Sans',system-ui,sans-serif; font-size: 10px; font-weight: 700; color: #fff; line-height: 15px; }
-.absa-etl-bottom-card__badge:last-child { margin-left: -8px; }
-.absa-etl-bottom-card__badge--dark { background: var(--absa-enrich, #131010); }
-.absa-etl-bottom-card__badge--red  { background: var(--absa-passion, #DC0037); }
+.dashboard-root main {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important;
+  width: 100% !important;
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+}
 
-@media (max-width: 1400px) { .etl-page__kpi-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 1024px) { .etl-page__content { padding: 16px; gap: 16px; } .etl-page__kpi-grid { grid-template-columns: repeat(2, 1fr); } .etl-page__infra-grid { grid-template-columns: 1fr; } .etl-page__metrics-grid { grid-template-columns: repeat(2, 1fr); } .etl-page__status-panel { flex-wrap: wrap; gap: 12px; } .etl-page__status-divider { display: none; } }
-@media (max-width: 768px) { .etl-page__kpi-grid { grid-template-columns: 1fr; } .etl-page__metrics-grid { grid-template-columns: 1fr; } }
+/* 3. Side-by-side grid: health cards left, trend chart right */
+#health-trend-container {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1.5rem !important;
+}
+
+#health-column {
+  grid-column: span 1 / span 1 !important;
+}
+
+#trend-column {
+  grid-column: span 3 / span 3 !important;
+}
+
+section.grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+/* 4. HARDCODE VISIBILITY & CONTRAST (SOLVES FAINT TEXT) */
+.dashboard-root,
+.dashboard-root h1,
+.dashboard-root h2,
+.dashboard-root h3,
+.dashboard-root p,
+.dashboard-root span,
+.dashboard-root td,
+.dashboard-root th {
+  color: #131010 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.text-on-surface-variant {
+  color: #B50232 !important;
+}
+
+.text-primary {
+  color: #DC0037 !important;
+}
+
+.bg-surface {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(220, 0, 55, 0.15) !important;
+}
+
+/* 6. Force chart canvas/SVG to recalculate dimensions */
+#trend-column canvas,
+#trend-column svg {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 220px !important;
+}
+
+/* Apply consistent border to Execution History table section */
+section.mb-8 .bg-surface {
+  border: 1px solid rgba(220, 0, 55, 0.15) !important;
+}
+</style>
+
+<style>
+/* 1. Force main container into vertical flex column layout */
+#app main,
+main {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: auto !important;
+  gap: 1.5rem !important;
+}
+
+/* 2. Prevent card surfaces from being transparent or washed out */
+.bg-surface,
+.dashboard-root .bg-surface {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(220, 0, 55, 0.15) !important;
+}
+
+/* 3. Ensure table rows stack normally inside the main column */
+section {
+  width: 100% !important;
+  display: block !important;
+}
+
+/* 4. Side-by-side grid: health cards left, trend chart right */
+#health-trend-container {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1.5rem !important;
+  align-items: start !important;
+}
+
+#health-column {
+  grid-column: span 1 / span 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+#trend-column {
+  grid-column: span 3 / span 3 !important;
+  width: 100% !important;
+}
+
+/* 4b. Enforce canvas/SVG height so chart libraries initialize correctly */
+#trend-column canvas,
+#trend-column svg,
+#trend-column .chart-wrapper {
+  display: block !important;
+  width: 100% !important;
+  min-height: 250px !important;
+  height: 250px !important;
+}
+
+/* 5. Fallback CSS variables for offline backend */
+:root {
+  --brand-primary: #DC0037;
+  --on-surface: #131010;
+  --on-surface-variant: #B50232;
+  --surface: #ffffff;
+  --outline-variant: #e5e7eb;
+}
+
+/* 6. Text contrast fallbacks */
+.text-on-surface,
+[class*="text-on-surface"] {
+  color: #131010 !important;
+  opacity: 1 !important;
+}
+
+.text-on-surface-variant,
+[class*="text-on-surface-variant"] {
+  color: #B50232 !important;
+  opacity: 1 !important;
+}
+
+.text-primary,
+[class*="text-primary"] {
+  color: #DC0037 !important;
+  opacity: 1 !important;
+}
 </style>

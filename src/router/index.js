@@ -9,8 +9,8 @@ const LandingPage = () => import('@/views/Home.vue');
 
 // ============================Authentications page imports=============================
 
-import Login from '@/views/Auth/login.vue';
-import ResetPassword from '@/views/Auth/ResetPassword.vue';
+import Login from '@/views/auth/login.vue';
+import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
 import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
@@ -79,7 +79,7 @@ const routes = [
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import('@/views/Auth/ForgotPassword.vue'),
+    component: () => import('@/views/auth/ForgotPassword.vue'),
     meta: { requiresAuth: false }
   },
   {
@@ -107,7 +107,7 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    component: () => import('@/views/Auth/Logout.vue'),
+    component: () => import('@/views/auth/Logout.vue'),
     meta: { requiresAuth: false }
   },
 
@@ -143,19 +143,19 @@ const routes = [
 
     children: [
       { path: '', redirect: '/dashboard/home' },
-      { path: 'home', name: 'DashboardHome', component: () => import('../views/DashboardHome.vue') },
-      { path: 'portfolio', name: 'PortfolioOverview', component: () => import('../views/PortfolioOverview.vue') },
-      { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue') },
-      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue') },
-      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue') },
-      { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue') },
-      { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue') },
-      { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue') },
+      { path: 'home', name: 'DashboardHome', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Dashboard' } },
+      { path: 'portfolio', name: 'PortfolioOverview', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Portfolio Overview' } },
+      { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue'), meta: { title: 'Customer Detail' } },
+      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue'), meta: { title: 'Branch Manager Dashboard' } },
+      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue'), meta: { title: 'Model Performance' } },
+      { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue'), meta: { title: 'ETL Pipeline' } },
+      { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'), meta: { title: 'ETL Run History' } },
+      { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { title: 'Batch Execution Detail' } },
      
-      { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue') },
-      { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue') },
-      { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue') },
-      { path: 'settings/users', name: 'UserManagement', component: () => import('../views/Modules/settings/UserManagement.vue') },
+      { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue'), meta: { title: 'AI Assistant' } },
+      { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue'), meta: { title: 'Settings' } },
+      { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue'), meta: { title: 'Sub Accounts' } },
+      { path: 'settings/users', name: 'UserManagement', component: () => import('../views/Modules/settings/UserManagement.vue'), meta: { title: 'User Management' } },
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/Modules/settings/ProfileModule.vue') },
       
       // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/Modules/aiagents/ImageCaptureModule.vue') },

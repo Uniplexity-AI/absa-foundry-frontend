@@ -24,6 +24,10 @@
             <span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
             Trigger Manual Run
           </button>
+          <router-link to="/dashboard/etl-config-manager" class="px-4 py-2 bg-surface text-on-surface border border-outline-variant rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors font-label text-sm font-semibold shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">settings</span>
+            Config Manager
+          </router-link>
         </div>
 
       <!-- Data Pipeline Health Section -->

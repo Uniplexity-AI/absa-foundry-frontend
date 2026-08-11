@@ -151,6 +151,7 @@ const routes = [
       { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue'), meta: { title: 'ETL Pipeline' } },
       { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'), meta: { title: 'ETL Run History' } },
       { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { title: 'Batch Execution Detail' } },
+      { path: 'etl-config-manager', name: 'EtlConfigManager', component: () => import('../views/Modules/datapipeline/EtlConfigManager.vue'), meta: { title: 'ETL Config Manager' } },
      
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue'), meta: { title: 'AI Assistant' } },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue'), meta: { title: 'Settings' } },

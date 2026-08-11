@@ -91,7 +91,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="row in customerStore.customers.slice(0, 5)" :key="row.customerId">
+                  <tr v-for="row in customerStore.customers.slice((dbLedgerPage - 1) * 5, dbLedgerPage * 5)" :key="row.customerId">
                     <td>
                       <div class="absa-db-ledger__name">{{ row.fullName }}</div>
                       <div class="absa-db-ledger__id">{{ row.customerId }}</div>
@@ -108,9 +108,9 @@
                       </div>
                     </td>
                     <td>
-                      <span class="absa-db-ledger__churn">{{ row.churnProbability ? Math.round(row.churnProbability * 100) + '%' : '--' }}</span>
+                      <span class="absa-db-ledger__churn">{{ predictionStore.getChurnProbability(row.customerId) != null ? Math.round(predictionStore.getChurnProbability(row.customerId) * 100) + '%' : '--' }}</span>
                     </td>
-                    <td class="absa-db-ledger__clv">ZMW {{ row.clv ? (row.clv / 1000).toFixed(1) + 'K' : '--' }}</td>
+                    <td class="absa-db-ledger__clv">ZMW {{ predictionStore.predictions[row.customerId]?.clv_percentile != null ? (predictionStore.predictions[row.customerId].clv_percentile * 100).toFixed(0) + '%ile' : '--' }}</td>
                     <td>
                       <span class="absa-db-ledger__action">{{ row.state === 'AT_RISK' ? 'REVIEW' : row.state === 'CHURNED' ? 'RETENTION' : '--' }}</span>
                     </td>
@@ -119,15 +119,11 @@
               </table>
             </div>
             <div class="absa-db-ledger__pagination">
-              <span>Showing {{ Math.min(customerStore.customers.length, 5) }} of {{ customerStore.pagination.total }}</span>
+              <span>Showing {{ dbLedgerStart }}-{{ dbLedgerEnd }} of {{ customerStore.pagination.total }}</span>
               <div class="absa-db-ledger__page-btns">
-                <button disabled><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
-                <button class="absa-db-ledger__page-btn--active">1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>...</button>
-                <button>310</button>
-                <button><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+                <button @click="dbLedgerPage--" :disabled="dbLedgerPage <= 1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+                <button v-for="p in dbVisiblePages" :key="p" @click="dbLedgerPage = p" :class="['absa-db-ledger__page-btn', p === dbLedgerPage ? 'absa-db-ledger__page-btn--active' : '']">{{ p }}</button>
+                <button @click="dbLedgerPage++" :disabled="dbLedgerPage >= dbLedgerTotalPages"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
               </div>
             </div>
           </div>
@@ -284,6 +280,7 @@ import { useDashboardWidgets } from '@/composables/useDashboardWidgets';
 import StateBadge from '@/components/absa/StateBadge.vue';
 import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue';
 import { useCustomerStore } from '@/stores/customerStore';
+import { usePredictionStore } from '@/stores/predictionStore';
 // Widget components to be implemented: RevenueWidget, PendingTasksWidget
 import '@/assets/main.css';
 import { useCurrency } from '@/composables/useCurrency.js';
@@ -308,11 +305,34 @@ const cards = getModuleCards();
 const canAccessSettings = computed(() => isAdmin.value || isSuperAdmin.value || hasPermission('settings', 'read'));
 
 const customerStore = useCustomerStore();
+const predictionStore = usePredictionStore();
 const pageLoading = ref(true);
+
+// Ledger pagination
+const dbLedgerPage = ref(1)
+const dbPageSize = 5
+const dbLedgerTotalPages = computed(() => Math.max(1, Math.ceil(customerStore.customers.length / dbPageSize)))
+const dbLedgerStart = computed(() => customerStore.customers.length === 0 ? 0 : (dbLedgerPage.value - 1) * dbPageSize + 1)
+const dbLedgerEnd = computed(() => Math.min(dbLedgerPage.value * dbPageSize, customerStore.customers.length))
+const dbVisiblePages = computed(() => {
+  const total = dbLedgerTotalPages.value
+  const current = dbLedgerPage.value
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const pages = [1]
+  if (current > 3) pages.push(-1) // ellipsis
+  for (let p = Math.max(2, current - 1); p <= Math.min(total - 1, current + 1); p++) pages.push(p)
+  if (current < total - 2) pages.push(-1)
+  pages.push(total)
+  return pages
+})
 
 // Fetch portfolio data on mount
 onMounted(async () => {
   await customerStore.fetchPortfolio();
+  dbLedgerPage.value = 1
+  // Batch-fetch predictions for first 50 customers (churn prob + CLV)
+  const ids = customerStore.customers.slice(0, 50).map(c => c.customerId);
+  predictionStore.fetchBatchPredictions(ids);
   pageLoading.value = false;
 });
 
@@ -624,7 +644,7 @@ function goTo(route) {
       router.push(route)
     }
   } else {
-    if (['/dashboard/profile', '/dashboard/settings', '/dashboard/home'].includes(checkRoute)) {
+    if (['/dashboard/profile', '/dashboard/settings', '/dashboard/portfolio'].includes(checkRoute)) {
       router.push(route)
     } else {
       router.push(subscribedModules.value[0]?.route || '/dashboard/profile')

@@ -133,7 +133,7 @@ const checkAndRedirectIfAuthenticated = () => {
       // Only redirect if on auth pages, not if already on dashboard routes or public portals
       if (authPages.includes(currentPath) && !currentPath.startsWith('/apply/')) {
         console.log('🔄 Valid session detected, redirecting to dashboard');
-        router.push('/dashboard/home');
+        router.push('/dashboard/portfolio');
       }
     }
   } catch (error) {

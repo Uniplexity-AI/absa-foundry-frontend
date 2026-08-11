@@ -1,7 +1,6 @@
 import { createPinia } from 'pinia';
 
 import './assets/main.css';
-import './assets/styles/absa-colors.css';
 import './assets/patterns.css';
 import './assets/pages.css';
 import { createApp } from 'vue';

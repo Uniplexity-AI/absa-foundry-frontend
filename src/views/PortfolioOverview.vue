@@ -1,7 +1,7 @@
 <template>
   <div class="global-mesh-bg text-on-background w-full p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto pt-20">
     <!-- Loading Skeleton -->
-    <template v-if="loading">
+    <template v-if="customerStore.loading">
       <div class="min-h-[calc(100vh-6rem)] flex flex-col">
         <div class="mb-8">
           <LoadingSkeleton type="stats" />
@@ -27,7 +27,7 @@
       <div class="mb-6 flex justify-end items-end">
         <div class="flex items-center gap-3">
           <span class="text-body-md text-secondary">Data Snapshot:</span>
-          <select v-model="selectedSnapshot" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#DC0037] focus:border-[#DC0037] sm:text-sm rounded-md shadow-sm bg-white">
+          <select v-model="selectedSnapshot" @change="onSnapshotChange" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#DC0037] focus:border-[#DC0037] sm:text-sm rounded-md shadow-sm bg-white">
             <option v-for="option in snapshotOptions" :key="option" :value="option">
               {{ option }}
             </option>
@@ -42,12 +42,12 @@
           <div class="card-content flex flex-col h-full justify-between">
             <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Total Customers</h3>
             <div class="flex items-baseline gap-2 mb-4">
-              <span class="text-metric-lg font-metric-lg text-on-surface">{{ portfolio.total != null ? portfolio.total : '—' }}</span>
+              <span class="text-metric-lg font-metric-lg text-on-surface">{{ customerStore.portfolio.total.toLocaleString() || '—' }}</span>
               <span class="text-body-md font-body-md text-[#FF780F] font-semibold flex items-center">
                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                 </svg>
-                {{ portfolio.activePct }}% active
+                {{ customerStore.portfolio.activePct }}% active
               </span>
             </div>
             <div class="flex items-end gap-1.5 h-12 mt-auto">
@@ -62,8 +62,8 @@
           <div class="card-content flex flex-col h-full justify-between">
             <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">At Risk</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-metric-lg font-metric-lg text-[#FF780F]">{{ portfolio.atRisk != null ? portfolio.atRisk : '—' }}</span>
-              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.atRiskPct }}%</span>
+              <span class="text-metric-lg font-metric-lg text-[#FF780F]">{{ customerStore.portfolio.atRisk.toLocaleString() || '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.atRiskPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">+4 since last snapshot</p>
           </div>
@@ -74,8 +74,8 @@
           <div class="card-content flex flex-col h-full justify-between">
             <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Dormant</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-metric-lg font-metric-lg text-[#B50232]">{{ portfolio.dormant != null ? portfolio.dormant : '—' }}</span>
-              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.dormantPct }}%</span>
+              <span class="text-metric-lg font-metric-lg text-[#B50232]">{{ customerStore.portfolio.dormant.toLocaleString() || '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.dormantPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">Stable across 3 periods</p>
           </div>
@@ -86,8 +86,8 @@
           <div class="card-content flex flex-col h-full justify-between">
             <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Churned</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-metric-lg font-metric-lg text-[#DC0037]">{{ portfolio.churned != null ? portfolio.churned : '—' }}</span>
-              <span class="text-body-md font-body-md text-secondary">| {{ portfolio.churnedPct }}%</span>
+              <span class="text-metric-lg font-metric-lg text-[#DC0037]">{{ customerStore.portfolio.churned.toLocaleString() || '—' }}</span>
+              <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.churnedPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">Last 90 days</p>
           </div>
@@ -188,34 +188,32 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-outline-variant">
-                    <tr v-if="ledgerCustomers.length === 0">
+                    <tr v-if="customerStore.customers.length === 0">
                       <td colspan="6" class="p-12 text-center text-body-md text-secondary">No customer data available</td>
                     </tr>
-                    <tr v-for="customer in ledgerCustomers" :key="customer.id">
+                    <tr v-for="customer in customerStore.customers.slice((ledgerPage - 1) * 5, ledgerPage * 5)" :key="customer.customerId">
                       <td class="p-4 whitespace-nowrap">
                         <div>
-                            <router-link :to="`/dashboard/customer/${encodeURIComponent(customer.id)}`" class="font-bold text-body-md text-on-surface hover:text-[#DC0037] transition-colors">{{ customer.name }}</router-link>
-                            <div class="text-label-sm text-secondary">ID: {{ customer.id }}</div>
+                            <router-link :to="`/dashboard/customer/${encodeURIComponent(customer.customerId)}`" class="font-bold text-body-md text-on-surface hover:text-[#DC0037] transition-colors">{{ customer.fullName }}</router-link>
+                            <div class="text-label-sm text-secondary">ID: {{ customer.customerId }}</div>
                           </div>
                       </td>
                       <td class="p-4 whitespace-nowrap">
-                        <div class="flex items-center text-body-md">
-                          <span :class="['w-2 h-2 rounded-full mr-2', customer.dotColorClass]"></span> {{ customer.state }}
-                        </div>
+                        <span class="text-body-md">{{ customer.state }}</span>
                       </td>
                       <td class="p-4 whitespace-nowrap">
-                        <div class="text-body-md font-bold mb-1">{{ customer.health }}%</div>
+                        <div class="text-body-md font-bold mb-1">{{ customer.healthScore ?? '--' }}</div>
                         <div class="progress-bar-container">
-                          <div :class="['progress-bar-fill', customer.progressFillClass]" :style="{ width: customer.health + '%' }"></div>
+                          <div class="progress-bar-fill bg-[#B50232]" :style="{ width: (customer.healthScore ?? 0) + '%' }"></div>
                         </div>
                       </td>
-                      <td :class="['p-4 whitespace-nowrap text-body-md font-bold', customer.churnProbColorClass]">
-                        {{ customer.churnProb }}%
+                      <td class="p-4 whitespace-nowrap text-body-md font-bold">
+                        {{ predictionStore.getChurnProbability(customer.customerId) != null ? Math.round(predictionStore.getChurnProbability(customer.customerId) * 100) + '%' : '--' }}
                       </td>
-                      <td class="p-4 whitespace-nowrap text-body-md">{{ customer.clv }}</td>
+                      <td class="p-4 whitespace-nowrap text-body-md">{{ predictionStore.predictions[customer.customerId]?.clv_percentile != null ? 'P' + (predictionStore.predictions[customer.customerId].clv_percentile * 100).toFixed(0) : '--' }}</td>
                       <td class="p-4 whitespace-nowrap">
-                        <button :class="['text-body-md font-bold py-1.5 px-3 rounded shadow-sm transition-colors w-full', customer.actionBtnClass]">
-                          {{ customer.actionText }}
+                        <button class="text-body-md font-bold py-1.5 px-3 rounded shadow-sm transition-colors w-full bg-[#DC0037] text-white">
+                          REVIEW
                         </button>
                       </td>
                     </tr>
@@ -224,10 +222,10 @@
               </div>
               <!-- Pagination -->
               <div class="p-4 border-t border-gray-200 bg-white flex items-center justify-between mt-auto">
-                <span class="text-body-md text-secondary">Showing 5 of 1,240 customers</span>
+                <span class="text-body-md text-secondary">Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ customerStore.pagination.total }} customers</span>
                 <div class="flex gap-2">
-                  <button class="px-3 py-1 border border-gray-300 rounded text-body-md text-secondary bg-gray-50 cursor-not-allowed">Previous</button>
-                  <button class="px-3 py-1 border border-gray-300 rounded text-body-md text-on-surface hover:bg-gray-50">Next</button>
+                  <button @click="ledgerPage--" :disabled="ledgerPage <= 1" :class="['px-3 py-1 border border-gray-300 rounded text-body-md', ledgerPage <= 1 ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-secondary hover:bg-gray-50']">Previous</button>
+                  <button @click="ledgerPage++" :disabled="ledgerPage >= ledgerTotalPages" :class="['px-3 py-1 border border-gray-300 rounded text-body-md', ledgerPage >= ledgerTotalPages ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-on-surface hover:bg-gray-50']">Next</button>
                 </div>
               </div>
             </div>
@@ -242,10 +240,14 @@
         <div class="rounded p-6 flex flex-col relative overflow-hidden shadow-lg text-white min-h-[200px]" style="background: linear-gradient(135deg, #95052A 0%, #131010 50%, #000000 100%);">
           <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
           <div class="relative z-10">
-            <h3 class="text-label-caps font-label-caps uppercase text-white mb-4">AI Recommendation Engine</h3>
-            <p class="text-body-md text-white/80 leading-relaxed">
-              System predicts a <strong class="text-white font-bold">5.2% increase</strong> in dormancy for segment 'HNI-Retail' within 60 days unless proactive outreach is initiated for accounts with declining transaction frequency.
-            </p>
+            <h3 class="text-label-caps font-label-caps uppercase text-white mb-4">AI Churn Intelligence</h3>
+            <div v-if="predictionStore.churnDrivers.length > 0" class="space-y-2">
+              <div v-for="d in predictionStore.churnDrivers.slice(0, 3)" :key="d.rank" class="flex justify-between items-center">
+                <span class="text-body-sm text-white/70 truncate mr-2">{{ d.driver_name }}</span>
+                <span class="text-body-sm font-bold text-white whitespace-nowrap">{{ d.contribution_pct }}% <span class="text-white/50 font-normal">({{ d.affected_customer_count.toLocaleString() }})</span></span>
+              </div>
+            </div>
+            <p v-else class="text-body-md text-white/80 leading-relaxed">Churn intelligence data will appear here once computed.</p>
           </div>
         </div>
 
@@ -260,7 +262,11 @@
             <div>
               <h3 class="text-headline-md font-headline-md mb-2">Portfolio Health Trend</h3>
               <p class="text-body-md text-secondary leading-relaxed">
-                Overall portfolio health score has improved by <strong class="text-on-surface font-bold">+3.4 pts</strong> since the last quarter, primarily driven by the success of the 'Fixed Deposit Retention' campaign.
+                <strong class="text-on-surface font-bold">{{ customerStore.portfolio.total.toLocaleString() }}</strong> customers tracked.
+                <strong v-if="customerStore.portfolio.atRiskPct > 0" class="text-[#DC0037]">{{ customerStore.portfolio.atRiskPct }}% at risk</strong>,
+                <strong v-if="customerStore.portfolio.dormantPct > 0" class="text-[#B50232]">{{ customerStore.portfolio.dormantPct }}% dormant</strong>,
+                <strong v-if="customerStore.portfolio.churnedPct > 0" class="text-on-surface">{{ customerStore.portfolio.churnedPct }}% churned</strong>.
+                {{ customerStore.portfolio.actionsDue.toLocaleString() }} actions due.
               </p>
             </div>
           </div>
@@ -275,29 +281,59 @@ import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { Doughnut, Bar } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
+import { useCustomerStore } from '@/stores/customerStore'
+import { usePredictionStore } from '@/stores/predictionStore'
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
-const loading = ref(true)
-onMounted(() => { setTimeout(() => loading.value = false, 800) })
+const customerStore = useCustomerStore()
+const predictionStore = usePredictionStore()
 
-const selectedSnapshot = ref(null)
-const snapshotOptions = ref([])
-
-// Portfolio data matching store shape — starts empty
-const portfolio = ref({
-  total: null, active: null, activePct: null,
-  atRisk: null, atRiskPct: null,
-  dormant: null, dormantPct: null,
-  churned: null, churnedPct: null,
+onMounted(async () => {
+  await customerStore.fetchPortfolio()
+  ledgerPage.value = 1
+  // Batch-fetch predictions for visible customers
+  const ids = customerStore.customers.slice(0, 50).map(c => c.customerId)
+  predictionStore.fetchBatchPredictions(ids, selectedSnapshot.value)
+  // Fetch churn drivers for AI engine
+  predictionStore.fetchChurnDrivers()
 })
 
-// Donut chart: State Distribution
+const selectedSnapshot = ref('2026-07-27')
+const snapshotOptions = ref([])
+
+// Generate last 30 days of snapshots centered on the default data date
+function generateSnapshots() {
+  const dates = []
+  const base = new Date('2026-07-27')
+  for (let i = 14; i >= -15; i--) {
+    const d = new Date(base)
+    d.setDate(d.getDate() + i)
+    dates.push(d.toISOString().slice(0, 10))
+  }
+  snapshotOptions.value = dates
+  selectedSnapshot.value = '2026-07-27'
+}
+generateSnapshots()
+
+async function onSnapshotChange() {
+  await customerStore.fetchPortfolio({ as_of_date: selectedSnapshot.value })
+  ledgerPage.value = 1
+}
+
+// Donut chart: State Distribution (6-state)
 const donutChartData = computed(() => ({
-  labels: ['Active', 'At Risk', 'Dormant', 'Churned'],
+  labels: ['New', 'Active', 'Growing', 'At Risk', 'Dormant', 'Churned'],
   datasets: [{
-    data: [portfolio.value.active, portfolio.value.atRisk, portfolio.value.dormant, portfolio.value.churned],
-    backgroundColor: ['#FF780F', '#DC0037', '#B50232', '#77021E'],
+    data: [
+      customerStore.portfolio.active,  // NOTE: backend may not return all states yet
+      0,  // NEW — pending backend enrichment
+      0,  // GROWING — pending backend enrichment
+      customerStore.portfolio.atRisk,
+      customerStore.portfolio.dormant,
+      customerStore.portfolio.churned,
+    ],
+    backgroundColor: ['#4CAF50', '#FF780F', '#2196F3', '#DC0037', '#B50232', '#77021E'],
     borderWidth: 0,
   }]
 }))
@@ -308,16 +344,30 @@ const donutChartOptions = {
   plugins: { legend: { position: 'bottom' } },
 }
 
-// Bar chart: Health Score Distribution (placeholder)
-const histogramChartData = {
+// Bar chart: Health Score Distribution (computed from customer data)
+const healthScoreHistogram = computed(() => {
+  const bins = [0, 0, 0, 0, 0]  // 0-20, 21-40, 41-60, 61-80, 81-100
+  customerStore.customers.forEach(c => {
+    const h = c.healthScore
+    if (h == null) return
+    if (h <= 20) bins[0]++
+    else if (h <= 40) bins[1]++
+    else if (h <= 60) bins[2]++
+    else if (h <= 80) bins[3]++
+    else bins[4]++
+  })
+  return bins
+})
+
+const histogramChartData = computed(() => ({
   labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
   datasets: [{
     label: 'Customers',
-    data: [],
+    data: healthScoreHistogram.value,
     backgroundColor: '#B50232',
     borderRadius: 4,
   }]
-}
+}))
 
 const histogramChartOptions = {
   responsive: true,
@@ -329,12 +379,66 @@ const histogramChartOptions = {
   },
 }
 
-const alerts = ref([])
-const ledgerCustomers = ref([])
 const totalCustomersSparkline = ref([])
 
+// Ledger pagination
+const ledgerPage = ref(1)
+const ledgerPageSize = 5
+const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(customerStore.customers.length / ledgerPageSize)))
+const ledgerStart = computed(() => customerStore.customers.length === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
+const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, customerStore.customers.length))
+
+// Critical Alerts — derived from live prediction + portfolio data
+const alerts = computed(() => {
+  const list = []
+
+  // 1. High churn risk customers (churn_probability > 60%)
+  const highRisk = Object.entries(predictionStore.predictions)
+    .filter(([, p]) => p.churn_probability > 0.6)
+    .map(([id, p]) => ({
+      name: id,
+      time: `${Math.round(p.churn_probability * 100)}% risk`,
+      title: 'High Churn Probability',
+      titleColorClass: 'text-[#DC0037]',
+      description: `Customer ${id.replace('CUST', '')} has a ${Math.round(p.churn_probability * 100)}% likelihood of churning within 90 days.`,
+      actionable: true,
+      buttonClass: 'bg-[#DC0037] text-white hover:bg-[#B50232]',
+    }))
+  list.push(...highRisk.slice(0, 3))
+
+  // 2. Portfolio-level: Dormancy is the dominant state
+  if (customerStore.portfolio.dormantPct > 40) {
+    list.push({
+      name: 'Portfolio Dormancy',
+      time: `${customerStore.portfolio.dormantPct}%`,
+      title: 'Dormancy Dominant',
+      titleColorClass: 'text-[#B50232]',
+      description: `${customerStore.portfolio.dormant.toLocaleString()} customers (${customerStore.portfolio.dormantPct}%) are dormant — proactive outreach recommended.`,
+      actionable: false,
+      buttonClass: '',
+    })
+  }
+
+  // 3. Top churn driver alert
+  const topDriver = predictionStore.churnDrivers[0]
+  if (topDriver && topDriver.contribution_pct > 30) {
+    list.push({
+      name: 'Top Churn Driver',
+      time: `${topDriver.contribution_pct}%`,
+      title: topDriver.driver_name,
+      titleColorClass: 'text-[#FF780F]',
+      description: `Affects ${topDriver.affected_customer_count.toLocaleString()} customers — ${topDriver.contribution_pct}% contribution to churn.`,
+      actionable: true,
+      buttonClass: 'bg-[#FF780F] text-white hover:bg-[#E06A00]',
+    })
+  }
+
+  return list
+})
+
 const acknowledgeAlert = (index) => {
-  alerts.value.splice(index, 1)
+  // Alerts are computed from live data — mark as acknowledged by filtering
+  // For now, this is a no-op since alerts auto-refresh from store data
 }
 </script>
 

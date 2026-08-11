@@ -21,11 +21,14 @@
     <template v-else>
       <!-- Dashboard Title Area -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4">
-        <div class="flex items-center gap-4">
-          <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ modelDetails.name || '—' }}</h2>
-          <span v-if="modelDetails.status" class="text-[#DC0037] text-xs font-bold uppercase tracking-wider">
-            {{ modelDetails.status }}
-          </span>
+        <div>
+          <div class="flex items-center gap-4">
+            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ modelDetails.name || '—' }}</h2>
+            <span v-if="modelDetails.status" class="text-[#DC0037] text-xs font-bold uppercase tracking-wider">
+              {{ modelDetails.status }}
+            </span>
+          </div>
+          <p class="text-sm text-gray-500 mt-1">{{ modelsStore.modelCount }} models deployed</p>
         </div>
         <div class="flex items-center gap-3">
           <button class="flex items-center gap-2 bg-white border border-[#DC0037] text-[#DC0037] hover:bg-brand-pink px-4 py-2 rounded-md text-sm font-semibold transition-colors">
@@ -57,30 +60,28 @@
             </div>
           </div>
 
-          <!-- F1 Score -->
+          <!-- Log Loss -->
           <div class="p-5 rounded-md border border-brand-subtle shadow-sm flex flex-col justify-between h-[150px] global-dotted-bg">
             <div class="flex justify-between items-start">
-              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">F1 Score</h3>
-              <span v-if="modelMetrics.f1Score.change != null" class="text-xs font-semibold text-brand-red flex items-center gap-1">
-                <i class="fa-solid fa-arrow-down text-[10px]"></i> {{ modelMetrics.f1Score.change }}%
-              </span>
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Log Loss</h3>
+              <span class="text-xs font-semibold text-gray-500">Lower is better</span>
             </div>
             <div>
-              <div class="text-3xl font-bold text-gray-900 mb-2">{{ modelMetrics.f1Score.value != null ? modelMetrics.f1Score.value : '—' }}</div>
+              <div class="text-3xl font-bold text-gray-900 mb-2">{{ modelMetrics.logLoss.value }}</div>
               <div class="h-10 w-full relative">
                 <canvas ref="sparklineF1Canvas"></canvas>
               </div>
             </div>
           </div>
 
-          <!-- Precision / Recall -->
+          <!-- Brier Score -->
           <div class="p-5 rounded-md border border-brand-subtle shadow-sm flex flex-col justify-between h-[150px] global-dotted-bg">
             <div class="flex justify-between items-start">
-              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Precision /<br/>Recall</h3>
-              <span class="text-xs font-semibold text-gray-500">Stable</span>
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Brier Score</h3>
+              <span class="text-xs font-semibold text-gray-500">Calibration</span>
             </div>
             <div>
-              <div class="text-3xl font-bold text-gray-900 mb-3">{{ modelMetrics.precision.value != null ? modelMetrics.precision.value + ' / ' + modelMetrics.recall.value : '—' }}</div>
+              <div class="text-3xl font-bold text-gray-900 mb-3">{{ modelMetrics.brier.value }}</div>
             </div>
           </div>
         </div>
@@ -215,7 +216,7 @@
         </div>
         <!-- Pagination Footer -->
         <div class="p-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500 font-medium">
-          <span>Showing latest 50 of 4,211 predictions</span>
+          <span>Showing latest 50 of {{ predictionTotal.toLocaleString() }} predictions</span>
           <div class="flex items-center gap-4">
             <button class="hover:text-brand-red disabled:opacity-50"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="hover:text-brand-red"><i class="fa-solid fa-chevron-right"></i></button>
@@ -227,31 +228,94 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import axios from 'axios'
+import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
+import { useModelsStore } from '@/stores/modelsStore'
 import Chart from 'chart.js/auto'
 
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+
+const modelsStore = useModelsStore()
 const loading = ref(true)
-onMounted(() => { setTimeout(() => loading.value = false, 800) })
+
+// Monitoring data
+const performanceHistory = ref([])
+const featureDriftList = ref([])
+const predictionLogs = ref([])
+const predictionTotal = ref(0)
+
+onMounted(async () => {
+  await modelsStore.fetchModels()
+  // Fetch monitoring data in parallel
+  try {
+    const [perfRes, driftRes, logRes] = await Promise.all([
+      api.get('/api/v1/monitoring/performance-history', { params: { horizon_days: 30 } }),
+      api.get('/api/v1/monitoring/feature-drift'),
+      api.get('/api/v1/monitoring/prediction-log', { params: { limit: 50 } }),
+    ])
+    performanceHistory.value = perfRes.data.history || []
+    featureDriftList.value = (driftRes.data.features || []).map(f => ({
+      name: f.name,
+      trainMean: f.training_mean.toFixed(1),
+      currentMean: f.current_mean.toFixed(1),
+      score: f.drift_score.toFixed(2),
+      scoreColor: f.drift_score > 0.20 ? 'text-[#DC0037] font-bold' : 'text-gray-900',
+      status: f.status,
+      badgeClass: f.status === 'CRITICAL' ? 'bg-red-100 text-[#DC0037]' : f.status === 'WARNING' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700',
+      invertShift: f.invert_shift,
+    }))
+    predictionLogs.value = (logRes.data.predictions || []).map(p => ({
+      timestamp: p.timestamp,
+      correlationId: p.correlation_id,
+      customerId: p.customer_id,
+      prob: (p.churn_probability * 100).toFixed(1) + '%',
+      class: p.predicted_class,
+      classColor: p.predicted_class === 'CHURN' ? 'text-[#DC0037]' : 'text-green-600',
+      latency: p.latency_ms.toFixed(1) + 'ms',
+    }))
+    predictionTotal.value = logRes.data.total_predictions || 0
+  } catch (e) {
+    console.warn('Models: monitoring fetch failed', e.message)
+  }
+  loading.value = false
+})
 
 // Interactive State
 const selectedTimeframe = ref('Last 1 Hour')
 
-// Model Details
-const modelDetails = ref({ name: null, status: null })
-
-// Sparkline metric cards
-const modelMetrics = ref({
-  aucRoc: { value: null, change: null },
-  f1Score: { value: null, change: null },
-  precision: { value: null, recall: { value: null } },
+// Model Details — from champion churn model
+const modelDetails = computed(() => {
+  const m = modelsStore.championChurn
+  return {
+    name: m?.id || '—',
+    status: m?.status || null,
+  }
 })
 
-// Feature Drift Table — starts empty
-const featureDriftList = ref([])
-
-// Live Prediction Logs — starts empty
-const predictionLogs = ref([])
+// Metric cards — from backend model registry
+const modelMetrics = computed(() => {
+  const m = modelsStore.championChurn
+  const metrics = m?.metrics || {}
+  return {
+    aucRoc: {
+      value: metrics.auc != null ? (metrics.auc * 100).toFixed(1) + '%' : '—',
+      change: null,
+    },
+    logLoss: {
+      value: metrics.log_loss != null ? metrics.log_loss.toFixed(4) : '—',
+    },
+    brier: {
+      value: metrics.brier != null ? metrics.brier.toFixed(4) : '—',
+    },
+  }
+})
 
 // Chart References
 const sparklineAucCanvas = ref(null)
@@ -266,117 +330,60 @@ watch(loading, async (val) => {
 })
 
 function initCharts() {
-  // Sparkline Configurations
   const sparklineOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: false }, tooltip: { enabled: false } },
-    scales: {
-      x: { display: false },
-      y: { display: false, min: 0 }
-    },
-    elements: {
-      point: { radius: 0 },
-      line: { tension: 0.4, borderWidth: 2 }
-    },
+    scales: { x: { display: false }, y: { display: false, min: 0 } },
+    elements: { point: { radius: 0 }, line: { tension: 0.4, borderWidth: 2 } },
     layout: { padding: 0 }
   }
 
-  // AUC-ROC Sparkline
-  new Chart(sparklineAucCanvas.value, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        data: [],
-        borderColor: '#DC0037',
-        fill: false
-      }]
-    },
-    options: sparklineOptions
-  })
+  const history = performanceHistory.value
+  const labels = history.map(h => h.date)
+  const aucData = history.map(h => h.auc * 100)
+  const precisionData = history.map(h => h.precision * 100)
+  const recallData = history.map(h => h.recall * 100)
 
-  // F1 Score Sparkline
-  new Chart(sparklineF1Canvas.value, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        data: [],
-        borderColor: '#DC0037',
-        fill: false
-      }]
-    },
-    options: sparklineOptions
-  })
+  // AUC-ROC Sparkline
+  if (sparklineAucCanvas.value) {
+    new Chart(sparklineAucCanvas.value, {
+      type: 'line',
+      data: { labels, datasets: [{ data: aucData, borderColor: '#DC0037', fill: false }] },
+      options: sparklineOptions,
+    })
+  }
+
+  // Log Loss Sparkline
+  if (sparklineF1Canvas.value) {
+    new Chart(sparklineF1Canvas.value, {
+      type: 'line',
+      data: { labels, datasets: [{ data: history.map(h => h.log_loss), borderColor: '#DC0037', fill: false }] },
+      options: sparklineOptions,
+    })
+  }
 
   // Main Performance Chart
-  new Chart(mainChartCanvas.value, {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [
-        {
-          label: 'Precision',
-          data: [],
-          borderColor: '#DC0037',
-          borderWidth: 2,
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 4
-        },
-        {
-          label: 'Recall',
-          data: [],
-          borderColor: 'rgba(220, 0, 55, 0.4)',
-          borderWidth: 2,
-          borderDash: [4, 4],
-          tension: 0.4,
-          pointRadius: 0,
-          pointHoverRadius: 4
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
+  if (mainChartCanvas.value) {
+    new Chart(mainChartCanvas.value, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Precision', data: precisionData, borderColor: '#DC0037', borderWidth: 2, tension: 0.4, pointRadius: 0, pointHoverRadius: 4 },
+          { label: 'Recall', data: recallData, borderColor: 'rgba(220, 0, 55, 0.4)', borderWidth: 2, borderDash: [4, 4], tension: 0.4, pointRadius: 0, pointHoverRadius: 4 },
+        ],
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          titleColor: '#333',
-          bodyColor: '#666',
-          borderColor: '#e5e7eb',
-          borderWidth: 1,
-          padding: 10,
-          boxPadding: 4,
-          usePointStyle: true,
-        }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false, grid: { display: false } }, y: { display: false, min: 0, max: 100 } },
+        layout: { padding: { top: 20, bottom: 20 } },
       },
-      scales: {
-        x: {
-          display: false,
-          grid: { display: false }
-        },
-        y: {
-          display: false,
-          min: 0,
-          max: 100,
-          grid: {
-            color: '#f3f4f6',
-            drawBorder: false,
-          }
-        }
-      },
-      layout: {
-        padding: { top: 20, bottom: 20 }
-      }
-    }
-  })
+    })
+  }
 }
 </script>
 

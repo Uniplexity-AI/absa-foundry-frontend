@@ -73,3 +73,42 @@ export async function fetchETLDashboard(params = {}) {
   })
   return _handleRes(res)
 }
+
+/**
+ * Fetch single batch/run detail for BatchExecutionDetail.vue.
+ *
+ * @param {string} runId — audit_id or batch_id
+ * @returns {Promise<{ run: object, validation: object|null }>}
+ */
+export async function fetchETLRunDetail(runId) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/runs/${encodeURIComponent(runId)}`, {
+    headers: _headers(),
+  })
+  return _handleRes(res)
+}
+
+/**
+ * List all extraction spec configs for the trigger modal.
+ * @returns {Promise<Array<{ name: string, description: string, status: string, last_modified: string, size_bytes: number }>>}
+ */
+export async function fetchETLConfigs() {
+  const res = await fetch(`${API_BASE_URL}/api/etl/configs`, {
+    headers: _headers(),
+  })
+  return _handleRes(res)
+}
+
+/**
+ * Trigger an ETL pipeline run with a given config.
+ * @param {string} configName — filename, e.g. "customer_360.yaml"
+ * @param {boolean} [dryRun=false]
+ * @returns {Promise<{ status: string, config_name: string, message: string, triggered_at: string }>}
+ */
+export async function triggerETLPipeline(configName, dryRun = false) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/trigger`, {
+    method: 'POST',
+    headers: _headers(),
+    body: JSON.stringify({ config_name: configName, dry_run: dryRun }),
+  })
+  return _handleRes(res)
+}

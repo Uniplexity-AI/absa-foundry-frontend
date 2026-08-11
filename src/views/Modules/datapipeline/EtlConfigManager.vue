@@ -4,8 +4,12 @@ import { ref, computed } from 'vue'
 // Tab & Search State
 const activeTab = ref('configurations')
 const searchQuery = ref('')
-const isModalOpen = ref(false)
 const isSaving = ref(false)
+
+// Editor view state: null = show configs table, config object = show editor
+const editorView = ref(null)
+const editingConfig = ref(null)
+const editorMode = ref('edit') // 'edit' | 'preview'
 
 // Config Specifications Data
 const configs = ref([
@@ -61,9 +65,6 @@ output:
   }
 ])
 
-// Currently Active Modal Config
-const activeConfig = ref({ ...configs.value[0] })
-
 // Search Filter Computed Property
 const filteredConfigs = computed(() => {
   if (!searchQuery.value.trim()) return configs.value
@@ -73,15 +74,23 @@ const filteredConfigs = computed(() => {
   )
 })
 
-// Modal & Data Actions
-function openEditModal(config) {
-  activeConfig.value = JSON.parse(JSON.stringify(config))
-  isModalOpen.value = true
+// Editor content lines for line numbers
+const editorLines = computed(() => {
+  if (!editingConfig.value?.content) return []
+  return editingConfig.value.content.split('\n')
+})
+
+// Open editor for existing config
+function openEditor(config) {
+  editingConfig.value = JSON.parse(JSON.stringify(config))
+  editorMode.value = 'edit'
+  editorView.value = config.id
 }
 
-function openNewConfigModal() {
+// Open editor for new config
+function openNewEditor() {
   const newId = Date.now()
-  activeConfig.value = {
+  editingConfig.value = {
     id: newId,
     name: `new_extraction_${configs.value.length + 1}.yaml`,
     description: 'New data extraction specification.',
@@ -90,24 +99,30 @@ function openNewConfigModal() {
     size: '1.0',
     content: `spec_version: "v2.1"\nname: "new_extraction"\ndescription: "New specification"`
   }
-  isModalOpen.value = true
+  editorMode.value = 'edit'
+  editorView.value = newId
 }
 
-function closeModal() {
-  isModalOpen.value = false
+// Close editor, return to table
+function closeEditor() {
+  editorView.value = null
+  editingConfig.value = null
 }
 
+// Save config from inline editor
 function saveConfig() {
+  if (!editingConfig.value) return
   isSaving.value = true
   setTimeout(() => {
-    const index = configs.value.findIndex(c => c.id === activeConfig.value.id)
+    const index = configs.value.findIndex(c => c.id === editingConfig.value.id)
     if (index !== -1) {
-      configs.value[index] = { ...activeConfig.value }
+      configs.value[index] = { ...editingConfig.value }
     } else {
-      configs.value.push({ ...activeConfig.value })
+      configs.value.push({ ...editingConfig.value })
     }
     isSaving.value = false
-    isModalOpen.value = false
+    editorView.value = null
+    editingConfig.value = null
   }, 500)
 }
 
@@ -117,198 +132,169 @@ function deleteConfig(id) {
 </script>
 
 <template>
-  <div class="absa-mesh font-body text-[#131010] h-full min-h-screen flex flex-col md:flex-row antialiased relative">
-    <!-- Main Content Wrapper -->
-    <div class="flex-1 flex flex-col min-h-screen relative">
-      <!-- TopNavBar -->
-      <header class="bg-[#FFFFFF] fixed top-0 right-0 left-0 h-20 border-b border-[#e4e2e2] z-10">
-        <div class="flex justify-between items-center px-8 w-full h-full max-w-[1440px] mx-auto">
-          <h2 class="text-headline-lg font-bold text-[#DC0037] tracking-tight">Branch Manager Dashboard</h2>
-          <div class="flex items-center gap-6">
-            <div class="relative focus-within:ring-2 focus-within:ring-[#DC0037]/20 rounded-full border border-[#e4e2e2]">
-              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#131010]/70 text-[20px]">search</span>
-              <input 
-                v-model="searchQuery" 
-                class="bg-[#FFFFFF] border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-0 w-64 text-[#131010]" 
-                placeholder="Search..." 
-                type="text"
-              />
+  <div class="dashboard-root global-mesh-bg w-full min-h-screen p-4 md:p-6 lg:p-8">
+
+    <!-- ═══ Tabbed Navigation ═══ -->
+    <div class="flex border-b border-outline-variant mb-6">
+      <button 
+        @click="activeTab = 'run_history'"
+        :class="[
+          'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
+          activeTab === 'run_history' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-on-surface-variant hover:text-[#DC0037]'
+        ]"
+      >
+        <span class="material-symbols-outlined text-[20px]">history</span>
+        Run History
+      </button>
+      <button 
+        @click="activeTab = 'configurations'"
+        :class="[
+          'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
+          activeTab === 'configurations' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-on-surface-variant hover:text-[#DC0037]'
+        ]"
+      >
+        <span 
+          class="material-symbols-outlined text-[20px]" 
+          :style="{ fontVariationSettings: activeTab === 'configurations' ? '\'FILL\' 1' : '\'FILL\' 0' }"
+        >description</span>
+        Configurations
+      </button>
+    </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- Configurations Panel                          -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <template v-if="activeTab === 'configurations'">
+
+          <!-- Editor View: inline GitHub-style YAML editor -->
+          <div v-if="editorView" class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm overflow-hidden flex flex-col relative text-on-surface text-sm min-h-[600px]">
+            <!-- Editor Header -->
+            <div class="px-4 py-3 flex justify-between items-center border-b border-outline-variant bg-surface relative z-10">
+              <div class="flex items-center gap-2 font-mono text-sm">
+                <span class="material-symbols-outlined text-on-surface-variant text-[20px]">dataset</span>
+                <span class="text-[#DC0037] font-bold">customer-lifecycle-ai</span>
+                <span class="text-on-surface-variant">/</span>
+                <strong class="text-on-surface">{{ editingConfig?.name }}</strong>
+              </div>
+              <div class="flex items-center gap-3">
+                <button @click="closeEditor" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant bg-surface border border-outline-variant rounded-md hover:border-[#DC0037] hover:text-[#DC0037] transition-colors">Cancel changes</button>
+                <button @click="saveConfig" :disabled="isSaving" class="px-3 py-1.5 text-sm font-bold text-on-primary bg-[#DC0037] hover:bg-[#B50232] rounded-md transition-colors flex items-center gap-2 shadow-sm border border-[#DC0037]">
+                  <span v-if="isSaving" class="material-symbols-outlined text-[16px] animate-spin">sync</span>
+                  save config
+                </button>
+              </div>
             </div>
-            <div class="flex items-center gap-4 border-l border-[#e4e2e2] pl-6">
-              <button class="text-[#131010]/70 hover:text-[#DC0037] transition-colors relative">
-                <span class="material-symbols-outlined text-[24px]">notifications</span>
-                <span class="absolute top-0 right-0 w-2 h-2 bg-[#DC0037] rounded-full"></span>
-              </button>
-              <button class="text-[#131010]/70 hover:text-[#DC0037] transition-colors">
-                <span class="material-symbols-outlined text-[24px]">help</span>
-              </button>
-              <div class="w-10 h-10 rounded-full bg-[#FFFFFF] border border-[#e4e2e2] overflow-hidden ml-2 cursor-pointer">
-                <img 
-                  class="w-full h-full object-cover" 
-                  alt="Banking Executive Profile" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzw1Q0XcIAyuSpFszByxrqLFJbsTsRotMJ9dCBPQrV6dlooAT-XzYc7E97aeC59XPjy5E24sgzIbh7ZEGiVvgQCw06Q3oFDwSp1RZemSgS3Q1ireT8XJIBDrvsBK3Y7aC7m-zb2I6Ac71LnINdLUIdieh-v4wYLAEwHbX6tPEhLuWSP6PyRJ-9j9bb9cX3XAoJKJUPgYd0H4qh3-dI5oYkxiHSVC9jJUnqJ2IQTYb4PQBYKu4jx5s8sA"
-                />
+            <!-- Editor Sub-header -->
+            <div class="flex justify-between items-center px-4 py-2 border-b border-outline-variant bg-surface relative z-10">
+              <div class="flex gap-2">
+                <button @click="editorMode = 'edit'" :class="['px-3 py-1.5 text-sm font-medium border border-outline-variant rounded-md transition-colors', editorMode === 'edit' ? 'text-on-surface bg-surface' : 'text-on-surface-variant hover:text-on-surface']">Edit</button>
+                <button @click="editorMode = 'preview'" :class="['px-3 py-1.5 text-sm font-medium transition-colors', editorMode === 'preview' ? 'text-on-surface bg-surface border border-outline-variant rounded-md' : 'text-on-surface-variant hover:text-on-surface']">Preview</button>
+              </div>
+              <div class="flex gap-4 items-center">
+                <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                  <span>Spaces:</span>
+                  <select class="bg-transparent border border-outline-variant rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
+                    <option>2</option>
+                    <option>4</option>
+                  </select>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+                  <span>Soft wrap</span>
+                  <select class="bg-transparent border border-outline-variant rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
+                    <option>None</option>
+                    <option>Word</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Editor Body: line numbers + YAML content -->
+            <div class="flex-1 overflow-auto flex bg-transparent font-mono text-[13px] leading-[1.6] relative z-10">
+              <div class="w-12 flex-shrink-0 text-right pr-4 text-on-surface-variant bg-surface-container-low select-none py-4 border-r border-outline-variant">
+                <template v-for="(_, i) in editorLines" :key="i">{{ i + 1 }}<br /></template>
+              </div>
+              <div v-if="editorMode === 'edit'" class="p-4 w-full outline-none focus:ring-0">
+                <textarea
+                  v-model="editingConfig.content"
+                  class="w-full h-full min-h-[400px] bg-transparent border-none outline-none resize-none font-mono text-[13px] leading-[1.6] text-on-surface"
+                  spellcheck="false"
+                ></textarea>
+              </div>
+              <div v-else class="p-4 whitespace-pre text-on-surface overflow-x-auto w-full font-medium">
+                <template v-for="(line, i) in editorLines" :key="i">
+                  <span class="text-[#DC0037] font-bold">{{ line.match(/^\s*\w+/) ? line.match(/^\s*\w+/)[0] : '' }}</span><span>{{ line.replace(/^\s*\w+/, '') }}</span><br />
+                </template>
               </div>
             </div>
           </div>
-        </div>
-      </header>
 
-      <!-- Main Canvas -->
-      <main class="flex-1 pt-28 px-8 pb-12 max-w-[1440px] mx-auto w-full">
-        <div class="mb-8 flex items-end justify-between">
-          <div>
-            <h1 class="text-headline-xl font-bold text-[#131010] tracking-tight mb-2">ETL Config Manager</h1>
-            <p class="text-body-lg text-[#131010]/70">Manage and execute data extraction specifications.</p>
+          <!-- Table View: configs list -->
+          <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm overflow-hidden relative">
+            <div class="relative z-10 px-6 py-5 border-b border-outline-variant flex justify-between items-center bg-surface">
+              <p class="text-body-md font-medium text-on-surface-variant uppercase tracking-widest text-[12px]">
+                {{ configs.length }} extraction specs in etl/config/extraction_specs/
+              </p>
+              <button @click="openNewEditor" class="bg-[#DC0037] hover:bg-[#B50232] text-on-primary font-medium py-2 px-4 rounded transition-colors flex items-center gap-2 text-body-md shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                New Config
+              </button>
+            </div>
+            <div class="relative z-10 overflow-x-auto bg-surface">
+              <table class="w-full text-left text-body-md">
+                <thead class="bg-surface border-b border-outline-variant text-label-caps text-on-surface-variant">
+                  <tr>
+                    <th class="px-6 py-4 font-bold tracking-widest">Name</th>
+                    <th class="px-6 py-4 font-bold tracking-widest">Status</th>
+                    <th class="px-6 py-4 font-bold tracking-widest">Last Modified</th>
+                    <th class="px-6 py-4 font-bold tracking-widest">Size (KB)</th>
+                    <th class="px-6 py-4 font-bold tracking-widest text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant bg-surface">
+                  <tr v-for="config in filteredConfigs" :key="config.id" class="hover:bg-surface-container-low transition-colors group cursor-pointer" @click="openEditor(config)">
+                    <td class="px-6 py-4">
+                      <div class="font-semibold text-on-surface">{{ config.name }}</div>
+                      <div class="text-on-surface-variant text-sm mt-0.5">{{ config.description }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span 
+                        v-if="config.status === 'valid'"
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#2e7d32]/10 text-[#2e7d32] border border-[#2e7d32]/20 text-xs font-semibold"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#2e7d32]"></span> valid
+                      </span>
+                      <span 
+                        v-else
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF780F]/10 text-[#F93F24] border border-[#FF780F]/30 text-xs font-semibold"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#F93F24]"></span> check needed
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ config.lastModified }}</td>
+                    <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ config.size }}</td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>
+                        <button @click="openEditor(config)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Edit">
+                          <span class="material-symbols-outlined text-[20px]">edit</span>
+                        </button>
+                        <button class="p-1.5 text-on-surface-variant hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded transition-colors" title="Run">
+                          <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                        </button>
+                        <button @click="deleteConfig(config.id)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Delete">
+                          <span class="material-symbols-outlined text-[20px]">delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-
-        <!-- Tabbed Navigation -->
-        <div class="flex border-b border-[#e4e2e2] mb-6">
-          <button 
-            @click="activeTab = 'run_history'"
-            :class="[
-              'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
-              activeTab === 'run_history' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-[#131010]/70 hover:text-[#DC0037]'
-            ]"
-          >
-            <span class="material-symbols-outlined text-[20px]">history</span>
-            Run History
-          </button>
-          <button 
-            @click="activeTab = 'configurations'"
-            :class="[
-              'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
-              activeTab === 'configurations' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-[#131010]/70 hover:text-[#DC0037]'
-            ]"
-          >
-            <span 
-              class="material-symbols-outlined text-[20px]" 
-              :style="{ fontVariationSettings: activeTab === 'configurations' ? '\'FILL\' 1' : '\'FILL\' 0' }"
-            >description</span>
-            Configurations
-          </button>
-        </div>
-
-        <!-- Configurations Panel -->
-        <div v-if="activeTab === 'configurations'" class="bg-[#FFFFFF] border border-[#DC0037] rounded-xl shadow-sm overflow-hidden relative">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="relative z-10 px-6 py-5 border-b border-[#e4e2e2] flex justify-between items-center bg-[#FFFFFF]/90 backdrop-blur-sm">
-            <p class="text-body-md font-medium text-[#131010]/70 uppercase tracking-widest text-[12px]">
-              {{ configs.length }} extraction specs in etl/config/extraction_specs/
-            </p>
-            <button @click="openNewConfigModal" class="bg-[#DC0037] hover:bg-[#B50232] text-[#FFFFFF] font-medium py-2 px-4 rounded transition-colors flex items-center gap-2 text-body-md shadow-sm">
-              <span class="material-symbols-outlined text-[18px]">add</span>
-              New Config
-            </button>
-          </div>
-          <div class="relative z-10 overflow-x-auto bg-[#FFFFFF]">
-            <table class="w-full text-left text-body-md">
-              <thead class="bg-[#FFFFFF] border-b border-[#e4e2e2] text-label-caps text-[#131010]/70">
-                <tr>
-                  <th class="px-6 py-4 font-bold tracking-widest">Name</th>
-                  <th class="px-6 py-4 font-bold tracking-widest">Status</th>
-                  <th class="px-6 py-4 font-bold tracking-widest">Last Modified</th>
-                  <th class="px-6 py-4 font-bold tracking-widest">Size (KB)</th>
-                  <th class="px-6 py-4 font-bold tracking-widest text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-[#e4e2e2] bg-[#FFFFFF]">
-                <tr v-for="config in filteredConfigs" :key="config.id" class="hover:bg-[#f5f5f5] transition-colors group">
-                  <td class="px-6 py-4">
-                    <div class="font-semibold text-[#131010]">{{ config.name }}</div>
-                    <div class="text-[#131010]/70 text-sm mt-0.5">{{ config.description }}</div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <span 
-                      v-if="config.status === 'valid'"
-                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#2e7d32]/10 text-[#2e7d32] border border-[#2e7d32]/20 text-xs font-semibold"
-                    >
-                      <span class="w-1.5 h-1.5 rounded-full bg-[#2e7d32]"></span> valid
-                    </span>
-                    <span 
-                      v-else
-                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF780F]/10 text-[#F93F24] border border-[#FF780F]/30 text-xs font-semibold"
-                    >
-                      <span class="w-1.5 h-1.5 rounded-full bg-[#F93F24]"></span> check needed
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-[#131010]/70 font-mono text-sm">{{ config.lastModified }}</td>
-                  <td class="px-6 py-4 text-[#131010]/70 font-mono text-sm">{{ config.size }}</td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button @click="openEditModal(config)" class="p-1.5 text-[#131010]/70 hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Edit">
-                        <span class="material-symbols-outlined text-[20px]">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#131010]/70 hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded transition-colors" title="Run">
-                        <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                      </button>
-                      <button @click="deleteConfig(config.id)" class="p-1.5 text-[#131010]/70 hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Delete">
-                        <span class="material-symbols-outlined text-[20px]">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        </template>
 
         <!-- Run History Panel -->
-        <div v-else class="bg-[#FFFFFF] border border-[#e4e2e2] rounded-xl p-8 text-center text-[#131010]/70">
+        <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm p-8 text-center text-on-surface-variant">
           <p class="text-body-lg">Run History logs will appear here.</p>
         </div>
-      </main>
-    </div>
-
-    <!-- YAML Editor Modal (Overlay) -->
-    <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#131010]/60 backdrop-blur-sm p-4 md:p-8">
-      <div class="bg-[#FFFFFF] w-full max-w-3xl rounded-xl shadow-2xl flex flex-col max-h-full border border-[#DC0037] overflow-hidden">
-        <div class="px-6 py-4 border-b border-[#131010] flex justify-between items-center bg-[#131010]">
-          <h3 class="text-headline-md font-bold text-[#FFFFFF] flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#DC0037] text-[24px]">edit_document</span>
-            Edit config - <span class="font-mono text-[#DC0037] bg-[#FFFFFF]/10 px-2 py-0.5 rounded text-lg">{{ activeConfig.name }}</span>
-          </h3>
-          <button @click="closeModal" class="text-[#FFFFFF]/70 hover:text-[#FFFFFF] p-1 rounded-full hover:bg-[#FFFFFF]/10 transition-colors">
-            <span class="material-symbols-outlined text-[24px]">close</span>
-          </button>
-        </div>
-        <div class="p-6 flex-1 overflow-y-auto bg-[#FFFFFF] flex flex-col gap-4">
-          <div>
-            <label class="block text-label-caps text-[#131010]/70 mb-1.5">File name</label>
-            <input 
-              v-model="activeConfig.name" 
-              class="w-full bg-[#FFFFFF] border border-[#e4e2e2] rounded px-3 py-2 text-body-md font-mono text-[#131010] cursor-not-allowed" 
-              readonly 
-              type="text"
-            />
-          </div>
-          <div class="flex-1 flex flex-col min-h-[300px]">
-            <label class="block text-label-caps text-[#131010]/70 mb-1.5 flex justify-between">
-              <span>Specification (YAML)</span>
-              <span class="text-[#DC0037] cursor-pointer hover:underline normal-case font-medium">View Docs</span>
-            </label>
-            <textarea 
-              v-model="activeConfig.content" 
-              class="flex-1 w-full bg-[#131010] text-[#FFFFFF] border border-[#131010] rounded p-4 font-mono text-sm focus:ring-1 focus:ring-[#DC0037] focus:border-[#DC0037] resize-none" 
-              spellcheck="false"
-            ></textarea>
-          </div>
-        </div>
-        <div class="px-6 py-4 border-t border-[#e4e2e2] bg-[#FFFFFF] flex justify-between items-center">
-          <div class="flex items-center gap-2 text-[#2e7d32] text-label-sm font-bold tracking-widest uppercase">
-            <span class="w-2 h-2 rounded-full bg-[#2e7d32] animate-pulse"></span> YAML valid
-          </div>
-          <div class="flex items-center gap-3">
-            <button @click="closeModal" class="px-4 py-2 text-body-md font-medium text-[#131010] hover:bg-[#f5f5f5] border border-[#e4e2e2] rounded transition-colors">Cancel</button>
-            <button @click="saveConfig" class="px-4 py-2 bg-[#DC0037] hover:bg-[#B50232] text-[#FFFFFF] text-body-md font-medium rounded transition-colors flex items-center gap-2">
-              <span v-if="isSaving" class="material-symbols-outlined text-[18px] animate-spin">sync</span>
-              Save config
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

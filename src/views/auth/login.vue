@@ -236,7 +236,7 @@ const handleSubmit = async () => {
         router.push(intended)
         return
       }
-      router.push('/dashboard/home')
+      router.push('/dashboard/portfolio')
     }, 1000)
   } catch (error) {
     console.error('Login error:', error)

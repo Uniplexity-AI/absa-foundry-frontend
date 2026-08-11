@@ -1,403 +1,475 @@
-<template>
-  <div class="bd">
-    <div class="bd__content">
-      <!-- ═══ ACT 1: HEADER + OVERVIEW ═══ -->
-      <AbsaSectionHeader title="Batch Execution: #RUN-8842" color="passion" size="lg">
-        <template #overline>Operations › Data Pipeline Health › Execution History › RUN-8842</template>
-        <template #actions>
-          <AbsaButton variant="outline" size="md">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Export Report
-          </AbsaButton>
-          <AbsaButton variant="outline" size="md">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Logs
-          </AbsaButton>
-          <AbsaButton variant="ghost" size="md" @click="$router.back()">← Back</AbsaButton>
-        </template>
-      </AbsaSectionHeader>
-
-      <!-- Compact KPI strip -->
-      <div class="bd__kpi-strip">
-        <div class="bd__kpi">
-          <span class="bd__kpi-label">Status</span>
-          <AbsaBadge state="completed" size="sm">COMPLETED</AbsaBadge>
-        </div>
-        <div class="bd__kpi">
-          <span class="bd__kpi-label">Quality</span>
-          <span class="bd__kpi-val">99.2%</span>
-        </div>
-        <div class="bd__kpi">
-          <span class="bd__kpi-label">Duration</span>
-          <span class="bd__kpi-val">04m 12s</span>
-        </div>
-        <div class="bd__kpi">
-          <span class="bd__kpi-label">Rows</span>
-          <span class="bd__kpi-val">840K</span>
-          <span class="bd__kpi-sub">890K valid · 90K rejected</span>
-        </div>
-        <div class="bd__kpi">
-          <span class="bd__kpi-label">Run</span>
-          <span class="bd__kpi-val bd__kpi-val--mono">#8842</span>
-          <span class="bd__kpi-sub">BT-2023-Q4-M11 · Prod · v2.1.0</span>
-        </div>
-        <div class="bd__kpi bd__kpi--right">
-          <span class="bd__kpi-label">Triggered</span>
-          <span class="bd__kpi-val">09:32:15</span>
-          <span class="bd__kpi-sub">Scheduled · etl-prod-03</span>
-        </div>
-      </div>
-
-      <!-- ═══ ACT 2: EXECUTION JOURNEY (HERO) ═══ -->
-      <div class="bd__hero">
-        <div class="bd__hero-head">
-          <h2 class="bd__hero-title">Execution Journey</h2>
-          <span class="bd__hero-meta">Pipeline: Customer Lifecycle ETL v2.1.0 · Total: 04m 12s</span>
-        </div>
-        <EtlTimeline :stages="timelineStages" />
-      </div>
-
-      <!-- ═══ ACT 3: EXECUTION ANALYTICS (2-COLUMN) ═══ -->
-      <div class="bd__analytics">
-        <!-- Left: Quality Trend -->
-        <div class="bd__analytics-left">
-          <h3 class="bd__section-title">Quality Analysis</h3>
-          <EtlQualityTrend :points="qualityRunPoints" :sla="95" last-scan="Run completed 09:36" />
-          <div class="bd__rules">
-            <h4 class="bd__subsection-title">Validation Rules</h4>
-            <div class="bd__rule"><span class="bd__rule-dot bd__rule-dot--pass"></span>Schema Check — Passed</div>
-            <div class="bd__rule"><span class="bd__rule-dot bd__rule-dot--pass"></span>Null Check — Passed</div>
-            <div class="bd__rule"><span class="bd__rule-dot bd__rule-dot--warn"></span>Format Check — 18% warnings</div>
-            <div class="bd__rule"><span class="bd__rule-dot bd__rule-dot--fail"></span>Business Rules — 68% failed</div>
-          </div>
-        </div>
-
-        <!-- Right: Processing + Rejection -->
-        <div class="bd__analytics-right">
-          <h3 class="bd__section-title">Processing Summary</h3>
-          <div class="bd__processing-grid">
-            <div class="bd__proc">
-              <span class="bd__proc-label">Received</span>
-              <span class="bd__proc-val">980K</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Validated</span>
-              <span class="bd__proc-val">890K</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Loaded</span>
-              <span class="bd__proc-val">890K</span>
-            </div>
-            <div class="bd__proc bd__proc--warn">
-              <span class="bd__proc-label">Rejected</span>
-              <span class="bd__proc-val">90,000</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Success Rate</span>
-              <span class="bd__proc-val">91.2%</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Speed</span>
-              <span class="bd__proc-val">52K r/s</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Retries</span>
-              <span class="bd__proc-val">01</span>
-            </div>
-            <div class="bd__proc">
-              <span class="bd__proc-label">Duplicates</span>
-              <span class="bd__proc-val">2,400</span>
-            </div>
-          </div>
-
-          <h4 class="bd__subsection-title" style="margin-top:20px">Rejection Breakdown</h4>
-          <div class="bd__rej-bars">
-            <div class="bd__rej-row">
-              <span class="bd__rej-label">Business Rules</span>
-              <div class="bd__rej-bar"><div class="bd__rej-fill bd__rej-fill--biz" style="width:68%"></div></div>
-              <span class="bd__rej-pct">68%</span>
-            </div>
-            <div class="bd__rej-row">
-              <span class="bd__rej-label">Invalid Format</span>
-              <div class="bd__rej-bar"><div class="bd__rej-fill bd__rej-fill--fmt" style="width:18%"></div></div>
-              <span class="bd__rej-pct">18%</span>
-            </div>
-            <div class="bd__rej-row">
-              <span class="bd__rej-label">Missing Values</span>
-              <div class="bd__rej-bar"><div class="bd__rej-fill bd__rej-fill--mis" style="width:10%"></div></div>
-              <span class="bd__rej-pct">10%</span>
-            </div>
-            <div class="bd__rej-row">
-              <span class="bd__rej-label">Duplicates</span>
-              <div class="bd__rej-bar"><div class="bd__rej-fill bd__rej-fill--dup" style="width:4%"></div></div>
-              <span class="bd__rej-pct">4%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ ACT 4: INVESTIGATION WORKSPACE (TABBED) ═══ -->
-      <div class="bd__investigation">
-        <h3 class="bd__section-title">Investigation Workspace</h3>
-        <div class="bd__tabs">
-          <span class="bd__tab bd__tab--active" @click="activeTab = 'rejected'">Rejected Records (450)</span>
-          <span class="bd__tab" :class="{ 'bd__tab--active': activeTab === 'logs' }" @click="activeTab = 'logs'">Execution Logs (156)</span>
-          <span class="bd__tab" :class="{ 'bd__tab--active': activeTab === 'audit' }" @click="activeTab = 'audit'">Audit Trail (12)</span>
-        </div>
-
-        <div class="bd__tab-content">
-          <!-- Rejected Records -->
-          <div v-if="activeTab === 'rejected'">
-            <div class="bd__table-toolbar">
-              <input class="bd__search" type="text" placeholder="Search records..." />
-              <span class="bd__filter">Severity: All ▾</span>
-              <AbsaButton variant="outline" size="sm">Export CSV</AbsaButton>
-            </div>
-            <div class="bd__table-wrap">
-              <table class="bd__table">
-                <thead><tr><th>Record ID</th><th>Customer</th><th>Field</th><th>Invalid</th><th>Expected</th><th>Rule</th><th>Severity</th></tr></thead>
-                <tbody>
-                  <tr v-for="r in rejectedRecords" :key="r.id">
-                    <td class="bd__mono">{{ r.recordId }}</td>
-                    <td>{{ r.customerId }}</td>
-                    <td class="bd__mono">{{ r.field }}</td>
-                    <td class="bd__warn">{{ r.invalidValue }}</td>
-                    <td class="bd__mono">{{ r.expected }}</td>
-                    <td>{{ r.rule }}</td>
-                    <td><AbsaBadge :state="r.severity === 'ERROR' ? 'failed' : 'warning'" size="sm">{{ r.severity }}</AbsaBadge></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="bd__pagination"><span>1–5 of 450</span><div class="bd__pages"><button class="bd__pg--on">1</button><button>2</button><button>3</button></div></div>
-          </div>
-
-          <!-- Logs -->
-          <div v-if="activeTab === 'logs'">
-            <div class="bd__table-toolbar">
-              <input class="bd__search" type="text" placeholder="Search logs..." />
-              <span class="bd__log-flts">
-                <span class="bd__log-flt bd__log-flt--on">All</span>
-                <span class="bd__log-flt">INFO</span>
-                <span class="bd__log-flt">WARN</span>
-                <span class="bd__log-flt">ERROR</span>
-              </span>
-              <AbsaButton variant="outline" size="sm">Download</AbsaButton>
-            </div>
-            <div class="bd__table-wrap">
-              <table class="bd__table">
-                <thead><tr><th>Timestamp</th><th>Level</th><th>Component</th><th>Message</th></tr></thead>
-                <tbody>
-                  <tr v-for="l in logs" :key="l.id">
-                    <td class="bd__mono">{{ l.timestamp }}</td>
-                    <td><AbsaBadge :state="l.level === 'ERROR' ? 'failed' : l.level === 'WARN' ? 'warning' : 'completed'" size="sm">{{ l.level }}</AbsaBadge></td>
-                    <td class="bd__mono">{{ l.component }}</td>
-                    <td>{{ l.message }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Audit -->
-          <div v-if="activeTab === 'audit'">
-            <div class="bd__table-wrap">
-              <table class="bd__table">
-                <thead><tr><th>Timestamp</th><th>User / System</th><th>Action</th><th>Description</th></tr></thead>
-                <tbody>
-                  <tr v-for="a in auditTrail" :key="a.id">
-                    <td class="bd__mono">{{ a.timestamp }}</td>
-                    <td>{{ a.user }}</td>
-                    <td>{{ a.action }}</td>
-                    <td>{{ a.description }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ ACT 5: INFRASTRUCTURE ═══ -->
-      <div class="bd__infra">
-        <h3 class="bd__section-title">Infrastructure During Execution</h3>
-        <div class="bd__infra-grid">
-          <EtlHealthCard v-for="c in infraCards" :key="c.label" :label="c.label" :value="c.value" :icon="c.icon" :status-color="c.statusColor" :stat="c.stat" />
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref } from 'vue'
-import { AbsaButton, AbsaBadge, AbsaSectionHeader } from '@/components/ui'
-import EtlHealthCard from './EtlHealthCard.vue'
-import EtlQualityTrend from './EtlQualityTrend.vue'
-import EtlTimeline from './EtlTimeline.vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
+import { fetchETLRunDetail } from '@/services/etlApi'
 
+const route = useRoute()
+const router = useRouter()
+const loading = ref(true)
+const error = ref(null)
+
+const runId = computed(() => route.params.runId || '—')
+
+// ── Data from API ──
+const batch = ref(null)
+const validation = ref(null)
+
+// ── Derived data ──
+const rejectionCategories = computed(() => {
+  if (!validation.value?.errorByCategory) return []
+  return Object.entries(validation.value.errorByCategory).map(([category, rejected]) => ({
+    category,
+    rejected,
+    pct: validation.value.totalErrors ? Math.round((rejected / validation.value.totalErrors) * 1000) / 10 : 0,
+  }))
+})
+
+const failingRules = computed(() => {
+  if (!validation.value?.errorByRule) return []
+  return Object.entries(validation.value.errorByRule)
+    .map(([ruleId, failures]) => ({ ruleId, failures }))
+    .sort((a, b) => b.failures - a.failures)
+})
+
+// ── Mock timeline / rejection records (backend doesn't expose these yet) ──
+const timeline = ref([
+  { step: 'Extract Data', status: 'COMPLETED', duration: '—', timestamp: '—', detail: null },
+  { step: 'Validate Schema', status: 'COMPLETED', duration: '—', timestamp: '—', detail: null },
+  { step: 'Transform', status: 'COMPLETED', duration: '—', timestamp: '—', detail: null },
+  { step: 'Validate Quality', status: 'COMPLETED', duration: '—', timestamp: '—', detail: null },
+  { step: 'Load to Warehouse', status: 'COMPLETED', duration: '—', timestamp: '—', detail: null },
+  { step: 'Complete', status: 'COMPLETED', duration: null, timestamp: '—', detail: null },
+])
+
+const rejectedRecords = ref([])
+const showConfig = ref(false)
 const activeTab = ref('rejected')
 
-const timelineStages = ref([
-  { label: 'Batch Received', timestamp: '09:32:15', duration: '0.2s', status: 'completed' },
-  { label: 'Schema Validation', timestamp: '09:32:18', duration: '0.8s', status: 'completed', message: 'All schemas validated' },
-  { label: 'Data Validation', timestamp: '09:32:21', duration: '2.1s', status: 'completed' },
-  { label: 'Data Cleansing', timestamp: '09:32:25', duration: '3.5s', status: 'completed', message: '2,400 duplicates removed' },
-  { label: 'Feature Engineering', timestamp: '09:33:01', duration: '35.8s', status: 'completed', message: '15 features computed for 5,000 customers' },
-  { label: 'Quality Validation', timestamp: '09:35:12', duration: '0.4s', status: 'failed',
-    failure: { reason: 'Quality 91.2% below 95% threshold', rejected: '90,000 records', retry: '#8840-R1 auto-retry triggered' } },
-  { label: 'Database Load', timestamp: '09:36:27', duration: '12.3s', status: 'completed', message: '890,000 rows written' },
-  { label: 'Completion', timestamp: '09:36:27', duration: '', status: 'completed', message: 'Batch finished with warnings' }
-])
+// ── Derived: logs & audit from batch data ──
+const logs = computed(() => {
+  if (!batch.value) return []
+  const entries = []
+  if (batch.value.startedAt) {
+    entries.push({ timestamp: batch.value.startedAt, level: 'INFO', component: 'pipeline', message: `Pipeline started — triggered by ${batch.value.triggeredBy || 'unknown'}` })
+  }
+  if (batch.value.sourceName) {
+    entries.push({ timestamp: batch.value.startedAt || '—', level: 'INFO', component: 'extractor', message: `Source: ${batch.value.sourceName} (${batch.value.sourceType || 'unknown'})` })
+  }
+  entries.push({ timestamp: '—', level: 'INFO', component: 'processor', message: `Rows received: ${formatNum(batch.value.rowsReceived)}, valid: ${formatNum(batch.value.rowsValid)}, loaded: ${formatNum(batch.value.rowsLoaded)}` })
+  if (batch.value.rowsRejected > 0) {
+    entries.push({ timestamp: '—', level: 'WARN', component: 'quality', message: `${formatNum(batch.value.rowsRejected)} rows rejected — quality ${batch.value.qualityScore != null ? batch.value.qualityScore + '%' : '—'}` })
+  }
+  if (batch.value.duplicatesDetected > 0) {
+    entries.push({ timestamp: '—', level: 'WARN', component: 'dedup', message: `${formatNum(batch.value.duplicatesDetected)} duplicates detected` })
+  }
+  if (batch.value.completedAt) {
+    const statusLevel = batch.value.status === 'FAILED' || batch.value.status === 'ERROR' ? 'ERROR' : 'INFO'
+    entries.push({ timestamp: batch.value.completedAt, level: statusLevel, component: 'pipeline', message: `Run ${batch.value.status || 'COMPLETED'} — duration ${batch.value.duration || '—'}` })
+  }
+  return entries
+})
 
-const qualityRunPoints = ref([
-  { label: 'T-4h', value: 99.1, rows: '—', rejected: '—', failed: false },
-  { label: 'T-3h', value: 98.9, rows: '—', rejected: '—', failed: false },
-  { label: 'T-2h', value: 97.2, rows: '1.0M', rejected: '90K', failed: true },
-  { label: 'T-1h', value: 98.5, rows: '—', rejected: '—', failed: false },
-  { label: 'This Run', value: 91.2, rows: '980K', rejected: '90K', failed: false }
-])
+const auditTrail = computed(() => {
+  if (!batch.value) return []
+  const entries = []
+  entries.push({ timestamp: batch.value.startedAt ? batch.value.startedAt.slice(11, 19) : '—', user: batch.value.triggeredBy || 'system', action: 'TRIGGER', description: `Pipeline triggered — ${batch.value.pipelineName || 'etl_full_pipeline'}` })
+  entries.push({ timestamp: batch.value.startedAt ? batch.value.startedAt.slice(11, 19) : '—', user: 'system', action: 'EXTRACT', description: `Extraction started — source: ${batch.value.sourceName || 'unknown'}` })
+  if (batch.value.completedAt) {
+    entries.push({ timestamp: batch.value.completedAt.slice(11, 19), user: 'system', action: batch.value.status || 'COMPLETE', description: `Run ${batch.value.status || 'COMPLETED'} — ${formatNum(batch.value.rowsLoaded)} rows loaded, ${formatNum(batch.value.rowsRejected)} rejected, quality ${batch.value.qualityScore != null ? batch.value.qualityScore + '%' : '—'}` })
+  }
+  return entries
+})
 
-const rejectedRecords = ref([
-  { id: 1, recordId: 'REC-1201', customerId: 'C0000123', field: 'amount', invalidValue: '-500', expected: '> 0', rule: 'BR-04', severity: 'ERROR' },
-  { id: 2, recordId: 'REC-1245', customerId: 'C0000456', field: 'email', invalidValue: 'bad@x', expected: 'valid@domain', rule: 'FMT-02', severity: 'ERROR' },
-  { id: 3, recordId: 'REC-1302', customerId: 'C0000789', field: 'tenure', invalidValue: '-12', expected: '>= 0', rule: 'BR-07', severity: 'ERROR' },
-  { id: 4, recordId: 'REC-1450', customerId: 'C0000234', field: 'phone', invalidValue: '00', expected: '10 digits', rule: 'FMT-05', severity: 'WARN' },
-  { id: 5, recordId: 'REC-1523', customerId: 'C0000678', field: 'balance', invalidValue: 'NULL', expected: 'numeric', rule: 'NUL-01', severity: 'ERROR' }
-])
+const configName = ref('—')
+const configContent = ref('')
+const configLines = computed(() => configContent.value.split('\n'))
 
-const logs = ref([
-  { id: 1, timestamp: '09:32:15', level: 'INFO', component: 'orchestrator', message: 'Batch BT-2023-Q4-M11 started' },
-  { id: 2, timestamp: '09:32:18', level: 'INFO', component: 'validator', message: 'Schema validation passed — 22 columns verified' },
-  { id: 3, timestamp: '09:32:21', level: 'DEBUG', component: 'validator', message: 'Checking 980,000 records against 14 rules' },
-  { id: 4, timestamp: '09:35:12', level: 'ERROR', component: 'quality', message: 'Quality score 91.2% below SLA threshold 95%' },
-  { id: 5, timestamp: '09:35:12', level: 'WARN', component: 'quality', message: '90,000 records failed business rule validation' },
-  { id: 6, timestamp: '09:36:27', level: 'INFO', component: 'loader', message: '890K records loaded to etl_clean' }
-])
+// ── Status helpers ──
+function statusClass(status) {
+  if (!status) return 'text-on-surface-variant'
+  const s = status.toUpperCase()
+  return s === 'COMPLETED' ? 'text-green-600' : s === 'FAILED' || s === 'ERROR' ? 'text-red-600' : 'text-amber-600'
+}
+function logBadgeClass(level) {
+  if (!level) return 'text-on-surface-variant'
+  return level === 'ERROR' ? 'text-red-600' : level === 'WARN' ? 'text-amber-600' : 'text-green-600'
+}
+function formatNum(n) {
+  if (n == null) return '—'
+  return Number(n).toLocaleString()
+}
 
-const infraCards = ref([
-  { label: 'PostgreSQL', value: 'Healthy', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>', statusColor: 'good', stat: '12ms · 42 conn · CPU 34%' },
-  { label: 'Redis Cache', value: 'Healthy', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', statusColor: 'good', stat: '0.3ms · 512 MB' },
-  { label: 'API Gateway', value: 'Stable', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>', statusColor: 'good', stat: '118ms · 72% load' },
-  { label: 'Feature Svc', value: 'Healthy', icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--absa-passion, #DC0037)" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', statusColor: 'good', stat: '45ms response' }
-])
+onMounted(async () => {
+  try {
+    const data = await fetchETLRunDetail(runId.value)
+    batch.value = data.run
+    validation.value = data.validation || null
 
-const auditTrail = ref([
-  { id: 1, timestamp: '09:32:15', user: 'System', action: 'Batch Submitted', description: 'Scheduler auto-trigger' },
-  { id: 2, timestamp: '09:35:12', user: 'System', action: 'Quality Warning', description: '91.2% below SLA — auto-retry' },
-  { id: 3, timestamp: '09:36:27', user: 'System', action: 'Batch Completed', description: '890K rows loaded with warnings' },
-  { id: 4, timestamp: '09:45:10', user: 'C. Analyst', action: 'Report Exported', description: 'CSV download' },
-  { id: 5, timestamp: '09:48:22', user: 'C. Analyst', action: 'Batch Viewed', description: 'Opened details' }
-])
+    // Update timeline statuses based on run status
+    if (data.run.status === 'FAILED' || data.run.status === 'ERROR') {
+      timeline.value[4].status = 'FAILED'
+      timeline.value[4].detail = data.run.errorMessage || 'Batch failed'
+      timeline.value[5].status = 'FAILED'
+    }
+    if (data.run.startedAt) {
+      timeline.value[0].timestamp = data.run.startedAt
+    }
+    if (data.run.completedAt) {
+      timeline.value[5].timestamp = data.run.completedAt
+    }
+    if (data.run.duration) {
+      timeline.value[0].duration = data.run.duration
+    }
+    if (data.run.pipelineName) {
+      timeline.value.forEach(t => { t.pipeline = data.run.pipelineName })
+    }
+    if (data.run.sourceName) {
+      timeline.value[0].detail = `Source: ${data.run.sourceName}`
+    }
+
+    // Config name
+    if (data.run.sourceName) {
+      configName.value = data.run.sourceName
+    }
+  } catch (e) {
+    error.value = e.message || 'Failed to load batch detail'
+    console.error('[BatchDetail] fetch failed:', e)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
-<style scoped>
-/* ═══ Brand colours (per ops spec Section 9) ═══ */
-.bd { min-height: 100vh; background: #F8F8FA; }
-.bd__content { max-width: 1600px; margin: 0 auto; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 28px; }
-.bd__section-title { font-family: 'Public Sans',system-ui,sans-serif; font-size: 16px; font-weight: 700; color: var(--absa-enrich, #131010); margin: 0 0 12px; }
-.bd__subsection-title { font-family: 'Public Sans',system-ui,sans-serif; font-size: 13px; font-weight: 600; color: var(--absa-enrich, #131010); margin: 0 0 10px; }
+<template>
+  <div class="dashboard-root global-mesh-bg w-full min-h-screen p-4 md:p-6 lg:p-8">
+    <!-- Loading Skeleton -->
+    <template v-if="loading">
+      <div class="min-h-screen flex flex-col space-y-8">
+        <LoadingSkeleton type="kpi" />
+        <div class="grid grid-cols-4 gap-4"><LoadingSkeleton v-for="i in 4" :key="i" type="kpi" /></div>
+        <LoadingSkeleton type="block" />
+        <LoadingSkeleton type="table" :count="5" />
+      </div>
+    </template>
 
-/* ── KPI strip ── */
-.bd__kpi-strip {
-  display: flex; align-items: flex-start; gap: 0;
-  background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 14px 0;
-}
-.bd__kpi { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 20px; border-right: 1px solid #F3F4F6; }
-.bd__kpi:last-child { border-right: none; }
-.bd__kpi--right { align-items: flex-end; text-align: right; }
-.bd__kpi-label { font-family: 'Inter',system-ui,sans-serif; font-size: 9px; font-weight: 700; color: #9CA3AF; letter-spacing: 0.08em; text-transform: uppercase; }
-.bd__kpi-val { font-family: 'Public Sans',system-ui,sans-serif; font-size: 18px; font-weight: 700; color: var(--absa-enrich, #131010); }
-.bd__kpi-val--mono { font-family: 'Space Mono',monospace; font-size: 16px; }
-.bd__kpi-sub { font-family: 'Public Sans',system-ui,sans-serif; font-size: 11px; color: #9CA3AF; }
+    <template v-else>
+      <!-- Error State -->
+      <div v-if="error" class="bg-surface rounded border border-outline-variant p-8 text-center">
+        <p class="text-body-md text-red-600 mb-2">{{ error }}</p>
+        <button @click="router.push('/dashboard/etl-run-history')" class="text-sm text-primary font-semibold hover:underline">← Back to Run History</button>
+      </div>
 
-/* ── HERO: Execution Journey ── */
-.bd__hero {
-  background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 24px 28px;
-  border-left: 4px solid var(--absa-passion, #DC0037);
-}
-.bd__hero-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
-.bd__hero-title { font-family: 'Public Sans',system-ui,sans-serif; font-size: 20px; font-weight: 700; color: var(--absa-enrich, #131010); margin: 0; }
-.bd__hero-meta { font-family: 'Public Sans',system-ui,sans-serif; font-size: 12px; color: #9CA3AF; }
+      <template v-else-if="batch">
+      <!-- ═══ SECTION 1: Header ═══ -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+          <button @click="router.push('/dashboard/etl-run-history')" class="flex items-center gap-1.5 text-on-surface-variant hover:text-on-surface transition-colors text-sm font-semibold">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Run History
+          </button>
+          <span class="text-on-surface-variant">/</span>
+          <span class="font-mono text-sm text-on-surface font-bold">{{ batch.runId || runId }}</span>
+          <span :class="['inline-flex items-center gap-1.5 text-xs font-bold', statusClass(batch.status)]">
+            <span v-if="batch.status === 'RUNNING'" class="w-1.5 h-1.5 rounded-full animate-pulse bg-amber-500"></span>
+            <span v-if="batch.status === 'COMPLETED'" class="material-symbols-outlined text-[14px]">check</span>
+            <span v-if="batch.status === 'FAILED' || batch.status === 'ERROR'" class="material-symbols-outlined text-[14px]">close</span>
+            {{ batch.status || 'UNKNOWN' }}
+          </span>
+        </div>
+        <div class="text-sm text-on-surface-variant text-right">
+          <div>{{ batch.pipelineName || '—' }}</div>
+          <div>triggered by {{ batch.triggeredBy || '—' }} · {{ batch.startedAt ? batch.startedAt.slice(0, 10) : '—' }}</div>
+        </div>
+      </div>
 
-/* ── ANALYTICS: 2-column ── */
-.bd__analytics { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-.bd__analytics-left, .bd__analytics-right {
-  background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 20px 24px;
-}
+      <!-- ═══ SECTION 2: Run Snapshot ═══ -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <!-- Quality Score -->
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Quality Score</p>
+          <span class="text-3xl font-headline font-bold text-on-surface">{{ batch.qualityScore != null ? batch.qualityScore + '%' : '—' }}</span>
+          <p class="text-xs text-on-surface-variant mt-2">SLA: {{ batch.slaThreshold }}%
+            <span v-if="batch.qualityScore != null && batch.qualityScore >= batch.slaThreshold" class="text-green-600 font-semibold ml-1">✓</span>
+            <span v-else-if="batch.qualityScore != null" class="text-red-600 font-semibold ml-1">✗</span>
+          </p>
+        </div>
 
-/* Processing grid */
-.bd__processing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.bd__proc { display: flex; flex-direction: column; gap: 1px; padding: 10px 12px; background: #F9FAFB; border-radius: 4px; }
-.bd__proc--warn { background: rgba(119,2,30,0.04); }
-.bd__proc-label { font-family: 'Inter',system-ui,sans-serif; font-size: 9px; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; }
-.bd__proc-val { font-family: 'Public Sans',system-ui,sans-serif; font-size: 18px; font-weight: 700; color: var(--absa-enrich, #131010); }
-.bd__proc--warn .bd__proc-val { color: var(--absa-inspire, #77021E); }
+        <!-- Duration -->
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Duration</p>
+          <span class="text-3xl font-headline font-bold text-on-surface">{{ batch.duration || '—' }}</span>
+          <p class="text-xs text-on-surface-variant mt-2">Started {{ batch.startedAt ? batch.startedAt.slice(11, 19) : '—' }} · Ended {{ batch.completedAt ? batch.completedAt.slice(11, 19) : '—' }}</p>
+        </div>
 
-/* Rules */
-.bd__rules { margin-top: 16px; }
-.bd__rule { font-size: 12px; color: #6B7280; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.bd__rule-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.bd__rule-dot--pass { background: var(--absa-passion, #DC0037); }
-.bd__rule-dot--warn { background: var(--absa-energy, #FF780F); }
-.bd__rule-dot--fail { background: var(--absa-inspire, #77021E); }
+        <!-- Rows Processed -->
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Rows Processed</p>
+          <div class="space-y-1">
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Received</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.rowsReceived) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Valid</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.rowsValid) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Loaded</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.rowsLoaded) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-[#FF780F]">Rejected</span>
+              <span class="text-[#FF780F] font-semibold">{{ formatNum(batch.rowsRejected) }}</span>
+            </div>
+          </div>
+        </div>
 
-/* Rejection bars */
-.bd__rej-bars { display: flex; flex-direction: column; gap: 10px; }
-.bd__rej-row { display: flex; align-items: center; gap: 10px; }
-.bd__rej-label { width: 100px; font-size: 11px; color: #6B7280; text-align: right; flex-shrink: 0; }
-.bd__rej-bar { flex: 1; height: 8px; background: #E8E8EC; border-radius: 4px; overflow: hidden; }
-.bd__rej-fill { height: 100%; border-radius: 4px; }
-.bd__rej-fill--biz { background: var(--absa-passion, #DC0037); }
-.bd__rej-fill--fmt { background: var(--absa-power, #B50232); }
-.bd__rej-fill--mis { background: var(--absa-hope, #95052A); }
-.bd__rej-fill--dup { background: var(--absa-inspire, #77021E); }
-.bd__rej-pct { width: 32px; font-size: 11px; font-weight: 700; color: var(--absa-enrich, #131010); text-align: right; }
+        <!-- Data Quality -->
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Data Quality</p>
+          <div class="space-y-1">
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Duplicates</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.duplicatesDetected) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Warnings</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.warningsCount) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Errors</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.errorsCount) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant">Skipped</span>
+              <span class="text-on-surface font-semibold">{{ formatNum(batch.rowsSkipped) }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-/* ── INVESTIGATION: Tabs ── */
-.bd__investigation { background: #fff; border: 1px solid #E8E8EC; border-radius: 4px; padding: 20px 24px; }
-.bd__tabs { display: flex; gap: 0; border-bottom: 2px solid #E8E8EC; margin-bottom: 16px; }
-.bd__tab {
-  font-family: 'Public Sans',system-ui,sans-serif; font-size: 13px; font-weight: 600;
-  color: #6B7280; padding: 8px 16px; cursor: pointer; border-bottom: 2px solid transparent;
-  margin-bottom: -2px; transition: all 0.15s ease;
-}
-.bd__tab:hover { color: var(--absa-enrich, #131010); }
-.bd__tab--active { color: var(--absa-passion, #DC0037); border-bottom-color: var(--absa-passion, #DC0037); }
+      <!-- ═══ SECTION 3: Execution Timeline ═══ -->
+      <section class="mb-8">
+        <div class="bg-surface rounded border border-outline-variant p-6 global-dotted-bg shadow-sm">
+          <h3 class="text-headline-md font-headline font-semibold text-on-surface mb-6">Execution Timeline</h3>
+          <div class="space-y-0">
+            <div v-for="(step, i) in timeline" :key="i">
+              <div class="flex items-start gap-4">
+                <div class="flex flex-col items-center">
+                  <span :class="['w-3 h-3 rounded-full mt-1 flex-shrink-0',
+                    step.status === 'COMPLETED' ? 'bg-green-500' : step.status === 'FAILED' ? 'bg-red-500' : 'bg-gray-300']"></span>
+                  <div v-if="i < timeline.length - 1" class="w-px h-full min-h-[20px] bg-outline-variant mt-1"></div>
+                </div>
+                <div class="pb-5 flex-1">
+                  <div class="flex justify-between items-start">
+                    <span class="font-semibold text-on-surface text-sm">{{ step.step }}</span>
+                    <span class="text-xs text-on-surface-variant">{{ step.duration ? step.duration + ' · ' : '' }}{{ step.timestamp }}</span>
+                  </div>
+                  <p v-if="step.detail" :class="['text-xs mt-1', step.status === 'FAILED' ? 'text-red-600' : 'text-on-surface-variant']">{{ step.detail }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-/* Tables */
-.bd__table-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.bd__search { height: 32px; padding: 0 10px; border: 1px solid #E8E8EC; border-radius: 4px; font-size: 12px; color: var(--absa-enrich, #131010); outline: none; flex: 1; max-width: 260px; }
-.bd__search:focus { border-color: var(--absa-passion, #DC0037); }
-.bd__filter { font-size: 12px; color: #6B7280; cursor: pointer; }
-.bd__log-flts { display: flex; gap: 2px; }
-.bd__log-flt { font-size: 10px; font-weight: 700; color: #6B7280; padding: 3px 8px; border-radius: 2px; cursor: pointer; }
-.bd__log-flt--on { background: rgba(220,0,55,0.08); color: var(--absa-passion, #DC0037); }
+      <!-- ═══ SECTION 4: Rejection Analysis ═══ -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Rejection by Category -->
+        <div class="bg-surface rounded shadow-sm overflow-hidden global-dotted-bg">
+          <div class="p-5 bg-surface">
+            <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold">Rejection by Category</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Category</th>
+                  <th class="p-4 font-semibold text-right">Rejected</th>
+                  <th class="p-4 font-semibold text-right">% of Total</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="rejectionCategories.length === 0">
+                  <td colspan="3" class="p-12 text-center text-body-md text-secondary">No rejection data available</td>
+                </tr>
+                <tr v-for="cat in rejectionCategories" :key="cat.category" class="hover:bg-surface-container-low transition-colors">
+                  <td class="p-4 text-on-surface font-semibold">{{ cat.category }}</td>
+                  <td class="p-4 text-on-surface-variant text-right">{{ formatNum(cat.rejected) }}</td>
+                  <td class="p-4 text-on-surface-variant text-right">{{ cat.pct }}%</td>
+                </tr>
+                <tr v-if="rejectionCategories.length > 0" class="bg-surface-container-low font-semibold">
+                  <td class="p-4 text-on-surface">Total</td>
+                  <td class="p-4 text-on-surface text-right">{{ formatNum(batch.rowsRejected) }}</td>
+                  <td class="p-4 text-on-surface text-right">100%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-.bd__table-wrap { overflow-x: auto; }
-.bd__table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-.bd__table thead th { font-size: 10px; font-weight: 700; color: #9CA3AF; letter-spacing: 0.05em; text-transform: uppercase; text-align: left; padding: 10px 10px; border-bottom: 1px solid #E8E8EC; white-space: nowrap; }
-.bd__table tbody td { padding: 9px 10px; border-bottom: 1px solid #F3F4F6; font-size: 12px; color: var(--absa-enrich, #131010); }
-.bd__table tbody tr:hover { background: #F9FAFB; }
-.bd__mono { font-family: 'Space Mono',monospace; font-size: 11px !important; color: #6B7280 !important; }
-.bd__warn { color: var(--absa-inspire, #77021E) !important; font-weight: 600; }
+        <!-- Top Failing Rules -->
+        <div class="bg-surface rounded shadow-sm overflow-hidden global-dotted-bg">
+          <div class="p-5 bg-surface">
+            <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold">Top Failing Rules</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Rule ID</th>
+                  <th class="p-4 font-semibold text-right">Failures</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="failingRules.length === 0">
+                  <td colspan="2" class="p-12 text-center text-body-md text-secondary">No failing rules</td>
+                </tr>
+                <tr v-for="rule in failingRules" :key="rule.ruleId" class="hover:bg-surface-container-low transition-colors">
+                  <td class="p-4 font-mono text-xs text-on-surface font-semibold">{{ rule.ruleId }}</td>
+                  <td class="p-4 text-on-surface-variant text-right">{{ formatNum(rule.failures) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-.bd__pagination { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #E8E8EC; margin-top: 12px; font-size: 12px; color: #6B7280; }
-.bd__pages { display: flex; gap: 4px; }
-.bd__pages button { min-width: 26px; height: 26px; border: 1px solid #E8E8EC; border-radius: 2px; background: #fff; color: #6B7280; font-size: 11px; font-weight: 600; cursor: pointer; }
-.bd__pages button:hover { border-color: var(--absa-passion, #DC0037); color: var(--absa-passion, #DC0037); }
-.bd__pg--on { background: var(--absa-passion, #DC0037) !important; color: #fff !important; border-color: var(--absa-passion, #DC0037) !important; }
+      <!-- ═══ SECTION 5: Investigation Tabs ═══ -->
+      <section class="mb-8">
+        <div class="bg-surface rounded shadow-sm overflow-hidden global-dotted-bg">
+          <div class="p-5 bg-surface">
+            <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold mb-4">Investigation</h3>
+            <div class="flex border-b border-outline-variant mb-0">
+              <button @click="activeTab = 'rejected'" :class="['px-4 py-2 text-sm font-semibold transition-colors border-b-2', activeTab === 'rejected' ? 'text-primary border-primary' : 'text-on-surface-variant border-transparent hover:text-on-surface']">
+                Rejected Records ({{ rejectedRecords.length }})
+              </button>
+              <button @click="activeTab = 'logs'" :class="['px-4 py-2 text-sm font-semibold transition-colors border-b-2', activeTab === 'logs' ? 'text-primary border-primary' : 'text-on-surface-variant border-transparent hover:text-on-surface']">
+                Execution Logs ({{ logs.length }})
+              </button>
+              <button @click="activeTab = 'audit'" :class="['px-4 py-2 text-sm font-semibold transition-colors border-b-2', activeTab === 'audit' ? 'text-primary border-primary' : 'text-on-surface-variant border-transparent hover:text-on-surface']">
+                Audit Trail ({{ auditTrail.length }})
+              </button>
+            </div>
+          </div>
 
-/* ── INFRA ── */
-.bd__infra-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+          <!-- Rejected Records -->
+          <div v-if="activeTab === 'rejected'" class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Record ID</th>
+                  <th class="p-4 font-semibold">Field</th>
+                  <th class="p-4 font-semibold">Actual Value</th>
+                  <th class="p-4 font-semibold">Expected</th>
+                  <th class="p-4 font-semibold">Rule</th>
+                  <th class="p-4 font-semibold">Severity</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="rejectedRecords.length === 0">
+                  <td colspan="6" class="p-12 text-center text-body-md text-secondary">No rejected records</td>
+                </tr>
+                <tr v-for="rec in rejectedRecords" :key="rec.recordId" class="hover:bg-surface-container-low transition-colors">
+                  <td class="p-4 font-mono text-xs text-on-surface">{{ rec.recordId }}</td>
+                  <td class="p-4 font-mono text-xs text-on-surface-variant">{{ rec.field }}</td>
+                  <td class="p-4 text-on-surface-variant">{{ rec.actualValue }}</td>
+                  <td class="p-4 text-on-surface-variant">{{ rec.expected }}</td>
+                  <td class="p-4 font-mono text-xs text-on-surface-variant">{{ rec.rule }}</td>
+                  <td class="p-4">
+                    <span :class="['inline-flex items-center gap-1.5 text-xs font-bold', rec.severity === 'ERROR' ? 'text-red-600' : 'text-amber-600']">
+                      <span :class="['w-1.5 h-1.5 rounded-full', rec.severity === 'ERROR' ? 'bg-red-500' : 'bg-amber-500']"></span>
+                      {{ rec.severity }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-@media (max-width: 1200px) {
-  .bd__analytics { grid-template-columns: 1fr; }
-  .bd__infra-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .bd__content { padding: 16px; gap: 20px; }
-  .bd__kpi-strip { flex-wrap: wrap; }
-  .bd__kpi { flex: 0 0 50%; border-right: none; border-bottom: 1px solid #F3F4F6; padding: 10px 16px; }
-}
-</style>
+          <!-- Execution Logs -->
+          <div v-if="activeTab === 'logs'" class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Timestamp</th>
+                  <th class="p-4 font-semibold">Level</th>
+                  <th class="p-4 font-semibold">Component</th>
+                  <th class="p-4 font-semibold">Message</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="logs.length === 0">
+                  <td colspan="4" class="p-12 text-center text-body-md text-secondary">No logs recorded</td>
+                </tr>
+                <tr v-for="l in logs" :key="l.timestamp" class="hover:bg-surface-container-low transition-colors">
+                  <td class="p-4 font-mono text-xs text-on-surface-variant">{{ l.timestamp }}</td>
+                  <td class="p-4">
+                    <span :class="['inline-flex items-center gap-1.5 text-xs font-bold', logBadgeClass(l.level)]">
+                      <span :class="['w-1.5 h-1.5 rounded-full', l.level === 'ERROR' ? 'bg-red-500' : l.level === 'WARN' ? 'bg-amber-500' : 'bg-green-500']"></span>
+                      {{ l.level }}
+                    </span>
+                  </td>
+                  <td class="p-4 font-mono text-xs text-on-surface-variant">{{ l.component }}</td>
+                  <td class="p-4 text-on-surface">{{ l.message }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Audit Trail -->
+          <div v-if="activeTab === 'audit'" class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                  <th class="p-4 font-semibold">Timestamp</th>
+                  <th class="p-4 font-semibold">User / System</th>
+                  <th class="p-4 font-semibold">Action</th>
+                  <th class="p-4 font-semibold">Description</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                <tr v-if="auditTrail.length === 0">
+                  <td colspan="4" class="p-12 text-center text-body-md text-secondary">No audit entries</td>
+                </tr>
+                <tr v-for="a in auditTrail" :key="a.timestamp" class="hover:bg-surface-container-low transition-colors">
+                  <td class="p-4 font-mono text-xs text-on-surface-variant">{{ a.timestamp }}</td>
+                  <td class="p-4 text-on-surface-variant">{{ a.user }}</td>
+                  <td class="p-4 font-semibold text-on-surface">{{ a.action }}</td>
+                  <td class="p-4 text-on-surface-variant">{{ a.description }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION 6: Config Snapshot ═══ -->
+      <section class="mb-8">
+        <div class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm overflow-hidden">
+          <button @click="showConfig = !showConfig" class="w-full p-5 flex items-center justify-between bg-surface hover:bg-surface-container-low transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-on-surface-variant text-[20px]">{{ showConfig ? 'expand_less' : 'expand_more' }}</span>
+              <div class="text-left">
+                <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold">Config Used</h3>
+                <p class="text-sm text-on-surface-variant">{{ configName }}</p>
+              </div>
+            </div>
+          </button>
+          <div v-if="showConfig" class="border-t border-outline-variant flex font-mono text-[13px] leading-[1.6]">
+            <div class="w-12 flex-shrink-0 text-right pr-4 text-on-surface-variant bg-surface-container-low select-none py-4 border-r border-outline-variant">
+              <template v-for="(_, i) in configLines" :key="i">{{ i + 1 }}<br /></template>
+            </div>
+            <div class="p-4 whitespace-pre text-on-surface overflow-x-auto font-medium">
+              <template v-for="(line, i) in configLines" :key="i">
+                <span class="text-primary font-bold">{{ line.match(/^\s*\w+/) ? line.match(/^\s*\w+/)[0] : '' }}</span><span>{{ line.replace(/^\s*\w+/, '') }}</span><br />
+              </template>
+            </div>
+          </div>
+        </div>
+      </section>
+      </template>
+    </template>
+  </div>
+</template>

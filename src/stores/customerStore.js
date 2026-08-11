@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 
-const api = axios.create({ baseURL: API_BASE_URL, timeout: 5000 })
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
@@ -133,7 +133,7 @@ export const useCustomerStore = defineStore('customer', () => {
     error.value = null
     try {
       const { data } = await api.get(`/api/v1/customers/${id}/timeline`)
-      timeline.value = data?.timeline || data || []
+      timeline.value = data || []
     } catch (e) {
       console.warn('fetchCustomerTimeline failed:', e.message)
       error.value = e.message || 'Failed to load timeline'

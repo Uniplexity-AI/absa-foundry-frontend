@@ -116,7 +116,9 @@
               <!-- Right Side: Risk Drivers -->
               <div class="border-l border-gray-100 pl-10">
                 <h4 class="text-sm font-semibold mb-6">Key Risk Drivers</h4>
-                <div class="space-y-6">
+                <div v-if="loadingRiskDrivers" class="text-sm text-gray-400">Analyzing risk factors...</div>
+                <div v-else-if="riskDrivers.length === 0" class="text-sm text-gray-400">Risk drivers not yet computed.</div>
+                <div v-else class="space-y-6">
                   <div v-for="(driver, index) in riskDrivers" :key="index">
                     <div class="flex justify-between text-sm mb-1">
                       <span class="font-medium">{{ driver.title }}</span>
@@ -165,28 +167,35 @@
             </div>
             
             <div class="flex-1 text-white p-6 pt-4 flex flex-col relative z-10">
-              <div class="flex justify-between items-start mb-6">
-                <span class="bg-white/10 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-                  {{ nextBestAction.priority }}
-                </span>
-                <div class="text-right">
-                  <span class="block text-[8px] uppercase tracking-widest text-gray-400">AI Confidence</span>
-                  <span class="text-2xl font-bold">{{ nextBestAction.confidence }}</span>
+              <template v-if="loadingNba">
+                <div class="flex items-center justify-center flex-1">
+                  <span class="text-white/60 text-sm">Loading recommendations...</span>
                 </div>
-              </div>
-              <h4 class="text-2xl font-bold mb-4 leading-tight">{{ nextBestAction.title }}</h4>
-              <p class="text-sm text-gray-300 mb-8 leading-relaxed">
-                {{ nextBestAction.description }}
-              </p>
-              <div class="mt-auto flex gap-3">
-                <button class="bg-white text-primary font-bold px-4 py-2 rounded flex items-center gap-2 hover:bg-gray-100 transition-colors text-sm">
-                  <PhoneForwarded class="w-4 h-4" />
-                  Log Action
-                </button>
-                <button class="bg-white/5 text-white font-medium px-6 py-2 rounded hover:bg-white/10 transition-colors border border-white/20 text-sm">
-                  Dismiss
-                </button>
-              </div>
+              </template>
+              <template v-else>
+                <div class="flex justify-between items-start mb-6">
+                  <span class="bg-white/10 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                    {{ nextBestAction.priority }}
+                  </span>
+                  <div class="text-right">
+                    <span class="block text-[8px] uppercase tracking-widest text-gray-400">AI Confidence</span>
+                    <span class="text-2xl font-bold">{{ nextBestAction.confidence }}</span>
+                  </div>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 leading-tight">{{ nextBestAction.title }}</h4>
+                <p class="text-sm text-gray-300 mb-8 leading-relaxed">
+                  {{ nextBestAction.description }}
+                </p>
+                <div class="mt-auto flex gap-3">
+                  <button class="bg-white text-primary font-bold px-4 py-2 rounded flex items-center gap-2 hover:bg-gray-100 transition-colors text-sm">
+                    <PhoneForwarded class="w-4 h-4" />
+                    Log Action
+                  </button>
+                  <button class="bg-white/5 text-white font-medium px-6 py-2 rounded hover:bg-white/10 transition-colors border border-white/20 text-sm">
+                    Dismiss
+                  </button>
+                </div>
+              </template>
             </div>
           </div>
 
@@ -227,6 +236,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+import { API_BASE_URL } from '@/services/api'
 import {
   ExternalLink,
   BrainCircuit,
@@ -243,112 +255,206 @@ import ChurnProbabilityBar from '@/components/absa/ChurnProbabilityBar.vue'
 import StateTimeline from '@/components/absa/StateTimeline.vue'
 import MarkovMatrix from '@/components/absa/MarkovMatrix.vue'
 import StateBadge from '@/components/absa/StateBadge.vue'
+import { useCustomerStore } from '@/stores/customerStore'
+import { usePredictionStore } from '@/stores/predictionStore'
+
+const route = useRoute()
+const customerStore = useCustomerStore()
+const predictionStore = usePredictionStore()
+
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+
+const DEFAULT_AS_OF_DATE = '2026-07-27'
 
 const loading = ref(true)
-const isEmpty = computed(() => !loading.value && healthMetrics.value.score == null)
+const isEmpty = computed(() => !loading.value && !customer.value.customerId)
 
-onMounted(() => { setTimeout(() => loading.value = false, 800) })
-
-// Customer Profile Data
-const customer = ref({
-  fullName: 'Mwenda Kapambwe',
-  customerId: '994022/11/1',
-  segment: 'Verified Private Client',
-  state: 'CHURNED',
-  accountNumber: 'ZMK-8820-192',
-  branch: 'Lusaka Main',
-  tenure: '8 Years',
-  assignedRm: 'Tina Tembo',
-  avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD6Bfm2V-PM9YCvzJU1DmNDLgmOLGqasJ2MIeXbRWVxtBmD8Ai3hB3B0yEdU8QvJ7IntUStXVBQSL3r5YhIu4ai-Jp1NZgsM61qxLXdX_PlymfWvBshcJRWXyPL9smji6LHXUKr4HrYsRL7PDP-8NhrMa2XPB3U9Mbeq5MD-5Q32eL73QTG3lMraYAHCR168UrPl_mNbHTHk9bRWuYuFC7X1ffxHIZX-b1F_TlD5HGy0KwkA3wLxff6Ch5dt1ayJnaYg2k'
-})
-
-// Health Metrics for Gauge + Churn Bar
-const healthMetrics = ref({
-  score: 22,
-  trend: 'down',
-  previousScore: 34,
-  churnProbability: 0.924,
-})
-
-const riskDrivers = ref([
-  {
-    title: 'Salary Inflow',
-    metric: '-42%',
-    percentage: 58,
-    description: 'Major decrease in monthly deposits detected.',
-    highlightClass: 'text-brand-red',
-    fillClass: 'progress-bar-fill'
-  },
-  {
-    title: 'Digital Activity',
-    metric: 'Low',
-    percentage: 15,
-    description: 'No mobile app logins in the last 45 days.',
-    highlightClass: 'text-brand-dark',
-    fillClass: 'bg-gray-300 h-full'
-  },
-  {
-    title: 'Withdrawal Volume',
-    metric: 'Spike',
-    percentage: 85,
-    description: 'Recent lump-sum exit to external institution.',
-    highlightClass: 'text-brand-red',
-    fillClass: 'progress-bar-fill'
+// Customer profile — from customerStore
+const customer = computed(() => {
+  const c = customerStore.selectedCustomer
+  if (!c) return { fullName: '—', customerId: '', state: '—' }
+  return {
+    fullName: c.fullName || `Customer ${c.customerId?.replace('CUST', '')}`,
+    customerId: c.customerId,
+    segment: c.segment || '—',
+    state: c.state || '—',
+    accountNumber: '—',
+    branch: c.branch || '—',
+    tenure: '—',
+    assignedRm: '—',
+    avatar: '',
   }
-])
+})
 
-// Timeline data for StateTimeline component
-const timelineData = ref([
-  { from: 'ACTIVE', to: 'ACTIVE', date: '2025-08-10', daysInState: 180, triggerReason: 'Regular activity' },
-  { from: 'ACTIVE', to: 'AT_RISK', date: '2026-02-10', daysInState: 120, triggerReason: 'Declining transaction frequency' },
-  { from: 'AT_RISK', to: 'DORMANT', date: '2026-05-15', daysInState: 94, triggerReason: '90 days inactivity threshold' },
-  { from: 'DORMANT', to: 'CHURNED', date: '2026-07-20', daysInState: 66, triggerReason: 'Account closure initiated' },
-])
+// Health metrics — from predictionStore
+const healthMetrics = computed(() => {
+  const cid = customer.value.customerId
+  const h = predictionStore.healthScores[cid]
+  const p = predictionStore.predictions[cid]
+  // predictions can be stored as { churn_probability } object or raw number
+  const churnProb = typeof p === 'number' ? p : p?.churn_probability ?? null
+  return {
+    score: h?.health_score ?? (typeof p === 'object' ? p?.health_score : null) ?? null,
+    trend: 'down',
+    previousScore: null,
+    churnProbability: churnProb,
+  }
+})
 
-// Markov Matrix data
-const markovStates = ref(['ACTIVE', 'AT_RISK', 'DORMANT', 'CHURNED'])
-const markovMatrix = ref([
-  [0.82, 0.15, 0.02, 0.01],
-  [0.10, 0.65, 0.20, 0.05],
-  [0.05, 0.10, 0.55, 0.30],
-  [0.00, 0.00, 0.00, 1.00],
-])
+// Risk drivers — from reason-codes API
+const riskDrivers = ref([])
 
-// Next Best Action Data
+// Timeline — condenses identical consecutive states into meaningful journey
+const timelineData = computed(() => {
+  const raw = customerStore.timeline
+
+  // Use transitions array if available
+  if (raw?.transitions?.length) {
+    return raw.transitions.map(t => ({
+      from: t.from_state,
+      to: t.to_state,
+      date: t.transition_date,
+      daysInState: t.days_in_previous_state || 0,
+      triggerReason: t.trigger_reason || '—',
+    }))
+  }
+
+  const entries = Array.isArray(raw) ? raw : (raw?.timeline || [])
+  if (!entries.length) return []
+
+  // Build transition pairs, then condense identical consecutive states
+  const transitions = entries.map((entry, i, arr) => {
+    const next = arr[i + 1]
+    const currDate = new Date(entry.as_of_date)
+    const prevDate = next ? new Date(next.as_of_date) : null
+    return {
+      from: next?.state || entry.state,
+      to: entry.state,
+      date: entry.as_of_date,
+      daysInState: prevDate ? Math.round((currDate - prevDate) / 86400000) : 0,
+      triggerReason: entry.classification_rules
+        ? Object.values(entry.classification_rules).flat().join(', ')
+        : `Entered ${entry.state}`,
+    }
+  }).reverse()
+
+  // Merge consecutive identical states
+  const condensed = []
+  for (const t of transitions) {
+    const last = condensed[condensed.length - 1]
+    if (last && last.to === t.to) {
+      last.date = t.date
+      last.daysInState += t.daysInState
+    } else {
+      condensed.push({ ...t })
+    }
+  }
+  return condensed
+})
+
+// Markov matrix — from predictionStore
+const markovStates = computed(() => predictionStore.markovMatrix?.states || [])
+const markovMatrix = computed(() => predictionStore.markovMatrix?.matrix || [])
+
+// Next Best Action — from recommendations API
 const nextBestAction = ref({
-  priority: 'Priority 1',
-  confidence: '92%',
-  title: 'Immediate Retention Call',
-  description: 'High risk of customer attrition. The AI predicts a 45% chance of re-engagement if contacted within the next 48 hours with a customized "Prestige Loyalty" offer.'
+  priority: '—',
+  confidence: '—',
+  title: 'Loading...',
+  description: '',
 })
 
-// Action History Timeline
-const actionHistory = ref([
-  {
-    title: 'General Inquiry',
-    date: 'June 10, 2024',
-    description: 'Logged by RM Sarah Bwalaya. Customer queried interest rates on fixed deposits but expressed frustration with app performance.',
-    icon: MessageSquare,
-    iconBg: 'bg-red-50 border border-brand-red',
-    iconColor: 'text-brand-red'
-  },
-  {
-    title: 'Cross-sell: Credit Card',
-    date: 'May 15, 2024',
-    description: 'Inbound call center lead. Product offered: Absa Infinite Card. Customer declined citing high annual fees.',
-    icon: Tag,
-    iconBg: 'bg-white border border-gray-300',
-    iconColor: 'text-gray-500'
-  },
-  {
-    title: 'KYC Update',
-    date: 'April 02, 2024',
-    description: 'Routine identity verification completed at Lusaka Main Branch.',
-    icon: UserCheck,
-    iconBg: 'bg-white border border-gray-300',
-    iconColor: 'text-gray-500'
+// Action History — placeholder (no backend yet)
+const actionHistory = ref([])
+
+const loadingNba = ref(false)
+const loadingRiskDrivers = ref(false)
+
+onMounted(async () => {
+  const customerId = route.params.id
+  if (!customerId) { loading.value = false; return }
+
+  await customerStore.fetchCustomerDetail(customerId)
+  await customerStore.fetchCustomerTimeline(customerId)
+
+  // Fire predictions in background
+  predictionStore.fetchChurnProbability(customerId)
+  predictionStore.fetchHealthScore(customerId)
+  predictionStore.fetchMarkovMatrix()
+
+  loading.value = false
+
+  // Background: fetch recommendations (slow — LLM-powered, ~15-30s)
+  loadRecommendations(customerId)
+
+  // Background: fetch reason codes (slow — LLM explanations, ~30-60s)
+  loadRiskDrivers(customerId)
+})
+
+async function loadRecommendations(customerId) {
+  loadingNba.value = true
+  try {
+    const { data } = await api.get(`/api/v1/recommendations/${customerId}`, {
+      params: { as_of_date: DEFAULT_AS_OF_DATE },
+      timeout: 60000,
+    })
+    const rec = data.recommendations?.[0]
+    if (rec) {
+      nextBestAction.value = {
+        priority: 'Priority 1',
+        confidence: Math.round((rec.propensity_score || 0) * 100) + '%',
+        title: rec.product_name || rec.campaign_name || 'Review Required',
+        description: rec.campaign_name
+          ? `Campaign: ${rec.campaign_name}. Propensity score: ${Math.round((rec.propensity_score || 0) * 100)}%. Product: ${rec.product_name || 'N/A'}.`
+          : 'AI recommends reviewing this customer for retention or cross-sell actions.',
+      }
+    }
+  } catch (e) {
+    console.warn('NBA fetch failed:', e.message)
+    nextBestAction.value = {
+      priority: '—',
+      confidence: '—',
+      title: 'Not available',
+      description: 'Recommendation engine is still processing. Check back shortly.',
+    }
+  } finally {
+    loadingNba.value = false
   }
-])
+}
+
+async function loadRiskDrivers(customerId) {
+  loadingRiskDrivers.value = true
+  try {
+    const { data } = await api.get(`/api/v1/insights/reason-codes/${customerId}`, {
+      params: { as_of_date: DEFAULT_AS_OF_DATE },
+      timeout: 90000,
+    })
+    const codes = data.reason_codes || data.drivers || []
+    riskDrivers.value = codes.slice(0, 5).map((r, i) => {
+      // Format detail as description
+      const detail = r.detail || {}
+      const descParts = Object.entries(detail).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`)
+      return {
+        title: (r.code || r.reason || '').replace(/_/g, ' '),
+        metric: r.severity || '—',
+        percentage: r.severity === 'HIGH' ? 85 : r.severity === 'MEDIUM' ? 50 : 20,
+        description: descParts.join(' · ') || r.description || '',
+        highlightClass: r.severity === 'HIGH' ? 'text-brand-red' : 'text-brand-dark',
+        fillClass: r.severity === 'HIGH' ? 'progress-bar-fill' : 'bg-gray-300 h-full',
+      }
+    })
+  } catch (e) {
+    console.warn('Risk drivers fetch failed:', e.message)
+    riskDrivers.value = []
+  } finally {
+    loadingRiskDrivers.value = false
+  }
+}
 </script>
 
 <style>

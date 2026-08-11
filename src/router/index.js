@@ -13,17 +13,6 @@ import Login from '@/views/auth/login.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
-import SuperAdminOverview from '@/views/Admin/AdminDashboard.vue';
-
-
-import TenantRevenues from '@/views/Admin/Revenue.vue';
-import TenantReports from '@/views/Admin/Reports.vue';
-
-import RagChat from '@/views/Admin/RagChat.vue'
-import RagUpload from '@/views/Admin/RagUpload.vue'
-import EmailManagement from '@/views/Admin/EmailManagement.vue'
-// import UserActivities from '@/views/Admin/UserActivities.vue'
-
 
 // ===================================Strategic Management Module ==============================
 
@@ -112,29 +101,6 @@ const routes = [
   },
 
 
-
-  //==================== Super Admin =========================
-  {
-    path: '/superadmin',
-    component: SuperAdminLayout,
-    children: [
-      { path: 'dashboard', name: 'SuperAdmin', component: SuperAdminOverview },
-      { path: 'system-traces', name: 'SystemTraces', component: () => import('@/views/Admin/SystemTraces.vue') },
-      
-      { path: 'tenant-revenues', name: 'TenantRevenues', component: TenantRevenues },
-      { path: 'tenant-reports', name: 'TenantReports', component: TenantReports },
-     
-      { path: 'rag-chat', component: RagChat },
-      { path: 'rag-upload', component: RagUpload },
-      { path: 'email-management', name: 'EmailManagement', component: EmailManagement },
-      
-    
-      { path: 'user-module-access', name: 'UserModuleAccess', component: () => import('@/views/Admin/UserModuleManagement.vue') },
-    ]
-  },
-  { path: '/lexi-ai-lawyer', component: RagChat },
-
-
   // Dashboard routes
   {
     path: '/dashboard',
@@ -142,14 +108,13 @@ const routes = [
     meta: { requiresAuth: false }, // We'll handle auth in the global beforeEach guard
 
     children: [
-      { path: '', redirect: '/dashboard/home' },
-      { path: 'home', name: 'DashboardHome', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Dashboard' } },
-      { path: 'portfolio', name: 'PortfolioOverview', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Portfolio Overview' } },
+      { path: '', redirect: '/dashboard/portfolio' },
+      { path: 'portfolio', name: 'DashboardHome', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Dashboard' } },
       { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue'), meta: { title: 'Customer Detail' } },
       { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue'), meta: { title: 'Branch Manager Dashboard' } },
       { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue'), meta: { title: 'Model Performance' } },
       { path: 'etl-pipeline', name: 'EtlPipeline', component: () => import('../views/Modules/datapipeline/EtlPipeline.vue'), meta: { title: 'ETL Pipeline' } },
-      { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'), meta: { title: 'ETL Run History' } },
+      { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'), meta: { title: 'ETL Manager' } },
       { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { title: 'Batch Execution Detail' } },
       { path: 'etl-config-manager', name: 'EtlConfigManager', component: () => import('../views/Modules/datapipeline/EtlConfigManager.vue'), meta: { title: 'ETL Config Manager' } },
      
@@ -238,8 +203,8 @@ router.beforeEach(async (to, from, next) => {
     // Clear the query param and redirect to dashboard
     const cleanQuery = { ...to.query };
     delete cleanQuery.ub_impersonate;
-    // Navigate to dashboard/home, the app will decode the JWT and set user context
-    return next({ path: '/dashboard/home', query: cleanQuery, replace: true });
+    // Navigate to dashboard/portfolio, the app will decode the JWT and set user context
+    return next({ path: '/dashboard/portfolio', query: cleanQuery, replace: true });
   }
 
   const { getUserRole } = decodeJWT();
@@ -252,9 +217,9 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 2. Subscription & Module Access Check (Dashboard routes)
-  if (to.path.startsWith('/dashboard') && to.path !== '/dashboard/home') {
+  if (to.path.startsWith('/dashboard') && to.path !== '/dashboard/portfolio') {
     // Special handling for profile/settings/subaccounts (usually allowed if logged in)
-    const allowedUniversal = ['/dashboard/profile', '/dashboard/settings', '/dashboard/subaccounts', '/dashboard/home'];
+    const allowedUniversal = ['/dashboard/profile', '/dashboard/settings', '/dashboard/subaccounts', '/dashboard/portfolio'];
     if (allowedUniversal.includes(to.path)) {
       return next();
     }

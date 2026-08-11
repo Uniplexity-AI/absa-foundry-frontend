@@ -67,10 +67,20 @@ const res = await axios.post('http://...')
 
 ## Styling Rules
 
+> **ALL visual design patterns are documented in [design-patterns.md](./design-patterns.md).**
+> The ETL Run History page (`ETLRunHistory.vue`) is the canonical design authority.
+> Before writing any new UI, consult design-patterns.md for boxes, tables, typography, and spacing.
+
 ```vue
 <template>
-  <!-- ✅ DO: Tailwind classes -->
-  <div class="flex items-center gap-4 p-6 bg-white rounded-lg shadow">
+  <!-- ✅ DO: CSS variable classes, design-patterns.md box template -->
+  <div class="bg-surface rounded border border-outline-variant p-5 global-dotted-bg shadow-sm">
+
+  <!-- ❌ DON'T: Hardcoded hex colors -->
+  <div class="bg-[#FFFFFF] border-[#e4e2e2] text-[#131010]">
+
+  <!-- ❌ DON'T: Rounded corners (use `rounded` not `rounded-xl`) -->
+  <div class="rounded-xl">
 
   <!-- ❌ DON'T: Inline styles -->
   <div style="display: flex; padding: 24px;">

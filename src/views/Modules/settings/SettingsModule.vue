@@ -2,7 +2,7 @@
   <section class="absa-profile-settings">
     <div class="settings-shell">
       <nav class="settings-breadcrumb" aria-label="Breadcrumb">
-        <router-link to="/dashboard/home">Home</router-link>
+        <router-link to="/dashboard/portfolio">Home</router-link>
         <span aria-hidden="true">/</span>
         <span>Settings</span>
         <span aria-hidden="true">/</span>

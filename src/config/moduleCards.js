@@ -116,7 +116,7 @@ export function getSuperAdminSidebarItems() {
     
     { id: 'system-traces', label: 'System Traces', icon: 'fas fa-network-wired', route: '/superadmin/system-traces' },
     { id: 'endpoint-monitor', label: 'Endpoints', icon: 'fas fa-heartbeat', route: '/superadmin/endpoint-monitor' },
-    { id: 'back-to-app', label: 'Back to App', icon: 'fas fa-arrow-left', route: '/dashboard/home' },
+    { id: 'back-to-app', label: 'Back to App', icon: 'fas fa-arrow-left', route: '/dashboard/portfolio' },
   ];
 }
 

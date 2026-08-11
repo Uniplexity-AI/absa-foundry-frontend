@@ -20,8 +20,8 @@
             <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
             Export Logs
           </button>
-          <button class="px-4 py-2 bg-primary text-on-primary rounded flex items-center gap-2 hover:bg-primary-container transition-colors font-label text-sm font-semibold shadow-sm">
-            <span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
+          <button @click="openTriggerModal" class="px-4 py-2 bg-primary text-on-primary rounded flex items-center gap-2 hover:bg-primary-container transition-colors font-label text-sm font-semibold shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">play_arrow</span>
             Trigger Manual Run
           </button>
           <router-link to="/dashboard/etl-config-manager" class="px-4 py-2 bg-surface text-on-surface border border-outline-variant rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors font-label text-sm font-semibold shadow-sm">
@@ -29,6 +29,16 @@
             Config Manager
           </router-link>
         </div>
+
+      <!-- Trigger Banners -->
+      <div v-if="triggerSuccess" class="mb-4 px-4 py-2 bg-green-50 border border-green-200 rounded text-sm text-green-700 flex justify-between items-center">
+        <span>✓ {{ triggerSuccess }}</span>
+        <button @click="triggerSuccess = null" class="text-green-500 hover:text-green-700">×</button>
+      </div>
+      <div v-if="triggerError" class="mb-4 px-4 py-2 bg-red-50 border border-red-200 rounded text-sm text-red-700 flex justify-between items-center">
+        <span>{{ triggerError }}</span>
+        <button @click="triggerError = null" class="text-red-500 hover:text-red-700">×</button>
+      </div>
 
       <!-- Data Pipeline Health Section -->
       <h2 class="text-headline-lg font-headline font-bold mb-4 text-on-surface">Data Pipeline Health</h2>
@@ -111,7 +121,7 @@
                 <tr v-if="executionRuns.length === 0">
                   <td colspan="7" class="p-12 text-center text-body-md text-secondary">No execution runs recorded</td>
                 </tr>
-                <tr v-for="run in executionRuns" :key="run.id" class="hover:bg-surface-container-low transition-colors" :class="{ 'cursor-pointer': run.batchId }" @click="run.batchId && $router.push('/dashboard/etl-runhistory/batch/' + run.batchId)">
+                <tr v-for="run in executionRuns" :key="run.id" class="hover:bg-surface-container-low transition-colors cursor-pointer" @click="router.push('/dashboard/etl-run-history/batch/' + run.auditId)">
                   <td class="p-4 font-semibold" :class="run.status === 'FAILED' ? 'text-primary' : 'text-on-surface'">{{ run.runId }}</td>
                   <td class="p-4 text-on-surface-variant">{{ run.batchId }}</td>
                   <td class="p-4">{{ run.duration }}</td>
@@ -130,8 +140,8 @@
                     </span>
                   </td>
                   <td class="p-4 text-on-surface-variant">
-                    <button class="p-1 rounded hover:bg-surface-variant" @click.stop>
-                      <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                    <button @click.stop="router.push('/dashboard/etl-run-history/batch/' + run.auditId)" class="p-1 rounded hover:bg-surface-variant" title="View batch details">
+                      <span class="material-symbols-outlined text-[18px]">open_in_new</span>
                     </button>
                   </td>
                 </tr>
@@ -142,16 +152,12 @@
           <div class="p-4 flex items-center justify-between bg-surface text-sm text-on-surface-variant">
             <span>{{ pagination.total ? `Showing ${pagination.from} to ${pagination.to} of ${pagination.total} results` : 'No results' }}</span>
             <div class="flex items-center gap-1">
-              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">
-                <span class="material-symbols-outlined text-[16px]" data-icon="chevron_left">chevron_left</span>
+              <button @click="prevPage" :disabled="pagination.page <= 1" class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant disabled:opacity-30">
+                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
               </button>
-              <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-semibold">1</button>
-              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">2</button>
-              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">3</button>
-              <span class="px-2">...</span>
-              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">32</button>
-              <button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant">
-                <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+              <button v-for="p in etlStore.totalPages" :key="p" @click="goToPage(p)" :class="['w-8 h-8 flex items-center justify-center rounded border font-semibold', p === pagination.page ? 'bg-primary text-on-primary border-primary' : 'border-outline-variant hover:bg-surface-variant']">{{ p }}</button>
+              <button @click="nextPage" :disabled="pagination.page >= etlStore.totalPages" class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant disabled:opacity-30">
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
               </button>
             </div>
           </div>
@@ -207,111 +213,180 @@
         </div>
       </section>
     </template>
+
+    <!-- Trigger Pipeline Modal -->
+    <Teleport to="body">
+      <div v-if="showTrigger" class="fixed inset-0 z-50 flex items-center justify-center" @click.self="closeTriggerModal">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+        <div class="relative bg-surface rounded border border-outline-variant shadow-lg p-6 w-full max-w-md mx-4">
+          <h3 class="text-headline-md font-headline font-semibold text-on-surface mb-4">Trigger Pipeline Run</h3>
+
+          <div v-if="triggerConfigsLoading" class="flex items-center justify-center py-8">
+            <div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+
+          <div v-else-if="triggerConfigsError" class="text-sm text-red-600 mb-4">
+            <p>{{ triggerConfigsError }}</p>
+            <button @click="openTriggerModal" class="text-primary font-semibold hover:underline mt-1">Retry</button>
+          </div>
+
+          <div v-else-if="triggerConfigs.length === 0" class="text-sm text-on-surface-variant py-4">
+            No extraction specs found in etl/config/extraction_specs/
+          </div>
+
+          <template v-else>
+            <label class="block text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Select extraction spec</label>
+            <select v-model="selectedConfig" class="w-full border border-outline-variant rounded bg-surface text-on-surface text-sm py-2 pl-3 pr-8 mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
+              <option :value="null" disabled>— Choose a config —</option>
+              <option v-for="cfg in triggerConfigs" :key="cfg.name" :value="cfg.name">
+                {{ cfg.name }} — {{ cfg.description || 'No description' }}
+              </option>
+            </select>
+
+            <div class="flex justify-end gap-3">
+              <button @click="closeTriggerModal" :disabled="triggerRunning" class="px-4 py-2 text-sm border border-outline-variant rounded hover:bg-surface-variant transition-colors disabled:opacity-50">Cancel</button>
+              <button @click="confirmTrigger" :disabled="!selectedConfig || triggerRunning" class="px-4 py-2 text-sm bg-primary text-on-primary rounded hover:bg-primary-container transition-colors disabled:opacity-50 flex items-center gap-2">
+                <span v-if="triggerRunning" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Run Pipeline
+              </button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
+import { useETLStore } from '@/stores/etlStore'
+import { fetchETLConfigs, triggerETLPipeline } from '@/services/etlApi'
 
+const router = useRouter()
+const etlStore = useETLStore()
 const loading = ref(true)
-onMounted(async () => {
-  await nextTick()
-  setTimeout(() => loading.value = false, 800)
+
+// ── Pipeline health cards ──
+const pipelineHealth = computed(() => {
+  const s = etlStore.statusPanel
+  if (!s) return []
+  return [
+    { name: 'PostgreSQL Cluster', icon: 'storage', status: s.current_status || '—', metric: s.current_pipeline || '—' },
+    { name: 'Redis Cache', icon: 'memory', status: s.current_status || '—', metric: s.last_successful_duration || '—' },
+    { name: 'API Gateway', icon: 'cloud', status: s.current_status || '—', metric: s.last_successful_rows || '—' },
+  ]
 })
 
-// Data loaded from API — all start empty
-const pipelineHealth = ref([])
-const qualityTrendData = ref([])
-const dataIntegrityScore = ref(null)
-const lastScanTime = ref(null)
-const executionRuns = ref([])
-const pagination = ref({ page: 1, total: 0, from: 0, to: 0 })
-const footerMetrics = ref({
-  storageGrowth: { value: null, change: null, used: null, total: null },
-  averageQuality: { value: null, change: null, sparkline: [] },
-  failedRetries: { count: null, status: null },
-  gatewayLatency: { value: null, level: null, note: null },
-})
+// ── Quality trend chart ──
+const qualityTrendData = computed(() =>
+  (etlStore.qualityTrend || []).map(t => t.value)
+)
 
-onMounted(async () => {
-  await nextTick()
+// ── Data integrity score ──
+const dataIntegrityScore = computed(() =>
+  etlStore.kpis?.avg_quality != null ? etlStore.kpis.avg_quality + '%' : null
+)
 
-  console.group('🔍 [ETLRunHistory — Full DOM Diagnostic]')
+// ── Last scan time ──
+const lastScanTime = computed(() =>
+  etlStore.statusPanel?.current_status_since?.slice(0, 10) || null
+)
 
-  // ── 1. ROOT ──
-  const root = document.querySelector('.dashboard-root')
-  if (root) {
-    const rs = getComputedStyle(root)
-    console.log('1. .dashboard-root:', {
-      display: rs.display, flexDirection: rs.flexDirection,
-      height: rs.height, position: rs.position,
-      color: rs.color, backgroundColor: rs.backgroundColor,
-    })
-  } else { console.warn('❌ .dashboard-root NOT FOUND') }
+// ── Execution runs table ──
+const executionRuns = computed(() =>
+  (etlStore.runs || []).map(r => ({
+    id: r.id,
+    auditId: r.runId,
+    runId: r.runId?.slice(0, 12) || '—',
+    batchId: r.batchId?.slice(0, 12) || '—',
+    duration: r.duration || '—',
+    rows: `${r.rowsReceived || '—'}/${r.rowsValid || '—'}/${r.rowsLoaded || '—'}/${r.rowsRejected || 0}`,
+    quality: r.qualityScore || 0,
+    qualityColor: r.qualityScore >= 95 ? 'bg-green-500' : r.qualityScore >= 80 ? 'bg-amber-500' : 'bg-red-500',
+    status: r.status,
+    statusColor: r.status === 'COMPLETED' ? 'text-green-600' : r.status === 'FAILED' ? 'text-red-600' : 'text-amber-600',
+    statusDot: r.status === 'RUNNING' ? 'bg-amber-500' : '',
+  }))
+)
 
-  // ── 2. MAIN ──
-  const main = document.querySelector('main')
-  if (main) {
-    const ms = getComputedStyle(main)
-    console.log('2. <main>:', { display: ms.display, height: ms.height, position: ms.position })
-  }
+// ── Pagination ──
+const pagination = computed(() => ({
+  page: etlStore.page,
+  total: etlStore.totalRuns,
+  from: (etlStore.page - 1) * etlStore.limit + 1,
+  to: Math.min(etlStore.page * etlStore.limit, etlStore.totalRuns),
+}))
 
-  // ── 3. SECTIONS ──
-  const allSections = document.querySelectorAll('section')
-  console.log(`3. <section> tags: ${allSections.length}`)
-  allSections.forEach((s, i) => {
-    const ss = getComputedStyle(s)
-    console.log(`   [${i}]:`, { height: ss.height, display: ss.display, position: ss.position, text: s.textContent?.substring(0, 40) })
-  })
+// ── Footer metrics ──
+const footerMetrics = computed(() => ({
+  storageGrowth: { value: etlStore.totalRuns, change: null, used: null, total: null },
+  averageQuality: { value: etlStore.kpis?.avg_quality != null ? etlStore.kpis.avg_quality + '%' : null, change: null },
+  failedRetries: { count: etlStore.kpis?.failed_runs || 0, status: etlStore.kpis?.failed_runs > 0 ? 'warning' : null },
+  gatewayLatency: { value: etlStore.kpis?.avg_duration || null, level: null, note: null },
+}))
 
-  // ── 4. HEALTH CONTAINER ──
-  const hc = document.getElementById('health-trend-container')
-  if (hc) {
-    const hcs = getComputedStyle(hc)
-    console.log('4. #health-trend-container:', {
-      display: hcs.display, height: hcs.height, position: hcs.position,
-      offsetHeight: hc.offsetHeight, children: hc.children.length,
-    })
-  } else { console.warn('❌ #health-trend-container NOT FOUND') }
+// ── Pagination actions ──
+function goToPage(p) { etlStore.setPage(p) }
+function nextPage() { if (etlStore.page < etlStore.totalPages) etlStore.setPage(etlStore.page + 1) }
+function prevPage() { if (etlStore.page > 1) etlStore.setPage(etlStore.page - 1) }
 
-  // ── 5-6. COLUMNS ──
-  ;['health-column', 'trend-column'].forEach(id => {
-    const el = document.getElementById(id)
-    if (el) {
-      const cs = getComputedStyle(el)
-      console.log(`${id}:`, { display: cs.display, height: cs.height, offsetHeight: el.offsetHeight })
+// ── Trigger Pipeline Modal ──
+const showTrigger = ref(false)
+const triggerConfigs = ref([])
+const triggerConfigsLoading = ref(false)
+const triggerConfigsError = ref(null)
+const selectedConfig = ref(null)
+const triggerRunning = ref(false)
+const triggerSuccess = ref(null)
+const triggerError = ref(null)
+
+async function openTriggerModal() {
+  showTrigger.value = true
+  selectedConfig.value = null
+  triggerSuccess.value = null
+  triggerError.value = null
+  if (triggerConfigs.value.length === 0 && !triggerConfigsLoading.value) {
+    triggerConfigsLoading.value = true
+    triggerConfigsError.value = null
+    try {
+      triggerConfigs.value = await fetchETLConfigs()
+    } catch (e) {
+      triggerConfigsError.value = e.message || 'Failed to load configs'
+    } finally {
+      triggerConfigsLoading.value = false
     }
-  })
-
-  // ── 7. TABLE ──
-  const table = document.querySelector('table')
-  console.log('7. <table>:', table ? `found, ${table.rows.length} rows, ${table.offsetHeight}px` : 'NOT FOUND')
-
-  // ── 8. CSS VAR TEST ──
-  const test = document.createElement('div')
-  test.className = 'bg-surface text-on-surface'
-  test.style.cssText = 'position:absolute;left:-9999px'
-  document.body.appendChild(test)
-  const ts = getComputedStyle(test)
-  console.log('8. CSS var test:', { bg: ts.backgroundColor, color: ts.color })
-  document.body.removeChild(test)
-
-  // ── 9. PARENT CHAIN ──
-  const absa = document.querySelector('.absa-content')
-  if (absa) {
-    const as = getComputedStyle(absa)
-    console.log('9. .absa-content:', { display: as.display, height: as.height, position: as.position, overflow: as.overflow })
   }
+}
 
-  // ── 10. FIRST H2 ──
-  const h2 = document.querySelector('h2')
-  if (h2) console.log('10. First <h2>:', { text: h2.textContent, color: getComputedStyle(h2).color, opacity: getComputedStyle(h2).opacity })
+function closeTriggerModal() {
+  showTrigger.value = false
+  selectedConfig.value = null
+}
 
-  console.groupEnd()
+async function confirmTrigger() {
+  if (!selectedConfig.value) return
+  triggerRunning.value = true
+  triggerError.value = null
+  try {
+    const res = await triggerETLPipeline(selectedConfig.value)
+    triggerSuccess.value = res.message || `Pipeline triggered — ${selectedConfig.value}`
+    closeTriggerModal()
+    setTimeout(() => { triggerSuccess.value = null }, 5000)
+    await etlStore.refresh()
+  } catch (e) {
+    triggerError.value = e.message || 'Failed to trigger pipeline'
+    setTimeout(() => { triggerError.value = null }, 8000)
+  } finally {
+    triggerRunning.value = false
+  }
+}
 
-  // Force canvas/SVG re-measurement after layout is fixed
-  window.dispatchEvent(new Event('resize'))
+// ── Init ──
+onMounted(async () => {
+  await etlStore.loadDashboard()
+  loading.value = false
 })
 </script>
 

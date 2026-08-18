@@ -33,6 +33,10 @@
                 <span class="material-symbols-outlined text-[20px]">schedule</span>
                 <span class="text-body-md font-medium">Run History</span>
               </router-link>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-config-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                <span class="text-body-md font-medium">ETL Config Manager</span>
+              </router-link>
             </nav>
           </div>
         </div>

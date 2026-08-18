@@ -38,9 +38,8 @@
       <!-- Top Stats Row -->
       <div class="grid grid-cols-4 gap-4 md:gap-gutter mb-8">
         <!-- Total Customers -->
-        <div class="card-container p-card-padding">
-          <div class="card-content flex flex-col h-full justify-between">
-            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Total Customers</h3>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <h3 class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Total Customers</h3>
             <div class="flex items-baseline gap-2 mb-4">
               <span class="text-metric-lg font-metric-lg text-on-surface">{{ customerStore.portfolio.total.toLocaleString() || '—' }}</span>
               <span class="text-body-md font-body-md text-[#FF780F] font-semibold flex items-center">
@@ -54,56 +53,49 @@
               <div v-if="totalCustomersSparkline.length === 0" class="w-full h-full flex items-center justify-center text-label-sm text-secondary">—</div>
               <div v-for="(h, i) in totalCustomersSparkline" :key="i" class="w-1/6 bg-primary rounded-t" :style="{ height: h + '%' }"></div>
             </div>
-          </div>
         </div>
 
         <!-- At Risk -->
-        <div class="card-container p-card-padding">
-          <div class="card-content flex flex-col h-full justify-between">
-            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">At Risk</h3>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+            <h3 class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">At Risk</h3>
             <div class="flex items-baseline gap-2 mb-2">
               <span class="text-metric-lg font-metric-lg text-[#FF780F]">{{ customerStore.portfolio.atRisk.toLocaleString() || '—' }}</span>
               <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.atRiskPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">+4 since last snapshot</p>
-          </div>
         </div>
 
         <!-- Dormant -->
-        <div class="card-container p-card-padding">
-          <div class="card-content flex flex-col h-full justify-between">
-            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Dormant</h3>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+            <h3 class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Dormant</h3>
             <div class="flex items-baseline gap-2 mb-2">
               <span class="text-metric-lg font-metric-lg text-[#B50232]">{{ customerStore.portfolio.dormant.toLocaleString() || '—' }}</span>
               <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.dormantPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">Stable across 3 periods</p>
-          </div>
         </div>
 
         <!-- Churned -->
-        <div class="card-container p-card-padding">
-          <div class="card-content flex flex-col h-full justify-between">
-            <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Churned</h3>
+        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+            <h3 class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Churned</h3>
             <div class="flex items-baseline gap-2 mb-2">
               <span class="text-metric-lg font-metric-lg text-[#DC0037]">{{ customerStore.portfolio.churned.toLocaleString() || '—' }}</span>
               <span class="text-body-md font-body-md text-secondary">| {{ customerStore.portfolio.churnedPct }}%</span>
             </div>
             <p class="text-body-md font-body-md text-secondary mt-auto">Last 90 days</p>
-          </div>
         </div>
       </div>
 
       <!-- Charts Row: Donut + Histogram -->
       <div class="grid grid-cols-12 gap-4 md:gap-gutter mb-8">
-        <div class="col-span-12 lg:col-span-5 card-container p-card-padding">
-          <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-4">State Distribution</h3>
+        <div class="col-span-12 lg:col-span-5 bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <h3 class="text-headline-md font-headline font-semibold text-on-surface mb-4">State Distribution</h3>
           <div class="h-64">
             <Doughnut :data="donutChartData" :options="donutChartOptions" />
           </div>
         </div>
-        <div class="col-span-12 lg:col-span-7 card-container p-card-padding">
-          <h3 class="text-label-caps font-label-caps text-secondary uppercase mb-4">Health Score Distribution</h3>
+        <div class="col-span-12 lg:col-span-7 bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+          <h3 class="text-headline-md font-headline font-semibold text-on-surface mb-4">Health Score Distribution</h3>
           <div class="h-64">
             <Bar :data="histogramChartData" :options="histogramChartOptions" />
           </div>
@@ -114,13 +106,11 @@
       <div class="grid grid-cols-12 gap-4 md:gap-gutter">
         <!-- Left Column: Critical Alerts -->
         <div class="col-span-12 lg:col-span-4 flex flex-col gap-4 md:gap-gutter overflow-y-auto">
-          <div class="card-container flex flex-col h-[500px]">
-            <div class="card-content border-b border-gray-200 p-4 flex justify-between items-center bg-white z-10">
+          <div class="bg-surface rounded border border-outline-variant shadow-sm global-dotted-bg flex flex-col h-[500px]">
+            <div class="border-b border-outline-variant p-4 flex justify-between items-center bg-surface z-10">
               <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-[#DC0037]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                </svg>
-                <h3 class="text-headline-md font-headline-md">Critical Alerts</h3>
+                <span class="material-symbols-outlined text-[#DC0037] text-[20px]">campaign</span>
+                <h3 class="text-headline-md font-headline font-semibold text-on-surface">Critical Alerts</h3>
               </div>
               <span class="text-label-sm font-label-sm text-[#DC0037]">
                 {{ alerts.length }} NEW
@@ -158,10 +148,10 @@
         <!-- Center/Right Column: Main Content Area -->
         <div class="col-span-12 lg:col-span-8 flex flex-col gap-4 overflow-y-auto">
           <!-- Predictive Lifecycle Ledger -->
-          <div class="card-container h-[500px]">
-            <div class="card-content h-full flex flex-col">
-              <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
-                <h3 class="text-headline-md font-headline-md">Predictive Lifecycle Ledger</h3>
+          <div class="bg-surface rounded shadow-sm global-dotted-bg overflow-hidden h-[500px]">
+            <div class="h-full flex flex-col">
+              <div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface">
+                <h3 class="text-headline-md font-headline font-semibold text-on-surface">Predictive Lifecycle Ledger</h3>
                 <div class="flex gap-2">
                   <button class="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,7 +242,7 @@
         </div>
 
         <!-- Portfolio Health Trend -->
-        <div class="card-container p-6 flex items-center min-h-[200px]">
+        <div class="bg-surface rounded border border-outline-variant p-6 shadow-sm global-dotted-bg flex items-center min-h-[200px]">
           <div class="card-content flex gap-4 items-start w-full">
             <div class="flex-shrink-0 w-12 h-16 bg-[#FF780F]/10 rounded-md flex items-center justify-center">
               <svg class="w-6 h-6 text-[#FF780F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

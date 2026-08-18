@@ -129,6 +129,22 @@ function saveConfig() {
 function deleteConfig(id) {
   configs.value = configs.value.filter(c => c.id !== id)
 }
+
+// ── Relative timestamp helper ──
+function relativeTime(dateStr) {
+  if (!dateStr) return '—'
+  const then = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now - then
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHrs = Math.floor(diffMs / 3600000)
+  const diffDays = Math.floor(diffMs / 86400000)
+  if (diffMins < 1) return 'Just now'
+  if (diffMins < 60) return `${diffMins}m ago`
+  if (diffHrs < 24) return `${diffHrs}h ago`
+  if (diffDays < 7) return `${diffDays}d ago`
+  return dateStr.slice(0, 10)
+}
 </script>
 
 <template>
@@ -228,11 +244,17 @@ function deleteConfig(id) {
           </div>
 
           <!-- Table View: configs list -->
-          <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm overflow-hidden relative">
+          <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm relative">
             <div class="relative z-10 px-6 py-5 border-b border-outline-variant flex justify-between items-center bg-surface">
-              <p class="text-body-md font-medium text-on-surface-variant uppercase tracking-widest text-[12px]">
-                {{ configs.length }} extraction specs in etl/config/extraction_specs/
-              </p>
+              <div class="flex items-center gap-4">
+                <p class="text-body-md font-medium text-on-surface-variant uppercase tracking-widest text-[12px]">
+                  {{ configs.length }} extraction specs in etl/config/extraction_specs/
+                </p>
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
+                  <input v-model="searchQuery" class="bg-surface border border-outline-variant rounded pl-8 pr-3 py-1 text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary w-56" placeholder="Search configs..." type="text" />
+                </div>
+              </div>
               <button @click="openNewEditor" class="bg-[#DC0037] hover:bg-[#B50232] text-on-primary font-medium py-2 px-4 rounded transition-colors flex items-center gap-2 text-body-md shadow-sm">
                 <span class="material-symbols-outlined text-[18px]">add</span>
                 New Config
@@ -250,6 +272,12 @@ function deleteConfig(id) {
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant bg-surface">
+                  <tr v-if="filteredConfigs.length === 0 && configs.length > 0">
+                    <td colspan="5" class="p-12 text-center text-body-md text-secondary">No configs matching "{{ searchQuery }}"</td>
+                  </tr>
+                  <tr v-else-if="configs.length === 0">
+                    <td colspan="5" class="p-12 text-center text-body-md text-secondary">No extraction specs found — create one with + New Config</td>
+                  </tr>
                   <tr v-for="config in filteredConfigs" :key="config.id" class="hover:bg-surface-container-low transition-colors group cursor-pointer" @click="openEditor(config)">
                     <td class="px-6 py-4">
                       <div class="font-semibold text-on-surface">{{ config.name }}</div>
@@ -269,7 +297,7 @@ function deleteConfig(id) {
                         <span class="w-1.5 h-1.5 rounded-full bg-[#F93F24]"></span> check needed
                       </span>
                     </td>
-                    <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ config.lastModified }}</td>
+                    <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ relativeTime(config.lastModified) }}</td>
                     <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ config.size }}</td>
                     <td class="px-6 py-4 text-right">
                       <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>

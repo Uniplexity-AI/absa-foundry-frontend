@@ -1,6 +1,7 @@
 # Remote Dev Connection Guide — Frontend
 
-**Backend Host:** `100.82.12.85` (Tailscale)  
+**Backend Host:** `uniplexity.tail43f0f7.ts.net` (Tailscale MagicDNS)  
+**Fallback IP:** `100.82.12.85` (use if MagicDNS is unavailable)  
 **Prerequisite:** All devs must be on the Uniplexity Tailscale network.
 
 ---
@@ -8,26 +9,30 @@
 ## Quick Test
 
 ```bash
-curl http://100.82.12.85:8080/health
+curl http://uniplexity.tail43f0f7.ts.net:8080/health
 ```
 
 Should return healthy.
 
 ---
 
-## Frontend Config
+## Frontend Config (automatic)
 
-Set the API base URL to the Tailscale host:
+`src/services/api.js` reads `VITE_API_BASE_URL`, which is committed in `.env`:
 
 ```bash
-# .env
-VITE_API_BASE_URL=http://100.82.12.85:8080
+# .env (committed — remote devs need nothing extra)
+VITE_API_BASE_URL=http://uniplexity.tail43f0f7.ts.net:8080
 ```
 
-Or update `src/services/api.js` directly:
+So a remote dev just needs to `git pull` and `npm run dev` — the frontend already
+points at the shared backend over Tailscale.
 
-```js
-const RAW_API_URL = 'http://100.82.12.85:8080'
+To point at a different backend locally, create a **gitignored** `.env.local`:
+
+```bash
+# .env.local (personal override)
+VITE_API_BASE_URL=http://100.82.12.85:8080
 ```
 
 ---
@@ -64,11 +69,11 @@ const RAW_API_URL = 'http://100.82.12.85:8080'
 
 | Port | Service | Direct URL |
 |------|---------|------------|
-| 8080 | API Gateway | `http://100.82.12.85:8080` |
-| 8002 | Feature Engineering | `http://100.82.12.85:8002` |
-| 8003 | Customer State (L1) | `http://100.82.12.85:8003` |
-| 8004 | Prediction (L2) | `http://100.82.12.85:8004` |
-| 8005 | Decision Intelligence (L3) | `http://100.82.12.85:8005` |
+| 8080 | API Gateway | `http://uniplexity.tail43f0f7.ts.net:8080` |
+| 8002 | Feature Engineering | `http://uniplexity.tail43f0f7.ts.net:8002` |
+| 8003 | Customer State (L1) | `http://uniplexity.tail43f0f7.ts.net:8003` |
+| 8004 | Prediction (L2) | `http://uniplexity.tail43f0f7.ts.net:8004` |
+| 8005 | Decision Intelligence (L3) | `http://uniplexity.tail43f0f7.ts.net:8005` |
 
 ## Docs
 

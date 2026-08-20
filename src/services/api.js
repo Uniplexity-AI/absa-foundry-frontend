@@ -1,27 +1,21 @@
 import axios from 'axios';
 import router from '@/router';
 
-// Use Vite environment variable if set, otherwise fallback based on hostname
-// Ensure HTTPS for production to avoid mixed content issues
-const RAW_API_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+// Backend base URL resolution:
+//   1. VITE_API_BASE_URL (committed in .env → Tailscale host) is used verbatim,
+//      so remote devs on the tailnet connect straight to the shared backend.
+//   2. Fallback (no env var): localhost in local dev, hosted backend otherwise.
+const _configured = (import.meta.env.VITE_API_BASE_URL || '').trim();
+
+const BASE_URL = _configured || (
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8080'
-    : 'https://ub-app-backend-692487163735.europe-west1.run.app');
-
-
-
-// Force HTTPS if not localhost
-const enforcedBaseUrl = window.location.hostname === 'localhost'
-  ? RAW_API_URL
-  : (RAW_API_URL.startsWith('http:') ? RAW_API_URL.replace(/^http:/, 'https:') : (RAW_API_URL.startsWith('https:') ? RAW_API_URL : `https://${RAW_API_URL}`));
+    : 'https://ub-app-backend-692487163735.europe-west1.run.app'
+);
 
 // Ensure consistent export
-export const API_BASE_URL = enforcedBaseUrl;
-export default enforcedBaseUrl;
-
-// Re-assign for internal usage to avoid breaking existing references in this file
-const BASE_URL = enforcedBaseUrl;
+export const API_BASE_URL = BASE_URL;
+export default BASE_URL;
 
 export function getAuthHeaders(existingHeaders = {}) {
   const headers = new Headers(existingHeaders || {});

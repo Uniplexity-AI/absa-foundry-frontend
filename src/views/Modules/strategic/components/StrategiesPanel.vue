@@ -1,5 +1,5 @@
 <template>
-  <div class="strategies-panel bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div class="strategies-panel bg-white rounded-lg shadow-none border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-semibold text-gray-900">Strategic Plans</h2>
       <button
@@ -47,7 +47,7 @@
         <button
           @click="showStrategyMap = !showStrategyMap"
           :class="showStrategyMap ? 'bg-indigo-100 text-indigo-600' : 'text-gray-500'"
-          class="p-2 rounded hover:bg-gray-100 transition-colors"
+          class="p-2 rounded-sm hover:bg-gray-100 transition-colors"
           title="Toggle Strategy Map"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@
                 <div
                   v-for="strategy in getCategoryStrategies(category.name)"
                   :key="strategy.id"
-                  class="strategy-card p-3 bg-gray-50 rounded cursor-pointer hover:bg-gray-100 transition-colors"
+                  class="strategy-card p-3 bg-gray-50 rounded-sm cursor-pointer hover:bg-gray-100 transition-colors"
                   @click="openStrategyDetails(strategy)"
                 >
                   <h5 class="font-medium text-sm text-gray-900 mb-1">{{ strategy.title }}</h5>

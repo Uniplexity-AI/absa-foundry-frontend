@@ -1,5 +1,5 @@
 <template>
-  <div class="goals-objectives-panel bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div class="goals-objectives-panel bg-white rounded-lg shadow-none border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-semibold text-gray-900">Goals & Objectives</h2>
       <button
@@ -45,7 +45,7 @@
           <button
             @click="viewMode = 'grid'"
             :class="viewMode === 'grid' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'"
-            class="p-2 rounded hover:bg-gray-100"
+            class="p-2 rounded-sm hover:bg-gray-100"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -54,7 +54,7 @@
           <button
             @click="viewMode = 'list'"
             :class="viewMode === 'list' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'"
-            class="p-2 rounded hover:bg-gray-100"
+            class="p-2 rounded-sm hover:bg-gray-100"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -218,7 +218,7 @@
       <div
         v-for="goal in filteredGoals"
         :key="goal.id"
-        class="goal-row bg-white border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow cursor-pointer"
+        class="goal-row bg-white border border-gray-200 rounded-lg p-4 hover:shadow-none transition-shadow cursor-pointer"
         @click="openGoalDetails(goal)"
       >
         <div class="flex items-center justify-between">

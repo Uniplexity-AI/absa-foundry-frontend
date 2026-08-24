@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-sm">
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-none">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <button @click="$router.push('/dashboard/crm')" class="text-gray-400 hover:text-[#2F2E8B] transition-colors mr-2">

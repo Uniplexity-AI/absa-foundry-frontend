@@ -28,10 +28,10 @@
           </div>
           
           <div class="flex items-center gap-2">
-            <button @click="$emit('edit', contact)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm group" title="Modify State">
+            <button @click="$emit('edit', contact)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-none group" title="Modify State">
               <Edit :size="18" class="group-hover:scale-110 transition-transform" />
             </button>
-            <button @click="$emit('update:modelValue', false)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-sm group">
+            <button @click="$emit('update:modelValue', false)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none group">
               <X :size="20" class="group-hover:rotate-90 transition-transform" />
             </button>
           </div>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="lg:col-span-9">
                    <div class="bg-gray-50 border border-gray-100 p-6 flex items-start gap-4">
-                      <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center text-gray-400 shadow-sm">
+                      <div class="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center text-gray-400 shadow-none">
                          <MapPin :size="18" />
                       </div>
                       <div class="flex-1">
@@ -202,7 +202,7 @@
                     <div v-for="activity in activities" :key="activity.id" class="flex gap-6 group">
                        <div class="flex-shrink-0 relative pt-2">
                           <div class="w-px h-full bg-gray-100 absolute left-1/2 -translate-x-1/2 top-4"></div>
-                          <div :class="getActivityColorClass(activity.type)" class="w-10 h-10 border border-gray-100 shadow-sm flex items-center justify-center relative z-10 transition-transform group-hover:scale-110">
+                          <div :class="getActivityColorClass(activity.type)" class="w-10 h-10 border border-gray-100 shadow-none flex items-center justify-center relative z-10 transition-transform group-hover:scale-110">
                              <component :is="getActivityLucideIcon(activity.type)" :size="16" class="text-white" />
                           </div>
                        </div>

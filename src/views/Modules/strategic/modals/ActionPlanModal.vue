@@ -221,13 +221,13 @@
                     v-model="subtask.title"
                     type="text"
                     placeholder="Subtask description"
-                    class="flex-1 px-2 py-1 border border-gray-300 rounded text-xs"
+                    class="flex-1 px-2 py-1 border border-gray-300 rounded-sm text-xs"
                   />
                   <button
                     type="button"
                     @click="toggleSubtaskComplete(index, subIndex)"
                     :class="[
-                      'px-2 py-1 rounded text-xs transition-colors',
+                      'px-2 py-1 rounded-sm text-xs transition-colors',
                       subtask.completed 
                         ? 'bg-green-500 hover:bg-green-600 text-white' 
                         : 'bg-gray-300 hover:bg-gray-400 text-gray-700'
@@ -238,7 +238,7 @@
                   <button
                     type="button"
                     @click="removeSubtask(index, subIndex)"
-                    class="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-xs"
+                    class="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded-sm text-xs"
                   >
                     <i class="fas fa-times"></i>
                   </button>

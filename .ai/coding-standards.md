@@ -68,18 +68,18 @@ const res = await axios.post('http://...')
 ## Styling Rules
 
 > **ALL visual design patterns are documented in [design-patterns.md](./design-patterns.md).**
-> The ETL Run History page (`ETLRunHistory.vue`) is the canonical design authority.
-> Before writing any new UI, consult design-patterns.md for boxes, tables, typography, and spacing.
+> The Intelligence Unit pages (e.g. `CustomerValueIntelligence.vue`, `LifecyclePrediction.vue`) are the **canonical design authority**.
+> Before writing any new UI, consult `design-patterns.md` for high-density boxes, tables, typography (`font-mono`), and spacing (`mb-6`).
 
 ```vue
 <template>
-  <!-- ✅ DO: CSS variable classes, design-patterns.md box template -->
-  <div class="bg-surface rounded border border-outline-variant p-5 global-dotted-bg shadow-sm">
+  <!-- ✅ DO: Use the standard high-density panel class -->
+  <div class="bg-white rounded-sm border border-gray-300 shadow-none mb-6 overflow-hidden">
 
-  <!-- ❌ DON'T: Hardcoded hex colors -->
+  <!-- ❌ DON'T: Hardcoded hex colors or non-brand system colors -->
   <div class="bg-[#FFFFFF] border-[#e4e2e2] text-[#131010]">
 
-  <!-- ❌ DON'T: Rounded corners (use `rounded` not `rounded-xl`) -->
+  <!-- ❌ DON'T: Use large rounding -->
   <div class="rounded-xl">
 
   <!-- ❌ DON'T: Inline styles -->

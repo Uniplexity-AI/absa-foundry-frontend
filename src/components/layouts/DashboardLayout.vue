@@ -14,7 +14,7 @@
           <button class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors flex items-center justify-center">
             <span class="material-symbols-outlined">menu</span>
           </button>
-          <div class="absolute left-0 top-full mt-2 w-48 bg-white/20 backdrop-blur-xl border border-white/20 rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out z-50 before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-['']">
+          <div class="absolute left-0 top-full mt-2 w-64 bg-white/20 backdrop-blur-xl border border-white/20 rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out z-50 before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-['']">
             <nav class="flex flex-col p-2">
               <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/portfolio" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
@@ -24,6 +24,25 @@
                 <span class="material-symbols-outlined text-[20px]">store</span>
                 <span class="text-body-md font-medium">Branch Manager</span>
               </router-link>
+
+              <div class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">star</span>
+                <span class="text-body-md font-medium">Customer Value</span>
+              </router-link>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">waterfall_chart</span>
+                <span class="text-body-md font-medium">Lifecycle Prediction</span>
+              </router-link>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">show_chart</span>
+                <span class="text-body-md font-medium">Balance Forecast</span>
+              </router-link>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">monetization_on</span>
+                <span class="text-body-md font-medium">Business Outcomes</span>
+              </router-link>
+
               <div class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">AI &amp; DATA</div>
               <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/models" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monitoring</span>

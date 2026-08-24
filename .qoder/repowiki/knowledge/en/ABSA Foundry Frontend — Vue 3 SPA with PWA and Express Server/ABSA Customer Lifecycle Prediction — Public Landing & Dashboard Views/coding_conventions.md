@@ -1,0 +1,6 @@
+- Views are written as Vue 3 `<script setup lang="ts">` SFCs that import stores via composables (`useCustomerStore`, `usePredictionStore`) rather than direct store instances.
+- Scoped styles use an `absa-` BEM prefix (e.g., `absa-db-kpi-card`, `absa-init__progress-fill`) combined with Tailwind utility classes for layout.
+- Data loading is triggered in `onMounted` with a local `pageLoading` flag that gates skeleton placeholders (`LoadingSkeleton`) versus rendered content.
+- Navigation between related screens uses `vue-router`'s `useRoute`/`useRouter` to read `route.params.id` and push back to `/dashboard/customer/${customerId}` with preserved query parameters.
+- User actions that do not yet hit the backend persist data to `localStorage` under a per-customer key (e.g., `actions_taken_${customerId}`, `action_plans_${customerId}`) before showing a confirmation banner.
+- Role-based visibility is gated through the `useRBAC` composable (`hasPermission`, `isAdmin`, `isSuperAdmin`) instead of ad-hoc role checks inside templates.

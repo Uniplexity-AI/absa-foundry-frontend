@@ -1,0 +1,31 @@
+schema_version: 1
+module_path: ""
+title: ABSA Foundry Frontend — Vue 3 SPA with PWA and Express Server
+scope:
+    - src/
+    - public/
+    - scripts/
+    - .ai/
+    - .dockerignore
+    - .env
+    - .gitignore
+    - Absa_colour_guideline (1).pdf
+    - Dockerfile
+    - README.md
+    - REMOTE-DEV-GUIDE.md
+    - TASKS.md
+    - app.yaml
+    - cloudbuild.yaml
+    - index.html
+    - jsconfig.json
+    - package-lock.json
+    - package.json
+    - postcss.config.js
+    - server.js
+    - tailwind.config.js
+    - vite-env.d.ts
+    - vite.config.js
+    - vitest.config.js
+source_files: []
+depends_on: []
+related_to: []

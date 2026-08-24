@@ -1,0 +1,1 @@
+No build or test scripts live in this scope; each `.vue` file is compiled by the project's Vite/Vue toolchain as part of the standard `npm run dev` / `npm run build` flow. `InitialisationScreen.vue` uses a fixed ~10s staged timer sequence before routing to `/login`, and `DashboardHome.vue` registers dashboard widgets through the `useDashboardWidgets` composable at mount time.

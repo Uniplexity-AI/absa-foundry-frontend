@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -23,7 +23,7 @@
           <div class="flex flex-wrap gap-3">
             <select 
               v-model="selectedLanguage"
-              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-sm"
+              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-none"
             >
               <option value="en">🇬🇧 ENGLISH</option>
               <option value="bem">BEMBA</option>
@@ -54,7 +54,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
         
         <!-- Credit Score Card -->
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_AUDIT // CREDIT_CORE</div>
           
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Score Breakdown -->
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_METRICS // CORE_WEIGHTS</div>
           
@@ -155,7 +155,7 @@
         </div>
 
         <!-- Explainable AI Insights -->
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">AI_LOGIC // ATTRIBUTION_ANALYSIS</div>
           
@@ -196,7 +196,7 @@
 
       <!-- Matched Funding Opportunities -->
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MATCH // FUNDING_FLUX</div>
           
@@ -219,7 +219,7 @@
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="flex items-start justify-between mb-6 relative z-10">
                 <div class="flex items-center gap-4">
-                  <div class="p-3 bg-white border border-gray-100 shadow-sm">
+                  <div class="p-3 bg-white border border-gray-100 shadow-none">
                     <i :class="['fas text-xl', funder.icon, 'text-[#2F2E8B]']"></i>
                   </div>
                   <div>
@@ -278,7 +278,7 @@
 
       <!-- Strategic Investment Requirements -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_REQS // INVEST_GATE</div>
           
@@ -316,7 +316,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MODAL // LENDING_NODE</div>
           

@@ -148,10 +148,22 @@ function relativeTime(dateStr) {
 </script>
 
 <template>
-  <div class="dashboard-root global-mesh-bg w-full min-h-screen p-4 md:p-6 lg:p-8">
+  <div class="dashboard-root  w-full min-h-screen p-4 md:p-6 lg:p-8">
+
+    <!-- Page Header -->
+    <div class="mb-6 pb-4 border-b border-gray-300 flex justify-between items-end">
+      <div>
+        <div class="flex items-center gap-2 text-label-sm text-gray-500 mb-1">
+          <span>Dashboard</span><span>/</span>
+          <span>Data Pipeline</span><span>/</span>
+          <span class="text-absa-enrich font-bold">Config Manager</span>
+        </div>
+        <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">ETL Config Manager</h1>
+      </div>
+    </div>
 
     <!-- ═══ Tabbed Navigation ═══ -->
-    <div class="flex border-b border-outline-variant mb-6">
+    <div class="flex border-b border-gray-300 mb-6">
       <button 
         @click="activeTab = 'run_history'"
         :class="[
@@ -183,9 +195,9 @@ function relativeTime(dateStr) {
         <template v-if="activeTab === 'configurations'">
 
           <!-- Editor View: inline GitHub-style YAML editor -->
-          <div v-if="editorView" class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm overflow-hidden flex flex-col relative text-on-surface text-sm min-h-[600px]">
+          <div v-if="editorView" class="bg-white rounded-sm border border-gray-300  shadow-none overflow-hidden flex flex-col relative text-on-surface text-sm min-h-[600px]">
             <!-- Editor Header -->
-            <div class="px-4 py-3 flex justify-between items-center border-b border-outline-variant bg-surface relative z-10">
+            <div class="px-4 py-3 flex justify-between items-center border-b border-gray-300 bg-white relative z-10">
               <div class="flex items-center gap-2 font-mono text-sm">
                 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">dataset</span>
                 <span class="text-[#DC0037] font-bold">customer-lifecycle-ai</span>
@@ -193,30 +205,30 @@ function relativeTime(dateStr) {
                 <strong class="text-on-surface">{{ editingConfig?.name }}</strong>
               </div>
               <div class="flex items-center gap-3">
-                <button @click="closeEditor" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant bg-surface border border-outline-variant rounded-md hover:border-[#DC0037] hover:text-[#DC0037] transition-colors">Cancel changes</button>
-                <button @click="saveConfig" :disabled="isSaving" class="px-3 py-1.5 text-sm font-bold text-on-primary bg-[#DC0037] hover:bg-[#B50232] rounded-md transition-colors flex items-center gap-2 shadow-sm border border-[#DC0037]">
+                <button @click="closeEditor" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant bg-white border border-gray-300 rounded-md hover:border-[#DC0037] hover:text-[#DC0037] transition-colors">Cancel changes</button>
+                <button @click="saveConfig" :disabled="isSaving" class="px-3 py-1.5 text-sm font-bold text-on-primary bg-[#DC0037] hover:bg-[#B50232] rounded-md transition-colors flex items-center gap-2 shadow-none border border-[#DC0037]">
                   <span v-if="isSaving" class="material-symbols-outlined text-[16px] animate-spin">sync</span>
                   save config
                 </button>
               </div>
             </div>
             <!-- Editor Sub-header -->
-            <div class="flex justify-between items-center px-4 py-2 border-b border-outline-variant bg-surface relative z-10">
+            <div class="flex justify-between items-center px-4 py-2 border-b border-gray-300 bg-white relative z-10">
               <div class="flex gap-2">
-                <button @click="editorMode = 'edit'" :class="['px-3 py-1.5 text-sm font-medium border border-outline-variant rounded-md transition-colors', editorMode === 'edit' ? 'text-on-surface bg-surface' : 'text-on-surface-variant hover:text-on-surface']">Edit</button>
-                <button @click="editorMode = 'preview'" :class="['px-3 py-1.5 text-sm font-medium transition-colors', editorMode === 'preview' ? 'text-on-surface bg-surface border border-outline-variant rounded-md' : 'text-on-surface-variant hover:text-on-surface']">Preview</button>
+                <button @click="editorMode = 'edit'" :class="['px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md transition-colors', editorMode === 'edit' ? 'text-on-surface bg-white' : 'text-on-surface-variant hover:text-on-surface']">Edit</button>
+                <button @click="editorMode = 'preview'" :class="['px-3 py-1.5 text-sm font-medium transition-colors', editorMode === 'preview' ? 'text-on-surface bg-white border border-gray-300 rounded-md' : 'text-on-surface-variant hover:text-on-surface']">Preview</button>
               </div>
               <div class="flex gap-4 items-center">
                 <div class="flex items-center gap-2 text-sm text-on-surface-variant">
                   <span>Spaces:</span>
-                  <select class="bg-transparent border border-outline-variant rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
+                  <select class="bg-transparent border border-gray-300 rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
                     <option>2</option>
                     <option>4</option>
                   </select>
                 </div>
                 <div class="flex items-center gap-2 text-sm text-on-surface-variant">
                   <span>Soft wrap</span>
-                  <select class="bg-transparent border border-outline-variant rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
+                  <select class="bg-transparent border border-gray-300 rounded-md text-on-surface cursor-pointer py-0.5 pl-2 pr-6 text-sm">
                     <option>None</option>
                     <option>Word</option>
                   </select>
@@ -225,7 +237,7 @@ function relativeTime(dateStr) {
             </div>
             <!-- Editor Body: line numbers + YAML content -->
             <div class="flex-1 overflow-auto flex bg-transparent font-mono text-[13px] leading-[1.6] relative z-10">
-              <div class="w-12 flex-shrink-0 text-right pr-4 text-on-surface-variant bg-surface-container-low select-none py-4 border-r border-outline-variant">
+              <div class="w-12 flex-shrink-0 text-right pr-4 text-on-surface-variant bg-white-container-low select-none py-4 border-r border-gray-300">
                 <template v-for="(_, i) in editorLines" :key="i">{{ i + 1 }}<br /></template>
               </div>
               <div v-if="editorMode === 'edit'" class="p-4 w-full outline-none focus:ring-0">
@@ -244,25 +256,25 @@ function relativeTime(dateStr) {
           </div>
 
           <!-- Table View: configs list -->
-          <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm relative">
-            <div class="relative z-10 px-6 py-5 border-b border-outline-variant flex justify-between items-center bg-surface">
+          <div v-else class="bg-white rounded-sm border border-gray-300  shadow-none relative">
+            <div class="relative z-10 px-6 py-5 border-b border-gray-300 flex justify-between items-center bg-white">
               <div class="flex items-center gap-4">
                 <p class="text-body-md font-medium text-on-surface-variant uppercase tracking-widest text-[12px]">
                   {{ configs.length }} extraction specs in etl/config/extraction_specs/
                 </p>
                 <div class="relative">
                   <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
-                  <input v-model="searchQuery" class="bg-surface border border-outline-variant rounded pl-8 pr-3 py-1 text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary w-56" placeholder="Search configs..." type="text" />
+                  <input v-model="searchQuery" class="bg-white border border-gray-300 rounded-sm pl-8 pr-3 py-1 text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-1 focus:ring-primary w-56" placeholder="Search configs..." type="text" />
                 </div>
               </div>
-              <button @click="openNewEditor" class="bg-[#DC0037] hover:bg-[#B50232] text-on-primary font-medium py-2 px-4 rounded transition-colors flex items-center gap-2 text-body-md shadow-sm">
+              <button @click="openNewEditor" class="bg-[#DC0037] hover:bg-[#B50232] text-on-primary font-medium py-2 px-4 rounded-sm transition-colors flex items-center gap-2 text-body-md shadow-none">
                 <span class="material-symbols-outlined text-[18px]">add</span>
                 New Config
               </button>
             </div>
-            <div class="relative z-10 overflow-x-auto bg-surface">
+            <div class="relative z-10 overflow-x-auto bg-white">
               <table class="w-full text-left text-body-md">
-                <thead class="bg-surface border-b border-outline-variant text-label-caps text-on-surface-variant">
+                <thead class="bg-white border-b border-gray-300 text-label-caps text-on-surface-variant">
                   <tr>
                     <th class="px-6 py-4 font-bold tracking-widest">Name</th>
                     <th class="px-6 py-4 font-bold tracking-widest">Status</th>
@@ -271,14 +283,14 @@ function relativeTime(dateStr) {
                     <th class="px-6 py-4 font-bold tracking-widest text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-outline-variant bg-surface">
+                <tbody class="divide-y divide-outline-variant bg-white">
                   <tr v-if="filteredConfigs.length === 0 && configs.length > 0">
                     <td colspan="5" class="p-12 text-center text-body-md text-secondary">No configs matching "{{ searchQuery }}"</td>
                   </tr>
                   <tr v-else-if="configs.length === 0">
                     <td colspan="5" class="p-12 text-center text-body-md text-secondary">No extraction specs found — create one with + New Config</td>
                   </tr>
-                  <tr v-for="config in filteredConfigs" :key="config.id" class="hover:bg-surface-container-low transition-colors group cursor-pointer" @click="openEditor(config)">
+                  <tr v-for="config in filteredConfigs" :key="config.id" class="hover:bg-white-container-low transition-colors group cursor-pointer" @click="openEditor(config)">
                     <td class="px-6 py-4">
                       <div class="font-semibold text-on-surface">{{ config.name }}</div>
                       <div class="text-on-surface-variant text-sm mt-0.5">{{ config.description }}</div>
@@ -286,28 +298,28 @@ function relativeTime(dateStr) {
                     <td class="px-6 py-4">
                       <span 
                         v-if="config.status === 'valid'"
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#2e7d32]/10 text-[#2e7d32] border border-[#2e7d32]/20 text-xs font-semibold"
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-green-100 text-green-700 border border-green-200 text-xs font-semibold"
                       >
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#2e7d32]"></span> valid
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> valid
                       </span>
                       <span 
                         v-else
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#FF780F]/10 text-[#F93F24] border border-[#FF780F]/30 text-xs font-semibold"
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-orange-100 text-absa-energy border border-orange-200 text-xs font-semibold"
                       >
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#F93F24]"></span> check needed
+                        <span class="w-1.5 h-1.5 rounded-full bg-absa-energy"></span> check needed
                       </span>
                     </td>
                     <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ relativeTime(config.lastModified) }}</td>
                     <td class="px-6 py-4 text-on-surface-variant font-mono text-sm">{{ config.size }}</td>
                     <td class="px-6 py-4 text-right">
                       <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.stop>
-                        <button @click="openEditor(config)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Edit">
+                        <button @click="openEditor(config)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded-sm transition-colors" title="Edit">
                           <span class="material-symbols-outlined text-[20px]">edit</span>
                         </button>
-                        <button class="p-1.5 text-on-surface-variant hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded transition-colors" title="Run">
+                        <button class="p-1.5 text-on-surface-variant hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded-sm transition-colors" title="Run">
                           <span class="material-symbols-outlined text-[20px]">play_arrow</span>
                         </button>
-                        <button @click="deleteConfig(config.id)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded transition-colors" title="Delete">
+                        <button @click="deleteConfig(config.id)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded-sm transition-colors" title="Delete">
                           <span class="material-symbols-outlined text-[20px]">delete</span>
                         </button>
                       </div>
@@ -320,7 +332,7 @@ function relativeTime(dateStr) {
         </template>
 
         <!-- Run History Panel -->
-        <div v-else class="bg-surface rounded border border-outline-variant global-dotted-bg shadow-sm p-8 text-center text-on-surface-variant">
+        <div v-else class="bg-white rounded-sm border border-gray-300  shadow-none p-8 text-center text-on-surface-variant">
           <p class="text-body-lg">Run History logs will appear here.</p>
         </div>
   </div>

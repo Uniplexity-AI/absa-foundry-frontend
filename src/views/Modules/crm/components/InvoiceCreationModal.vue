@@ -51,14 +51,14 @@
           <div class="flex border border-gray-100 p-1 bg-gray-50/50">
             <button 
               @click="mode = 'redirect'"
-              :class="mode === 'redirect' ? 'bg-white text-[#2F2E8B] shadow-sm' : 'text-gray-400 hover:text-gray-600'"
+              :class="mode === 'redirect' ? 'bg-white text-[#2F2E8B] shadow-none' : 'text-gray-400 hover:text-gray-600'"
               class="flex-1 py-3 text-[10px] font-mono font-bold uppercase tracking-widest transition-all"
             >
               Redirect to Module
             </button>
             <button 
               @click="mode = 'link'"
-              :class="mode === 'link' ? 'bg-white text-[#2F2E8B] shadow-sm' : 'text-gray-400 hover:text-gray-600'"
+              :class="mode === 'link' ? 'bg-white text-[#2F2E8B] shadow-none' : 'text-gray-400 hover:text-gray-600'"
               class="flex-1 py-3 text-[10px] font-mono font-bold uppercase tracking-widest transition-all"
             >
               Link Existing ID

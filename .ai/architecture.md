@@ -15,17 +15,18 @@ App.vue
 │   └── ResetPasswordView
 │
 └── DashboardLayout
-    ├── Sidebar (2 groups: CUSTOMER LIFECYCLE + AI & DATA)
-    ├── TopBar (search, period selector, user menu)
+    ├── DropdownMenu (3 groups: Dashboard, INTELLIGENCE, AI & DATA)
+    ├── TopBar (search, user menu)
     └── <router-view>
-        ├── DashboardHome       → /dashboard/home
-        ├── PortfolioOverview   → /dashboard/portfolio
-        ├── CustomerDetail      → /dashboard/customer/:id
-        ├── BranchManager       → /dashboard/branch-manager (not yet wired)
+        ├── DashboardHome       → /dashboard/portfolio
+        ├── BranchManager       → /dashboard/branch-manager
+        ├── CustomerValueIntelligence → /dashboard/customer-value
+        ├── LifecyclePrediction → /dashboard/lifecycle
+        ├── BalanceForecast     → /dashboard/balance-forecast
+        ├── BusinessOutcomes    → /dashboard/business-outcomes
         ├── Models              → /dashboard/models
-        ├── EtlPipeline         → /dashboard/etl-pipeline
         ├── ETLRunHistory       → /dashboard/etl-run-history
-        └── BatchExecutionDetail → /dashboard/etl-run-history/batch/:runId
+        └── EtlConfigManager    → /dashboard/etl-config-manager
 ```
 
 ---
@@ -33,15 +34,16 @@ App.vue
 ## 2. Routing
 
 ```
-/dashboard                         → redirect → /dashboard/home
-/dashboard/home                    → DashboardHome
+/dashboard                         → redirect → /dashboard/portfolio
 /dashboard/portfolio               → PortfolioOverview
-/dashboard/customer/:id            → CustomerDetail
 /dashboard/branch-manager          → BranchManagerDashboard
+/dashboard/customer-value          → CustomerValueIntelligence
+/dashboard/lifecycle               → LifecyclePrediction
+/dashboard/balance-forecast        → BalanceForecast
+/dashboard/business-outcomes       → BusinessOutcomes
 /dashboard/models                  → Models
-/dashboard/etl-pipeline            → EtlPipeline
-/dashboard/etl-run-history        → ETLRunHistory
-/dashboard/etl-run-history/batch/:id → BatchExecutionDetail
+/dashboard/etl-run-history         → ETLRunHistory
+/dashboard/etl-config-manager      → EtlConfigManager
 ```
 
 ---
@@ -56,8 +58,8 @@ App.vue
                         │ calls
 ┌───────────────────────▼─────────────────────────────┐
 │              Pinia Store (axios.create)              │
-│  customerStore | predictionStore | modelsStore      │
-│  etlStore | authStore | dashboardStore              │
+│  intelligenceStore | customerStore | modelsStore     │
+│  etlStore | authStore                                │
 └───────────────────────┬─────────────────────────────┘
                         │ HTTP /api/v1/*
 ┌───────────────────────▼─────────────────────────────┐
@@ -77,27 +79,34 @@ App.vue
 
 | Store | Key State | APIs Called | Pages |
 |-------|-----------|-------------|-------|
+| `intelligenceStore` | clvData, lifecycleData, forecastData, outcomesData | 4 endpoints | CustomerValue, Lifecycle, BalanceForecast, Outcomes |
 | `customerStore` | customers[], selectedCustomer, portfolio, timeline | 4 endpoints | DashboardHome, Portfolio, CustomerDetail |
-| `predictionStore` | predictions{}, healthScores{}, markovMatrix | 3 endpoints | CustomerDetail |
 | `modelsStore` | models[], championChurn, championCLV | 1 endpoint | Models |
 | `etlStore` | runs[], kpis, statusPanel, qualityTrend | 1 endpoint | EtlPipeline, ETLRunHistory |
 | `authStore` | user, token, isAuthenticated | /auth/* | Login, DashboardLayout |
 
 ---
 
-## 5. Sidebar Structure
+## 5. Sidebar / Dropdown Structure
 
 ```
 ABSA INTELLIGENCE UNIT
 
-CUSTOMER LIFECYCLE
-  ▣  Dashboard           → /dashboard/home
-  ▨  Portfolio           → /dashboard/portfolio
-  ⌂  Branch Manager      → /dashboard/branch-manager
+DASHBOARD
+  ▣  Dashboard               → /dashboard/portfolio
+  ⌂  Branch Manager          → /dashboard/branch-manager
+
+INTELLIGENCE
+  ★  Customer Value          → /dashboard/customer-value
+  ♒  Lifecycle Prediction    → /dashboard/lifecycle
+  📈 Balance Forecast        → /dashboard/balance-forecast
+  💰 Business Outcomes       → /dashboard/business-outcomes
 
 AI & DATA
-  ◫  Model Performance   → /dashboard/models
-  ⛭  ETL Pipeline        → /dashboard/etl-pipeline
+  ◫  Model Performance       → /dashboard/models
+  ⛭  Run History             → /dashboard/etl-run-history
+  ⚙  ETL Config Manager      → /dashboard/etl-config-manager
+```
   ◷  Run History         → /dashboard/etl-run-history
 
 ──
@@ -111,14 +120,14 @@ AI & DATA
 | Component | Purpose |
 |-----------|---------|
 | `LoadingSkeleton` | Stats, table, card loading states |
-| `StateBadge` | Customer state icon + label (ACTIVE, AT_RISK, DORMANT, CHURNED) |
-| `HealthScoreGauge` | 0-100 gauge with trend indicator |
-| `ChurnProbabilityBar` | Horizontal bar with color coding |
-| `StateTimeline` | Vertical timeline of state transitions |
-| `MarkovMatrix` | 4×4 transition probability grid |
 | `AbsaCard` | Branded card container |
 | `AbsaButton` | Primary/outline styled buttons |
 | `AbsaBadge` | Status/category badges |
 | `AbsaStatCard` | KPI metric cards |
 | `AbsaSectionHeader` | Section title with accent bar |
 | `AbsaGradientBg` | ABSA red gradient background |
+| `AiNbaPanel` | AI Next Best Action panel — prescriptive intervention with SHAP drivers and counterfactual outcomes |
+| `AiCampaignModal` | AI Campaign Recommendation Engine — slide-over with cohort analysis, 3 ranked strategies, uplift predictions |
+| `AiShapDriverBar` | Reusable SHAP feature contribution bar (feature name, contribution %, direction) |
+| `AiConfidenceBadge` | Reusable model confidence score pill with progress bar |
+

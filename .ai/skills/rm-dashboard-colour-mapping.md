@@ -6,23 +6,25 @@
 
 ---
 
-## ⚠️ Conflict to Flag
+## ✅ Conflict Resolved: System Status Colours
 
-The Frontend Functional Requirements specify green / amber / red for several elements (FR-DASH-01 "At Risk %", FR-CUST-02 Health Score gauge, FR-CUST-03 State Timeline, FR-PORT-01 heatmap). **The Absa brand guide contains no green, and does not define an amber/red severity convention anywhere in its 51 pages.** For Website/Banking App specifically, the guide's application matrix marks only Passion, Power, Hope, Inspire, Serene, and Enrich as permitted (Energy and Uplift are not marked for these categories).
+The initial brand guide lacked standard traffic-light status colors. For the Intelligence Unit and RM Dashboard UIs, we have established a standardized set of system colors specifically for functional indicators (health scores, at-risk flags, heatmaps):
 
-This is a direct conflict between the functional spec and the brand guide. The mapping below applies only the colours and rules the brand guide actually contains — it does not introduce green/amber/red or any other colour outside the guide. Where the functional spec calls for 3-4 severity levels, the guide's own four reds (Passion, Power, Hope, Inspire) are used, since these are the only ordered set of colours the guide provides and the guide already uses them in exactly this light-to-dark sequence for its own bicolour/tricolour gradients.
+- **Success / Active:** `text-green-600` or `bg-green-600`
+- **Warning / At-Risk:** `text-amber-700` or `bg-amber-700`
+- **Critical / Churned:** `text-red-900` or `bg-red-900`
 
-**This substitution should be confirmed with Absa before implementation** (BrandHelp@absa.africa), since it resolves a conflict, not something the guide states explicitly.
+**Important:** These colors are ONLY for functional status indicators (like `AbsaBadge` states). They must NEVER be used for large backgrounds, hero sections, or non-functional decorative elements.
 
 ---
 
-## Severity Scale (Replaces Green/Amber/Red)
+## Severity Scale (Replaces earlier Passion/Power gradient mapping)
 
 | Severity Tier | Colour | HEX | AbsaBadge/Tailwind |
 |---|---|---|---|
-| Best / Lowest risk | Passion | `#DC0037` | Not applicable as a badge |
-| Moderate | Power | `#B50232` | Not applicable as a badge |
-| High risk | Hope | `#95052A` | Not applicable as a badge |
+| Best / Lowest risk | Green | N/A | `green-600` |
+| Moderate / High risk | Amber | N/A | `amber-700` |
+| Critical / Churned | Red | N/A | `red-900` |
 | Critical / Highest | Inspire | `#77021E` | Not applicable as a badge |
 
 > **Note:** This is an **inverted** scale from typical red=bad. Passion (brightest red) = best tier. Inspire (darkest red) = worst tier. This aligns with the brand guide's own light→dark gradient ordering.

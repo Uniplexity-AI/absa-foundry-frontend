@@ -70,3 +70,9 @@ This file acts as the persistent, self-learning memory ledger for AI agents work
 - [ ] Branch Manager Dashboard not yet wired — needs `branchStore.js` + backend aggregation endpoint
 - [ ] Churn % and CLV columns in ledger show `--` — needs prediction enrichment batch to populate per-row
 - [ ] Customer Detail shows `...` for accountNumber, idNumber, tenure, RM — backend doesn't provide these fields
+
+### AI Operations Platform vs CRM
+- The frontend is **NOT a CRM**. It has no CRM integration. It is a standalone AI prescriptive operations platform.
+- **Never** refer to 'Open Cases', 'Manual Tracking', or 'Syncing from CRM'.
+- **Always** refer to 'Pending AI Interventions', 'Nightly Inference Batches', and 'SHAP / Uplift Model outputs'.
+- UI components for actioning (like campaigns) must be fully driven by AI recommendations (showing uplift scores, predicted retained AUM, and counterfactual outcomes) rather than blank manual creation forms.

@@ -297,14 +297,14 @@
                           :class="getActivityColorClass(activity.type)" 
                           v-if="aIdx === 0"></div>
                         <!-- Inner dot with icon -->
-                        <div :class="[getActivityColorClass(activity.type), 'w-[14px] h-[14px] rounded-full border-2 border-white shadow-sm flex items-center justify-center relative z-10']">
+                        <div :class="[getActivityColorClass(activity.type), 'w-[14px] h-[14px] rounded-full border-2 border-white shadow-none flex items-center justify-center relative z-10']">
                           <component :is="getActivityLucideIcon(activity.type)" :size="7" class="text-white" />
                         </div>
                       </div>
                     </div>
 
                     <!-- Activity card -->
-                    <div class="ml-[26px] bg-white border border-gray-100 rounded-md p-2.5 transition-all hover:border-[#2F2E8B]/20 hover:shadow-sm group relative">
+                    <div class="ml-[26px] bg-white border border-gray-100 rounded-md p-2.5 transition-all hover:border-[#2F2E8B]/20 hover:shadow-none group relative">
                       <div class="flex items-start justify-between gap-2">
                         <div class="flex-1 min-w-0">
                           <!-- Activity badge + timestamp -->
@@ -337,7 +337,7 @@
                         </div>
                         <!-- Action buttons -->
                         <div class="flex items-center gap-1 shrink-0">
-                          <button @click="deleteActivity(activity.id)" class="w-6 h-6 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 rounded transition-all" title="Delete activity">
+                          <button @click="deleteActivity(activity.id)" class="w-6 h-6 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 rounded-sm transition-all" title="Delete activity">
                             <Trash2 :size="11" />
                           </button>
                         </div>
@@ -433,7 +433,7 @@
               </div>
 
               <!-- Meeting Form -->
-              <div v-if="showMeetingForm" class="border border-[#2F2E8B]/20 bg-white shadow-sm relative overflow-hidden">
+              <div v-if="showMeetingForm" class="border border-[#2F2E8B]/20 bg-white shadow-none relative overflow-hidden">
                 <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
                 <div class="relative z-10">
                   <!-- Form header -->
@@ -826,17 +826,17 @@
               </div>
               <span class="text-[11px] font-mono font-black text-white uppercase tracking-widest">WhatsApp // Message</span>
             </div>
-            <button @click="showWhatsAppDialog = false" class="w-5 h-5 flex items-center justify-center text-blue-300 hover:text-white rounded hover:bg-[#3D3A9E] transition-colors">
+            <button @click="showWhatsAppDialog = false" class="w-5 h-5 flex items-center justify-center text-blue-300 hover:text-white rounded-sm hover:bg-[#3D3A9E] transition-colors">
               <X :size="12" />
             </button>
           </div>
           <div class="p-3.5 space-y-3">
-            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-[#2F2E8B]/5 px-2.5 py-1.5 rounded border border-[#2F2E8B]/10">
+            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-[#2F2E8B]/5 px-2.5 py-1.5 rounded-sm border border-[#2F2E8B]/10">
               <MessageSquare :size="11" class="text-[#2F2E8B]" />
               <span>{{ lead?.name || 'CONTACT' }}</span>
               <span v-if="lead?.phone" class="text-[#2F2E8B]">· {{ lead.phone }}</span>
             </div>
-            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-[#2F2E8B] focus:bg-[#2F2E8B]/5 resize-none rounded transition-colors"></textarea>
+            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-[#2F2E8B] focus:bg-[#2F2E8B]/5 resize-none rounded-sm transition-colors"></textarea>
             <div class="bg-[#2F2E8B]/5 border border-[#2F2E8B]/10 px-3 py-2 rounded">
               <p class="text-[8px] font-mono font-bold text-[#2F2E8B] uppercase tracking-widest flex items-center gap-1.5">
                 <MessageSquare :size="10" /> Message logged to lead activity.
@@ -844,12 +844,12 @@
             </div>
           </div>
           <div class="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-2">
-            <a v-if="lead?.phone" :href="'https://wa.me/' + lead.phone.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+            <a v-if="lead?.phone" :href="'https://wa.me/' + lead.phone.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
               <MessageSquare :size="11" /> Open WhatsApp
             </a>
             <div class="flex items-center gap-2">
               <button @click="showWhatsAppDialog = false" class="px-3 py-1.5 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest hover:text-gray-700 transition-colors">Cancel</button>
-              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
                 <MessageSquare :size="11" /> Save Text
               </button>
             </div>

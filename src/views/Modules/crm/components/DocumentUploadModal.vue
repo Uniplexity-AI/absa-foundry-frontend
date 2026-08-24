@@ -32,12 +32,12 @@
             <p class="text-sm text-gray-500">Any file type supported</p>
             <button
               @click="$refs.fileInput.click()"
-              class="mt-4 px-8 py-3 bg-white border border-gray-200 text-gray-500 font-bold font-mono text-[10px] rounded-none hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition uppercase tracking-widest shadow-sm"
+              class="mt-4 px-8 py-3 bg-white border border-gray-200 text-gray-500 font-bold font-mono text-[10px] rounded-none hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition uppercase tracking-widest shadow-none"
             >
               Select File
             </button>
           </div>
-          <div v-else class="flex items-center justify-between bg-white border border-gray-100 p-4 rounded-none shadow-sm relative overflow-hidden">
+          <div v-else class="flex items-center justify-between bg-white border border-gray-100 p-4 rounded-none shadow-none relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern opacity-[0.1] pointer-events-none"></div>
             <div class="relative z-10 flex items-center gap-3">
               <i :class="getFileIcon(selectedFile.type)" class="text-3xl text-[#2F2E8B]"></i>

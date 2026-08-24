@@ -33,7 +33,7 @@
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-sm hover:shadow-md transition group">
+      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-none hover:shadow-md transition group">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Documents</p>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-sm hover:shadow-md transition group">
+      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-none hover:shadow-md transition group">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Views</p>
@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-sm hover:shadow-md transition group">
+      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-none hover:shadow-md transition group">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Downloads</p>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-sm hover:shadow-md transition group">
+      <div class="bg-white rounded-none p-5 border border-gray-100 shadow-none hover:shadow-md transition group">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Folders</p>
@@ -83,7 +83,7 @@
     </div>
 
     <!-- Filters and Search -->
-    <div class="relative overflow-hidden bg-white border border-gray-100 p-4 rounded-none shadow-sm">
+    <div class="relative overflow-hidden bg-white border border-gray-100 p-4 rounded-none shadow-none">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
         <!-- Search -->
         <div class="lg:col-span-2 relative">
@@ -147,7 +147,7 @@
           v-for="quickFilter in quickFilters"
           :key="quickFilter.value"
           @click="applyQuickFilter(quickFilter.value)"
-          :class="linkedToFilter === quickFilter.value ? 'bg-brand text-white border-brand shadow-sm' : 'bg-white text-gray-400 border-gray-200 hover:border-brand hover:text-brand hover:bg-brand/5'"
+          :class="linkedToFilter === quickFilter.value ? 'bg-brand text-white border-brand shadow-none' : 'bg-white text-gray-400 border-gray-200 hover:border-brand hover:text-brand hover:bg-brand/5'"
           class="px-4 py-2 border rounded-none text-[9px] font-mono font-bold uppercase tracking-wider transition-all"
         >
           <i :class="quickFilter.icon" class="mr-2"></i>
@@ -167,7 +167,7 @@
         v-for="doc in documents"
         :key="doc._id"
         @click="viewDocument(doc)"
-        class="group bg-white rounded-none shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
+        class="group bg-white rounded-none shadow-none border border-gray-100 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden flex flex-col h-full"
       >
         <!-- File Icon Header -->
         <div class="bg-gray-50/50 border-b border-gray-100 p-8 flex items-center justify-center relative overflow-hidden">
@@ -249,7 +249,7 @@
     </div>
 
     <!-- List View -->
-    <div v-else-if="viewMode === 'list' && documents.length > 0" class="relative overflow-hidden bg-white border border-gray-100 rounded-none shadow-sm">
+    <div v-else-if="viewMode === 'list' && documents.length > 0" class="relative overflow-hidden bg-white border border-gray-100 rounded-none shadow-none">
       <div class="overflow-x-auto">
         <table class="w-full border-collapse">
           <thead>
@@ -315,7 +315,7 @@
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="!loading && documents.length === 0" class="bg-white border border-gray-100 p-12 text-center rounded-none shadow-sm relative overflow-hidden">
+    <div v-else-if="!loading && documents.length === 0" class="bg-white border border-gray-100 p-12 text-center rounded-none shadow-none relative overflow-hidden">
       <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
       <div class="relative z-10">
         <div class="w-16 h-16 bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-6">
@@ -337,7 +337,7 @@
     </div>
 
     <!-- Pagination -->
-    <div v-if="documents.length > 0" class="px-4 py-3 bg-white border border-gray-100 rounded-none shadow-sm flex justify-between items-center relative z-10">
+    <div v-if="documents.length > 0" class="px-4 py-3 bg-white border border-gray-100 rounded-none shadow-none flex justify-between items-center relative z-10">
       <div class="text-[9px] font-mono text-gray-400 uppercase font-bold tracking-widest">
         Showing {{ (currentPage - 1) * perPage + 1 }} to {{ Math.min(currentPage * perPage, totalDocs) }} of {{ totalDocs }}
       </div>

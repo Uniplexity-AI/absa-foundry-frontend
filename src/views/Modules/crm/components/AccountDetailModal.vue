@@ -29,7 +29,7 @@
           
           <div class="flex items-center gap-2">
             <div class="relative" @click.stop>
-              <button @click="showExportMenu = !showExportMenu" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-[#2F2E8B] hover:border-[#2F2E8B] transition-all shadow-sm group" title="Export Report">
+              <button @click="showExportMenu = !showExportMenu" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-[#2F2E8B] hover:border-[#2F2E8B] transition-all shadow-none group" title="Export Report">
                 <Download :size="16" class="group-hover:scale-110 transition-transform" />
               </button>
               <div v-if="showExportMenu" class="absolute right-0 top-full mt-1 bg-white border border-gray-100 shadow-lg z-50 min-w-[140px] rounded">
@@ -44,10 +44,10 @@
                 </button>
               </div>
             </div>
-            <button @click="handleEdit" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm group" title="Modify State">
+            <button @click="handleEdit" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-none group" title="Modify State">
               <Edit :size="18" class="group-hover:scale-110 transition-transform" />
             </button>
-            <button @click="close" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-sm group">
+            <button @click="close" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none group">
               <X :size="20" class="group-hover:rotate-90 transition-transform" />
             </button>
           </div>
@@ -176,13 +176,13 @@
                     <div class="group">
                       <label class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest block mb-2 group-hover:text-[#2F2E8B] transition-colors">DIGITAL_PRESENCE</label>
                       <div class="flex flex-wrap gap-4 mt-2">
-                        <a v-if="account?.linkedin" :href="account.linkedin" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-700 transition-all shadow-sm">
+                        <a v-if="account?.linkedin" :href="account.linkedin" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-700 transition-all shadow-none">
                           <Linkedin :size="14" />
                         </a>
-                        <a v-if="account?.twitter" :href="account.twitter" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-400 transition-all shadow-sm">
+                        <a v-if="account?.twitter" :href="account.twitter" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-400 transition-all shadow-none">
                           <Twitter :size="14" />
                         </a>
-                        <a v-if="account?.facebook" :href="account.facebook" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-600 transition-all shadow-sm">
+                        <a v-if="account?.facebook" :href="account.facebook" target="_blank" class="w-8 h-8 flex items-center justify-center bg-gray-50 border border-gray-100 text-gray-400 hover:text-blue-600 transition-all shadow-none">
                           <Facebook :size="14" />
                         </a>
                       </div>
@@ -882,14 +882,14 @@
                           :class="getActivityColorClass(activity.type)" 
                           v-if="aIdx === 0"></div>
                         <!-- Inner dot with icon -->
-                        <div :class="[getActivityColorClass(activity.type), 'w-[14px] h-[14px] rounded-full border-2 border-white shadow-sm flex items-center justify-center relative z-10']">
+                        <div :class="[getActivityColorClass(activity.type), 'w-[14px] h-[14px] rounded-full border-2 border-white shadow-none flex items-center justify-center relative z-10']">
                           <component :is="getActivityLucideIcon(activity.type)" :size="7" class="text-white" />
                         </div>
                       </div>
                     </div>
 
                     <!-- Activity card -->
-                    <div class="ml-[26px] bg-white border border-gray-100 rounded-md p-2.5 transition-all hover:border-[#2F2E8B]/20 hover:shadow-sm group relative">
+                    <div class="ml-[26px] bg-white border border-gray-100 rounded-md p-2.5 transition-all hover:border-[#2F2E8B]/20 hover:shadow-none group relative">
                       <div class="flex items-start justify-between gap-2">
                         <div class="flex-1 min-w-0">
                           <!-- Activity badge + timestamp -->
@@ -934,7 +934,7 @@
                         </div>
                         <!-- Action buttons -->
                         <div class="flex items-center gap-1 shrink-0">
-                          <button @click="deleteActivity(activity.id)" class="w-6 h-6 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 rounded transition-all" title="Delete activity">
+                          <button @click="deleteActivity(activity.id)" class="w-6 h-6 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-500 rounded-sm transition-all" title="Delete activity">
                             <Trash2 :size="11" />
                           </button>
                         </div>
@@ -1039,7 +1039,7 @@
                 <div class="text-[7px] font-mono text-emerald-200 uppercase tracking-wider leading-none">{{ customCallPhone || '—' }}</div>
               </div>
             </div>
-            <button @click="closeCallDialog" class="w-6 h-6 flex items-center justify-center text-emerald-300 hover:text-white transition rounded hover:bg-emerald-600">
+            <button @click="closeCallDialog" class="w-6 h-6 flex items-center justify-center text-emerald-300 hover:text-white transition rounded-sm hover:bg-emerald-600">
               <X :size="14" />
             </button>
           </div>
@@ -1067,7 +1067,7 @@
               </div>
               <div class="space-y-1 max-h-28 overflow-y-auto pr-1">
                 <label v-for="(point, idx) in callTalkingPoints" :key="idx" class="flex items-start gap-1.5 p-1.5 border border-gray-100 hover:border-emerald-300 hover:bg-emerald-50/30 cursor-pointer transition-colors">
-                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 border-gray-300 w-3 h-3" />
+                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded-sm text-emerald-600 focus:ring-emerald-500 border-gray-300 w-3 h-3" />
                   <span class="text-[9px] text-gray-700 font-mono uppercase tracking-tight leading-snug" :class="{ 'line-through text-gray-400': point.done }">{{ point.text }}</span>
                 </label>
               </div>
@@ -1133,17 +1133,17 @@
               </div>
               <span class="text-[11px] font-mono font-black text-white uppercase tracking-widest">WhatsApp // Message</span>
             </div>
-            <button @click="closeWhatsAppDialog" class="w-5 h-5 flex items-center justify-center text-green-300 hover:text-white rounded hover:bg-green-700 transition-colors">
+            <button @click="closeWhatsAppDialog" class="w-5 h-5 flex items-center justify-center text-green-300 hover:text-white rounded-sm hover:bg-green-700 transition-colors">
               <X :size="12" />
             </button>
           </div>
           <div class="p-3.5 space-y-3">
-            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-green-50 px-2.5 py-1.5 rounded border border-green-100">
+            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-green-50 px-2.5 py-1.5 rounded-sm border border-green-100">
               <MessageSquare :size="11" class="text-green-600" />
               <span>{{ whatsAppContactName || 'CONTACT' }}</span>
               <span v-if="whatsAppPhoneNumber" class="text-green-600">· {{ whatsAppPhoneNumber }}</span>
             </div>
-            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-green-500 focus:bg-green-50/30 resize-none rounded transition-colors"></textarea>
+            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-green-500 focus:bg-green-50/30 resize-none rounded-sm transition-colors"></textarea>
             <div class="bg-green-50 border border-green-100 px-3 py-2 rounded">
               <p class="text-[8px] font-mono font-bold text-green-700 uppercase tracking-widest flex items-center gap-1.5">
                 <MessageSquare :size="10" /> Message logged to account activity.
@@ -1151,12 +1151,12 @@
             </div>
           </div>
           <div class="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-2">
-            <a v-if="whatsAppPhoneNumber" :href="'https://wa.me/' + whatsAppPhoneNumber.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+            <a v-if="whatsAppPhoneNumber" :href="'https://wa.me/' + whatsAppPhoneNumber.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
               <MessageSquare :size="11" /> Open WhatsApp
             </a>
             <div class="flex items-center gap-2">
               <button @click="closeWhatsAppDialog" class="px-3 py-1.5 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest hover:text-gray-700 transition-colors">Cancel</button>
-              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
                 <MessageSquare :size="11" /> Save Text
               </button>
             </div>

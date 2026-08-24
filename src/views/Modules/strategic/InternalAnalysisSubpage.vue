@@ -10,7 +10,7 @@
     <div class="max-w-[1700px] mx-auto px-8 py-12 relative z-10">
       
       <!-- Header with Competitive Advantage Score -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MODULE // INTERNAL_CAPABILITIES_ENGINE</div>
         
@@ -44,7 +44,7 @@
           </div>
           
           <div class="flex flex-wrap items-center gap-6">
-            <div class="bg-gray-50 border border-gray-100 p-6 flex items-center gap-8 shadow-sm">
+            <div class="bg-gray-50 border border-gray-100 p-6 flex items-center gap-8 shadow-none">
               <div class="text-center">
                 <p class="text-[8px] font-mono font-black text-gray-400 uppercase tracking-widest mb-1">ADVANTAGE_INDEX</p>
                 <div class="text-3xl font-black font-mono text-gray-900">{{ Number(competitiveAdvantageIndex).toFixed(2) }}</div>
@@ -113,7 +113,7 @@
       </div>
 
       <!-- VRIO Framework Dashboard -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">MODEL_VRIO // CAPABILITY_DIAGNOSTICS</div>
         
@@ -142,7 +142,7 @@
           <div 
             v-for="capability in vrioCapabilities" 
             :key="capability.id"
-            class="bg-gray-50 border border-gray-100 p-8 relative overflow-hidden group/capability hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm"
+            class="bg-gray-50 border border-gray-100 p-8 relative overflow-hidden group/capability hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none"
           >
             <div class="absolute top-0 right-0 bg-gray-100 border-b border-l border-gray-200 px-3 py-1 text-[8px] font-mono font-black text-gray-300 uppercase tracking-widest z-20 group-hover/capability:bg-[#2F2E8B]/5 group-hover/capability:text-[#2F2E8B]/40 transition-colors">CAPABILITY_ID: {{ capability.id }}</div>
             
@@ -226,7 +226,7 @@
       </div>
 
       <!-- Value Chain Analysis -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">MODEL_VCA // VALUE_GEN_FLOW</div>
         
@@ -258,7 +258,7 @@
             <div 
               v-for="activity in valueChain.primary" 
               :key="activity.id"
-              class="bg-gray-50 border border-gray-100 p-6 relative overflow-hidden group/activity hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm"
+              class="bg-gray-50 border border-gray-100 p-6 relative overflow-hidden group/activity hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none"
             >
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center">
@@ -302,7 +302,7 @@
             <div 
               v-for="activity in valueChain.support" 
               :key="activity.id"
-              class="bg-gray-50 border border-gray-100 p-6 relative overflow-hidden group/support hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-sm"
+              class="bg-gray-50 border border-gray-100 p-6 relative overflow-hidden group/support hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-none"
             >
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-white border border-gray-100 flex items-center justify-center">
@@ -326,7 +326,7 @@
       </div>
 
       <!-- Isolating Mechanisms -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">MODEL_MOATS // DEFENSE_MECHANISMS</div>
         
@@ -355,7 +355,7 @@
           <div 
             v-for="mechanism in isolatingMechanisms" 
             :key="mechanism.id"
-            class="bg-gray-50 border border-gray-100 p-8 relative overflow-hidden group/mechanism hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm"
+            class="bg-gray-50 border border-gray-100 p-8 relative overflow-hidden group/mechanism hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none"
           >
             <div class="absolute top-0 right-0 bg-gray-100 border-b border-l border-gray-200 px-3 py-1 text-[8px] font-mono font-black text-gray-300 uppercase tracking-widest z-20">DEFENSE_CLASS: {{ mechanism.type }}</div>
             
@@ -416,7 +416,7 @@
       </div>
 
       <!-- Value Network Analysis -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">MODEL_NETWORK // NODE_TOPOLOGY</div>
         
@@ -440,7 +440,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Suppliers -->
-          <div class="bg-gray-50 border border-gray-100 p-8 relative group/supplier hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm overflow-hidden">
+          <div class="bg-gray-50 border border-gray-100 p-8 relative group/supplier hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none overflow-hidden">
             <div class="absolute top-0 left-0 w-1 h-full bg-[#2F2E8B]/20"></div>
             <h4 class="text-base font-black font-outfit text-gray-900 uppercase tracking-tight mb-8 flex items-center gap-4">
               <i class="fas fa-truck text-[#2F2E8B]"></i>
@@ -467,7 +467,7 @@
           </div>
 
           <!-- Partners -->
-          <div class="bg-gray-50 border border-gray-100 p-8 relative group/partner hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-sm overflow-hidden">
+          <div class="bg-gray-50 border border-gray-100 p-8 relative group/partner hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-none overflow-hidden">
             <div class="absolute top-0 left-0 w-1 h-full bg-[#3D2F88]/20"></div>
             <h4 class="text-base font-black font-outfit text-gray-900 uppercase tracking-tight mb-8 flex items-center gap-4">
               <i class="fas fa-handshake text-[#3D2F88]"></i>
@@ -494,7 +494,7 @@
           </div>
 
           <!-- Customers -->
-          <div class="bg-gray-50 border border-gray-100 p-8 relative group/customer hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm overflow-hidden">
+          <div class="bg-gray-50 border border-gray-100 p-8 relative group/customer hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none overflow-hidden">
             <div class="absolute top-0 left-0 w-1 h-full bg-[#2F2E8B]/20"></div>
             <h4 class="text-base font-black font-outfit text-gray-900 uppercase tracking-tight mb-8 flex items-center gap-4">
               <i class="fas fa-users text-[#2F2E8B]"></i>
@@ -535,7 +535,7 @@
       </div>
 
       <!-- Resources & Capabilities Matrix -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8 text-gray-900">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">MODEL_RESOURCES // CAPABILITY_STRETCH</div>
         
@@ -570,7 +570,7 @@
               <div 
                 v-for="resource in resources.tangible" 
                 :key="resource.id"
-                class="bg-gray-50 border border-gray-100 p-6 relative group/resource hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-sm"
+                class="bg-gray-50 border border-gray-100 p-6 relative group/resource hover:bg-white hover:border-[#2F2E8B]/30 transition-all shadow-none"
               >
                 <div class="flex justify-between items-start mb-6">
                   <div>
@@ -605,7 +605,7 @@
               <div 
                 v-for="resource in resources.intangible" 
                 :key="resource.id"
-                class="bg-gray-50 border border-gray-100 p-6 relative group/resource hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-sm"
+                class="bg-gray-50 border border-gray-100 p-6 relative group/resource hover:bg-white hover:border-[#3D2F88]/30 transition-all shadow-none"
               >
                 <div class="flex justify-between items-start mb-6">
                   <div>

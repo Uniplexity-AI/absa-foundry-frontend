@@ -1,0 +1,6 @@
+- Feature areas are organized as sibling folders under `src/views/Modules/<feature>/` containing page views, local components, and feature-specific composables.
+- All HTTP requests go through typed axios wrappers in `src/services/` rather than ad-hoc fetch calls from components.
+- Global reactive state is kept in Pinia stores under `src/stores/` and consumed by views via composition API imports.
+- Reusable cross-feature logic is extracted into `src/composables/use*.js` files following a consistent `useXxx` naming convention.
+- Shared UI primitives live in `src/components/ui/` and are re-exported via `index.js` for uniform consumption across views.
+- RBAC checks are performed centrally via the `useRBAC` composable and `config/rbac.js` rules instead of inline permission checks in templates.

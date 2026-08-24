@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-root global-mesh-bg w-full min-h-screen p-4 md:p-6 lg:p-8">
+  <div class="dashboard-root  w-full min-h-screen p-4 md:p-6 lg:p-8">
     <!-- Loading Skeleton -->
     <template v-if="loading">
       <div class="min-h-screen flex flex-col space-y-8">
@@ -14,39 +14,46 @@
       </div>
     </template>
     <template v-else>
-    <!-- Action Buttons -->
-    <div class="flex items-center justify-end gap-3 mb-8">
-          <button class="px-4 py-2 bg-surface text-on-surface border border-outline-variant rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors font-label text-sm font-semibold shadow-sm">
+      <!-- Page Header -->
+      <div class="mb-6 pb-4 border-b border-gray-300 flex justify-between items-end">
+        <div>
+          <div class="flex items-center gap-2 text-label-sm text-gray-500 mb-1">
+            <span>Dashboard</span><span>/</span>
+            <span>Data Pipeline</span><span>/</span>
+            <span class="text-absa-enrich font-bold">Run History</span>
+          </div>
+          <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">Data Pipeline Health</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors font-label text-sm font-semibold shadow-none">
             <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
             Export Logs
           </button>
-          <button @click="openTriggerModal" class="px-4 py-2 bg-primary text-on-primary rounded flex items-center gap-2 hover:bg-primary-container transition-colors font-label text-sm font-semibold shadow-sm">
+          <button @click="openTriggerModal" class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors font-label text-sm font-semibold shadow-none">
             <span class="material-symbols-outlined text-[18px]">play_arrow</span>
             Trigger Manual Run
           </button>
-          <router-link to="/dashboard/etl-config-manager" class="px-4 py-2 bg-surface text-on-surface border border-outline-variant rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors font-label text-sm font-semibold shadow-sm">
+          <router-link to="/dashboard/etl-config-manager" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors font-label text-sm font-semibold shadow-none">
             <span class="material-symbols-outlined text-[18px]">settings</span>
             Config Manager
           </router-link>
         </div>
+      </div>
 
       <!-- Trigger Banners -->
-      <div v-if="triggerSuccess" class="mb-4 px-4 py-2 bg-green-50 border border-green-200 rounded text-sm text-green-700 flex justify-between items-center">
+      <div v-if="triggerSuccess" class="mb-4 px-4 py-2 bg-green-50 border border-green-200 rounded-sm text-sm text-green-700 flex justify-between items-center">
         <span>✓ {{ triggerSuccess }}</span>
         <button @click="triggerSuccess = null" class="text-green-500 hover:text-green-700">×</button>
       </div>
-      <div v-if="triggerError" class="mb-4 px-4 py-2 bg-red-50 border border-red-200 rounded text-sm text-red-700 flex justify-between items-center">
+      <div v-if="triggerError" class="mb-4 px-4 py-2 bg-red-50 border border-red-200 rounded-sm text-sm text-red-700 flex justify-between items-center">
         <span>{{ triggerError }}</span>
         <button @click="triggerError = null" class="text-red-500 hover:text-red-700">×</button>
       </div>
-
-      <!-- Data Pipeline Health Section -->
-      <h2 class="text-headline-lg font-headline font-bold mb-4 text-on-surface">Data Pipeline Health</h2>
       <div id="health-trend-container" class="relative w-full grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8 h-auto min-h-fit block md:grid">
         <div id="health-column" class="relative lg:col-span-1 flex flex-col gap-4 w-full h-auto min-h-[220px]">
           <div class="flex flex-col gap-4 w-full">
-            <div v-if="pipelineHealth.length === 0" class="bg-surface rounded border border-outline-variant p-5 text-center text-body-md text-secondary">No health data available</div>
-            <div v-for="svc in pipelineHealth" :key="svc.name" class="bg-surface rounded border border-outline-variant p-5 global-dotted-bg shadow-sm flex items-center justify-between">
+            <div v-if="pipelineHealth.length === 0" class="bg-white rounded-sm border border-gray-300 p-5 text-center text-body-md text-secondary">No health data available</div>
+            <div v-for="svc in pipelineHealth" :key="svc.name" class="bg-white rounded-sm border border-gray-300 p-5  shadow-none flex items-center justify-between">
               <div class="flex items-center gap-4">
                 <div class="w-10 h-10 flex items-center justify-center text-primary">
                   <span class="material-symbols-outlined">{{ svc.icon }}</span>
@@ -64,12 +71,12 @@
           </div>
         </div>
         <div id="trend-column" class="relative lg:col-span-3 flex flex-col w-full h-auto min-h-[220px]">
-          <div class="bg-surface rounded border border-outline-variant p-6 global-dotted-bg shadow-sm w-full h-auto min-h-[220px] flex flex-col justify-between">
+          <div class="bg-white rounded-sm border border-gray-300 p-6  shadow-none w-full h-auto min-h-[220px] flex flex-col justify-between">
             <div class="flex justify-between items-center mb-6">
               <h3 class="text-headline-md font-headline font-semibold text-on-surface">Quality Score Trend</h3>
-              <div class="flex gap-2 bg-surface-container-low p-1 rounded border border-outline-variant">
-                <button class="px-3 py-1 text-xs font-semibold rounded bg-surface shadow-sm">24 HOURS</button>
-                <button class="px-3 py-1 text-xs font-semibold rounded text-on-surface-variant">7 DAYS</button>
+              <div class="flex gap-2 bg-white-container-low p-1 rounded-sm border border-gray-300">
+                <button class="px-3 py-1 text-xs font-semibold rounded-sm bg-white shadow-none">24 HOURS</button>
+                <button class="px-3 py-1 text-xs font-semibold rounded-sm text-on-surface-variant">7 DAYS</button>
               </div>
             </div>
             <div class="h-48 w-full relative mb-4">
@@ -78,7 +85,7 @@
                 <div v-for="(val, i) in qualityTrendData" :key="i" class="w-full bg-primary rounded-t" :style="{ height: val + '%' }"></div>
               </div>
             </div>
-            <div class="flex justify-between items-center pt-4 border-t border-outline-variant text-sm text-on-surface-variant">
+            <div class="flex justify-between items-center pt-4 border-t border-gray-300 text-sm text-on-surface-variant">
               <div class="flex items-center gap-2">
                 <span class="w-3 h-3 bg-primary rounded-sm block"></span>
                 <span class="font-semibold text-on-surface">Data Integrity Score: {{ dataIntegrityScore != null ? dataIntegrityScore : '—' }}</span>
@@ -91,12 +98,12 @@
 
       <!-- Table Section -->
       <section class="mb-8">
-        <div class="bg-surface rounded shadow-sm overflow-hidden global-dotted-bg">
-          <div class="p-5 flex justify-between items-center bg-surface">
+        <div class="bg-white rounded-sm shadow-none overflow-hidden ">
+          <div class="p-5 flex justify-between items-center bg-white">
             <h3 class="text-headline-md font-headline font-semibold text-on-surface font-bold">Execution History</h3>
             <div class="flex items-center gap-2 text-sm">
               <span class="text-on-surface-variant">Filter by:</span>
-              <select class="border border-outline-variant rounded text-sm py-1 pl-2 pr-8 bg-surface">
+              <select class="border border-gray-300 rounded-sm text-sm py-1 pl-2 pr-8 bg-white">
                 <option>All Statuses</option>
                 <option>Running</option>
                 <option>Completed</option>
@@ -107,7 +114,7 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="bg-surface text-xs text-on-surface-variant font-label uppercase tracking-wider">
+                <tr class="bg-white text-xs text-on-surface-variant font-label uppercase tracking-wider">
                   <th class="p-4 font-semibold">Run ID</th>
                   <th class="p-4 font-semibold">Batch ID</th>
                   <th class="p-4 font-semibold">Duration</th>
@@ -121,13 +128,13 @@
                 <tr v-if="executionRuns.length === 0">
                   <td colspan="7" class="p-12 text-center text-body-md text-secondary">No execution runs recorded</td>
                 </tr>
-                <tr v-for="run in executionRuns" :key="run.id" class="hover:bg-surface-container-low transition-colors cursor-pointer" @click="router.push('/dashboard/etl-run-history/batch/' + run.auditId)">
+                <tr v-for="run in executionRuns" :key="run.id" class="hover:bg-white-container-low transition-colors cursor-pointer" @click="router.push('/dashboard/etl-run-history/batch/' + run.auditId)">
                   <td class="p-4 font-semibold" :class="run.status === 'FAILED' ? 'text-primary' : 'text-on-surface'">{{ run.runId }}</td>
                   <td class="p-4 text-on-surface-variant">{{ run.batchId }}</td>
                   <td class="p-4">{{ run.duration }}</td>
                   <td class="p-4">{{ run.rows }}</td>
                   <td class="p-4">
-                    <div class="w-16 h-2 bg-surface-variant rounded-full overflow-hidden">
+                    <div class="w-16 h-2 bg-white-variant rounded-full overflow-hidden">
                       <div class="h-full" :class="run.qualityColor" :style="{ width: run.quality + '%' }"></div>
                     </div>
                   </td>
@@ -140,7 +147,7 @@
                     </span>
                   </td>
                   <td class="p-4 text-on-surface-variant">
-                    <button @click.stop="router.push('/dashboard/etl-run-history/batch/' + run.auditId)" class="p-1 rounded hover:bg-surface-variant" title="View batch details">
+                    <button @click.stop="router.push('/dashboard/etl-run-history/batch/' + run.auditId)" class="p-1 rounded-sm hover:bg-white-variant" title="View batch details">
                       <span class="material-symbols-outlined text-[18px]">open_in_new</span>
                     </button>
                   </td>
@@ -149,14 +156,14 @@
             </table>
           </div>
           <!-- Pagination -->
-          <div class="p-4 flex items-center justify-between bg-surface text-sm text-on-surface-variant">
+          <div class="p-4 flex items-center justify-between bg-white text-sm text-on-surface-variant">
             <span>{{ pagination.total ? `Showing ${pagination.from} to ${pagination.to} of ${pagination.total} results` : 'No results' }}</span>
             <div class="flex items-center gap-1">
-              <button @click="prevPage" :disabled="pagination.page <= 1" class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant disabled:opacity-30">
+              <button @click="prevPage" :disabled="pagination.page <= 1" class="w-8 h-8 flex items-center justify-center rounded-sm border border-gray-300 hover:bg-white-variant disabled:opacity-30">
                 <span class="material-symbols-outlined text-[16px]">chevron_left</span>
               </button>
-              <button v-for="p in etlStore.totalPages" :key="p" @click="goToPage(p)" :class="['w-8 h-8 flex items-center justify-center rounded border font-semibold', p === pagination.page ? 'bg-primary text-on-primary border-primary' : 'border-outline-variant hover:bg-surface-variant']">{{ p }}</button>
-              <button @click="nextPage" :disabled="pagination.page >= etlStore.totalPages" class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-variant disabled:opacity-30">
+              <button v-for="p in etlStore.totalPages" :key="p" @click="goToPage(p)" :class="['w-8 h-8 flex items-center justify-center rounded-sm border font-semibold', p === pagination.page ? 'bg-primary text-on-primary border-primary' : 'border-gray-300 hover:bg-white-variant']">{{ p }}</button>
+              <button @click="nextPage" :disabled="pagination.page >= etlStore.totalPages" class="w-8 h-8 flex items-center justify-center rounded-sm border border-gray-300 hover:bg-white-variant disabled:opacity-30">
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
               </button>
             </div>
@@ -166,7 +173,7 @@
 
       <!-- Footer Metrics Grid -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+        <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none ">
           <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Storage Growth</p>
           <div class="flex items-end gap-3 mb-2">
             <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.storageGrowth.value != null ? '+' + footerMetrics.storageGrowth.value : '—' }}</span>
@@ -174,12 +181,12 @@
               <span class="material-symbols-outlined text-[16px]">trending_up</span> {{ footerMetrics.storageGrowth.change }}%
             </span>
           </div>
-          <div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden mt-4">
+          <div class="w-full bg-white-variant h-1 rounded-full overflow-hidden mt-4">
             <div class="w-[75%] h-full bg-primary"></div>
           </div>
           <p class="text-[10px] text-on-surface-variant mt-2">{{ footerMetrics.storageGrowth.used ? footerMetrics.storageGrowth.used + ' of ' + footerMetrics.storageGrowth.total + ' Allocated' : '—' }}</p>
         </div>
-        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm flex flex-col justify-between global-dotted-bg">
+        <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none flex flex-col justify-between ">
           <div>
             <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Average Quality</p>
             <div class="flex items-end gap-3">
@@ -190,7 +197,7 @@
             </div>
           </div>
         </div>
-        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm flex flex-col justify-between global-dotted-bg">
+        <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none flex flex-col justify-between ">
           <div>
             <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Failed Retries</p>
             <div class="flex items-end justify-between">
@@ -201,7 +208,7 @@
             </div>
           </div>
         </div>
-        <div class="bg-surface rounded border border-outline-variant p-5 shadow-sm global-dotted-bg">
+        <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none ">
           <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Gateway Latency</p>
           <div class="flex items-end justify-between mb-2">
             <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.gatewayLatency.value != null ? footerMetrics.gatewayLatency.value : '—' }}</span>
@@ -218,7 +225,7 @@
     <Teleport to="body">
       <div v-if="showTrigger" class="fixed inset-0 z-50 flex items-center justify-center" @click.self="closeTriggerModal">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-        <div class="relative bg-surface rounded border border-outline-variant shadow-lg p-6 w-full max-w-md mx-4">
+        <div class="relative bg-white rounded-sm border border-gray-300 shadow-lg p-6 w-full max-w-md mx-4">
           <h3 class="text-headline-md font-headline font-semibold text-on-surface mb-4">Trigger Pipeline Run</h3>
 
           <div v-if="triggerConfigsLoading" class="flex items-center justify-center py-8">
@@ -236,7 +243,7 @@
 
           <template v-else>
             <label class="block text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Select extraction spec</label>
-            <select v-model="selectedConfig" class="w-full border border-outline-variant rounded bg-surface text-on-surface text-sm py-2 pl-3 pr-8 mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
+            <select v-model="selectedConfig" class="w-full border border-gray-300 rounded-sm bg-white text-on-surface text-sm py-2 pl-3 pr-8 mb-4 focus:outline-none focus:ring-2 focus:ring-primary">
               <option :value="null" disabled>— Choose a config —</option>
               <option v-for="cfg in triggerConfigs" :key="cfg.name" :value="cfg.name">
                 {{ cfg.name }} — {{ cfg.description || 'No description' }}
@@ -244,8 +251,8 @@
             </select>
 
             <div class="flex justify-end gap-3">
-              <button @click="closeTriggerModal" :disabled="triggerRunning" class="px-4 py-2 text-sm border border-outline-variant rounded hover:bg-surface-variant transition-colors disabled:opacity-50">Cancel</button>
-              <button @click="confirmTrigger" :disabled="!selectedConfig || triggerRunning" class="px-4 py-2 text-sm bg-primary text-on-primary rounded hover:bg-primary-container transition-colors disabled:opacity-50 flex items-center gap-2">
+              <button @click="closeTriggerModal" :disabled="triggerRunning" class="px-4 py-2 text-sm border border-gray-300 rounded-sm hover:bg-white-variant transition-colors disabled:opacity-50">Cancel</button>
+              <button @click="confirmTrigger" :disabled="!selectedConfig || triggerRunning" class="px-4 py-2 text-sm bg-primary text-on-primary rounded-sm hover:bg-primary-container transition-colors disabled:opacity-50 flex items-center gap-2">
                 <span v-if="triggerRunning" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 Run Pipeline
               </button>
@@ -304,10 +311,10 @@ const executionRuns = computed(() =>
     duration: r.duration || '—',
     rows: `${r.rowsReceived || '—'}/${r.rowsValid || '—'}/${r.rowsLoaded || '—'}/${r.rowsRejected || 0}`,
     quality: r.qualityScore || 0,
-    qualityColor: r.qualityScore >= 95 ? 'bg-green-500' : r.qualityScore >= 80 ? 'bg-amber-500' : 'bg-red-500',
+    qualityColor: r.qualityScore >= 95 ? 'bg-absa-passion' : r.qualityScore >= 80 ? 'bg-absa-energy' : 'bg-absa-inspire',
     status: r.status,
-    statusColor: r.status === 'COMPLETED' ? 'text-green-600' : r.status === 'FAILED' ? 'text-red-600' : 'text-amber-600',
-    statusDot: r.status === 'RUNNING' ? 'bg-amber-500' : '',
+    statusColor: r.status === 'COMPLETED' ? 'text-absa-passion' : r.status === 'FAILED' ? 'text-absa-inspire' : 'text-absa-energy',
+    statusDot: r.status === 'RUNNING' ? 'bg-absa-energy' : '',
   }))
 )
 
@@ -489,7 +496,7 @@ section.grid {
   color: #DC0037 !important;
 }
 
-.bg-surface {
+.bg-white {
   background-color: #ffffff !important;
   border: 1px solid rgba(220, 0, 55, 0.15) !important;
 }
@@ -503,7 +510,7 @@ section.grid {
 }
 
 /* Apply consistent border to Execution History table section */
-section.mb-8 .bg-surface {
+section.mb-8 .bg-white {
   border: 1px solid rgba(220, 0, 55, 0.15) !important;
 }
 </style>
@@ -520,8 +527,8 @@ main {
 }
 
 /* 2. Prevent card surfaces from being transparent or washed out */
-.bg-surface,
-.dashboard-root .bg-surface {
+.bg-white,
+.dashboard-root .bg-white {
   background-color: #ffffff !important;
   opacity: 1 !important;
   border: 1px solid rgba(220, 0, 55, 0.15) !important;

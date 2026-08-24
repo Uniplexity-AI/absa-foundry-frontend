@@ -107,7 +107,7 @@
         <div class="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-sm p-1">
           <button
             @click="viewMode = 'grid'"
-            :class="viewMode === 'grid' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'"
+            :class="viewMode === 'grid' ? 'bg-[#2F2E8B] text-white shadow-none' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'"
             class="p-1.5 rounded-sm transition-all"
             title="Grid View"
           >
@@ -115,7 +115,7 @@
           </button>
           <button
             @click="viewMode = 'list'"
-            :class="viewMode === 'list' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'"
+            :class="viewMode === 'list' ? 'bg-[#2F2E8B] text-white shadow-none' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'"
             class="p-1.5 rounded-sm transition-all"
             title="List View"
           >
@@ -297,7 +297,7 @@
     <div v-else-if="!loading && deals.length === 0" class="bg-white border border-gray-100 p-16 text-center relative overflow-hidden rounded-sm">
       <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
       <div class="relative z-10 flex flex-col items-center">
-        <div class="w-16 h-16 bg-gray-50 border border-gray-100 rounded-sm flex items-center justify-center mb-6 shadow-sm">
+        <div class="w-16 h-16 bg-gray-50 border border-gray-100 rounded-sm flex items-center justify-center mb-6 shadow-none">
           <Inbox :size="32" class="text-gray-200" />
         </div>
         <h3 class="text-[12px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-2">NO_RECORDS_DETECTED</h3>

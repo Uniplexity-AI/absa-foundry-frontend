@@ -39,12 +39,12 @@ const sizeClasses = {
 
 const dotColorClass = computed(() => {
   const map = {
-    active: 'bg-green-500',
+    active: 'bg-[--absa-passion]',
     'at-risk': 'bg-[--absa-energy]',
     dormant: 'bg-gray-400',
     churned: 'bg-[--absa-passion]',
     info: 'bg-blue-500',
-    success: 'bg-green-500',
+    success: 'bg-[--absa-passion]',
     warning: 'bg-[--absa-energy]',
     error: 'bg-[--absa-passion]',
     completed: 'bg-[--absa-passion]',
@@ -63,13 +63,13 @@ const badgeClasses = computed(() => [
 
 const stateStyle = {
   // Customer lifecycle states
-  active: 'bg-green-50 text-green-700',
+  active: 'bg-red-50 text-[--absa-passion]',
   'at-risk': 'bg-orange-50 text-orange-700',
   dormant: 'bg-gray-100 text-gray-600',
   churned: 'bg-red-50 text-[--absa-passion]',
   // Generic
   info: 'bg-blue-50 text-blue-700',
-  success: 'bg-green-50 text-green-700',
+  success: 'bg-red-50 text-[--absa-passion]',
   warning: 'bg-orange-50 text-orange-700',
   error: 'bg-red-50 text-red-700',
   // Ops states (per dashboard mapping: Completed=Passion, Running=Power, Failed=Inspire)

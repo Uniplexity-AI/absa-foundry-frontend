@@ -37,7 +37,7 @@
         <div class="flex items-center gap-2">
           <button 
             @click="isDemoMode = !isDemoMode"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-sm"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-none"
             :class="isDemoMode ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-300 hover:border-indigo-600 hover:text-indigo-600 text-gray-600'"
             :title="isDemoMode ? 'Standard AI Mode' : 'Browser Demo Mode'"
           >
@@ -46,7 +46,7 @@
           </button>
           <button 
             @click="togglePanel('history'); fetchConversations()"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-sm"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-none"
             :class="activePanel === 'history' ? 'bg-[#2F2E8B] text-white' : 'bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600'"
           >
             <i class="fas fa-history"></i>
@@ -55,7 +55,7 @@
           </button>
           <!-- <router-link 
             to="/dashboard/ai/demo"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-sm"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-indigo-600 hover:text-indigo-600 text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-none"
             title="Open Demo Agent"
           >
             <i class="fas fa-magic"></i>
@@ -63,14 +63,14 @@
           </router-link> -->
           <router-link 
             to="/dashboard/image-capture"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-sm"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-none"
           >
             <i class="fas fa-camera"></i>
             <span class="hidden sm:inline">Image Capture</span>
           </router-link>
           <button 
             @click="showOfflineModal = true"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-sm bg-white border border-gray-300 hover:border-green-600 hover:text-green-600 text-gray-600"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-none bg-white border border-gray-300 hover:border-green-600 hover:text-green-600 text-gray-600"
             title="Switch to Local AI"
           >
             <i class="fas fa-microchip"></i>
@@ -78,14 +78,14 @@
           </button>
           <button 
             @click="startNewConversation"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-[#2F2E8B] text-white text-[10px] font-mono font-bold uppercase transition-all shadow-sm hover:bg-[#1D226B]"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-[#2F2E8B] text-white text-[10px] font-mono font-bold uppercase transition-all shadow-none hover:bg-[#1D226B]"
           >
             <i class="fas fa-plus"></i>
             <span class="hidden sm:inline">New Chat</span>
           </button>
           <button 
             @click="showReportActions = !showReportActions"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-sm"
+            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-none"
           >
             <i class="fas fa-file-export"></i>
             <span class="hidden sm:inline">Export</span>
@@ -102,7 +102,7 @@
           <!-- Welcome Hero (Empty State) -->
           <!-- System Ready (Lexi Hero) -->
           <div v-if="chatMessages.length === 0" class="flex flex-col items-center justify-center min-h-full py-6 max-w-5xl mx-auto text-center px-4 relative z-10">
-            <div class="w-16 h-16 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-6 text-[#2F2E8B] shadow-sm">
+            <div class="w-16 h-16 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-6 text-[#2F2E8B] shadow-none">
               <i class="fas fa-robot text-3xl"></i>
             </div>
             
@@ -115,7 +115,7 @@
                 v-for="(suggestion, idx) in suggestions.slice(0, 4)" 
                 :key="idx"
                 @click="setMessage(suggestion)"
-                class="group p-6 bg-white/80 backdrop-blur-sm border border-dashed border-gray-300 rounded-sm hover:border-[#2F2E8B] hover:bg-blue-50/20 transition-all text-left relative overflow-hidden shadow-sm hover:shadow-md"
+                class="group p-6 bg-white/80 backdrop-blur-sm border border-dashed border-gray-300 rounded-sm hover:border-[#2F2E8B] hover:bg-blue-50/20 transition-all text-left relative overflow-hidden shadow-none hover:shadow-md"
               >
                 <!-- Dotted Background -->
                 <div class="absolute inset-0 dotted-pattern opacity-0 group-hover:opacity-10 transition-opacity"></div>
@@ -143,11 +143,11 @@
                 :class="['flex gap-4 group w-full', msg.sender === 'user' ? 'justify-end' : 'justify-start']"
               >
                 <!-- Message Wrapper -->
-                <div :class="['relative max-w-[85%] rounded-sm p-6 border shadow-sm transition-all backdrop-blur-sm', msg.sender === 'user' ? 'bg-white border-[#2F2E8B] text-gray-900' : 'bg-white/90 border-gray-200 hover:border-[#2F2E8B]']">
+                <div :class="['relative max-w-[85%] rounded-sm p-6 border shadow-none transition-all backdrop-blur-sm', msg.sender === 'user' ? 'bg-white border-[#2F2E8B] text-gray-900' : 'bg-white/90 border-gray-200 hover:border-[#2F2E8B]']">
                   
                   <!-- Technical Label Badge -->
                   <div 
-                    class="absolute -top-3 left-4 bg-white px-2 py-0.5 border rounded-sm text-[9px] font-mono font-bold uppercase tracking-widest shadow-sm z-10"
+                    class="absolute -top-3 left-4 bg-white px-2 py-0.5 border rounded-sm text-[9px] font-mono font-bold uppercase tracking-widest shadow-none z-10"
                     :class="msg.sender === 'user' ? 'text-[#2F2E8B] border-[#2F2E8B]' : 'text-gray-500 border-gray-200'"
                   >
                     {{ msg.sender === 'user' ? 'OPERATOR' : 'LEXI_CORE' }}
@@ -169,7 +169,7 @@
 
                   <!-- Bot Actions -->
                   <div v-if="msg.sender === 'bot'" class="absolute -right-10 top-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button @click="copyToClipboard(msg.raw || msg.text)" class="p-1.5 bg-white border border-gray-200 rounded-sm text-gray-400 hover:text-[#2F2E8B] transition-colors shadow-sm" title="Copy">
+                    <button @click="copyToClipboard(msg.raw || msg.text)" class="p-1.5 bg-white border border-gray-200 rounded-sm text-gray-400 hover:text-[#2F2E8B] transition-colors shadow-none" title="Copy">
                       <i class="fas fa-copy text-[10px]"></i>
                     </button>
                   </div>
@@ -178,8 +178,8 @@
 
               <!-- Lexi Typing Indicator -->
               <div v-if="loading" key="loading" class="flex justify-start">
-                 <div class="bg-white/90 border border-gray-200 rounded-sm p-5 relative shadow-sm max-w-[85%]">
-                    <div class="absolute -top-3 left-4 bg-white px-2 py-0.5 border border-gray-200 rounded-sm text-[9px] font-mono font-bold uppercase tracking-widest text-gray-400 shadow-sm">
+                 <div class="bg-white/90 border border-gray-200 rounded-sm p-5 relative shadow-none max-w-[85%]">
+                    <div class="absolute -top-3 left-4 bg-white px-2 py-0.5 border border-gray-200 rounded-sm text-[9px] font-mono font-bold uppercase tracking-widest text-gray-400 shadow-none">
                        LEXI_CORE // PROCESSING
                     </div>
                     <div class="flex space-x-2 mt-2">
@@ -208,7 +208,7 @@
               v-for="(suggestion, idx) in suggestions"
               :key="suggestion"
               @click="setMessage(suggestion)"
-              class="px-3 py-1.5 bg-white/90 backdrop-blur border border-gray-200 rounded-sm text-xs font-medium text-gray-600 hover:bg-[#2F2E8B] hover:text-white hover:border-[#2F2E8B] transition-colors whitespace-nowrap shadow-sm"
+              class="px-3 py-1.5 bg-white/90 backdrop-blur border border-gray-200 rounded-sm text-xs font-medium text-gray-600 hover:bg-[#2F2E8B] hover:text-white hover:border-[#2F2E8B] transition-colors whitespace-nowrap shadow-none"
             >
               {{ suggestion }}
             </button>
@@ -299,7 +299,7 @@
             <!-- New Conversation Button -->
             <button 
               @click="startNewConversation"
-              class="w-full mb-4 p-3 bg-[#2F2E8B] text-white rounded-xl text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#1D226B] transition-all shadow-sm"
+              class="w-full mb-4 p-3 bg-[#2F2E8B] text-white rounded-xl text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#1D226B] transition-all shadow-none"
             >
               <i class="fas fa-plus"></i>
               New Conversation
@@ -317,7 +317,7 @@
                 v-for="conv in conversationsList" 
                 :key="conv._id"
                 @click="loadConversation(conv._id)"
-                class="w-full text-left p-3 bg-white border rounded-xl hover:border-[#2F2E8B] hover:shadow-sm transition-all group"
+                class="w-full text-left p-3 bg-white border rounded-xl hover:border-[#2F2E8B] hover:shadow-none transition-all group"
                 :class="currentConversationId === conv._id ? 'border-[#2F2E8B] bg-blue-50/30' : 'border-gray-200'"
               >
                 <div class="flex items-start justify-between">
@@ -373,7 +373,7 @@
             <!-- Modal Header -->
             <div class="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-sm bg-green-50 flex items-center justify-center text-green-600 border border-green-100 shadow-sm">
+                <div class="w-10 h-10 rounded-sm bg-green-50 flex items-center justify-center text-green-600 border border-green-100 shadow-none">
                   <i class="fas fa-microchip" :class="{'animate-pulse': offlineLoading}"></i>
                 </div>
                 <div>
@@ -405,7 +405,7 @@
             >
               <!-- Welcome Message -->
               <div v-if="offlineMessages.length === 0" class="flex flex-col items-center justify-center h-full text-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-600 shadow-sm mb-2">
+                <div class="w-16 h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-600 shadow-none mb-2">
                   <i class="fas fa-shield-alt text-2xl"></i>
                 </div>
                 <h4 class="text-sm font-bold text-gray-900 uppercase">Secure Offline Environment</h4>
@@ -425,8 +425,8 @@
 
               <!-- Message List -->
               <div v-for="(msg, index) in offlineMessages" :key="index" :class="['flex gap-4 group w-full', msg.sender === 'user' ? 'justify-end' : 'justify-start']">
-                <div :class="['relative max-w-[85%] rounded-sm p-4 border shadow-sm transition-all', msg.sender === 'user' ? 'bg-white border-green-600 text-gray-900' : 'bg-white border-gray-200']">
-                  <div class="absolute -top-3 left-4 bg-white px-2 py-0.5 border rounded-sm text-[8px] font-mono font-bold uppercase tracking-widest shadow-sm" :class="msg.sender === 'user' ? 'text-green-600 border-green-600' : 'text-gray-500 border-gray-200'">
+                <div :class="['relative max-w-[85%] rounded-sm p-4 border shadow-none transition-all', msg.sender === 'user' ? 'bg-white border-green-600 text-gray-900' : 'bg-white border-gray-200']">
+                  <div class="absolute -top-3 left-4 bg-white px-2 py-0.5 border rounded-sm text-[8px] font-mono font-bold uppercase tracking-widest shadow-none" :class="msg.sender === 'user' ? 'text-green-600 border-green-600' : 'text-gray-500 border-gray-200'">
                     {{ msg.sender === 'user' ? 'LOCAL_OP' : 'OFFLINE_CORE' }}
                   </div>
                   <div class="text-sm leading-relaxed" v-html="msg.text"></div>
@@ -438,7 +438,7 @@
 
               <!-- Typing Indicator -->
               <div v-if="offlineLoading" class="flex justify-start">
-                 <div class="bg-white border border-gray-200 rounded-sm p-4 relative shadow-sm">
+                 <div class="bg-white border border-gray-200 rounded-sm p-4 relative shadow-none">
                     <div class="flex space-x-2">
                       <div class="w-1.5 h-1.5 bg-green-600 rounded-full animate-bounce"></div>
                       <div class="w-1.5 h-1.5 bg-green-600 rounded-full animate-bounce [animation-delay:0.2s]"></div>

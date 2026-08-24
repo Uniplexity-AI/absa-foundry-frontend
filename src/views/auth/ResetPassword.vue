@@ -26,7 +26,7 @@
         <div class="bg-white/80 backdrop-blur-sm p-1 rounded-none">
           
           <!-- Inline success message -->
-          <div v-if="showSuccess" class="mb-8 p-5 bg-green-50 border-l-4 border-green-500 text-green-700 font-mono text-sm shadow-sm animate-pulse">
+          <div v-if="showSuccess" class="mb-8 p-5 bg-green-50 border-l-4 border-green-500 text-green-700 font-mono text-sm shadow-none animate-pulse">
             <p class="font-bold flex items-center gap-2 mb-2">
                <i class="fas fa-check-circle"></i> RESET_SUCCESS
             </p>
@@ -44,7 +44,7 @@
                   type="email"
                   v-model="form.email"
                   required
-                  class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-sm"
+                  class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-none"
                   :class="{ 'border-red-500 bg-red-50': errors.email }"
                   placeholder="USER@DOMAIN.COM"
                 />
@@ -63,7 +63,7 @@
                   type="text"
                   v-model="form.otp"
                   required
-                  class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-sm"
+                  class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-none"
                   :class="{ 'border-red-500 bg-red-50': errors.otp }"
                   placeholder="000000"
                 />
@@ -81,7 +81,7 @@
                   :type="showPassword ? 'text' : 'password'"
                   v-model="form.password"
                   required
-                  class="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-sm"
+                  class="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-none"
                   :class="{ 'border-red-500 bg-red-50': errors.password }"
                   placeholder="••••••••••••"
                 />
@@ -107,7 +107,7 @@
                   :type="showConfirmPassword ? 'text' : 'password'"
                   v-model="form.confirmPassword"
                   required
-                  class="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-sm"
+                  class="block w-full pl-4 pr-10 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-none"
                   :class="{ 'border-red-500 bg-red-50': errors.confirmPassword }"
                   placeholder="••••••••••••"
                 />

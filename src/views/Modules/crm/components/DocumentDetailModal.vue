@@ -22,14 +22,14 @@
         <div class="flex flex-wrap gap-2">
           <button
             @click="downloadDocument"
-            class="px-6 py-2.5 bg-white border border-gray-200 text-green-600 font-bold font-mono text-[10px] rounded-none hover:bg-green-50 hover:border-green-600 transition flex items-center gap-2 uppercase tracking-widest shadow-sm"
+            class="px-6 py-2.5 bg-white border border-gray-200 text-green-600 font-bold font-mono text-[10px] rounded-none hover:bg-green-50 hover:border-green-600 transition flex items-center gap-2 uppercase tracking-widest shadow-none"
           >
             <i class="fas fa-download"></i>
             Download
           </button>
           <button
             @click="$emit('refresh')"
-            class="px-6 py-2.5 bg-white border border-gray-200 text-[#2F2E8B] font-bold font-mono text-[10px] rounded-none hover:bg-blue-50 hover:border-[#2F2E8B] transition flex items-center gap-2 uppercase tracking-widest shadow-sm"
+            class="px-6 py-2.5 bg-white border border-gray-200 text-[#2F2E8B] font-bold font-mono text-[10px] rounded-none hover:bg-blue-50 hover:border-[#2F2E8B] transition flex items-center gap-2 uppercase tracking-widest shadow-none"
           >
             <i class="fas fa-sync"></i>
             Refresh
@@ -37,7 +37,7 @@
           <button
             v-if="fullFileUrl"
             @click="openInNewTab"
-            class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold font-mono text-[10px] rounded-none hover:bg-gray-50 hover:border-gray-400 transition flex items-center gap-2 uppercase tracking-widest shadow-sm"
+            class="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-bold font-mono text-[10px] rounded-none hover:bg-gray-50 hover:border-gray-400 transition flex items-center gap-2 uppercase tracking-widest shadow-none"
           >
             <i class="fas fa-external-link-alt"></i>
             Open in New Tab

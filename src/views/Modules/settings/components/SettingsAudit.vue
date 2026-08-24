@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="absa-stab">
     <div class="absa-stab__header">
       <div class="absa-stab__icon absa-stab__icon--maroon">

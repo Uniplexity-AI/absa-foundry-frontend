@@ -26,7 +26,7 @@
         <div class="bg-white/80 backdrop-blur-sm p-1 rounded-none">
           
           <!-- Success Message -->
-          <div v-if="emailSent" class="mb-8 p-5 bg-green-50 border-l-4 border-green-500 text-green-700 font-mono text-sm shadow-sm">
+          <div v-if="emailSent" class="mb-8 p-5 bg-green-50 border-l-4 border-green-500 text-green-700 font-mono text-sm shadow-none">
             <p class="font-bold flex items-center gap-2 mb-2">
                <i class="fas fa-check-circle"></i> TRANSMISSION_SUCCESS
             </p>
@@ -49,7 +49,7 @@
           </div>
 
           <!-- Error Message -->
-          <div v-if="error" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-mono flex items-start shadow-sm">
+          <div v-if="error" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-mono flex items-start shadow-none">
              <i class="fas fa-exclamation-triangle mt-1 mr-3"></i>
              <span>{{ error }}</span>
           </div>
@@ -64,7 +64,7 @@
                   v-model="email"
                   type="email"
                   required
-                  class="block w-full pl-10 pr-3 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-sm"
+                  class="block w-full pl-10 pr-3 py-3 bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#2F2E8B] focus:bg-white transition-all font-mono text-sm shadow-none"
                   :class="{ 'border-red-500 bg-red-50': error }"
                   placeholder="USER@DOMAIN.COM"
                 />

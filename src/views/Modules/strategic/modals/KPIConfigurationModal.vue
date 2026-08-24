@@ -266,7 +266,7 @@
               <div class="grid grid-cols-3 gap-2">
                 <div v-for="variable in availableVariables" :key="variable" 
                      @click="insertVariable(variable)"
-                     class="bg-white border border-purple-200 rounded px-2 py-1 text-xs cursor-pointer hover:bg-purple-100 transition-colors">
+                     class="bg-white border border-purple-200 rounded-sm px-2 py-1 text-xs cursor-pointer hover:bg-purple-100 transition-colors">
                   {{ variable }}
                 </div>
               </div>

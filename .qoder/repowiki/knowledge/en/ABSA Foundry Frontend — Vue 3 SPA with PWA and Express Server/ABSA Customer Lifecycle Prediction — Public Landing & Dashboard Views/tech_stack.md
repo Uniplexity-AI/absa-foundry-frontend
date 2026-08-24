@@ -1,0 +1,1 @@
+Vue 3 Composition API (`<script setup>`, `ref`, `computed`, `onMounted`), vue-router for navigation, Pinia-style composables (`useCustomerStore`, `usePredictionStore`) for state, Tailwind CSS utility classes mixed with scoped BEM CSS, and Chart.js components (`Doughnut`, `Bar`) for portfolio visualizations.

@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -23,7 +23,7 @@
           <div class="flex flex-wrap gap-3">
             <select 
               v-model="selectedLanguage"
-              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-sm"
+              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-none"
             >
               <option value="en">🇬🇧 ENGLISH</option>
               <option value="bem">BEMBA</option>
@@ -61,7 +61,7 @@
 
       <!-- Action Statistics -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[8px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">STAT_CORE // TOTAL</div>
           
@@ -72,7 +72,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-red-500/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-red-500/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[8px] font-mono font-black text-red-400 uppercase tracking-widest z-20">STAT_CRITICAL // HIGH_PRIO</div>
           
@@ -83,7 +83,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[8px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">STAT_TIME // AVG_HORIZON</div>
           
@@ -94,7 +94,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-emerald-500/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-emerald-500/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[8px] font-mono font-black text-emerald-400 uppercase tracking-widest z-20">STAT_EXEC // COMPLETED</div>
           
@@ -107,7 +107,7 @@
       </div>
 
       <!-- Strategic Guidance & Action Plans -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_INTEL // ACTION_REGISTRY</div>
         

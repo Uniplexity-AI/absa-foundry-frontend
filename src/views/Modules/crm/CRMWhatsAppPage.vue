@@ -4,7 +4,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background opacity-[0.4]"></div>
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-sm">
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-none">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <button @click="$router.push('/dashboard/crm')" class="text-gray-400 hover:text-[#2F2E8B] transition-colors mr-2">
@@ -49,7 +49,7 @@
         <div class="flex flex-wrap gap-3">
           <div class="flex flex-col gap-1">
             <label class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest px-1">Source Filter</label>
-            <select v-model="communicationFilter" class="bg-white border border-gray-200 text-gray-900 font-bold font-mono text-[11px] rounded-none px-4 py-2.5 focus:border-[#2F2E8B] focus:ring-0 uppercase transition-all shadow-sm w-44">
+            <select v-model="communicationFilter" class="bg-white border border-gray-200 text-gray-900 font-bold font-mono text-[11px] rounded-none px-4 py-2.5 focus:border-[#2F2E8B] focus:ring-0 uppercase transition-all shadow-none w-44">
               <option value="">ALL COMM // TRACE</option>
               <option value="email">EMAIL LOGS</option>
               <option value="call">VOICE RECORDS</option>
@@ -60,7 +60,7 @@
 
           <div v-if="communicationFilter === 'whatsapp'" class="flex flex-col gap-1 animate-scale-in">
             <label class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest px-1">Subtype Scan</label>
-            <select v-model="whatsappSubtypeFilter" class="bg-white border border-[#2F2E8B] text-[#2F2E8B] font-bold font-mono text-[11px] rounded-none px-4 py-2.5 focus:ring-0 uppercase transition-all shadow-sm w-44">
+            <select v-model="whatsappSubtypeFilter" class="bg-white border border-[#2F2E8B] text-[#2F2E8B] font-bold font-mono text-[11px] rounded-none px-4 py-2.5 focus:ring-0 uppercase transition-all shadow-none w-44">
               <option value="">FULL SCAN</option>
               <option value="text">TEXT PARSING</option>
               <option value="audio_call">VOICE COMM</option>
@@ -89,7 +89,7 @@
             <div 
               v-for="comm in whatsappChronological" 
               :key="comm.id" 
-              class="bg-white border border-gray-100 hover:border-[#2F2E8B] transition-all duration-300 group relative shadow-sm hover:shadow-md"
+              class="bg-white border border-gray-100 hover:border-[#2F2E8B] transition-all duration-300 group relative shadow-none hover:shadow-md"
             >
               <div class="absolute top-0 left-0 w-1 h-full bg-[#2F2E8B] opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
@@ -162,7 +162,7 @@
                     <div 
                       v-for="n in (callNotes[comm.id] || [])" 
                       :key="n.id" 
-                      class="bg-white border-l-2 border-[#2F2E8B] p-4 shadow-sm group/note relative"
+                      class="bg-white border-l-2 border-[#2F2E8B] p-4 shadow-none group/note relative"
                     >
                       <div class="flex items-start justify-between gap-4">
                         <div class="text-[11px] font-mono text-gray-700 leading-relaxed">{{ n.text }}</div>

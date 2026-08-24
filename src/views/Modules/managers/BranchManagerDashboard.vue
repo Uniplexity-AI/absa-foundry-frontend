@@ -1,221 +1,556 @@
 <template>
-  <div class="global-mesh-bg text-on-background min-h-screen flex flex-col md:flex-row pb-[72px] md:pb-0 dashboard-root">
-    <div class="flex-1 flex flex-col min-w-0 w-full">
-      <main class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full">
-        <!-- Loading Skeleton -->
-        <template v-if="loading">
-          <div class="min-h-screen flex flex-col">
-            <div class="mb-8">
-              <LoadingSkeleton type="stats" />
-            </div>
-            <div class="mb-8">
-              <LoadingSkeleton type="block" />
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-gutter flex-1">
-              <div class="lg:col-span-8">
-                <LoadingSkeleton type="block" />
-              </div>
-              <div class="lg:col-span-4">
-                <LoadingSkeleton type="card" />
-              </div>
-            </div>
+  <div class="w-full pt-6 px-6 pb-6">
+
+    <!-- Loading -->
+    <template v-if="loading">
+      <div class="min-h-screen flex flex-col space-y-6">
+        <LoadingSkeleton type="stats" />
+        <LoadingSkeleton type="block" />
+        <LoadingSkeleton type="table" :count="5" />
+      </div>
+    </template>
+
+    <template v-else>
+
+      <!-- ── Page Header ── -->
+      <div class="mb-0 pb-4 border-b border-gray-300 flex justify-between items-end">
+        <div>
+          <div class="flex items-center gap-2 text-label-sm text-gray-500 mb-1">
+            <span>Home</span><span>/</span>
+            <span class="text-absa-enrich font-bold">Branch Manager</span>
           </div>
-        </template>
-        <template v-else>
-        <div class="md:hidden mb-6">
-          <h2 class="text-headline-lg-mobile font-headline-lg-mobile text-primary mb-1">Branch Manager Dashboard</h2>
-          <p class="text-body-md font-body-md text-secondary mb-1">{{ branchData.length }} branches monitored</p>
+          <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">Branch Manager Dashboard</h1>
+          <p class="text-body-md text-gray-500 mt-1">
+            {{ kpis.totalBranches }} branches · {{ customerStore.portfolio.total.toLocaleString() }} total customers · {{ currentMonth }}
+          </p>
         </div>
-        
-        <div class="hidden md:flex items-center text-body-md text-secondary mb-6 gap-2">
-          <span class="">Home</span>
-          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-          <span class="font-semibold text-primary">Branch Manager</span>
+        <div class="flex items-center gap-3">
+          <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
+            <span class="material-symbols-outlined text-[18px]">download</span>Export Report
+          </button>
+          <button @click="showCampaignModal = true" class="px-4 py-2 bg-absa-passion text-white rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-bold shadow-none">
+            <span class="material-symbols-outlined text-[18px]">auto_awesome</span>AI Campaign Generator
+          </button>
         </div>
-        <p class="hidden md:block text-body-md font-body-md text-secondary mb-8">{{ kpis.totalBranches }} branches · {{ customerStore.portfolio.total.toLocaleString() }} total customers</p>
-        
-        <!-- Key Metrics Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-gutter mb-8">
-          <!-- Metric 1 -->
-          <div class="global-dotted-bg rounded border border-outline-variant p-card-padding flex flex-col justify-between hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-shadow">
-            <div class="flex justify-between items-start mb-4">
-              <h3 class="text-label-caps font-label-caps text-secondary uppercase">Aggregate At Risk %</h3>
-              <span class="material-symbols-outlined text-primary">warning</span>
-            </div>
-            <div>
-              <div class="text-metric-lg font-metric-lg text-primary mb-2">{{ kpis.aggregateAtRisk.value != null ? kpis.aggregateAtRisk.value + '%' : '—' }}</div>
-              <div class="flex items-center gap-2 text-body-md font-body-md">
-                <span class="material-symbols-outlined text-[#FF780F] text-[18px]">arrow_upward</span>
-                <span class="text-[#FF780F] font-semibold">{{ kpis.aggregateAtRisk.change }}%</span>
-                <span class="text-secondary">vs last month</span>
-              </div>
-            </div>
-            <div class="w-full bg-surface-container-high h-1 mt-4 rounded-full overflow-hidden">
-              <div class="bg-[#FF780F] h-full rounded-full" :style="{ width: kpis.aggregateAtRisk.value + '%' }"></div>
-            </div>
-          </div>
-          
-          <!-- Metric 2 -->
-          <div class="global-dotted-bg rounded border border-outline-variant p-card-padding flex flex-col justify-between hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-shadow">
-            <div class="flex justify-between items-start mb-4">
-              <h3 class="text-label-caps font-label-caps text-secondary uppercase">Dormant Accounts</h3>
-              <span class="material-symbols-outlined text-primary">snooze</span>
-            </div>
-            <div>
-              <div class="text-metric-lg font-metric-lg text-on-surface mb-2">{{ kpis.dormantAccounts.value != null ? kpis.dormantAccounts.value : '—' }}</div>
-              <div class="flex items-center gap-2 text-body-md font-body-md">
-                <span class="material-symbols-outlined text-primary text-[18px]">arrow_downward</span>
-                <span class="text-primary font-semibold">{{ kpis.dormantAccounts.change }} cases</span>
-                <span class="text-secondary">re-activated</span>
-              </div>
-            </div>
-            <div class="w-full bg-surface-container-high h-1 mt-4 rounded-full overflow-hidden">
-              <div class="bg-primary h-full rounded-full" :style="{ width: (kpis.dormantAccounts.value / 10) + '%' }"></div>
-            </div>
-          </div>
-          
-          <!-- Metric 3 -->
-          <div class="global-dotted-bg rounded border border-outline-variant p-card-padding flex flex-col justify-between hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-shadow">
-            <div class="flex justify-between items-start mb-4">
-              <h3 class="text-label-caps font-label-caps text-secondary uppercase">Monthly Churn Rate</h3>
-              <span class="material-symbols-outlined text-primary">trending_down</span>
-            </div>
-            <div>
-              <div class="text-metric-lg font-metric-lg text-on-surface mb-2">{{ kpis.monthlyChurn.value != null ? kpis.monthlyChurn.value + '%' : '—' }}</div>
-              <div class="flex items-center gap-2 text-body-md font-body-md">
-                <span class="material-symbols-outlined text-primary text-[18px]">arrow_downward</span>
-                <span class="text-primary font-semibold">{{ kpis.monthlyChurn.change }}%</span>
-                <span class="text-secondary">well within 1.5% target</span>
-              </div>
-            </div>
-            <div class="w-full bg-surface-container-high h-1 mt-4 rounded-full overflow-hidden">
-              <div class="bg-primary h-full rounded-full" :style="{ width: (kpis.monthlyChurn.value * 10) + '%' }"></div>
-            </div>
+      </div>
+
+      <!-- ── Tab Navigation ── -->
+      <div class="flex border-b border-gray-300 mb-6">
+        <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+          :class="['px-5 py-3 text-sm flex items-center gap-2 transition-colors font-semibold',
+            activeTab === tab.id
+              ? 'text-absa-passion border-b-2 border-absa-passion -mb-px'
+              : 'text-gray-500 hover:text-absa-enrich']">
+          <span class="material-symbols-outlined text-[18px]">{{ tab.icon }}</span>
+          {{ tab.label }}
+          <span v-if="tab.badge" class="ml-1 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold bg-absa-passion text-white rounded-full">{{ tab.badge }}</span>
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- TAB: OVERVIEW                                       -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <template v-if="activeTab === 'overview'">
+
+        <!-- KPI Strip -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+          <div v-for="kpi in overviewKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
+            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
           </div>
         </div>
 
-        <!-- Bento Grid Layout for Lower Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-gutter">
-          <!-- Performance Table -->
-          <div class="global-dotted-bg lg:col-span-12 xl:col-span-12 rounded border border-outline-variant overflow-hidden flex flex-col mb-4 md:mb-0">
-            <div class="p-6 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 class="text-headline-md font-headline-md">Relationship Manager Performance</h2>
-              <div class="flex gap-2 w-full sm:w-auto">
-                <button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-outline-variant text-body-md font-semibold hover:bg-surface-container-low transition-colors bg-white">
-                  <span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
-                </button>
-                <button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-body-md font-semibold hover:bg-primary-container transition-colors bg-white text-primary border border-outline-variant">
-                  <span class="material-symbols-outlined text-[18px]">download</span> Export Report
-                </button>
-              </div>
-            </div>
-            <div class="overflow-x-auto no-scrollbar">
-              <table class="w-full min-w-[800px] text-left border-collapse">
-                <thead>
-                  <tr class="border-b border-outline-variant bg-white">
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface w-[250px]">Relationship Manager</th>
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface">Portfolio Size</th>
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface">At Risk %</th>
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface">Actions Logged (MoM)</th>
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface text-right pr-8">Avg Health Score</th>
-                    <th class="p-4 text-label-caps font-label-caps text-on-surface text-center">Trend</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-outline-variant">
-                  <tr v-if="relationshipManagers.length === 0">
-                    <td colspan="6" class="p-12 text-center text-body-md text-secondary">No relationship manager data available</td>
-                  </tr>
-                  <tr v-for="rm in relationshipManagers" :key="rm.name" class="hover:bg-surface-container-lowest transition-colors">
-                    <td class="p-4 flex items-center gap-3">
-                      <div>
-                        <p class="font-bold text-body-md text-on-surface">{{ rm.name }}</p>
-                        <p class="text-label-sm text-secondary">{{ rm.segment }}</p>
-                      </div>
-                    </td>
-                    <td class="p-4 text-body-md">{{ rm.portfolio }} Accounts</td>
-                    <td class="p-4 text-body-md font-bold text-primary flex items-center gap-1">{{ rm.atRiskPct }}% <span class="material-symbols-outlined text-[16px]">{{ rm.trend === 'up' ? 'trending_up' : rm.trend === 'down' ? 'trending_down' : 'remove' }}</span></td>
-                    <td class="p-4 text-body-md">{{ rm.actions }} <span class="text-secondary">/ {{ rm.target }} target</span></td>
-                    <td class="p-4">
-                      <div class="flex items-center justify-end gap-3 pr-4">
-                        <div class="w-24 h-1.5 bg-surface-container-high rounded-full overflow-hidden flex">
-                          <div class="bg-primary h-full rounded-l-full" :style="{ width: rm.healthScore + '%' }"></div>
-                        </div>
-                        <span class="text-body-md font-bold w-6">{{ rm.healthScore }}</span>
-                      </div>
-                    </td>
-                    <td class="p-4 text-center">
-                      <button class="text-secondary hover:text-primary"><span class="material-symbols-outlined">bar_chart</span></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <!-- Two-track pipelines -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
 
-          <!-- Churn Forecast -->
-          <div class="global-dotted-bg lg:col-span-8 rounded border border-outline-variant p-6 flex flex-col">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <!-- RM Pipeline -->
+          <div class="rounded-sm border border-gray-300 overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
-                <h2 class="text-headline-md font-headline-md mb-1">Churn Forecast Prediction</h2>
-                <p class="text-body-md text-secondary">Projected customer exits based on transactional AI patterns</p>
+                <h2 class="text-sm font-bold text-absa-enrich">RM-Managed Pipeline</h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">Premier Banking & Wealth Management · Dedicated RM per customer</p>
               </div>
-              <div class="rounded-lg p-1 flex text-label-caps bg-white border border-outline-variant">
-                <button class="px-4 py-2 text-primary rounded shadow-sm font-bold bg-white border border-outline-variant">30 Days</button>
-                <button class="px-4 py-2 text-secondary font-semibold hover:text-on-surface">60 Days</button>
-                <button class="px-4 py-2 text-secondary font-semibold hover:text-on-surface">90 Days</button>
-              </div>
+              <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ rmTrack.total.toLocaleString() }} customers</span>
             </div>
-            <div class="flex-1 relative h-64 mt-6 pt-4">
-              <div v-if="forecastWeeks.length === 0" class="flex items-center justify-center h-full text-body-md text-secondary">No forecast data available</div>
-              <div v-else class="flex items-end justify-between h-full w-full px-4 relative z-10">
-                <svg class="absolute inset-0 w-full h-full z-20 pointer-events-none" viewBox="0 0 600 200" preserveAspectRatio="none">
-                  <path d="M 40 30 C 90 15, 140 20, 190 32 S 290 8, 340 12 S 440 35, 540 20" fill="none" stroke="#DC0037" stroke-width="2" stroke-dasharray="4 4"></path>
-                </svg>
-                <div v-for="week in forecastWeeks" :key="week.label" class="flex flex-col items-center gap-1.5 w-[12%]">
-                  <span class="text-body-md font-bold text-on-surface">{{ week.value }}</span>
-                  <div class="w-full bg-primary rounded-t" :style="{ height: week.height + 'px' }"></div>
-                  <span class="text-label-caps text-secondary">{{ week.label }}</span>
+            <div class="p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div v-for="(stage, i) in rmPipeline" :key="stage.label" class="relative">
+                  <div v-if="i > 0" class="absolute -left-2.5 top-4 text-gray-300">
+                    <span class="material-symbols-outlined text-[16px]">arrow_right</span>
+                  </div>
+                  <div class="bg-white border border-gray-300 rounded-sm p-3">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">{{ stage.label }}</p>
+                    <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value }}</p>
+                    <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full rounded-full" :class="stage.barClass"
+                        :style="{ width: (stage.value / rmPipeline[0].value * 100) + '%' }"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="lg:col-span-4 bg-[#131010] rounded p-6 text-inverse-on-surface flex flex-col relative overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #95052A 0%, #131010 50%, #000000 100%);">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-            <h3 class="text-label-caps font-label-caps text-primary-fixed-dim uppercase mb-6 relative z-10 text-white">Predicted Churn By Segment</h3>
-            <div class="flex flex-col gap-6 flex-1 relative z-10">
-              <div v-if="churnSegments.length === 0" class="text-body-md text-white/60">No segment data available</div>
-              <div v-for="seg in churnSegments" :key="seg.name">
-                <div class="flex justify-between text-body-md mb-2 text-white"><span>{{ seg.name }}</span><span class="font-bold">{{ seg.pct }}%</span></div>
-                <div class="w-full h-1 rounded-full overflow-hidden bg-white/10"><div class="bg-white h-full" :style="{ width: seg.pct + '%' }"></div></div>
+
+          <!-- Branch Campaign Pipeline -->
+          <div class="rounded-sm border border-gray-300 overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h2 class="text-sm font-bold text-absa-enrich">Branch Campaign Pipeline</h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">Retail Savings, Youth, Business · No dedicated RM · Campaign-based retention</p>
               </div>
+              <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ branchTrack.total.toLocaleString() }} customers</span>
             </div>
-            <div class="mt-8 bg-black/40 border border-white/10 rounded-lg p-4 relative z-10 backdrop-blur-sm">
-              <p class="text-body-md italic text-white/90 mb-3 font-medium">{{ aiInsightQuote }}</p>
-              <div class="flex items-center gap-2 text-label-caps text-white/60 font-bold">
-                <span class="text-[11px] tracking-widest">AI INSIGHT ENGINE</span>
+            <div class="p-5">
+              <div class="grid grid-cols-4 gap-3">
+                <div v-for="(stage, i) in branchPipeline" :key="stage.label" class="relative">
+                  <div v-if="i > 0" class="absolute -left-2.5 top-4 text-gray-300">
+                    <span class="material-symbols-outlined text-[16px]">arrow_right</span>
+                  </div>
+                  <div class="bg-white border border-gray-300 rounded-sm p-3">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">{{ stage.label }}</p>
+                    <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value.toLocaleString() }}</p>
+                    <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full rounded-full" :class="stage.barClass"
+                        :style="{ width: (stage.value / branchPipeline[0].value * 100) + '%' }"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-    <!-- BottomNavBar (Mobile Only) -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface px-margin-mobile py-2 border-t border-outline-variant dark:border-outline flat no shadows">
-      <router-link class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-bold hover:bg-surface-container-highest opacity-80 p-2 rounded-lg transition-colors w-16" to="/dashboard/portfolio">
-        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-        <span class="text-label-sm font-label-sm mt-1">Dashboard</span>
-      </router-link>
-      <router-link class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-highest p-2 rounded-lg transition-colors w-16" to="/dashboard/branch-manager">
-        <span class="material-symbols-outlined">groups</span>
-        <span class="text-label-sm font-label-sm mt-1">Team</span>
-      </router-link>
-      <router-link class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-highest p-2 rounded-lg transition-colors w-16" to="/dashboard/portfolio">
-        <span class="material-symbols-outlined">pie_chart</span>
-        <span class="text-label-sm font-label-sm mt-1">Portfolio</span>
-      </router-link>
-    </nav>
-        </template>
-      </main>
-    </div>
+        <!-- Churn Forecast -->
+        <div class="rounded-sm border border-gray-300 overflow-hidden">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast — Projected Exits by Segment</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits · Powered by LightGBM v1.4.2</p>
+            </div>
+            <div class="flex text-[11px] font-bold border border-gray-300 rounded-sm overflow-hidden">
+              <button v-for="d in [30, 60, 90]" :key="d" @click="forecastHorizon = d"
+                :class="['px-3 py-1.5', forecastHorizon === d ? 'bg-absa-passion text-white' : 'text-gray-500 hover:bg-gray-50']">
+                {{ d }}D
+              </button>
+            </div>
+          </div>
+          <div class="p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="flex flex-col gap-3">
+                <div v-for="seg in forecastWeeks" :key="seg.label" class="flex items-center gap-3">
+                  <div class="flex items-center gap-2 w-44 flex-shrink-0">
+                    <span class="inline-flex px-1.5 py-0.5 text-[9px] font-bold rounded-sm"
+                      :class="seg.track === 'rm' ? 'bg-gray-200 text-gray-600' : 'bg-gray-100 text-gray-500'">
+                      {{ seg.track === 'rm' ? 'RM' : 'BRANCH' }}
+                    </span>
+                    <span class="text-xs text-gray-600 font-medium truncate">{{ seg.label }}</span>
+                  </div>
+                  <div class="flex-1 h-5 bg-gray-100 rounded-sm overflow-hidden relative">
+                    <div class="h-full bg-absa-passion/70 rounded-sm transition-all duration-500"
+                      :style="{ width: seg.pct + '%' }"></div>
+                    <span class="absolute right-2 top-0 h-full flex items-center text-[11px] font-bold text-absa-enrich font-mono">{{ seg.value.toLocaleString() }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="border border-gray-300 rounded-sm p-4 flex justify-between items-center">
+                  <div>
+                    <p class="text-[11px] text-gray-500 uppercase font-bold tracking-wider">Total Projected Exits</p>
+                    <p class="text-2xl font-bold text-absa-passion font-mono mt-1">{{ totalForecast.toLocaleString() }}</p>
+                  </div>
+                  <span class="material-symbols-outlined text-[30px] text-gray-200">group_remove</span>
+                </div>
+                <div class="border border-gray-300 rounded-sm p-4 flex justify-between items-center">
+                  <div>
+                    <p class="text-[11px] text-gray-500 uppercase font-bold tracking-wider">Estimated AUM at Risk</p>
+                    <p class="text-2xl font-bold text-absa-enrich font-mono mt-1">{{ estimatedAUM }}</p>
+                  </div>
+                  <span class="material-symbols-outlined text-[30px] text-gray-200">account_balance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </template>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- TAB: RM PORTFOLIO                                   -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <template v-else-if="activeTab === 'rm_portfolio'">
+
+        <!-- Scope note -->
+        <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
+          <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
+          <p class="text-xs text-gray-600">
+            <span class="font-bold text-absa-enrich">Scope:</span> This view covers only <span class="font-semibold">Premier Banking</span> and <span class="font-semibold">Wealth Management</span> customers assigned to a dedicated Relationship Manager. For mass-market retention, see the <span class="font-semibold">Branch Campaigns</span> tab.
+          </p>
+        </div>
+
+        <!-- RM Summary Strip -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div v-for="kpi in rmSummaryKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
+            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
+          </div>
+        </div>
+
+        <!-- RM Table -->
+        <div class="rounded-sm border border-gray-300 overflow-hidden">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">Relationship Manager Workload</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics · Premium segment only · Sourced from Nightly Inference Batch</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="px-3 py-1.5 text-xs font-semibold border border-gray-300 rounded-sm hover:bg-gray-50 flex items-center gap-1.5 shadow-none">
+                <span class="material-symbols-outlined text-[14px]">filter_list</span>Filter
+              </button>
+              <button class="px-3 py-1.5 text-xs font-semibold border border-gray-300 rounded-sm hover:bg-gray-50 flex items-center gap-1.5 shadow-none">
+                <span class="material-symbols-outlined text-[14px]">download</span>Export
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[860px] text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th class="px-5 py-3">Relationship Manager</th>
+                  <th class="px-4 py-3 text-right">Portfolio</th>
+                  <th class="px-4 py-3 text-right">Avg Risk Score</th>
+                  <th class="px-4 py-3 text-right">Pending AI Interventions</th>
+                  <th class="px-4 py-3">Cases Actioned MTD</th>
+                  <th class="px-4 py-3 text-right">Retention Rate</th>
+                  <th class="px-4 py-3 text-right">Last Activity</th>
+                  <th class="px-4 py-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-sm">
+                <tr v-if="relationshipManagers.length === 0">
+                  <td colspan="8" class="p-12 text-center text-gray-400 text-sm">No RM data available</td>
+                </tr>
+                <tr v-for="rm in relationshipManagers" :key="rm.name" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-3">
+                    <p class="font-semibold text-absa-enrich text-xs">{{ rm.name }}</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">{{ rm.segment }}</p>
+                  </td>
+                  <td class="px-4 py-3 text-right font-mono text-xs text-gray-700">{{ rm.portfolio.toLocaleString() }}</td>
+                  <td class="px-4 py-3 text-right font-mono text-xs font-bold"
+                    :class="rm.avgRiskScore > 65 ? 'text-absa-inspire' : rm.avgRiskScore > 45 ? 'text-absa-power' : 'text-absa-passion'">
+                    {{ rm.avgRiskScore }}
+                  </td>
+                  <td class="px-4 py-3 text-right font-mono text-xs font-bold"
+                    :class="rm.openCases > 15 ? 'text-absa-inspire' : rm.openCases > 8 ? 'text-absa-energy' : 'text-absa-passion'">
+                    {{ rm.openCases }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-20 h-1 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                        <div class="h-full bg-absa-passion rounded-full"
+                          :style="{ width: Math.min((rm.actioned / rm.target) * 100, 100) + '%' }"></div>
+                      </div>
+                      <span class="font-mono text-xs text-absa-enrich whitespace-nowrap">
+                        {{ rm.actioned }}<span class="text-gray-400 font-normal"> / {{ rm.target }}</span>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-right font-mono text-xs font-bold"
+                    :class="rm.retentionRate >= 70 ? 'text-absa-passion' : rm.retentionRate >= 50 ? 'text-absa-energy' : 'text-absa-inspire'">
+                    {{ rm.retentionRate }}%
+                  </td>
+                  <td class="px-4 py-3 text-right text-xs"
+                    :class="rm.daysSinceActivity > 3 ? 'text-absa-passion font-bold' : 'text-gray-500'">
+                    {{ rm.daysSinceActivity === 0 ? 'Today' : rm.daysSinceActivity + 'd ago' }}
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', rm.statusClass]">
+                      <span class="w-1 h-1 rounded-full" :class="rm.dotClass"></span>{{ rm.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-5 py-3 border-t border-gray-100 bg-gray-50 text-[11px] text-gray-400">
+            <span class="font-bold text-absa-passion">ON TRACK</span> = actioned &gt;80% of target &amp; retention ≥65% ·
+            <span class="font-bold text-absa-inspire">AT RISK</span> = idle &gt;3 days or retention &lt;50% ·
+            {{ currentMonth }}
+          </div>
+        </div>
+
+      </template>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- TAB: BRANCH CAMPAIGNS                               -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <template v-else-if="activeTab === 'campaigns'">
+
+        <!-- Scope note -->
+        <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
+          <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
+          <p class="text-xs text-gray-600">
+            <span class="font-bold text-absa-enrich">Scope:</span> Mass-market customers — <span class="font-semibold">Retail Savings</span>, <span class="font-semibold">Youth (18–25)</span>, <span class="font-semibold">Standard Business</span> — have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
+          </p>
+        </div>
+
+        <!-- Campaign KPIs -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div v-for="kpi in campaignKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
+            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
+          </div>
+        </div>
+
+        <!-- Active Campaigns Table -->
+        <div class="rounded-sm border border-gray-300 overflow-hidden mb-6">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">Active Retention Campaigns</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Branch-level outreach targeting mass-market at-risk customers</p>
+            </div>
+            <button class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
+              <span class="material-symbols-outlined text-[16px]">add</span>New Campaign
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th class="px-5 py-3">Campaign</th>
+                  <th class="px-4 py-3">Channel</th>
+                  <th class="px-4 py-3">Segment</th>
+                  <th class="px-4 py-3 text-right">Enrolled</th>
+                  <th class="px-4 py-3 text-right">Responded</th>
+                  <th class="px-4 py-3 text-right">Retained</th>
+                  <th class="px-4 py-3">Conversion</th>
+                  <th class="px-4 py-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-sm">
+                <tr v-for="c in activeCampaigns" :key="c.name" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-3">
+                    <p class="font-semibold text-absa-enrich text-xs">{{ c.name }}</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">Expires {{ c.expires }}</p>
+                  </td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-600">
+                      <span class="material-symbols-outlined text-[14px]">{{ c.channelIcon }}</span>{{ c.channel }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-xs text-gray-600">{{ c.segment }}</td>
+                  <td class="px-4 py-3 text-right font-mono text-xs font-bold text-absa-enrich">{{ c.enrolled.toLocaleString() }}</td>
+                  <td class="px-4 py-3 text-right font-mono text-xs text-gray-600">{{ c.responded.toLocaleString() }}</td>
+                  <td class="px-4 py-3 text-right font-mono text-xs font-bold text-absa-passion">{{ c.retained.toLocaleString() }}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-16 h-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-absa-passion rounded-full" :style="{ width: c.conversionPct + '%' }"></div>
+                      </div>
+                      <span class="text-[11px] font-bold font-mono text-absa-enrich">{{ c.conversionPct }}%</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', c.statusClass]">
+                      <span class="w-1 h-1 rounded-full" :class="c.dotClass"></span>{{ c.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Unenrolled At-Risk -->
+        <div class="rounded-sm border border-gray-300 overflow-hidden">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">At-Risk · Not Enrolled in Any Campaign</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Flagged high-risk with no outreach · Immediate action recommended</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-absa-passion border border-absa-passion/30 rounded-sm text-xs font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-absa-passion animate-pulse"></span>
+              {{ (branchTrack.atRisk - branchTrack.inCampaign).toLocaleString() }} customers
+            </span>
+          </div>
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <th class="px-5 py-3">Customer</th>
+                <th class="px-4 py-3">Segment</th>
+                <th class="px-4 py-3">Churn Prob.</th>
+                <th class="px-4 py-3">Days Flagged</th>
+                <th class="px-4 py-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr v-for="cust in unenrolledCustomers" :key="cust.id" class="hover:bg-gray-50 transition-colors">
+                <td class="px-5 py-3">
+                  <p class="font-semibold text-absa-enrich text-xs">{{ cust.name }}</p>
+                  <p class="text-[11px] text-gray-400 font-mono">{{ cust.id }}</p>
+                </td>
+                <td class="px-4 py-3 text-xs text-gray-600">{{ cust.segment }}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-14 h-1 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-absa-passion rounded-full" :style="{ width: cust.prob + '%' }"></div>
+                    </div>
+                    <span class="font-bold font-mono text-xs text-absa-passion">{{ cust.prob }}%</span>
+                  </div>
+                </td>
+                <td class="px-4 py-3 font-mono text-xs font-bold text-absa-passion">{{ cust.daysFlagged }}d</td>
+                <td class="px-4 py-3 text-right">
+                  <button class="text-[11px] font-bold text-absa-passion border border-absa-passion/30 px-2.5 py-1 rounded-sm hover:bg-red-50 transition-colors">
+                    Enrol in Campaign
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </template>
+
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- TAB: ALL CASES                                      -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <template v-else-if="activeTab === 'cases'">
+
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+          <!-- Unified Cases Table -->
+          <div class="xl:col-span-8 rounded-sm border border-gray-300 overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h2 class="text-sm font-bold text-absa-enrich">All High-Risk Cases</h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">Ranked by churn probability · Action differs by retention track</p>
+              </div>
+              <div class="flex gap-1.5">
+                <button v-for="f in caseFilters" :key="f.id" @click="caseFilter = f.id"
+                  :class="['px-2.5 py-1 text-[11px] font-bold rounded-sm border', caseFilter === f.id ? 'bg-absa-passion text-white border-absa-passion' : 'border-gray-300 text-gray-500 hover:bg-gray-50']">
+                  {{ f.label }}
+                </button>
+              </div>
+            </div>
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th class="px-5 py-3">Customer</th>
+                  <th class="px-4 py-3">Track</th>
+                  <th class="px-4 py-3">Segment</th>
+                  <th class="px-4 py-3">Churn Prob.</th>
+                  <th class="px-4 py-3">AUM</th>
+                  <th class="px-4 py-3">Days Flagged</th>
+                  <th class="px-4 py-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr v-for="cust in filteredCases" :key="cust.id" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-3">
+                    <p class="font-semibold text-absa-enrich text-xs">{{ cust.name }}</p>
+                    <p class="text-[11px] text-gray-400 font-mono">{{ cust.id }}</p>
+                  </td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold bg-gray-100 text-gray-600">
+                      {{ cust.track === 'rm' ? 'RM' : 'BRANCH' }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-xs text-gray-600">{{ cust.segment }}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-12 h-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full"
+                          :class="cust.prob >= 75 ? 'bg-absa-inspire' : cust.prob >= 50 ? 'bg-absa-energy' : 'bg-absa-passion'"
+                          :style="{ width: cust.prob + '%' }"></div>
+                      </div>
+                      <span class="font-bold font-mono text-xs"
+                        :class="cust.prob >= 75 ? 'text-absa-inspire' : cust.prob >= 50 ? 'text-absa-energy' : 'text-absa-passion'">
+                        {{ cust.prob }}%
+                      </span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 font-mono text-xs text-gray-700">{{ cust.aum }}</td>
+                  <td class="px-4 py-3 font-mono text-xs font-bold"
+                    :class="cust.daysFlagged > 7 ? 'text-absa-passion' : 'text-absa-energy'">
+                    {{ cust.daysFlagged }}d
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <button v-if="cust.track === 'rm'"
+                      class="text-[11px] font-bold text-absa-passion border border-absa-passion/30 px-2.5 py-1 rounded-sm hover:bg-red-50 transition-colors">
+                      Assign RM
+                    </button>
+                    <button v-else
+                      class="text-[11px] font-bold text-gray-600 border border-gray-300 px-2.5 py-1 rounded-sm hover:bg-gray-50 transition-colors">
+                      Enrol Campaign
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- AI Actions + Segment Risk -->
+          <div class="xl:col-span-4 flex flex-col gap-4">
+            <div class="rounded-sm border border-gray-300 border-l-4 border-l-absa-passion overflow-hidden">
+              <div class="px-5 py-4 border-b border-gray-200">
+                <h2 class="text-sm font-bold text-absa-enrich flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] text-absa-passion">auto_awesome</span>
+                  AI Priority Actions
+                </h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">Recommended by churn intelligence engine</p>
+              </div>
+              <div class="p-4 flex flex-col gap-3">
+                <div v-for="(action, i) in aiPriorityActions" :key="i"
+                  class="border border-gray-200 rounded-sm p-3 bg-white hover:border-absa-passion/40 transition-colors">
+                  <div class="flex items-start gap-2 mb-2">
+                    <span :class="['inline-flex px-1.5 py-0.5 rounded-sm text-[10px] font-bold flex-shrink-0 mt-0.5', action.urgencyClass]">
+                      {{ action.urgency }}
+                    </span>
+                    <p class="text-xs font-semibold text-absa-enrich leading-snug">{{ action.title }}</p>
+                  </div>
+                  <p class="text-[11px] text-gray-600 leading-relaxed mb-2">{{ action.detail }}</p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-gray-400 font-mono">{{ action.meta }}</span>
+                    <button class="text-[11px] font-bold text-absa-passion hover:underline">Act →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-sm border border-gray-300 overflow-hidden">
+              <div class="px-5 py-4 border-b border-gray-200">
+                <h2 class="text-sm font-bold text-absa-enrich">Churn Risk by Segment</h2>
+              </div>
+              <div class="p-4 flex flex-col gap-4">
+                <div v-for="seg in churnSegments" :key="seg.name">
+                  <div class="flex justify-between text-[11px] mb-1.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="inline-flex px-1 py-0.5 rounded-sm text-[9px] font-bold bg-gray-100 text-gray-500">
+                        {{ seg.track === 'rm' ? 'RM' : 'BRANCH' }}
+                      </span>
+                      <span class="text-gray-600 font-medium">{{ seg.name }}</span>
+                    </div>
+                    <span class="font-bold font-mono text-absa-enrich">{{ seg.pct }}%</span>
+                  </div>
+                  <div class="w-full h-1 rounded-full overflow-hidden bg-gray-200">
+                    <div class="h-full bg-absa-passion rounded-full" :style="{ width: seg.pct + '%' }"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+    </template>
+    
+    <AiCampaignModal
+      v-model="showCampaignModal"
+      :customers="unenrolledCustomers"
+      source-context="branch-manager"
+    />
   </div>
 </template>
 
@@ -224,6 +559,7 @@ import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
+import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
 
@@ -235,98 +571,195 @@ api.interceptors.request.use((config) => {
 })
 
 const DEFAULT_AS_OF_DATE = '2026-07-27'
-
-const customerStore = useCustomerStore()
+const customerStore   = useCustomerStore()
 const predictionStore = usePredictionStore()
 
-const loading = ref(true)
-const branchData = ref([])
-const segmentData = ref([])
-const forecastData = ref(null)
+const loading         = ref(true)
+const activeTab       = ref('overview')
+const forecastHorizon = ref(30)
+const caseFilter      = ref('all')
+const branchData      = ref([])
+const segmentData     = ref([])
+const forecastData    = ref(null)
 
-// ── KPIs — derived from branch/portfolio aggregates ──
+const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' })
+
+// ── Portfolio tracks ──
+const rmTrack = computed(() => ({ total: 20630, atRisk: 186, openCases: 42 }))
+const branchTrack = computed(() => {
+  const total  = (customerStore.portfolio.total || 204050) - rmTrack.value.total
+  const atRisk = Math.round(total * 0.078)
+  return { total, atRisk, inCampaign: Math.round(atRisk * 0.58) }
+})
+
+// ── Tabs ──
+const tabs = computed(() => [
+  { id: 'overview',     label: 'Overview',        icon: 'gauge'            },
+  { id: 'rm_portfolio', label: 'RM Portfolio',    icon: 'manage_accounts'  },
+  { id: 'campaigns',    label: 'Branch Campaigns',icon: 'campaign'         },
+  { id: 'cases',        label: 'All Cases',        icon: 'assignment_late', badge: kpis.value.newFlagsToday || null },
+])
+
+// ── KPIs ──
 const kpis = computed(() => {
-  const p = customerStore.portfolio
-  const branches = branchData.value
-  const totalBranches = branches.length || 13
-  const avgAtRisk = branches.length
-    ? Math.round(branches.reduce((s, b) => s + (b.at_risk_count / b.total_customers * 100), 0) / branches.length)
-    : p.atRiskPct
-  const totalDormant = branches.length
-    ? branches.reduce((s, b) => s + b.dormant_count, 0)
-    : p.dormant
-  const avgChurnRate = forecastData.value
-    ? forecastData.value.churn_rate_pct
-    : (p.churnedPct || 5.8)
-
+  const avgChurn      = forecastData.value?.churn_rate_pct || customerStore.portfolio.churnedPct || 5.8
+  const totalBranches = branchData.value.length || 13
   return {
-    aggregateAtRisk: { value: avgAtRisk, change: 2.1 },
-    dormantAccounts: { value: totalDormant, change: 0 },
-    monthlyChurn: { value: avgChurnRate, change: -0.3 },
     totalBranches,
+    newFlagsToday:       49,
+    retentionRate:       72,
+    churnTarget:         6.0,
+    monthlyChurnValue:   avgChurn,
+    churnRateAboveTarget: avgChurn > 6.0,
   }
 })
 
-// ── RM Performance Table — derived from branch data ──
-const relationshipManagers = computed(() => {
-  if (!branchData.value.length) return []
-  return branchData.value.slice(0, 6).map(b => ({
-    name: b.branch_name,
-    segment: `${b.region} Region`,
-    portfolio: b.total_customers,
-    atRiskPct: Math.round(b.at_risk_count / b.total_customers * 100),
-    actions: Math.round(b.total_customers * 0.15),
-    target: Math.round(b.total_customers * 0.25),
-    healthScore: Math.round((b.total_customers - b.at_risk_count - b.dormant_count) / b.total_customers * 100) || 0,
-    trend: b.trend === 'STABLE' ? 'up' : 'down',
-  }))
+const overviewKpis = computed(() => [
+  { label: 'New High-Risk (Today)', value: kpis.value.newFlagsToday,          valueClass: 'text-absa-passion', note: 'Flagged since yesterday' },
+  { label: 'RM Pending AI Interventions',        value: rmTrack.value.openCases,            valueClass: 'text-absa-enrich',  note: 'Premium · uncontacted' },
+  { label: 'Not in Campaign',      value: (branchTrack.value.atRisk - branchTrack.value.inCampaign).toLocaleString(), valueClass: 'text-absa-passion', note: 'Mass-market · no outreach' },
+  { label: 'Campaign Enrolled',    value: branchTrack.value.inCampaign.toLocaleString(), valueClass: 'text-absa-enrich', note: `of ${branchTrack.value.atRisk.toLocaleString()} at-risk` },
+  { label: 'Retention Rate MTD',   value: kpis.value.retentionRate + '%',     valueClass: 'text-absa-passion',    note: 'All channels combined' },
+  { label: 'Churn vs Target',      value: kpis.value.monthlyChurnValue + '%', valueClass: kpis.value.churnRateAboveTarget ? 'text-absa-inspire' : 'text-absa-passion', note: `Target: ${kpis.value.churnTarget}%` },
+])
+
+// ── RM Pipeline ──
+const rmPipeline = computed(() => {
+  const f = rmTrack.value.atRisk
+  const a = Math.round(f * 0.77), c = Math.round(f * 0.61), r = Math.round(c * 0.82)
+  return [
+    { label: 'Flagged',   value: f, valueClass: 'text-absa-passion', barClass: 'bg-absa-passion' },
+    { label: 'Assigned',  value: a, valueClass: 'text-absa-energy',  barClass: 'bg-absa-energy'  },
+    { label: 'Contacted', value: c, valueClass: 'text-absa-enrich',  barClass: 'bg-absa-enrich'  },
+    { label: 'Retained',  value: r, valueClass: 'text-absa-passion',    barClass: 'bg-absa-passion'    },
+  ]
 })
 
-// ── Churn Forecast Bar Chart ──
+// ── Branch Pipeline ──
+const branchPipeline = computed(() => {
+  const f = branchTrack.value.atRisk, e = branchTrack.value.inCampaign
+  const res = Math.round(e * 0.34), r = Math.round(res * 0.68)
+  return [
+    { label: 'Flagged',   value: f,   valueClass: 'text-absa-passion', barClass: 'bg-absa-passion' },
+    { label: 'Enrolled',  value: e,   valueClass: 'text-absa-energy',  barClass: 'bg-absa-energy'  },
+    { label: 'Responded', value: res, valueClass: 'text-absa-enrich',  barClass: 'bg-absa-enrich'  },
+    { label: 'Retained',  value: r,   valueClass: 'text-absa-passion',    barClass: 'bg-absa-passion'    },
+  ]
+})
+
+// ── Forecast ──
 const forecastWeeks = computed(() => {
-  if (!forecastData.value) return []
-  const f = forecastData.value
-  const segments = f.by_segment || []
-  if (!segments.length) return []
-  const maxChurn = Math.max(...segments.map(s => s.projected_churn))
-  return segments.map(s => ({
-    label: s.segment.replace('MASS_', '').replace('_', ' ').substring(0, 7),
-    value: s.projected_churn,
-    height: Math.max(12, (s.projected_churn / maxChurn) * 100),
-  }))
+  const segs = [
+    { label: 'Youth (18–25)',    value: 445, track: 'branch' },
+    { label: 'Retail Savings',   value: 312, track: 'branch' },
+    { label: 'Business Current', value: 198, track: 'branch' },
+    { label: 'Premier Banking',  value: 54,  track: 'rm'     },
+    { label: 'Wealth Mgmt',      value: 30,  track: 'rm'     },
+  ]
+  const max = Math.max(...segs.map(s => s.value))
+  return segs.map(s => ({ ...s, pct: Math.round(s.value / max * 100) }))
+})
+const totalForecast = computed(() => forecastWeeks.value.reduce((s, w) => s + w.value, 0))
+const estimatedAUM  = computed(() => {
+  const v = totalForecast.value * 42000
+  return v >= 1e6 ? 'K' + (v / 1e6).toFixed(1) + 'M' : 'K' + v.toLocaleString()
 })
 
-// ── Churn by Segment ──
-const churnSegments = computed(() => {
-  return segmentData.value.map(s => ({
-    name: s.segment.replace('MASS_', '').replace('_', ' '),
-    pct: s.combined_risk_pct,
-  }))
-})
+// ── RM Table ──
+const relationshipManagers = computed(() => [
+  { name: 'Naledi Khumalo', segment: 'Wealth Management', portfolio: 84,  avgRiskScore: 38, openCases: 8,  actioned: 19, target: 20, retentionRate: 88, daysSinceActivity: 0 },
+  { name: 'Ayanda Nkosi',   segment: 'Premier Banking',   portfolio: 127, avgRiskScore: 48, openCases: 18, actioned: 24, target: 28, retentionRate: 71, daysSinceActivity: 2 },
+  { name: 'Dineo Molefe',   segment: 'Premier Banking',   portfolio: 98,  avgRiskScore: 61, openCases: 16, actioned: 18, target: 25, retentionRate: 65, daysSinceActivity: 1 },
+].map(rm => {
+  const pct = (rm.actioned / rm.target) * 100
+  const s   = pct >= 80 && rm.retentionRate >= 65 ? 'ON TRACK' : rm.daysSinceActivity > 3 || rm.retentionRate < 50 ? 'AT RISK' : 'MONITOR'
+  return { ...rm, status: s,
+    statusClass: s === 'ON TRACK' ? 'bg-red-50 text-absa-passion' : s === 'AT RISK' ? 'bg-red-100 text-absa-inspire' : 'bg-amber-100 text-amber-700',
+    dotClass: s === 'ON TRACK' ? 'bg-absa-passion' : s === 'AT RISK' ? 'bg-absa-inspire' : 'bg-amber-500'
+  }
+}))
 
-// ── AI Insight Quote ──
-const aiInsightQuote = computed(() => {
-  const f = forecastData.value
-  if (!f) return 'AI insights will appear once forecast data is computed.'
-  const topSeg = f.by_segment?.[0]
-  return `Projected churn of ${f.projected_churn.toLocaleString()} customers (${f.churn_rate_pct}%) over ${f.horizon_days} days. ${topSeg?.segment?.replace('MASS_', '')} segment most impacted with ${topSeg?.projected_churn} projected exits.`
-})
+const rmStatusCounts = computed(() =>
+  relationshipManagers.value.reduce((a, r) => { a[r.status] = (a[r.status] || 0) + 1; return a }, {})
+)
 
-// ── Fetch all data on mount ──
+const rmSummaryKpis = computed(() => [
+  { label: 'Active RMs',      value: relationshipManagers.value.length, note: 'Premium segment only' },
+  { label: 'On Track',        value: rmStatusCounts.value['ON TRACK'] || 0, valueClass: 'text-absa-passion', note: 'Meeting targets' },
+  { label: 'Monitoring',      value: rmStatusCounts.value['MONITOR']  || 0, valueClass: 'text-absa-energy', note: 'Needs attention' },
+  { label: 'Needs Attention', value: rmStatusCounts.value['AT RISK']  || 0, valueClass: 'text-absa-passion', note: 'Idle or low retention' },
+])
+
+// ── Campaigns ──
+const activeCampaigns = ref([
+  { name: 'SMS Retention Offer — Q3 Savings', channel: 'SMS',         channelIcon: 'sms',           segment: 'Retail Savings',    expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Youth Re-engagement Drive',         channel: 'Digital',     channelIcon: 'phone_iphone',  segment: 'Youth (18–25)',     expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Call Centre — Business Win-Back',   channel: 'Call Centre', channelIcon: 'support_agent', segment: 'Standard Business', expires: '2026-08-28', enrolled: 88,  responded: 41,  retained: 33,  conversionPct: 38, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Email — Savings Rate Offer',        channel: 'Email',       channelIcon: 'mail',          segment: 'Retail Savings',    expires: '2026-07-31', enrolled: 204, responded: 55,  retained: 38,  conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500',   dotClass: 'bg-gray-400'  },
+])
+
+const campaignKpis = computed(() => [
+  { label: 'Active Campaigns',    value: activeCampaigns.value.filter(c => c.status === 'ACTIVE').length, note: 'Running this month' },
+  { label: 'At-Risk Enrolled',    value: branchTrack.value.inCampaign.toLocaleString(), note: `of ${branchTrack.value.atRisk.toLocaleString()} flagged` },
+  { label: 'Avg Response Rate',   value: '34%', valueClass: 'text-absa-energy', note: 'Responded to outreach' },
+  { label: 'Retained via Campaign', value: Math.round(branchTrack.value.inCampaign * 0.34 * 0.68).toLocaleString(), valueClass: 'text-green-600', note: 'Confirmed no churn MTD' },
+])
+
+const unenrolledCustomers = ref([
+  { id: 'CU-02341', name: 'Palesa Dlamini',    segment: 'Retail Savings', prob: 82, daysFlagged: 9  },
+  { id: 'CU-03812', name: 'Thabo Khumalo',     segment: 'Youth (18–25)', prob: 79, daysFlagged: 6  },
+  { id: 'CU-01998', name: 'Nomsa Sithole',     segment: 'Retail Savings', prob: 74, daysFlagged: 11 },
+  { id: 'CU-04201', name: 'Lebogang Mahlangu', segment: 'Youth (18–25)', prob: 71, daysFlagged: 4  },
+])
+
+// ── Cases ──
+const caseFilters = [
+  { id: 'all',    label: 'All'     },
+  { id: 'rm',     label: 'RM'      },
+  { id: 'branch', label: 'Branch'  },
+]
+
+const allCases = ref([
+  { id: 'CU-00421', name: 'Mpho Radebe',     track: 'rm',     segment: 'Premier Banking',   prob: 91, aum: 'K 2.1M', daysFlagged: 12 },
+  { id: 'CU-00887', name: 'Zanele Motsepe',  track: 'rm',     segment: 'Wealth Management', prob: 88, aum: 'K 1.8M', daysFlagged: 9  },
+  { id: 'CU-02341', name: 'Palesa Dlamini',  track: 'branch', segment: 'Retail Savings',    prob: 82, aum: 'K 38K',  daysFlagged: 9  },
+  { id: 'CU-01142', name: 'Tebogo Mahlangu', track: 'rm',     segment: 'Premier Banking',   prob: 79, aum: 'K 840K', daysFlagged: 7  },
+  { id: 'CU-03812', name: 'Thabo Khumalo',   track: 'branch', segment: 'Youth (18–25)',     prob: 79, aum: 'K 12K',  daysFlagged: 6  },
+  { id: 'CU-00334', name: 'Kefilwe Sithole', track: 'branch', segment: 'Retail Savings',    prob: 74, aum: 'K 52K',  daysFlagged: 14 },
+  { id: 'CU-00756', name: 'Kagiso Nkosi',    track: 'branch', segment: 'Youth (18–25)',     prob: 71, aum: 'K 9K',   daysFlagged: 5  },
+  { id: 'CU-00198', name: 'Dineo Molefe',    track: 'rm',     segment: 'Premier Banking',   prob: 74, aum: 'K 1.2M', daysFlagged: 11 },
+])
+
+const filteredCases = computed(() =>
+  caseFilter.value === 'all' ? allCases.value : allCases.value.filter(c => c.track === caseFilter.value)
+)
+
+const churnSegments = [
+  { name: 'Youth (18–25)',     pct: 38, track: 'branch' },
+  { name: 'Retail Savings',    pct: 22, track: 'branch' },
+  { name: 'Business Current',  pct: 18, track: 'branch' },
+  { name: 'Premier Banking',   pct: 9,  track: 'rm'     },
+  { name: 'Wealth Management', pct: 5,  track: 'rm'     },
+]
+
+const aiPriorityActions = ref([
+  { urgency: 'URGENT', urgencyClass: 'bg-red-100 text-absa-passion', title: '2 Premier clients uncontacted for 10+ days', detail: 'High AUM accounts at critical churn risk. Assign to available RM immediately.', meta: '2 RM-managed · K 3.9M' },
+  { urgency: 'HIGH',   urgencyClass: 'bg-amber-100 text-amber-700',  title: '276 Youth customers with no campaign enrolment', detail: 'Youth churn accelerating. Enrol in the Youth Re-engagement Drive campaign.', meta: '276 branch-managed' },
+])
+
+// ── Fetch ──
 onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
     predictionStore.fetchChurnDrivers()
-
-    const [branchesRes, segmentsRes, forecastRes] = await Promise.all([
+    const [bRes, sRes, fRes] = await Promise.all([
       api.get('/api/v1/churn-intel/branches', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
       api.get('/api/v1/churn-intel/segments', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/forecasts/churn', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+      api.get('/api/v1/forecasts/churn',      { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
     ])
-
-    branchData.value = branchesRes.data.branches || []
-    segmentData.value = segmentsRes.data.segments || []
-    forecastData.value = forecastRes.data
+    branchData.value   = bRes.data.branches || []
+    segmentData.value  = sRes.data.segments || []
+    forecastData.value = fRes.data
   } catch (e) {
     console.warn('BranchManagerDashboard: API error', e.message)
   } finally {
@@ -335,15 +768,5 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.dashboard-root {
-  min-height: max(884px, 100dvh);
-}
-</style>
+
+

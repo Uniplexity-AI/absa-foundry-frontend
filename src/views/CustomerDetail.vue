@@ -1,268 +1,399 @@
 <template>
-  <div class="flex-1 overflow-y-auto p-8 scrollbar-hide global-mesh-bg pt-20">
+  <div class="w-full pt-6 px-6 pb-6">
     <!-- Loading Skeleton -->
     <template v-if="loading">
-      <div class="animate-pulse space-y-6">
-        <div class="h-8 bg-gray-200 rounded w-1/3"></div>
-        <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 lg:col-span-4"><LoadingSkeleton type="block" /></div>
-          <div class="col-span-12 lg:col-span-8"><LoadingSkeleton type="block" /></div>
-        </div>
-        <LoadingSkeleton type="block" />
-        <div class="grid grid-cols-2 gap-6">
-          <LoadingSkeleton type="card" />
-          <LoadingSkeleton type="card" />
-        </div>
+      <div class="mb-6 h-6 bg-white rounded-sm w-1/3 animate-pulse"></div>
+      <div class="grid grid-cols-12 gap-4 md:gap-4 mb-8">
+        <div class="col-span-12 lg:col-span-8"><LoadingSkeleton type="block" /></div>
+        <div class="col-span-12 lg:col-span-4"><LoadingSkeleton type="block" /></div>
       </div>
+      <div class="grid grid-cols-4 gap-4 md:gap-4 mb-8">
+        <LoadingSkeleton v-for="i in 4" :key="i" type="card" />
+      </div>
+      <LoadingSkeleton type="block" />
     </template>
 
     <!-- Empty State -->
-    <template v-else-if="isEmpty">
+    <template v-else-if="!customerId || isEmpty">
       <div class="flex flex-col items-center justify-center min-h-[60vh] text-center">
         <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
-          <AlertTriangle class="w-8 h-8 text-amber-600" />
+          <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
         </div>
-        <h2 class="text-xl font-bold text-gray-900 mb-2">Predictions Not Yet Available</h2>
-        <p class="text-body-md text-secondary max-w-md">
-          Predictions not yet computed for this customer. Run batch prediction to generate health score and churn probability.
-        </p>
+        <h2 class="text-sm font-bold text-absa-enrich mb-2">Customer Not Found</h2>
+        <p class="text-xs text-gray-500 max-w-md">No predictive profile is available for this customer.</p>
+        <button @click="goBack" class="mt-6 bg-absa-passion text-white text-xs font-bold py-2 px-5 rounded-sm shadow-none hover:bg-absa-power transition-colors">Back to Predictive Lifecycle Ledger</button>
       </div>
     </template>
 
     <!-- Main Content -->
     <template v-else>
-        <!-- Page Header & Actions -->
-        <div class="flex justify-between items-start mb-6">
-          <div>
-            <h2 class="text-lg font-bold text-brand-red mb-1">
-              {{ customer.fullName || customer.name }} (ID: {{ customer.customerId || customer.id }})
-            </h2>
-          </div>
-          <button class="bg-brand-red hover:bg-red-800 text-white px-5 py-2.5 rounded-md font-medium text-sm flex items-center gap-2 transition-colors shadow-sm">
-            <ExternalLink class="w-4 h-4" />
-            View in Core Banking
-          </button>
+      <!-- Breadcrumb + Back -->
+      <div class="mb-5">
+        <button @click="goBack" class="flex items-center gap-2 text-xs font-bold text-absa-passion hover:text-absa-power transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/></svg>
+          Back to Predictive Lifecycle Ledger
+        </button>
+        <div class="flex items-center gap-2 text-[11px] text-gray-500 mt-2">
+          <span>Dashboard</span><span>/</span><span>Portfolio</span><span>/</span>
+          <span>Predictive Lifecycle Ledger</span><span>/</span>
+          <span class="text-absa-enrich font-bold">{{ customerId }}</span>
         </div>
+      </div>
 
-        <!-- Top Row Grid -->
-        <div class="grid grid-cols-12 gap-6 mb-6">
-          <!-- Profile Card -->
-          <div class="col-span-12 lg:col-span-4 rounded card-border overflow-hidden flex flex-col global-dotted-bg">
-            <div class="bg-brand-red h-24 relative p-6">
-              <span class="text-white font-bold opacity-80">{{ customer.customerId || customer.id }}</span>
-              <img 
-                :src="customer.avatar" 
-                :alt="customer.fullName || customer.name" 
-                class="absolute -bottom-10 left-6 w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-gray-200"
-              />
+      <!-- ═══ AI Next Best Action Engine ═══ -->
+      <AiNbaPanel
+        :churn-prob="churnProb"
+        :customer-id="customerId"
+        @execute="showCampaignModal = true"
+        @override="showOverrideDialog = true"
+      />
+
+      <!-- ═══ Customer Profile Header ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shrink-0" :style="{ background: STATE_COLORS[state] || '#7f1d1d' }">
+              {{ initials }}
             </div>
-            <div class="pt-14 px-6 pb-6 flex-1 flex flex-col">
-              <h3 class="text-xl font-bold mb-1">{{ customer.fullName || customer.name || 'Loading...' }}</h3>
-              <p class="text-sm text-brand-subtext mb-3">{{ customer.segment || customer.tier }}</p>
-              <div class="mb-6">
-                <StateBadge :state="customer.state || customer.status" size="md" />
+            <div>
+              <div class="flex items-center gap-3 flex-wrap">
+                <h1 class="text-sm font-bold text-absa-enrich">{{ customer.fullName || ('Customer ' + (customerId || '').replace('CUST', '')) }}</h1>
+                <StatePill :state="state" />
               </div>
-              <div class="space-y-4 text-sm mt-auto">
-                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                  <span class="text-brand-subtext">Account #</span>
-                  <span class="font-semibold text-brand-red">{{ customer.accountNumber }}</span>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                  <span class="text-brand-subtext">Branch</span>
-                  <span class="font-semibold text-brand-red">{{ customer.branch }}</span>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                  <span class="text-brand-subtext">ID Number</span>
-                  <span class="font-semibold text-brand-red">{{ customer.customerId || customer.id }}</span>
-                </div>
-                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                  <span class="text-brand-subtext">Tenure</span>
-                  <span class="font-semibold text-brand-red">{{ customer.tenure }}</span>
-                </div>
-                <div class="flex justify-between items-center pb-1">
-                  <span class="text-brand-subtext">Assigned RM</span>
-                  <span class="font-semibold text-brand-red">{{ customer.assignedRm }}</span>
-                </div>
+              <p class="text-xs text-gray-500 mt-1">ID: {{ customerId }}</p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-2 mt-4 text-xs">
+                <div><span class="text-gray-500 block text-[11px] uppercase">Customer Since</span><span class="font-bold text-absa-enrich">{{ customerSince || '—' }}</span></div>
+                <div><span class="text-gray-500 block text-[11px] uppercase">Last Activity</span><span class="font-bold text-absa-enrich">{{ lastActivity }}</span></div>
+                <div><span class="text-gray-500 block text-[11px] uppercase">Last Snapshot</span><span class="font-bold text-absa-enrich">{{ computedAt || '—' }}</span></div>
+                <div><span class="text-gray-500 block text-[11px] uppercase">State Since</span><span class="font-bold text-absa-enrich">{{ stateSince || '—' }}</span></div>
+                <div v-if="customer.branch"><span class="text-gray-500 block text-[11px] uppercase">Branch</span><span class="font-bold text-absa-enrich">{{ customer.branch }}</span></div>
+                <div v-if="customer.segment"><span class="text-gray-500 block text-[11px] uppercase">Segment</span><span class="font-bold text-absa-enrich">{{ customer.segment }}</span></div>
               </div>
             </div>
           </div>
-
-          <!-- Predictive Insights with Health Gauge + Churn Bar -->
-          <div class="col-span-12 lg:col-span-8 rounded card-border p-6 relative global-dotted-bg">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-              <div class="flex items-center gap-2 text-brand-red font-bold text-sm tracking-wider uppercase">
-                <BrainCircuit class="w-5 h-5" />
-                Predictive Insights
-              </div>
-              <span class="text-xs text-brand-subtext">Last updated: Today, 08:45 AM</span>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-10">
-              <!-- Left Side: Health Score Gauge -->
-              <div class="flex flex-col items-center justify-center">
-                <h4 class="text-sm font-semibold self-start mb-6 w-full">AI Health Score</h4>
-                <HealthScoreGauge
-                  :score="healthMetrics.score"
-                  :trend="healthMetrics.trend"
-                  :previousScore="healthMetrics.previousScore"
-                />
-                <ChurnProbabilityBar
-                  :probability="healthMetrics.churnProbability"
-                  :showLabel="true"
-                  class="mt-6 w-full"
-                />
-              </div>
-
-              <!-- Right Side: Risk Drivers -->
-              <div class="border-l border-gray-100 pl-10">
-                <h4 class="text-sm font-semibold mb-6">Key Risk Drivers</h4>
-                <div v-if="loadingRiskDrivers" class="text-sm text-gray-400">Analyzing risk factors...</div>
-                <div v-else-if="riskDrivers.length === 0" class="text-sm text-gray-400">Risk drivers not yet computed.</div>
-                <div v-else class="space-y-6">
-                  <div v-for="(driver, index) in riskDrivers" :key="index">
-                    <div class="flex justify-between text-sm mb-1">
-                      <span class="font-medium">{{ driver.title }}</span>
-                      <span :class="['font-bold', driver.highlightClass]">{{ driver.metric }}</span>
-                    </div>
-                    <div class="progress-bar-bg mb-2">
-                      <div :class="driver.fillClass" :style="{ width: driver.percentage + '%' }"></div>
-                    </div>
-                    <p class="text-xs text-brand-subtext">{{ driver.description }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="flex items-center gap-2 flex-wrap shrink-0">
+            <button @click="goToActionPlan" class="bg-absa-passion text-white text-xs font-bold py-2.5 px-4 shadow-none hover:bg-absa-power transition-colors">CREATE ACTION PLAN</button>
+            <button class="border border-gray-300 text-absa-enrich text-xs font-bold py-2.5 px-4 hover:bg-gray-50 transition-colors">MORE</button>
           </div>
         </div>
+      </div>
 
-        <!-- State Timeline -->
-        <div class="rounded card-border p-6 mb-6 global-dotted-bg">
-          <h3 class="text-sm font-bold tracking-wider uppercase text-brand-text mb-8">
-            Lifecycle Journey
-          </h3>
-          <StateTimeline :transitions="timelineData" />
+      <!-- ═══ Predictive Lifecycle Summary ═══ -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 mb-8">
+        <!-- Health -->
+        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Customer Health</h3>
+            <InfoDot :label="'Combined health score from churn risk, customer value and behavioural engagement.'" />
+          </div>
+          <div class="flex items-baseline gap-1">
+            <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span>
+            <span class="text-xs text-gray-500">/ 100</span>
+          </div>
+          <div class="pp-track mt-3"><div class="pp-fill" :style="{ width: (healthScore || 0) + '%', background: healthColor }"></div></div>
+          <p class="text-xs font-bold mt-2" :style="{ color: healthColor }">{{ healthLabel }}</p>
         </div>
 
-        <!-- Markov Matrix (Collapsible) -->
-        <details class="rounded card-border p-6 mb-6 global-dotted-bg">
-          <summary class="text-sm font-bold tracking-wider uppercase text-brand-text cursor-pointer">
-            Advanced: State Transition Probabilities
-          </summary>
-          <div class="mt-6">
-            <MarkovMatrix :matrix="markovMatrix" :states="markovStates" />
+        <!-- Churn -->
+        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Churn Probability</h3>
+            <InfoDot :label="'Probability the customer will churn within the prediction horizon, from the XGBoost churn model.'" />
           </div>
-        </details>
+          <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span>
+          <p class="text-xs font-bold mt-2" :style="{ color: churnColor }">{{ churnLabel }}</p>
+          <a href="#why-predictions" class="text-xs font-bold text-absa-passion hover:text-absa-power mt-2 inline-block">Why?</a>
+        </div>
 
-        <!-- Bottom Row Grid -->
+        <!-- CLV -->
+        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Customer Lifetime Value</h3>
+            <InfoDot :label="'CLV percentile rank among the portfolio — an estimate, not guaranteed future revenue.'" />
+          </div>
+          <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ clvPercentile != null ? 'P' + Math.round(clvPercentile * 100) : '—' }}</span>
+          <span class="text-xs text-gray-500"> ZMW</span>
+          <p class="text-xs text-gray-500 mt-2">Predicted CLV (percentile rank)</p>
+        </div>
+
+        <!-- Lifecycle State -->
+        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">Lifecycle State</h3>
+          <StatePill :state="state" size="lg" />
+          <p v-if="statePct != null" class="text-xs text-gray-500 mt-3">{{ statePct }}% of portfolio customers are currently {{ state.toLowerCase().replace('_', ' ') }}</p>
+          <p v-else class="text-xs text-gray-500 mt-3">Current predictive lifecycle classification</p>
+        </div>
+      </div>
+
+      <!-- ═══ Why These Predictions ═══ -->
+      <div id="why-predictions" class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <div class="mb-4">
+          <h2 class="text-sm font-bold text-absa-enrich">Why These Predictions?</h2>
+          <p class="text-xs text-gray-500">Explanation of the customer's current lifecycle position</p>
+        </div>
+
+        <!-- Health factors -->
         <div class="grid grid-cols-12 gap-6">
-          <!-- Next Best Action -->
-          <div class="col-span-12 lg:col-span-5 rounded overflow-hidden flex flex-col shadow-lg relative" style="background: linear-gradient(135deg, rgb(164, 0, 34) 0%, rgb(27, 28, 28) 50%, rgb(0, 0, 0) 100%);">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-            <div class="flex items-center gap-3 p-6 pb-0 relative z-10">
-              <div class="text-5xl font-bold text-white">!</div>
-              <div>
-                <h3 class="text-xl font-bold text-white leading-tight">Next Best Action</h3>
-                <p class="text-[10px] text-white/70 leading-tight">Recommended by AI-Lifecycle Engine</p>
+          <div class="col-span-12 lg:col-span-6">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">Customer Health Score — {{ healthScore != null ? healthScore.toFixed(1) + ' / 100' : '—' }}</h3>
+            <div class="space-y-3">
+              <div v-for="f in healthFactors" :key="f.key" class="flex items-center gap-3">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ background: f.good ? '#16a34a' : '#7f1d1d' }"></span>
+                <span class="text-xs text-absa-enrich w-48 shrink-0">{{ f.label }}</span>
+                <div class="pp-track flex-1"><div class="pp-fill" :style="{ width: (f.value || 0) + '%', background: f.good ? '#16a34a' : '#7f1d1d' }"></div></div>
+                <span class="text-xs font-bold text-absa-enrich w-14 text-right">{{ f.value != null ? f.value.toFixed(0) : '—' }}</span>
               </div>
-            </div>
-            
-            <div class="flex-1 text-white p-6 pt-4 flex flex-col relative z-10">
-              <template v-if="loadingNba">
-                <div class="flex items-center justify-center flex-1">
-                  <span class="text-white/60 text-sm">Loading recommendations...</span>
-                </div>
-              </template>
-              <template v-else>
-                <div class="flex justify-between items-start mb-6">
-                  <span class="bg-white/10 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-                    {{ nextBestAction.priority }}
-                  </span>
-                  <div class="text-right">
-                    <span class="block text-[8px] uppercase tracking-widest text-gray-400">AI Confidence</span>
-                    <span class="text-2xl font-bold">{{ nextBestAction.confidence }}</span>
-                  </div>
-                </div>
-                <h4 class="text-2xl font-bold mb-4 leading-tight">{{ nextBestAction.title }}</h4>
-                <p class="text-sm text-gray-300 mb-8 leading-relaxed">
-                  {{ nextBestAction.description }}
-                </p>
-                <div class="mt-auto flex gap-3">
-                  <button class="bg-white text-primary font-bold px-4 py-2 rounded flex items-center gap-2 hover:bg-gray-100 transition-colors text-sm">
-                    <PhoneForwarded class="w-4 h-4" />
-                    Log Action
-                  </button>
-                  <button class="bg-white/5 text-white font-medium px-6 py-2 rounded hover:bg-white/10 transition-colors border border-white/20 text-sm">
-                    Dismiss
-                  </button>
-                </div>
-              </template>
+              <p class="text-[11px] text-gray-500 pt-1">Components: Churn risk, customer value (CLV) and behavioural engagement — as produced by the health scorer.</p>
             </div>
           </div>
 
-          <!-- Action History -->
-          <div class="col-span-12 lg:col-span-7 rounded card-border p-6 flex flex-col global-dotted-bg">
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-sm font-bold tracking-wider uppercase text-brand-text">Action History</h3>
-              <div class="flex items-center gap-4 text-sm font-semibold">
-                <button class="flex items-center gap-1 hover:text-brand-red transition-colors">
-                  All <ChevronDown class="w-4 h-4" />
-                </button>
-                <button class="text-brand-red hover:text-red-800 transition-colors">View All</button>
+          <!-- Churn signals -->
+          <div class="col-span-12 lg:col-span-6 border-t lg:border-t-0 lg:border-l border-gray-300 lg:pl-6">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">What is driving churn? — {{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</h3>
+            <div v-if="riskCodes.length" class="space-y-3">
+              <div v-for="r in riskCodes" :key="r.code" class="flex items-start gap-3">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" :style="{ background: severityColor(r.severity) }"></span>
+                <div>
+                  <div class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</div>
+                  <div class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</div>
+                </div>
+                <span class="ml-auto text-[11px] font-bold" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
               </div>
             </div>
+            <p v-else class="text-xs text-gray-500">No churn risk signals flagged for this customer.</p>
+          </div>
+        </div>
 
-            <div class="flex-1 overflow-y-auto pr-2 scrollbar-hide relative pl-4">
-              <div class="absolute left-[27px] top-4 bottom-0 w-px bg-gray-200"></div>
-              <div class="space-y-6">
-                <div v-for="(item, index) in actionHistory" :key="index" class="relative pl-12">
-                  <div :class="['absolute left-[-5px] top-1 w-8 h-8 rounded-full flex items-center justify-center z-10', item.iconBg]">
-                    <component :is="item.icon" class="w-4 h-4" :class="item.iconColor" />
-                  </div>
-                  <div class="bg-gray-50 rounded p-4">
-                    <div class="flex justify-between items-start mb-2">
-                      <h5 class="font-bold text-sm">{{ item.title }}</h5>
-                      <span class="text-xs text-brand-subtext font-medium">{{ item.date }}</span>
-                    </div>
-                    <p class="text-sm text-brand-text leading-relaxed">{{ item.description }}</p>
-                  </div>
-                </div>
+        <!-- CLV explanation -->
+        <div class="mt-6 pt-5 border-t border-gray-300">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-2">How was Customer Lifetime Value estimated?</h3>
+          <p class="text-xs text-gray-500 max-w-3xl">
+            Predicted CLV is the customer's <strong class="text-absa-enrich">percentile rank</strong> ({{ clvPercentile != null ? 'P' + Math.round(clvPercentile * 100) : '—' }})
+            within the portfolio, derived from historical revenue (total amount over the last 90 days), customer value, and retention probability.
+            It is a <strong class="text-absa-enrich">prediction / estimate</strong>, not a guaranteed future revenue figure.
+          </p>
+          <p class="text-[11px] text-gray-500 mt-3">{{ clvEvidence.length ? clvEvidence.join(' · ') : 'No historical revenue data available for this customer.' }}</p>
+        </div>
+      </div>
+
+      <!-- ═══ Lifecycle Journey ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <h2 class="text-sm font-bold text-absa-enrich mb-5">Customer Lifecycle Journey</h2>
+        <div class="flex flex-wrap items-center gap-2">
+          <template v-for="(s, i) in LIFECYCLE_ORDER" :key="s">
+            <div class="flex items-center gap-2">
+              <div :class="['flex items-center gap-2 px-3 py-1.5 rounded-full border-2 text-[11px] font-bold uppercase tracking-wider', i === currentStateIndex ? 'pp-current-state' : 'border-gray-300 bg-white']"
+                   :style="i === currentStateIndex ? { borderColor: STATE_COLORS[s], color: STATE_COLORS[s] } : { color: '#857371' }">
+                <span class="w-2 h-2 rounded-full" :style="{ background: STATE_COLORS[s] }"></span>
+                {{ s.replace('_', ' ') }}
               </div>
+              <svg v-if="i < LIFECYCLE_ORDER.length - 1" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            </div>
+          </template>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div class="pp-metric"><span class="pp-metric__label">Date entered current state</span><span class="pp-metric__value">{{ stateSince || '—' }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Previous state</span><span class="pp-metric__value">{{ previousState || '—' }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">State transitions</span><span class="pp-metric__value">{{ transitions.length || (timelineEntries.length ? timelineEntries.length - 1 : 0) }}</span></div>
+          <div class="pp-metric">
+            <span class="pp-metric__label">Predicted next state</span>
+            <span class="pp-metric__value">{{ predictedNextState ? predictedNextState.state.replace('_', ' ') : '—' }}</span>
+            <span v-if="predictedNextState" class="text-[11px] text-gray-500">{{ Math.round(predictedNextState.probability * 100) }}% probability</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Activity Timeline ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <h2 class="text-sm font-bold text-absa-enrich mb-5">Customer Activity Timeline</h2>
+        <div v-if="timelineEntries.length" class="relative pl-6">
+          <div class="absolute left-2 top-1 bottom-1 w-px bg-outline-variant"></div>
+          <div v-for="(e, i) in timelineEntries" :key="i" class="relative pl-6 pb-5">
+            <span class="absolute left-[-10px] top-1 w-4 h-4 rounded-full border-2 border-white" :style="{ background: STATE_COLORS[e.state] || '#7f1d1d' }"></span>
+            <div class="text-xs font-bold text-absa-enrich">{{ e.state ? e.state.replace('_', ' ') : '—' }}</div>
+            <div class="text-[11px] text-gray-500">{{ fmtDate(e.as_of_date) }}</div>
+          </div>
+        </div>
+        <p v-else class="text-xs text-gray-500">No lifecycle activity recorded for this customer.</p>
+      </div>
+
+      <!-- ═══ Customer Behaviour ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <h2 class="text-sm font-bold text-absa-enrich mb-1">Customer Behaviour</h2>
+        <p class="text-xs text-gray-500 mb-5">Behavioural signals derived from the customer's transaction and engagement history</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div v-for="b in behaviourFactors" :key="b.label" class="border border-gray-300 rounded-sm p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold text-absa-enrich">{{ b.label }}</span>
+              <span class="text-[11px] text-gray-500">{{ b.unit }}</span>
+            </div>
+            <div v-if="b.evidence" class="text-[11px] text-gray-500 mb-3">{{ b.evidence }}</div>
+            <div v-if="b.evidence" class="pp-track"><div class="pp-fill" :style="{ width: behaviourBarWidth(b) + '%', background: '#7f1d1d' }"></div></div>
+            <span v-else class="text-xs text-gray-500">Not available for this customer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Risk & Opportunity ═══ -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-4 mb-6">
+        <div class="bg-white rounded-sm border border-gray-300 shadow-none  p-4">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-4">Risk Signals</h3>
+          <div v-if="riskCodes.length" class="space-y-3">
+            <div v-for="r in riskCodes" :key="r.code" class="border-l-4 pl-3" :style="{ borderColor: severityColor(r.severity) }">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</span>
+                <span class="text-[11px] font-bold" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
+              </div>
+              <p class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</p>
+            </div>
+          </div>
+          <p v-else class="text-xs text-gray-500">No risk signals detected.</p>
+        </div>
+        <div class="bg-white rounded-sm border border-gray-300 shadow-none  p-4">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-4">Opportunity Signals</h3>
+          <div v-if="opportunityCodes.length" class="space-y-3">
+            <div v-for="r in opportunityCodes" :key="r.code" class="border-l-4 pl-3 border-[#4CAF50]">
+              <span class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</span>
+              <p class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</p>
+            </div>
+          </div>
+          <p v-else class="text-xs text-gray-500">No opportunity signals detected.</p>
+        </div>
+      </div>
+
+      <!-- ═══ Recommended Actions ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <h2 class="text-sm font-bold text-absa-enrich mb-5">Recommended Actions</h2>
+        <div v-if="actionPlan.length" class="space-y-4">
+          <div v-for="a in actionPlan" :key="a.priority" class="border border-gray-300 rounded-sm p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div class="w-10 h-10 bg-white border border-gray-200 text-absa-passion flex items-center justify-center font-bold shrink-0">{{ a.priority }}</div>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-absa-enrich">{{ a.title }}</div>
+              <div class="text-[11px] text-gray-500">{{ a.reason }}</div>
+              <div class="text-xs text-absa-enrich mt-1">{{ a.action }}</div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="text-[11px] text-gray-500 mb-1">Propensity {{ a.confidence }}%</div>
+              <button @click="goToTakeAction(a)" class="bg-absa-passion text-white text-xs font-bold py-2 px-4 shadow-none hover:bg-absa-power transition-colors">TAKE ACTION</button>
             </div>
           </div>
         </div>
-  </template>
-</div>
+        <p v-else class="text-xs text-gray-500">No recommended actions generated yet.</p>
+      </div>
+
+      <!-- ═══ Prediction Confidence + Data Used ═══ -->
+      <div class="grid grid-cols-12 gap-4 md:gap-4 mb-6">
+        <div class="col-span-12 lg:col-span-5 bg-white rounded-sm border border-gray-300 shadow-none  p-4">
+          <h2 class="text-sm font-bold text-absa-enrich mb-4">Prediction Confidence</h2>
+          <div class="flex items-baseline gap-2 mb-3">
+            <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ modelConfidence }}</span>
+            <span class="text-xs text-gray-500">Model Confidence</span>
+          </div>
+          <ul class="space-y-2 text-xs">
+            <li class="flex justify-between"><span class="text-gray-500">Data completeness</span><span class="font-bold text-absa-enrich">{{ dataCompleteness ? Math.round(dataCompleteness.populated / dataCompleteness.total * 100) + '%' : '—' }}</span></li>
+            <li class="flex justify-between"><span class="text-gray-500">Behavioural features populated</span><span class="font-bold text-absa-enrich">{{ dataCompleteness ? dataCompleteness.populated + ' / ' + dataCompleteness.total : '—' }}</span></li>
+            <li class="flex justify-between"><span class="text-gray-500">Model version</span><span class="font-bold text-absa-enrich">{{ modelVersion }}</span></li>
+            <li class="flex justify-between"><span class="text-gray-500">Last model update</span><span class="font-bold text-absa-enrich">{{ computedAt || '—' }}</span></li>
+          </ul>
+          <p class="text-[11px] text-gray-500 mt-4">Confidence is based on the amount, recency, and consistency of behavioural data available for this customer. Predictive results are estimates.</p>
+        </div>
+
+        <div class="col-span-12 lg:col-span-7 bg-white rounded-sm border border-gray-300 shadow-none  p-4">
+          <details open>
+            <summary class="text-sm font-bold text-absa-enrich cursor-pointer list-none">Data Used for Prediction</summary>
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div v-for="d in dataUsed" :key="d.name" class="border border-gray-300 rounded-sm p-3">
+                <div class="text-xs font-bold text-absa-enrich">{{ d.name }}</div>
+                <div class="text-[11px] text-gray-500">{{ d.available }}</div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ═══ Prediction History ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none overflow-hidden  mb-6">
+        <div class="p-4 border-b border-gray-300">
+          <h2 class="text-sm font-bold text-absa-enrich">Prediction History</h2>
+          <p class="text-xs text-gray-500">Lifecycle state over time</p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-outline-variant">
+            <thead>
+              <tr class="bg-white">
+                <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-absa-enrich text-left">Date</th>
+                <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-absa-enrich text-left">Lifecycle State</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-outline-variant">
+              <tr v-if="!timelineEntries.length"><td colspan="2" class="p-8 text-center text-xs text-gray-500">No history available</td></tr>
+              <tr v-for="(e, i) in timelineEntries" :key="i">
+                <td class="p-4 text-xs text-absa-enrich">{{ fmtDate(e.as_of_date) }}</td>
+                <td class="p-4"><StatePill :state="e.state" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ Customer Alerts ═══ -->
+      <div v-if="alertCodes.length" class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-bold text-absa-enrich">Customer Alerts</h2>
+          <span class="text-[11px] font-bold text-absa-passion">{{ alertCodes.length }} ACTIVE</span>
+        </div>
+        <div class="space-y-3">
+          <div v-for="r in alertCodes" :key="r.code" class="border-l-4 border-[#DC0037] pl-4">
+            <div class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</div>
+            <div class="text-[11px] text-gray-500">Severity: {{ r.severity }} · {{ detailText(r.detail) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Customer Information ═══ -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
+        <h2 class="text-sm font-bold text-absa-enrich mb-4">Customer Information</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="pp-metric"><span class="pp-metric__label">Customer ID</span><span class="pp-metric__value">{{ customerId }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Name</span><span class="pp-metric__value">{{ customer.fullName || '—' }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Account status</span><span class="pp-metric__value">{{ state.replace('_', ' ') }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Customer since</span><span class="pp-metric__value">{{ customerSince || '—' }}</span></div>
+          <div v-if="customer.branch" class="pp-metric"><span class="pp-metric__label">Branch</span><span class="pp-metric__value">{{ customer.branch }}</span></div>
+          <div v-if="customer.segment" class="pp-metric"><span class="pp-metric__label">Segment</span><span class="pp-metric__value">{{ customer.segment }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Health score</span><span class="pp-metric__value">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Last activity</span><span class="pp-metric__value">{{ lastActivity }}</span></div>
+        </div>
+        <!-- End of profile sections -->
+      </div>
+      
+      <!-- Modals -->
+      <AiCampaignModal
+        v-model="showCampaignModal"
+        :customers="[{ id: customerId, name: customer.fullName || 'Customer', churnProb, segment: customer.segment }]"
+        source-context="portfolio"
+      />
+
+    </template>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, onMounted, defineComponent, h } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
-import {
-  ExternalLink,
-  BrainCircuit,
-  AlertTriangle,
-  MessageSquare,
-  Tag,
-  UserCheck,
-  PhoneForwarded,
-  ChevronDown,
-} from 'lucide-vue-next'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
-import HealthScoreGauge from '@/components/absa/HealthScoreGauge.vue'
-import ChurnProbabilityBar from '@/components/absa/ChurnProbabilityBar.vue'
-import StateTimeline from '@/components/absa/StateTimeline.vue'
-import MarkovMatrix from '@/components/absa/MarkovMatrix.vue'
-import StateBadge from '@/components/absa/StateBadge.vue'
+import AiNbaPanel from '@/components/intelligence/AiNbaPanel.vue'
+import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
 
 const route = useRoute()
+const router = useRouter()
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
 
-const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 20000 })
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
@@ -271,247 +402,394 @@ api.interceptors.request.use((config) => {
 
 const DEFAULT_AS_OF_DATE = '2026-07-27'
 
+const STATE_COLORS = {
+  NEW: '#16a34a',
+  ACTIVE: '#16a34a',
+  GROWING: '#16a34a',
+  AT_RISK: '#7f1d1d',
+  DORMANT: '#7f1d1d',
+  CHURNED: '#7f1d1d',
+}
+const LIFECYCLE_ORDER = ['NEW', 'ACTIVE', 'GROWING', 'AT_RISK', 'DORMANT', 'CHURNED']
+
+// Inline StatePill (the previously-imported StateBadge component no longer exists)
+const StatePill = defineComponent({
+  props: { state: { type: String, default: '—' }, size: { type: String, default: 'md' } },
+  setup(props) {
+    return () => h('span', {
+      class: [
+        'inline-flex items-center rounded-full font-bold uppercase tracking-wide',
+        props.size === 'lg' ? 'px-4 py-1.5 text-xs' : 'px-2.5 py-0.5 text-[11px]',
+      ],
+      style: {
+        background: '#ffffff',
+        color: STATE_COLORS[props.state] || '#7f1d1d',
+        border: '1px solid #e5e7eb',
+      },
+    }, (props.state || '—').replace('_', ' '))
+  },
+})
+
+// Inline info tooltip (title attribute)
+const InfoDot = defineComponent({
+  props: { label: { type: String, default: '' } },
+  setup(props) {
+    return () => h('span', { class: 'text-gray-500 cursor-help', title: props.label }, h('svg', {
+      class: 'w-4 h-4', fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24',
+    }, [h('circle', { cx: '12', cy: '12', r: '9', 'stroke-width': '2' }), h('path', { d: 'M12 16v-4m0-4h.01', 'stroke-linecap': 'round', 'stroke-width': '2' })]))
+  },
+})
+
 const loading = ref(true)
-const isEmpty = computed(() => !loading.value && !customer.value.customerId)
+const showCampaignModal = ref(false)
+const showOverrideDialog = ref(false)
+const reasonCodes = ref([])
+const recommendations = ref([])
 
-// Customer profile — from customerStore
-const customer = computed(() => {
-  const c = customerStore.selectedCustomer
-  if (!c) return { fullName: '—', customerId: '', state: '—' }
-  return {
-    fullName: c.fullName || `Customer ${c.customerId?.replace('CUST', '')}`,
-    customerId: c.customerId,
-    segment: c.segment || '—',
-    state: c.state || '—',
-    accountNumber: '—',
-    branch: c.branch || '—',
-    tenure: '—',
-    assignedRm: '—',
-    avatar: '',
-  }
+const customerId = computed(() => String(route.params.id || ''))
+const isEmpty = computed(() => !loading.value && !customerStore.selectedCustomer)
+
+const customer = computed(() => customerStore.selectedCustomer || {})
+
+const state = computed(() => customer.value.state || customer.value._raw?.state || '—')
+const previousState = computed(() => customer.value.previousState || customer.value._raw?.previous_state || null)
+
+const healthScore = computed(() => {
+  const h = predictionStore.healthScores[customerId.value]
+  if (h?.health_score != null) return h.health_score
+  return customer.value.healthScore ?? null
 })
 
-// Health metrics — from predictionStore
-const healthMetrics = computed(() => {
-  const cid = customer.value.customerId
-  const h = predictionStore.healthScores[cid]
-  const p = predictionStore.predictions[cid]
-  // predictions can be stored as { churn_probability } object or raw number
-  const churnProb = typeof p === 'number' ? p : p?.churn_probability ?? null
-  return {
-    score: h?.health_score ?? (typeof p === 'object' ? p?.health_score : null) ?? null,
-    trend: 'down',
-    previousScore: null,
-    churnProbability: churnProb,
-  }
+const components = computed(() => {
+  const h = predictionStore.healthScores[customerId.value]
+  const c = customer.value._raw?.component_scores
+  return h?.component_scores || c || {}
 })
 
-// Risk drivers — from reason-codes API
-const riskDrivers = ref([])
+const churnProb = computed(() => {
+  const p = predictionStore.predictions[customerId.value]
+  return typeof p === 'number' ? p : p?.churn_probability ?? null
+})
 
-// Timeline — condenses identical consecutive states into meaningful journey
-const timelineData = computed(() => {
+const clvPercentile = computed(() => {
+  const p = predictionStore.predictions[customerId.value]
+  return typeof p === 'object' ? p?.clv_percentile ?? null : null
+})
+
+const featureSnapshot = computed(() => customerStore.features)
+
+const healthLabel = computed(() => {
+  const s = healthScore.value
+  if (s == null) return '—'
+  if (s < 25) return 'Critical'
+  if (s < 50) return 'At Risk'
+  if (s < 70) return 'Moderate'
+  return 'Healthy'
+})
+
+const healthColor = computed(() => {
+  const s = healthScore.value
+  if (s == null) return '#857371'
+  if (s < 25) return '#7f1d1d'
+  if (s < 50) return '#7f1d1d'
+  if (s < 70) return '#16a34a'
+  return '#16a34a'
+})
+
+const churnLabel = computed(() => {
+  const p = churnProb.value
+  if (p == null) return '—'
+  if (p < 0.2) return 'Low Risk'
+  if (p < 0.5) return 'Moderate Risk'
+  return 'High Risk'
+})
+
+const churnColor = computed(() => {
+  const p = churnProb.value
+  if (p == null) return '#857371'
+  if (p < 0.2) return '#16a34a'
+  if (p < 0.5) return '#16a34a'
+  return '#7f1d1d'
+})
+
+const timelineEntries = computed(() => {
   const raw = customerStore.timeline
-
-  // Use transitions array if available
-  if (raw?.transitions?.length) {
-    return raw.transitions.map(t => ({
-      from: t.from_state,
-      to: t.to_state,
-      date: t.transition_date,
-      daysInState: t.days_in_previous_state || 0,
-      triggerReason: t.trigger_reason || '—',
-    }))
-  }
-
-  const entries = Array.isArray(raw) ? raw : (raw?.timeline || [])
-  if (!entries.length) return []
-
-  // Build transition pairs, then condense identical consecutive states
-  const transitions = entries.map((entry, i, arr) => {
-    const next = arr[i + 1]
-    const currDate = new Date(entry.as_of_date)
-    const prevDate = next ? new Date(next.as_of_date) : null
-    return {
-      from: next?.state || entry.state,
-      to: entry.state,
-      date: entry.as_of_date,
-      daysInState: prevDate ? Math.round((currDate - prevDate) / 86400000) : 0,
-      triggerReason: entry.classification_rules
-        ? Object.values(entry.classification_rules).flat().join(', ')
-        : `Entered ${entry.state}`,
-    }
-  }).reverse()
-
-  // Merge consecutive identical states
-  const condensed = []
-  for (const t of transitions) {
-    const last = condensed[condensed.length - 1]
-    if (last && last.to === t.to) {
-      last.date = t.date
-      last.daysInState += t.daysInState
-    } else {
-      condensed.push({ ...t })
-    }
-  }
-  return condensed
+  if (Array.isArray(raw)) return raw
+  return raw?.timeline || []
 })
 
-// Markov matrix — from predictionStore
+const transitions = computed(() => {
+  const raw = customerStore.timeline
+  if (Array.isArray(raw)) return []
+  return raw?.transitions || []
+})
+
+const customerSince = computed(() => {
+  const entries = timelineEntries.value
+  if (!entries.length) return null
+  const sorted = [...entries].sort((a, b) => new Date(a.as_of_date) - new Date(b.as_of_date))
+  return fmtDate(sorted[0].as_of_date)
+})
+
+const stateSince = computed(() => {
+  const entries = timelineEntries.value
+  if (!entries.length) return null
+  // Most recent entry date for the current state
+  const current = entries.filter(e => e.state === state.value)
+  if (current.length) return fmtDate(current[current.length - 1].as_of_date)
+  return fmtDate(entries[entries.length - 1].as_of_date)
+})
+
+const computedAt = computed(() => {
+  const raw = customer.value._raw?.computed_at || customer.value.computedAt
+  if (!raw) return null
+  try { return new Date(raw).toLocaleString() } catch { return raw }
+})
+
+const lastActivity = computed(() => {
+  const f = featureSnapshot.value
+  if (f?.days_since_last_txn != null) return `${f.days_since_last_txn} days ago`
+  // Fall back to a reason code detail if present
+  const rc = reasonCodes.value.find(r => r.code === 'INACTIVE_EXTENDED')
+  if (rc?.detail?.days_since_last_txn != null) return `${rc.detail.days_since_last_txn} days ago`
+  return '—'
+})
+
+const statePct = computed(() => {
+  const p = customerStore.portfolio
+  const map = { DORMANT: p.dormantPct, AT_RISK: p.atRiskPct, CHURNED: p.churnedPct, ACTIVE: p.activePct }
+  return map[state.value] != null ? map[state.value] : null
+})
+
+const currentStateIndex = computed(() => LIFECYCLE_ORDER.indexOf(state.value))
+
 const markovStates = computed(() => predictionStore.markovMatrix?.states || [])
 const markovMatrix = computed(() => predictionStore.markovMatrix?.matrix || [])
 
-// Next Best Action — from recommendations API
-const nextBestAction = ref({
-  priority: '—',
-  confidence: '—',
-  title: 'Loading...',
-  description: '',
+const predictedNextState = computed(() => {
+  const states = markovStates.value
+  const matrix = markovMatrix.value
+  const idx = states.indexOf(state.value)
+  if (idx < 0 || !matrix[idx] || !matrix[idx].length) return null
+  const row = matrix[idx]
+  const maxVal = Math.max(...row)
+  const maxIdx = row.indexOf(maxVal)
+  return { state: states[maxIdx] || '—', probability: maxVal }
 })
 
-// Action History — placeholder (no backend yet)
-const actionHistory = ref([])
+const healthFactors = computed(() => {
+  const c = components.value
+  return [
+    { key: 'churn_risk_sub', label: 'Churn Risk', good: false, value: c.churn_risk_sub ?? null },
+    { key: 'clv_percentile_sub', label: 'Customer Value (CLV)', good: true, value: c.clv_percentile_sub ?? null },
+    { key: 'behaviour_sub', label: 'Behavioural Engagement', good: true, value: c.behaviour_sub ?? null },
+  ]
+})
 
-const loadingNba = ref(false)
-const loadingRiskDrivers = ref(false)
+const behaviourFactors = computed(() => {
+  const f = featureSnapshot.value || {}
+  return [
+    { label: 'Recency', unit: 'days', evidence: f.days_since_last_txn != null ? `${f.days_since_last_txn} days since last transaction` : null, value: f.days_since_last_txn, max: 180, invert: true },
+    { label: 'Transaction Frequency (90d)', unit: 'txns', evidence: f.txn_count_90d != null ? `${f.txn_count_90d} transactions in last 90 days` : null, value: f.txn_count_90d, max: 30, invert: false },
+    { label: 'Transaction Frequency (180d)', unit: 'txns', evidence: f.txn_count_180d != null ? `${f.txn_count_180d} transactions in last 180 days` : null, value: f.txn_count_180d, max: 60, invert: false },
+    { label: 'Total Value (90d)', unit: 'ZMW', evidence: f.total_amount_90d != null ? `${Math.round(f.total_amount_90d).toLocaleString()} ZMW in last 90 days` : null, value: f.total_amount_90d, max: 500000, invert: false },
+    { label: 'Engagement Score', unit: 'pts', evidence: f.engagement_score != null ? `Engagement ${f.engagement_score} / 100` : null, value: f.engagement_score, max: 100, invert: false },
+    { label: 'Distinct Channels (90d)', unit: 'channels', evidence: f.distinct_channels_90d != null ? `${f.distinct_channels_90d} channels used` : null, value: f.distinct_channels_90d, max: 6, invert: false },
+  ]
+})
+
+const riskCodes = computed(() => reasonCodes.value.filter(r => r.category === 'RISK'))
+const opportunityCodes = computed(() => reasonCodes.value.filter(r => r.category === 'OPPORTUNITY'))
+const alertCodes = computed(() => reasonCodes.value.filter(r => r.severity === 'HIGH'))
+
+const clvEvidence = computed(() => {
+  const f = featureSnapshot.value || {}
+  const parts = []
+  if (f.total_amount_90d != null) parts.push(`90-day value: ${Math.round(f.total_amount_90d).toLocaleString()} ZMW`)
+  if (f.avg_amount_90d != null) parts.push(`Avg transaction: ${Math.round(f.avg_amount_90d).toLocaleString()} ZMW`)
+  if (f.txn_count_90d != null) parts.push(`${f.txn_count_90d} txns / 90d`)
+  if (f.has_salary_credit != null && f.has_salary_credit) parts.push('Salary credit detected')
+  if (f.customer_tenure_days != null) parts.push(`Tenure: ${Math.round(f.customer_tenure_days / 30)} months`)
+  return parts
+})
+
+const actionPlan = computed(() => {
+  const recs = recommendations.value
+  if (recs.length) {
+    return recs.map((r, i) => ({
+      priority: i + 1,
+      title: r.product_name || r.campaign_name || 'Review Required',
+      reason: r.campaign_name ? `Campaign: ${r.campaign_name}` : 'Identified opportunity',
+      action: r.is_upsell ? `Upsell to ${r.product_name}` : `Offer ${r.product_name || 'a suitable product'}`,
+      confidence: Math.round((r.propensity_score || 0) * 100),
+    }))
+  }
+  // Fallback actions derived from the customer's actual state
+  const fallback = []
+  if (state.value === 'DORMANT') fallback.push({ priority: 1, title: 'Re-engage Customer', reason: 'Customer has been inactive for an extended period.', action: 'Contact the customer and identify the reason for inactivity.', confidence: 0 })
+  if (state.value === 'AT_RISK') fallback.push({ priority: 1, title: 'Retain Customer', reason: 'Customer is showing early signs of disengagement.', action: 'Assign account manager for proactive follow-up.', confidence: 0 })
+  if (clvPercentile.value != null && clvPercentile.value > 0.6) fallback.push({ priority: fallback.length + 1, title: 'Review Customer Value', reason: 'Customer historically generated significant value.', action: 'Assign account manager for proactive follow-up.', confidence: 0 })
+  return fallback
+})
+
+const modelVersion = computed(() => {
+  const h = predictionStore.healthScores[customerId.value]
+  return h?.model_versions?.churn || predictionStore.predictions[customerId.value]?.model_version || 'churn_v1'
+})
+
+const modelConfidence = computed(() => {
+  const c = dataCompleteness.value
+  if (!c) return '—'
+  return Math.round(c.populated / c.total * 100) + '%'
+})
+
+const dataCompleteness = computed(() => {
+  const f = featureSnapshot.value
+  if (!f || typeof f !== 'object') return null
+  const keys = Object.keys(f).filter(k => !['customer_id', 'as_of_date', 'computed_at'].includes(k))
+  const populated = keys.filter(k => f[k] != null && f[k] !== '').length
+  return { populated, total: keys.length }
+})
+
+const dataUsed = computed(() => {
+  const f = featureSnapshot.value || {}
+  const groups = [
+    { name: 'Transactions', fields: ['txn_count_30d', 'txn_count_90d', 'txn_count_180d', 'txn_count_365d', 'avg_days_between_txn'] },
+    { name: 'Revenue', fields: ['total_amount_90d', 'avg_amount_90d', 'total_amount_180d', 'amount_growth_ratio', 'credit_sum_30d', 'debit_sum_30d'] },
+    { name: 'Recency', fields: ['days_since_last_txn', 'days_since_first_txn', 'inactivity_streak_days', 'behav_recency_score'] },
+    { name: 'Engagement', fields: ['engagement_score', 'eng_login_count_30d', 'eng_login_count_7d', 'behav_active_days_90d', 'behav_activity_consistency'] },
+    { name: 'Purchase frequency', fields: ['behav_txn_count_7d', 'behav_frequency_score', 'txn_frequency_trend'] },
+    { name: 'Customer tenure', fields: ['customer_tenure_days', 'customer_segment', 'age_years'] },
+    { name: 'Payment history', fields: ['has_salary_credit', 'monthly_income_estimate', 'credit_to_debit_ratio_90d', 'fin_salary_consistency'] },
+    { name: 'Lifecycle history', fields: ['rel_customer_status'] },
+  ]
+  return groups.map(g => {
+    const populated = g.fields.filter(k => f[k] != null && f[k] !== '').length
+    return { name: g.name, available: `${populated} of ${g.fields.length} data points available` }
+  })
+})
+
+const initials = computed(() => {
+  const name = customer.value.fullName || customerId.value
+  return name.replace('CUST', 'C').replace('Customer ', '').slice(0, 2).toUpperCase() || 'CU'
+})
+
+function severityColor(sev) {
+  if (sev === 'HIGH') return '#7f1d1d'
+  if (sev === 'MEDIUM') return '#16a34a'
+  return '#16a34a'
+}
+
+function codeLabel(code) {
+  return String(code || '').replace(/_/g, ' ')
+}
+
+function detailText(detail) {
+  if (!detail || !Object.keys(detail).length) return ''
+  return Object.entries(detail)
+    .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(2)) : v}`)
+    .join(' · ')
+}
+
+function fmtDate(d) {
+  if (!d) return '—'
+  try { return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) } catch { return d }
+}
+
+function behaviourBarWidth(b) {
+  if (b.value == null) return 0
+  if (b.invert) {
+    // Recency: lower (more recent) is better → invert the bar
+    const pct = Math.max(0, 100 - (b.value / b.max) * 100)
+    return Math.min(100, pct)
+  }
+  return Math.min(100, (b.value / b.max) * 100)
+}
+
+function goBack() {
+  if (route.query.from === 'ledger') {
+    router.push({ path: '/dashboard/portfolio', query: { page: route.query.page || 1 } })
+  } else {
+    router.back()
+  }
+}
+
+function goToActionPlan() {
+  router.push({
+    path: `/dashboard/customer/${customerId.value}/action-plan`,
+    query: { from: route.query.from || undefined, page: route.query.page || undefined },
+  })
+}
+
+function goToTakeAction(a) {
+  router.push({
+    path: `/dashboard/customer/${customerId.value}/take-action`,
+    query: {
+      action: JSON.stringify(a),
+      from: route.query.from || undefined,
+      page: route.query.page || undefined,
+    },
+  })
+}
+
+function exportProfile() {
+  const payload = {
+    customer_id: customerId.value,
+    name: customer.value.fullName || null,
+    state: state.value,
+    health_score: healthScore.value,
+    churn_probability: churnProb.value,
+    clv_percentile: clvPercentile.value,
+    reason_codes: reasonCodes.value,
+    recommendations: recommendations.value,
+    features: featureSnapshot.value || {},
+    exported_at: new Date().toISOString(),
+  }
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${customerId.value || 'customer'}-profile.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 onMounted(async () => {
-  const customerId = route.params.id
-  if (!customerId) { loading.value = false; return }
+  loading.value = true
+  const id = customerId.value
+  if (!id) { loading.value = false; return }
 
-  await customerStore.fetchCustomerDetail(customerId)
-  await customerStore.fetchCustomerTimeline(customerId)
-
-  // Fire predictions in background
-  predictionStore.fetchChurnProbability(customerId)
-  predictionStore.fetchHealthScore(customerId)
-  predictionStore.fetchMarkovMatrix()
-
+  await Promise.allSettled([
+    customerStore.fetchCustomerDetail(id),
+    customerStore.fetchCustomerTimeline(id),
+    customerStore.fetchPortfolio(),
+  ])
+  await Promise.allSettled([
+    customerStore.fetchCustomerFeatures(id),
+    predictionStore.fetchPrediction(id),
+    predictionStore.fetchHealthScore(id),
+    predictionStore.fetchMarkovMatrix(),
+  ])
   loading.value = false
 
-  // Background: fetch recommendations (slow — LLM-powered, ~15-30s)
-  loadRecommendations(customerId)
-
-  // Background: fetch reason codes (slow — LLM explanations, ~30-60s)
-  loadRiskDrivers(customerId)
+  // Background: structured reason codes + recommendations
+  await Promise.allSettled([
+    (async () => {
+      try {
+        const { data } = await api.get(`/api/v1/insights/reason-codes/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE }, timeout: 30000 })
+        reasonCodes.value = data.reason_codes || []
+      } catch (e) { console.warn('reason-codes failed:', e.message); reasonCodes.value = [] }
+    })(),
+    (async () => {
+      try {
+        const { data } = await api.get(`/api/v1/recommendations/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE }, timeout: 30000 })
+        recommendations.value = data.recommendations || []
+      } catch (e) { console.warn('recommendations failed:', e.message); recommendations.value = [] }
+    })(),
+  ])
 })
-
-async function loadRecommendations(customerId) {
-  loadingNba.value = true
-  try {
-    const { data } = await api.get(`/api/v1/recommendations/${customerId}`, {
-      params: { as_of_date: DEFAULT_AS_OF_DATE },
-      timeout: 60000,
-    })
-    const rec = data.recommendations?.[0]
-    if (rec) {
-      nextBestAction.value = {
-        priority: 'Priority 1',
-        confidence: Math.round((rec.propensity_score || 0) * 100) + '%',
-        title: rec.product_name || rec.campaign_name || 'Review Required',
-        description: rec.campaign_name
-          ? `Campaign: ${rec.campaign_name}. Propensity score: ${Math.round((rec.propensity_score || 0) * 100)}%. Product: ${rec.product_name || 'N/A'}.`
-          : 'AI recommends reviewing this customer for retention or cross-sell actions.',
-      }
-    }
-  } catch (e) {
-    console.warn('NBA fetch failed:', e.message)
-    nextBestAction.value = {
-      priority: '—',
-      confidence: '—',
-      title: 'Not available',
-      description: 'Recommendation engine is still processing. Check back shortly.',
-    }
-  } finally {
-    loadingNba.value = false
-  }
-}
-
-async function loadRiskDrivers(customerId) {
-  loadingRiskDrivers.value = true
-  try {
-    const { data } = await api.get(`/api/v1/insights/reason-codes/${customerId}`, {
-      params: { as_of_date: DEFAULT_AS_OF_DATE },
-      timeout: 90000,
-    })
-    const codes = data.reason_codes || data.drivers || []
-    riskDrivers.value = codes.slice(0, 5).map((r, i) => {
-      // Format detail as description
-      const detail = r.detail || {}
-      const descParts = Object.entries(detail).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`)
-      return {
-        title: (r.code || r.reason || '').replace(/_/g, ' '),
-        metric: r.severity || '—',
-        percentage: r.severity === 'HIGH' ? 85 : r.severity === 'MEDIUM' ? 50 : 20,
-        description: descParts.join(' · ') || r.description || '',
-        highlightClass: r.severity === 'HIGH' ? 'text-brand-red' : 'text-brand-dark',
-        fillClass: r.severity === 'HIGH' ? 'progress-bar-fill' : 'bg-gray-300 h-full',
-      }
-    })
-  } catch (e) {
-    console.warn('Risk drivers fetch failed:', e.message)
-    riskDrivers.value = []
-  } finally {
-    loadingRiskDrivers.value = false
-  }
-}
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 
-/* Color Variables & Palette Mapping */
-:root {
-  --brand-red: #8E001C;
-  --brand-red-light: #D2002E;
-  --brand-dark: #222222;
-  --brand-gray: #F5F5F5;
-  --brand-border: #EAEAEA;
-  --brand-text: #4A4A4A;
-  --brand-subtext: #757575;
-}
 
-/* Base Body Background Pattern */
-.bg-app-body {
-  background-color: #FAFAFA;
-  background-image: url('data:image/svg+xml,%3Csvg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M19 0h1v20h-1V0zM0 19h20v1H0v-1z" fill="%23e5e7eb" fill-opacity="0.2" fill-rule="evenodd"/%3E%3C/svg%3E');
-}
 
-/* Custom Utilities */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.card-border {
-  border: 1px solid #F0F0F0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.progress-bar-bg {
-  background-color: #EAEAEA;
-  border-radius: 4px;
-  height: 8px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  background-color: #8E001C;
-  height: 100%;
-}
-
-/* Text & Brand Utility Override mappings */
-.text-brand-red { color: var(--brand-red); }
-.text-brand-dark { color: var(--brand-dark); }
-.text-brand-subtext { color: var(--brand-subtext); }
-.text-brand-text { color: var(--brand-text); }
-.bg-brand-red { background-color: var(--brand-red); }
-.bg-brand-red-light { background-color: var(--brand-red-light); }
-.border-brand-border { border-color: var(--brand-border); }
-.border-brand-red { border-color: var(--brand-red); }
-.from-brand-red-light { --tw-gradient-from: var(--brand-red-light); }
-.to-brand-red { --tw-gradient-to: var(--brand-red); }
-.from-brand-dark { --tw-gradient-from: var(--brand-dark); }
-</style>

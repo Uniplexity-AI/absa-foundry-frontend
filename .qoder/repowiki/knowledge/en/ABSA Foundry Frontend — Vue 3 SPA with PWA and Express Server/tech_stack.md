@@ -1,0 +1,1 @@
+Vue 3 + Vite + Pinia + Vue Router, Tailwind CSS, Express static server, Vite PWA with Workbox (injectManifest strategy), Axios for API calls, Chart.js for visualizations, and Vitest for unit testing.

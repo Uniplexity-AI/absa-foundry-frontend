@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <BackButton route="/dashboard/crm" variant="icon-only" />
@@ -69,7 +69,7 @@
         </div>
 
         <!-- Call Logs Container -->
-        <div class="bg-white border border-gray-200 rounded-sm shadow-sm relative overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
           <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
           <div class="p-4 md:p-6 space-y-2 relative z-10">
 

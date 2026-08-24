@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative text-gray-800 blur-scoped">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative text-gray-800 blur-scoped">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <BackButton route="/dashboard/crm" variant="icon-only" />
@@ -90,7 +90,7 @@
           <div class="border-b border-gray-100 bg-gray-50/50 relative z-10 flex border-t-0">
              <button v-for="folder in ['inbox', 'sent', 'scheduled', 'drafts']" :key="folder" @click="emailListFilter = folder"
                 class="px-6 py-4 transition-all text-[10px] font-mono uppercase tracking-[0.2em] flex items-center gap-2 whitespace-nowrap border-b-2"
-                :class="emailListFilter === folder ? 'border-[#2F2E8B] text-[#2F2E8B] font-black bg-white shadow-sm' : 'border-transparent text-gray-400 hover:text-gray-600 font-bold'">
+                :class="emailListFilter === folder ? 'border-[#2F2E8B] text-[#2F2E8B] font-black bg-white shadow-none' : 'border-transparent text-gray-400 hover:text-gray-600 font-bold'">
                 <Inbox v-if="folder === 'inbox'" :size="14" />
                 <Send v-if="folder === 'sent'" :size="14" />
                 <Clock v-if="folder === 'scheduled'" :size="14" />

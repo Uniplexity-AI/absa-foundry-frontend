@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -23,7 +23,7 @@
           <div class="flex flex-wrap gap-3">
             <select 
               v-model="selectedLanguage"
-              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-sm"
+              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-none"
             >
               <option value="en">🇬🇧 ENGLISH</option>
               <option value="bem">BEMBA</option>
@@ -89,7 +89,7 @@
       </div>
 
       <!-- Overall Health Score -->
-      <div v-else class="bg-white border border-gray-200 p-8 mb-6 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/30 transition-colors">
+      <div v-else class="bg-white border border-gray-200 p-8 mb-6 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/30 transition-colors">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_AUDIT // HEALTH_INDEX</div>
         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -136,7 +136,7 @@
         <div 
           v-for="quadrant in businessHealth.quadrants" 
           :key="quadrant.name"
-          class="bg-white border p-6 shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden group border-l-4"
+          class="bg-white border p-6 shadow-none hover:shadow-md transition-all cursor-pointer relative overflow-hidden group border-l-4"
           :class="[
             quadrant.score >= 80 ? 'border-l-emerald-500' :
             quadrant.score >= 60 ? 'border-l-amber-500' : 'border-l-red-500'
@@ -151,7 +151,7 @@
           <div class="relative z-10">
             <div class="flex items-center justify-between mb-4">
               <i :class="['fas text-xl', quadrant.icon, 'text-gray-400 group-hover:text-[#2F2E8B] transition-colors']"></i>
-              <span class="text-2xl font-black font-outfit text-gray-900 shadow-sm">
+              <span class="text-2xl font-black font-outfit text-gray-900 shadow-none">
                 {{ quadrant.score }}<span class="text-[10px] text-gray-300">/100</span>
               </span>
             </div>
@@ -178,7 +178,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- KPI 1 -->
-          <div class="bg-white border-l-4 border-l-[#2F2E8B] p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+          <div class="bg-white border-l-4 border-l-[#2F2E8B] p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
             <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
             <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // PRIORITY_HIGH</div>
             <div class="relative z-10">
@@ -189,7 +189,7 @@
           </div>
 
           <!-- KPI 2 -->
-          <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+          <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
             <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
             <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // PRIORITY_MED</div>
             <div class="relative z-10">
@@ -200,7 +200,7 @@
           </div>
 
           <!-- KPI 3 -->
-          <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+          <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
             <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
             <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // PROJECTED_ROI</div>
             <div class="relative z-10">
@@ -211,7 +211,7 @@
           </div>
 
           <!-- KPI 4 -->
-          <div class="bg-white border-l-4 border-l-purple-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+          <div class="bg-white border-l-4 border-l-purple-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
             <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
             <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // IMPLEMENTATION</div>
             <div class="relative z-10">
@@ -232,7 +232,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- KPI 1 -->
-            <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // ACTIVE_GOALS</div>
               <div class="relative z-10">
@@ -243,7 +243,7 @@
             </div>
 
             <!-- KPI 2 -->
-            <div class="bg-white border-l-4 border-l-blue-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-blue-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // AVG_PROGRESS</div>
               <div class="relative z-10">
@@ -254,7 +254,7 @@
             </div>
 
             <!-- KPI 3 -->
-            <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // QUARTERLY_COMP</div>
               <div class="relative z-10">
@@ -265,7 +265,7 @@
             </div>
 
             <!-- KPI 4 -->
-            <div class="bg-white border-l-4 border-l-indigo-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-indigo-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">METRIC // ACHIEVEMENTS</div>
               <div class="relative z-10">
@@ -287,7 +287,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- KPI 1 -->
-            <div class="bg-white border-l-4 border-l-blue-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-blue-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">PREDICT // REVENUE_FC</div>
               <div class="relative z-10">
@@ -298,7 +298,7 @@
             </div>
 
             <!-- KPI 2 -->
-            <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-emerald-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">PREDICT // MARKET_EXP</div>
               <div class="relative z-10">
@@ -309,7 +309,7 @@
             </div>
 
             <!-- KPI 3 -->
-            <div class="bg-white border-l-4 border-l-red-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-red-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">PREDICT // CHURN_RISK</div>
               <div class="relative z-10">
@@ -320,7 +320,7 @@
             </div>
 
             <!-- KPI 4 -->
-            <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="bg-white border-l-4 border-l-amber-500 p-5 shadow-none relative overflow-hidden group hover:shadow-md transition-all">
               <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
               <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-2 py-0.5 text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest">PREDICT // CONFIDENCE</div>
               <div class="relative z-10">
@@ -333,7 +333,7 @@
         </div>
 
       <!-- Peer Benchmarking -->
-      <div v-if="hasInitializedData" class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/30 transition-colors">
+      <div v-if="hasInitializedData" class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/30 transition-colors">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">BENCHMARK // COMPETITIVE_INDEX</div>
         
@@ -446,7 +446,7 @@
                 </label>
                 <select 
                   v-model="selectedDepartment"
-                  class="w-full border border-gray-200 rounded-none px-4 py-3 text-[11px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] shadow-sm appearance-none bg-white"
+                  class="w-full border border-gray-200 rounded-none px-4 py-3 text-[11px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] shadow-none appearance-none bg-white"
                 >
                   <option value="">SELECT_DEPARTMENT...</option>
                   <option value="sales">SALES & MARKETING</option>
@@ -597,7 +597,7 @@
                     <div 
                       v-for="(file, fileIndex) in upload.files" 
                       :key="fileIndex"
-                      class="flex items-center gap-2 text-sm bg-gray-50 rounded px-3 py-1.5"
+                      class="flex items-center gap-2 text-sm bg-gray-50 rounded-sm px-3 py-1.5"
                     >
                       <i :class="getFileIcon(file.name)" class="text-[#2F2E8B]"></i>
                       <span class="text-gray-700 flex-1 truncate">{{ file.name }}</span>

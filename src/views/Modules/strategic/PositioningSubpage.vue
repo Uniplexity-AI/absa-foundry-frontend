@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with Strategic Position -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-8 shadow-sm relative overflow-hidden mb-6">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-8 shadow-none relative overflow-hidden mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
           <div class="flex-1">
@@ -89,7 +89,7 @@
       </div>
 
       <!-- Strategic Positioning Matrix -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MODEL // PORTER_GENERIC_MATRIX</div>
         
@@ -284,7 +284,7 @@
       </div>
 
       <!-- Scope Strategy Analysis -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_SCOPE // MARKET_PENETRATION</div>
         
@@ -397,7 +397,7 @@
       </div>
 
       <!-- Strategic Renewal Alerts -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_RENEWAL // ADAPTIVE_FLOW</div>
         
@@ -490,7 +490,7 @@
       </div>
 
       <!-- 3P Dynamic Capabilities Framework -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_CAPABILITY // 3P_FRAMEWORK</div>
         

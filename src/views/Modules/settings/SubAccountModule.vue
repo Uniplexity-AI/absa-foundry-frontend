@@ -167,7 +167,7 @@
     <!-- ── CARD VIEW ── -->
     <div v-else-if="viewMode === 'cards'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 relative z-10">
       <div v-for="(acc, index) in paged" :key="acc.id || acc.email || index" @click="openDetailsModal(acc)" 
-           class="group bg-white rounded-sm border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-[#BE0F2C] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
+           class="group bg-white rounded-sm border border-gray-200 p-5 shadow-none hover:shadow-md hover:border-[#BE0F2C] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
         
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
 
@@ -205,14 +205,14 @@
            <button 
              v-if="!isLoggedInToSubAccount(acc.id)"
              @click.stop="loginToSubAccount(acc)" 
-             class="flex-1 flex items-center justify-center gap-2 bg-[#BE0F2C] text-white px-4 py-2 rounded-sm hover:bg-[#8B0015] transition-all text-[10px] font-mono font-bold uppercase shadow-sm"
+             class="flex-1 flex items-center justify-center gap-2 bg-[#BE0F2C] text-white px-4 py-2 rounded-sm hover:bg-[#8B0015] transition-all text-[10px] font-mono font-bold uppercase shadow-none"
            >
              <i class="fas fa-sign-in-alt"></i> Login
            </button>
             <button 
              v-else
              @click.stop="logoutFromSubAccount(acc.id)" 
-             class="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-sm hover:bg-orange-600 transition-all text-[10px] font-mono font-bold uppercase shadow-sm"
+             class="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-sm hover:bg-orange-600 transition-all text-[10px] font-mono font-bold uppercase shadow-none"
            >
              <i class="fas fa-sign-out-alt"></i> Logout
            </button>
@@ -231,7 +231,7 @@
     </div>
 
     <!-- ── LIST / TABLE VIEW ── -->
-    <div v-else-if="viewMode === 'list'" class="relative z-10 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-sm">
+    <div v-else-if="viewMode === 'list'" class="relative z-10 bg-white border border-gray-200 rounded-sm overflow-hidden shadow-none">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead class="absa-table-header">
@@ -274,12 +274,12 @@
                 <div class="flex items-center justify-end gap-1">
                   <button v-if="!isLoggedInToSubAccount(acc.id)"
                     @click.stop="loginToSubAccount(acc)"
-                    class="h-8 px-3 flex items-center gap-1.5 bg-[#BE0F2C] text-white rounded-sm hover:bg-[#8B0015] transition-all text-[9px] font-mono font-bold uppercase shadow-sm">
+                    class="h-8 px-3 flex items-center gap-1.5 bg-[#BE0F2C] text-white rounded-sm hover:bg-[#8B0015] transition-all text-[9px] font-mono font-bold uppercase shadow-none">
                     <i class="fas fa-sign-in-alt text-[8px]"></i> Login
                   </button>
                   <button v-else
                     @click.stop="logoutFromSubAccount(acc.id)"
-                    class="h-8 px-3 flex items-center gap-1.5 bg-orange-500 text-white rounded-sm hover:bg-orange-600 transition-all text-[9px] font-mono font-bold uppercase shadow-sm">
+                    class="h-8 px-3 flex items-center gap-1.5 bg-orange-500 text-white rounded-sm hover:bg-orange-600 transition-all text-[9px] font-mono font-bold uppercase shadow-none">
                     <i class="fas fa-sign-out-alt text-[8px]"></i> Logout
                   </button>
                   <button @click.stop="confirmDelete(acc)"
@@ -509,7 +509,7 @@
                       </p>
                   </div>
                 </div>
-                <button @click="handleAddBranchClick(); showManageBranchesModal = false" class="bg-orange-600 hover:bg-orange-700 text-white px-3 sm:px-4 py-2 rounded-sm text-[9px] sm:text-[10px] font-mono font-bold uppercase shadow-sm shrink-0 w-full sm:w-auto text-center">
+                <button @click="handleAddBranchClick(); showManageBranchesModal = false" class="bg-orange-600 hover:bg-orange-700 text-white px-3 sm:px-4 py-2 rounded-sm text-[9px] sm:text-[10px] font-mono font-bold uppercase shadow-none shrink-0 w-full sm:w-auto text-center">
                   <i class="fas fa-plus"></i> ADD_NEW
                 </button>
              </div>
@@ -551,13 +551,13 @@
                             </td>
                              <td class="px-2 sm:px-4 py-3 sm:py-4 text-right">
                                 <div class="flex items-center justify-end gap-1 sm:gap-2">
-                                  <button @click="toggleBranchStatus(branch)" :class="branch.status === 'active' ? 'text-green-500 hover:bg-green-50 hover:border-green-200' : 'text-gray-400 hover:bg-gray-100'" class="h-7 w-7 sm:h-8 sm:w-8 rounded-sm transition-all shadow-sm border border-transparent flex items-center justify-center" :title="branch.status === 'active' ? 'Deactivate Branch' : 'Activate Branch'">
+                                  <button @click="toggleBranchStatus(branch)" :class="branch.status === 'active' ? 'text-green-500 hover:bg-green-50 hover:border-green-200' : 'text-gray-400 hover:bg-gray-100'" class="h-7 w-7 sm:h-8 sm:w-8 rounded-sm transition-all shadow-none border border-transparent flex items-center justify-center" :title="branch.status === 'active' ? 'Deactivate Branch' : 'Activate Branch'">
                                       <i class="fas text-xs" :class="branch.status === 'active' ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
                                   </button>
-                                  <button @click="handleEditBranch(branch)" class="h-7 w-7 sm:h-8 sm:w-8 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-sm transition-all shadow-sm border border-transparent hover:border-blue-100 flex items-center justify-center" title="Edit Branch">
+                                  <button @click="handleEditBranch(branch)" class="h-7 w-7 sm:h-8 sm:w-8 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-sm transition-all shadow-none border border-transparent hover:border-blue-100 flex items-center justify-center" title="Edit Branch">
                                       <i class="fas fa-edit text-xs"></i>
                                   </button>
-                                  <button @click="openDeleteBranchModal(branch)" class="h-7 w-7 sm:h-8 sm:w-8 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all shadow-sm border border-transparent hover:border-red-100 flex items-center justify-center" title="Delete Branch">
+                                  <button @click="openDeleteBranchModal(branch)" class="h-7 w-7 sm:h-8 sm:w-8 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-sm transition-all shadow-none border border-transparent hover:border-red-100 flex items-center justify-center" title="Delete Branch">
                                       <i class="fas fa-trash-alt text-xs"></i>
                                   </button>
                                 </div>
@@ -765,7 +765,7 @@
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                <div v-for="(mod, index) in filteredModules" :key="mod.id || index" 
                     @click="toggleModuleAssignment(mod.id)"
-                    class="p-4 border rounded-sm flex items-center justify-between group transition-all cursor-pointer hover:shadow-sm"
+                    class="p-4 border rounded-sm flex items-center justify-between group transition-all cursor-pointer hover:shadow-none"
                      :class="assignedModules.includes(mod.id) ? 'bg-maroon-soft-bg/50 border-indigo-200 hover:border-[var(--absa-maroon,#BE0F2C)]' : 'bg-gray-50/50 border-gray-100 hover:border-gray-300 opacity-60 hover:opacity-80'"
                >
                   <span class="text-[10px] font-mono font-black text-gray-800 uppercase tracking-widest">{{ mod.name }}</span>

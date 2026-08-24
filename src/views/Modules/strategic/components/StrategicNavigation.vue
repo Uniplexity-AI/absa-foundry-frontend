@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border border-gray-200 mb-6 overflow-x-auto shadow-sm">
+  <div class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border border-gray-200 mb-6 overflow-x-auto shadow-none">
     <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
     <div class="max-w-[1920px] mx-auto px-4 py-2">
       <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">

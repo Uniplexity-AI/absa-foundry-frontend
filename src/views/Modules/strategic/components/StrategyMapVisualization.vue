@@ -1,5 +1,5 @@
 <template>
-  <div class="strategy-map-visualization bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div class="strategy-map-visualization bg-white rounded-lg shadow-none border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-semibold text-gray-900">Strategy Map</h2>
       <div class="flex space-x-2">
@@ -72,7 +72,7 @@
           <div
             v-for="objective in getObjectivesByPerspective('financial')"
             :key="objective.id"
-            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow cursor-pointer"
+            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-none transition-shadow cursor-pointer"
             :class="getObjectiveCardClasses(objective)"
             @click="openObjectiveDetails(objective)"
           >
@@ -130,7 +130,7 @@
           <div
             v-for="objective in getObjectivesByPerspective('customer')"
             :key="objective.id"
-            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow cursor-pointer"
+            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-none transition-shadow cursor-pointer"
             :class="getObjectiveCardClasses(objective)"
             @click="openObjectiveDetails(objective)"
           >
@@ -188,7 +188,7 @@
           <div
             v-for="objective in getObjectivesByPerspective('process')"
             :key="objective.id"
-            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow cursor-pointer"
+            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-none transition-shadow cursor-pointer"
             :class="getObjectiveCardClasses(objective)"
             @click="openObjectiveDetails(objective)"
           >
@@ -246,7 +246,7 @@
           <div
             v-for="objective in getObjectivesByPerspective('learning')"
             :key="objective.id"
-            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-shadow cursor-pointer"
+            class="objective-card p-4 border border-gray-200 rounded-lg hover:shadow-none transition-shadow cursor-pointer"
             :class="getObjectiveCardClasses(objective)"
             @click="openObjectiveDetails(objective)"
           >

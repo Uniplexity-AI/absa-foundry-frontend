@@ -15,7 +15,7 @@
         <div class="flex items-center gap-3">
           <button 
             @click="closeEmailModal" 
-            class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-sm group"
+            class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none group"
           >
             <X :size="18" class="group-hover:rotate-90 transition-transform" />
           </button>
@@ -102,11 +102,11 @@
           <!-- Message Body -->
           <div class="border border-gray-200 rounded-none overflow-hidden flex flex-col h-72">
             <div class="bg-gray-50 p-2 border-b border-gray-200 flex items-center gap-2">
-              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-sm transition"><Bold :size="14" /></button>
-              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-sm transition"><Italic :size="14" /></button>
-              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-sm transition"><List :size="14" /></button>
+              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-none transition"><Bold :size="14" /></button>
+              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-none transition"><Italic :size="14" /></button>
+              <button type="button" class="p-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-none transition"><List :size="14" /></button>
               <div class="w-px h-6 bg-gray-200 mx-2"></div>
-              <button type="button" class="px-3 py-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-sm transition flex items-center gap-2 text-[9px] font-mono font-black uppercase tracking-widest">
+              <button type="button" class="px-3 py-2 text-gray-400 hover:text-[#2F2E8B] hover:bg-white rounded-none border border-transparent hover:border-gray-200 shadow-none transition flex items-center gap-2 text-[9px] font-mono font-black uppercase tracking-widest">
                 <Paperclip :size="12" /> ATTACH_PAYLOAD
               </button>
             </div>
@@ -134,7 +134,7 @@
           <button 
             type="button"
             @click="closeEmailModal" 
-            class="px-6 py-2.5 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-none text-[10px] font-mono font-black uppercase tracking-widest hover:border-gray-300 transition-all shadow-sm"
+            class="px-6 py-2.5 bg-white border border-gray-200 text-gray-400 hover:text-gray-900 rounded-none text-[10px] font-mono font-black uppercase tracking-widest hover:border-gray-300 transition-all shadow-none"
           >
             ABORT
           </button>

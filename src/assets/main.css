@@ -14,7 +14,7 @@
   --color-white: #ffffff;
   --color-surface: #f7f7f7;
   --color-info: #97cbfd;
-  --color-success: #7ec908;
+  --color-success: #DC0037; /* Passion – replaces green per ABSA brand guide */
   --color-warning: #f1a94f;
   --color-error: #fa5b1f;
   --color-gray-50: #fafafa;
@@ -37,9 +37,15 @@
   --brand-primary: var(--color-primary);
   --brand-primary-hover: var(--color-primary-dark);
   --brand-secondary: var(--color-success);
-  --brand-secondary-hover: #64a006;
+  --brand-secondary-hover: #B50232; /* Power */
   --brand-soft: color-mix(in srgb, var(--brand-primary) 8%, white);
   --brand-soft-success: color-mix(in srgb, var(--color-success) 12%, white);
+
+  /* ABSA brand semantic tokens (brand guide contains no green) */
+  --absa-success: #DC0037;         /* Passion  – good / healthy / active */
+  --absa-success-soft: #FDE8EC;    /* light Passion tint */
+  --absa-critical: #77021E;       /* Inspire  – worst / churned */
+  --absa-critical-soft: #FCE4E8;  /* light Inspire tint */
 
   --space-1: 4px;
   --space-2: 8px;
@@ -120,10 +126,10 @@ div {
   --color-text-muted: #a3a3a3;
   --brand-primary: #97cbfd;
   --brand-primary-hover: #7ab7f4;
-  --brand-secondary: #7ec908;
-  --brand-secondary-hover: #64a006;
+  --brand-secondary: #DC0037; /* Passion */
+  --brand-secondary-hover: #B50232; /* Power */
   --brand-soft: rgba(151, 203, 253, 0.14);
-  --brand-soft-success: rgba(126, 201, 8, 0.14);
+  --brand-soft-success: rgba(220, 0, 55, 0.14);
 }
 
 .dark .bg-white {
@@ -465,7 +471,7 @@ html[data-ui-visual-style="glassmorphism"] body {
   background:
     radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--brand-primary) 34%, transparent), transparent 28%),
     radial-gradient(circle at 82% 4%, rgba(151, 203, 253, 0.42), transparent 26%),
-    radial-gradient(circle at 72% 78%, rgba(126, 201, 8, 0.16), transparent 24%),
+    radial-gradient(circle at 72% 78%, rgba(220, 0, 55, 0.16), transparent 24%),
     linear-gradient(135deg, #dce9ff 0%, #f7fbff 46%, #eef4ff 100%) !important;
 }
 
@@ -504,7 +510,7 @@ html[data-ui-visual-style="glassmorphism"] .dotted-pattern {
   background-image:
     radial-gradient(circle at 22% 18%, color-mix(in srgb, var(--brand-primary) 34%, transparent), transparent 25%),
     radial-gradient(circle at 80% 12%, rgba(151, 203, 253, 0.38), transparent 22%),
-    radial-gradient(circle at 76% 82%, rgba(126, 201, 8, 0.14), transparent 24%) !important;
+    radial-gradient(circle at 76% 82%, rgba(220, 0, 55, 0.14), transparent 24%) !important;
 }
 
 html.dark[data-ui-visual-style] body {
@@ -577,7 +583,7 @@ html.dark[data-ui-visual-style="glassmorphism"] body {
   background:
     radial-gradient(circle at 12% 12%, rgba(151, 203, 253, 0.22), transparent 26%),
     radial-gradient(circle at 78% 4%, rgba(47, 46, 139, 0.44), transparent 30%),
-    radial-gradient(circle at 78% 80%, rgba(126, 201, 8, 0.1), transparent 24%),
+    radial-gradient(circle at 78% 80%, rgba(220, 0, 55, 0.1), transparent 24%),
     linear-gradient(135deg, #060812 0%, #101626 48%, #070a14 100%) !important;
 }
 
@@ -585,7 +591,7 @@ html.dark[data-ui-visual-style="glassmorphism"] .mesh-background {
   background:
     radial-gradient(circle at 18% 16%, rgba(151, 203, 253, 0.18), transparent 26%),
     radial-gradient(circle at 78% 10%, rgba(47, 46, 139, 0.42), transparent 26%),
-    radial-gradient(circle at 80% 80%, rgba(126, 201, 8, 0.1), transparent 22%),
+    radial-gradient(circle at 80% 80%, rgba(220, 0, 55, 0.1), transparent 22%),
     linear-gradient(135deg, #060812 0%, #101626 48%, #070a14 100%) !important;
   background-color: #070a14;
   background-size: auto !important;
@@ -1094,16 +1100,72 @@ html[data-ui-visual-style="glassmorphism"] .superadmin-main :is(
 }
 
 /* --- ABSA Global Background Patterns --- */
-.global-mesh-bg {
+. {
   background-color: #ffffff;
   background-image: linear-gradient(#f3f4f6 1px, transparent 1px), 
                     linear-gradient(90deg, #f3f4f6 1px, transparent 1px);
   background-size: 38px 38px;
 }
 
-.global-dotted-bg {
+. {
   background-color: #ffffff !important;
   background-image: radial-gradient(circle, #f3f4f6 1.5px, transparent 1.5px) !important;
   background-size: 14px 14px !important;
 }
 /* --------------------------------------- */
+
+/* ─────────────────────────────────────────────────────────────────────
+   ABSA BRAND: GREEN → PASSION OVERRIDE
+   The ABSA brand guide contains no green.  All Tailwind green utilities
+   are remapped to the brand Passion (#DC0037) ramp so "good / success /
+   active" semantics use brand-appropriate colour.  "Critical / failure"
+   reds use Inspire (#77021E), the darkest brand red.
+   ────────────────────────────────────────────────────────────────── */
+.text-green-50  { color: #FDE8EC !important; }
+.text-green-100 { color: #FBC9CF !important; }
+.text-green-200 { color: #F8A8B1 !important; }
+.text-green-300 { color: #F58793 !important; }
+.text-green-400 { color: #F26675 !important; }
+.text-green-500 { color: #DC0037 !important; }
+.text-green-600 { color: #DC0037 !important; }
+.text-green-700 { color: #B50232 !important; }
+.text-green-800 { color: #95052A !important; }
+.text-green-900 { color: #77021E !important; }
+
+.bg-green-50  { background-color: #FDE8EC !important; }
+.bg-green-100 { background-color: #FBC9CF !important; }
+.bg-green-200 { background-color: #F8A8B1 !important; }
+.bg-green-300 { background-color: #F58793 !important; }
+.bg-green-400 { background-color: #F26675 !important; }
+.bg-green-500 { background-color: #DC0037 !important; }
+.bg-green-600 { background-color: #DC0037 !important; }
+.bg-green-700 { background-color: #B50232 !important; }
+.bg-green-800 { background-color: #95052A !important; }
+.bg-green-900 { background-color: #77021E !important; }
+
+.border-green-100 { border-color: #F8A8B1 !important; }
+.border-green-200 { border-color: #F58793 !important; }
+.border-green-300 { border-color: #F26675 !important; }
+.border-green-400 { border-color: #DC0037 !important; }
+.border-green-500 { border-color: #DC0037 !important; }
+.border-green-600 { border-color: #B50232 !important; }
+.border-green-700 { border-color: #95052A !important; }
+.border-green-800 { border-color: #77021E !important; }
+
+.hover\:text-green-500:hover { color: #DC0037 !important; }
+.hover\:text-green-600:hover { color: #DC0037 !important; }
+.hover\:text-green-700:hover { color: #B50232 !important; }
+.hover\:bg-green-50:hover   { background-color: #FDE8EC !important; }
+.hover\:bg-green-600:hover  { background-color: #DC0037 !important; }
+.hover\:bg-green-700:hover  { background-color: #B50232 !important; }
+.hover\:border-green-200:hover { border-color: #F58793 !important; }
+.hover\:border-green-600:hover { border-color: #B50232 !important; }
+.focus\:ring-green-500:focus  { --tw-ring-color: #DC0037 !important; }
+.focus\:border-green-500:focus { border-color: #DC0037 !important; }
+
+.bg-green-50\/30 { background-color: rgba(253, 232, 236, 0.3) !important; }
+.bg-green-50\/50 { background-color: rgba(253, 232, 236, 0.5) !important; }
+
+.dark .dark\:bg-green-900\/30 { background-color: rgba(119, 2, 30, 0.3) !important; }
+.dark .dark\:text-green-400   { color: #F26675 !important; }
+.dark .dark\:border-green-800 { border-color: #77021E !important; }

@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -51,7 +51,7 @@
       <StrategicNavigation active-tab="governance" />
 
       <!-- Company Structure Section -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-6">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_ORG // HIERARCHY_MAP</div>
         
@@ -63,13 +63,13 @@
           <div class="flex gap-2 bg-gray-100 p-1">
             <button 
               @click="structureViewMode = 'hierarchy'"
-              :class="['px-3 py-1 text-[9px] font-mono font-black uppercase tracking-widest transition-all', structureViewMode === 'hierarchy' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600']"
+              :class="['px-3 py-1 text-[9px] font-mono font-black uppercase tracking-widest transition-all', structureViewMode === 'hierarchy' ? 'bg-[#2F2E8B] text-white shadow-none' : 'text-gray-400 hover:text-gray-600']"
             >
               HIERARCHY
             </button>
             <button 
               @click="structureViewMode = 'profiles'"
-              :class="['px-3 py-1 text-[9px] font-mono font-black uppercase tracking-widest transition-all', structureViewMode === 'profiles' ? 'bg-[#2F2E8B] text-white shadow-sm' : 'text-gray-400 hover:text-gray-600']"
+              :class="['px-3 py-1 text-[9px] font-mono font-black uppercase tracking-widest transition-all', structureViewMode === 'profiles' ? 'bg-[#2F2E8B] text-white shadow-none' : 'text-gray-400 hover:text-gray-600']"
             >
               PROFILES
             </button>
@@ -140,7 +140,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
         
         <!-- Company Policies Section -->
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_DOCS // POLICY_REPOSITORY</div>
           
@@ -172,7 +172,7 @@
         </div>
 
         <!-- Compliance & Legal (ZRA) Section -->
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_LEGAL // TAX_COMPLIANCE</div>
           
@@ -218,7 +218,7 @@
       </div>
 
       <!-- Customizable Governance Fields Section -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_SCHEMA // CUSTOM_ATTRIBUTES</div>
         

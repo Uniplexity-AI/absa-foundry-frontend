@@ -1,5 +1,5 @@
 <template>
-  <aside class="fixed left-0 top-0 bottom-0 w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4 gap-2 z-20 shadow-sm">
+  <aside class="fixed left-0 top-0 bottom-0 w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4 gap-2 z-20 shadow-none">
     <!-- Documents -->
     <button
       @click="$emit('toggle-documents')"

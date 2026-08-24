@@ -348,7 +348,7 @@
         <button 
           type="button"
           @click="closeMeetingModal" 
-          class="px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition shadow-sm"
+          class="px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition shadow-none"
         >
           Cancel
         </button>

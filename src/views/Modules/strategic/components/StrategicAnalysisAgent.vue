@@ -43,7 +43,7 @@
           >
             <div 
               :class="[
-                'max-w-[85%] p-3 rounded-2xl text-sm shadow-sm',
+                'max-w-[85%] p-3 rounded-2xl text-sm shadow-none',
                 msg.type === 'user' 
                   ? 'bg-[#2F2E8B] text-white rounded-tr-none' 
                   : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
@@ -55,7 +55,7 @@
           </div>
 
           <div v-if="isTyping" class="flex justify-start">
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm">
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-none">
               <div class="flex gap-1">
                 <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
                 <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>

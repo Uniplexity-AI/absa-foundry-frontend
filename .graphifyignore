@@ -1,0 +1,22 @@
+﻿# Asset & Document Exclusions
+*.txt
+*.pdf
+*.doc
+*.docx
+*.png
+*.jpg
+*.jpeg
+*.svg
+docs/
+papers/
+
+# Keep *.md ACTIVE (do not ignore *.md)
+# Exclude legacy base repo views if you have unneeded legacy folders
+src/views/legacy/
+src/views/old/
+
+# System & Build Exclusions
+node_modules/
+dist/
+coverage/
+*.log

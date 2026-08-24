@@ -5,7 +5,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
     
     <!-- Header -->
-    <header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-[100] shadow-sm">
+    <header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-[100] shadow-none">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-2 h-8 bg-[#2F2E8B] rounded-sm"></div>
@@ -64,7 +64,7 @@
       <div v-if="activeTab === 'profile'" class="animate-fade-in-up">
 
         <!-- User Info Summary (Sub-account view) -->
-        <div v-if="!isOwner" class="mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-6 shadow-sm">
+        <div v-if="!isOwner" class="mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-6 shadow-none">
           <div class="flex items-center gap-5">
             <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden border-2 border-[#2F2E8B]">
               <img v-if="myAccount.profilePhotoUrl || editForm.profilePhotoUrl" :src="myAccount.profilePhotoUrl || editForm.profilePhotoUrl" class="w-full h-full object-cover" />
@@ -182,7 +182,7 @@
             
             <!-- Card Name Input (Owner + Business Cards only) -->
             <div v-if="isOwner && selectedCardId" class="bg-gray-50 dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-sm flex items-center gap-4">
-              <div class="p-2 bg-white dark:bg-gray-700 rounded-sm border border-gray-200 dark:border-gray-600 shadow-sm">
+              <div class="p-2 bg-white dark:bg-gray-700 rounded-sm border border-gray-200 dark:border-gray-600 shadow-none">
                  <i class="fas fa-tag text-[#2F2E8B]"></i>
               </div>
               <div class="flex-1">
@@ -197,7 +197,7 @@
             </div>
             
             <!-- Business Information Card -->
-            <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-blue-300 transition-colors rounded-sm">
+            <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               
               <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
@@ -265,7 +265,7 @@
                       :key="color.value"
                       @click="editForm.cardColor = color.value"
                       class="w-8 h-8 rounded-sm border transition-transform hover:scale-105 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-[#2F2E8B]"
-                      :class="editForm.cardColor === color.value ? 'border-gray-900 shadow-sm ring-1 ring-gray-900' : 'border-gray-200 dark:border-gray-600'"
+                      :class="editForm.cardColor === color.value ? 'border-gray-900 shadow-none ring-1 ring-gray-900' : 'border-gray-200 dark:border-gray-600'"
                       :style="{ backgroundColor: color.value }"
                       :title="color.name"
                      ></button>
@@ -275,7 +275,7 @@
             </div>
 
             <!-- Contact Details -->
-            <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-blue-300 transition-colors rounded-sm">
+            <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               
               <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
@@ -315,7 +315,7 @@
             </div>
 
             <!-- Social Media (Owner only) -->
-            <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-blue-300 transition-colors rounded-sm">
+            <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
                
                <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
@@ -336,7 +336,7 @@
             </div>
 
             <!-- File Uploads (Owner only) -->
-            <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative group hover:border-blue-300 transition-colors rounded-sm">
+            <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
                
                <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
@@ -394,7 +394,7 @@
 
           <!-- Right Column: Preview & QR -->
           <div class="lg:col-span-1 space-y-6">
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-sm overflow-hidden sticky top-24">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-none rounded-sm overflow-hidden sticky top-24">
               <div class="bg-gray-50 dark:bg-gray-900 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <h4 class="font-black text-gray-900 dark:text-white uppercase tracking-tight text-xs flex items-center gap-2">
                   <i class="fas fa-eye text-gray-400"></i> Preview
@@ -419,10 +419,10 @@
                    <!-- MODERN -->
                    <div v-if="editForm.templateId === 'modern'" class="flex justify-between h-full relative z-10 text-white">
                      <div class="flex flex-col justify-between items-start h-full">
-                        <div v-if="editForm.profilePhotoUrl" class="w-12 h-12 rounded-full overflow-hidden mb-2 shadow-sm flex-shrink-0 bg-white/10 backdrop-blur-sm border border-white/20">
+                        <div v-if="editForm.profilePhotoUrl" class="w-12 h-12 rounded-full overflow-hidden mb-2 shadow-none flex-shrink-0 bg-white/10 backdrop-blur-sm border border-white/20">
                           <img :src="editForm.profilePhotoUrl" class="w-full h-full object-cover" />
                         </div>
-                        <div class="drop-shadow-sm space-y-2">
+                        <div class="drop-shadow-none space-y-2">
                            <div>
                              <h3 class="font-bold text-lg leading-tight">{{ editForm.businessName || 'NAME' }}</h3>
                              <p class="text-[10px] opacity-90 font-mono font-bold tracking-wider uppercase">{{ editForm.jobTitle || 'TITLE' }}</p>
@@ -436,8 +436,8 @@
                         </div>
                      </div>
                      <div class="flex flex-col items-end justify-between h-full">
-                        <div v-if="qrUrl" class="bg-white p-0.5 rounded-sm shadow-sm"><img :src="qrUrl" class="w-10 h-10" /></div>
-                        <div v-if="editForm.logoUrl" class="w-8 h-8 flex items-center justify-center"><img :src="editForm.logoUrl" class="w-full h-full object-contain filter drop-shadow-sm" /></div>
+                        <div v-if="qrUrl" class="bg-white p-0.5 rounded-sm shadow-none"><img :src="qrUrl" class="w-10 h-10" /></div>
+                        <div v-if="editForm.logoUrl" class="w-8 h-8 flex items-center justify-center"><img :src="editForm.logoUrl" class="w-full h-full object-contain filter drop-shadow-none" /></div>
                      </div>
                    </div>
 
@@ -448,7 +448,7 @@
                          <div v-if="qrUrl" class="bg-white p-0.5 border border-gray-100"><img :src="qrUrl" class="w-12 h-12" /></div>
                       </div>
                       <div class="flex items-center gap-3 mt-1 mb-auto">
-                         <div v-if="editForm.profilePhotoUrl" class="w-14 h-14 rounded-full overflow-hidden border-[2px] flex-shrink-0 p-0.5 bg-white shadow-sm" :style="{ borderColor: editForm.cardColor || '#4B5EAA' }">
+                         <div v-if="editForm.profilePhotoUrl" class="w-14 h-14 rounded-full overflow-hidden border-[2px] flex-shrink-0 p-0.5 bg-white shadow-none" :style="{ borderColor: editForm.cardColor || '#4B5EAA' }">
                             <img :src="editForm.profilePhotoUrl" class="w-full h-full object-cover rounded-full" />
                          </div>
                          <div>
@@ -497,7 +497,7 @@
                 <div class="w-full h-px bg-gray-200 dark:bg-gray-700 my-2"></div>
 
                 <div class="text-center w-full">
-                  <div class="bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 rounded-sm p-3 inline-block shadow-sm mb-3">
+                  <div class="bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 rounded-sm p-3 inline-block shadow-none mb-3">
                      <img v-if="qrUrl" :src="qrUrl" alt="QR Code" class="w-32 h-32" />
                      <div v-else class="w-32 h-32 bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-300 text-[10px] font-mono animate-pulse uppercase">Generating...</div>
                   </div>
@@ -567,7 +567,7 @@
 
         <div v-else class="space-y-6">
           <!-- Personal & Role Info -->
-          <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm rounded-sm">
+          <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none rounded-sm">
             <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
               <i class="fas fa-user text-gray-400 text-xs"></i> Employee Information
             </h3>
@@ -582,7 +582,7 @@
           </div>
 
           <!-- Compensation -->
-          <div v-if="employment.basicPay || employment.hourly_rate" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm rounded-sm">
+          <div v-if="employment.basicPay || employment.hourly_rate" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none rounded-sm">
             <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
               <i class="fas fa-money-bill-wave text-gray-400 text-xs"></i> Compensation
             </h3>
@@ -607,7 +607,7 @@
           </div>
 
           <!-- Skills & Qualifications -->
-          <div v-if="employment.skills?.length || employment.qualifications?.length || employment.certifications?.length" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm rounded-sm">
+          <div v-if="employment.skills?.length || employment.qualifications?.length || employment.certifications?.length" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none rounded-sm">
             <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
               <i class="fas fa-award text-gray-400 text-xs"></i> Skills & Qualifications
             </h3>
@@ -638,7 +638,7 @@
       <!-- ==================== TAB: Security (Password) ==================== -->
       <div v-if="activeTab === 'security'" class="animate-fade-in-up">
         <div class="max-w-lg">
-          <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-sm rounded-sm">
+          <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none rounded-sm">
             <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
               <i class="fas fa-lock text-gray-400 text-xs"></i> Change Password
             </h3>
@@ -699,7 +699,7 @@
         </div>
 
         <div class="space-y-5">
-          <div v-for="docType in companyDocTypes" :key="docType.key" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-5 shadow-sm">
+          <div v-for="docType in companyDocTypes" :key="docType.key" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-5 shadow-none">
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-sm bg-[#2F2E8B]/10 flex items-center justify-center">

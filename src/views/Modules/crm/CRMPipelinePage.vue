@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-sm">
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-none">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <button @click="$router.push('/dashboard/crm')" class="text-gray-500 hover:text-[#2F2E8B] transition p-2">
@@ -227,7 +227,7 @@
                 <div v-for="record in getVisibleLeadsByStage(stage.id)" :key="`${record.entityType || 'lead'}-${record.id}`" draggable="true"
                   @dragstart="onDragStart($event, record)" @dragend="onDragEnd"
                   @click="(record.entityType || (stage.entity || '').slice(0, -1)) === 'lead' ? editLead(record) : ((record.entityType || (stage.entity || '').slice(0, -1)) === 'account' ? openAccountProfile(record) : viewRecord(record, (record.entityType || (stage.entity || '').slice(0, -1)) + 's'))"
-                  class="bg-white rounded-sm p-2 shadow-sm border border-gray-100 hover:border-[#2F2E8B] transition-all cursor-move group relative"
+                  class="bg-white rounded-sm p-2 shadow-none border border-gray-100 hover:border-[#2F2E8B] transition-all cursor-move group relative"
                   :class="[
                     { 'opacity-50 dashed-border': draggingLead && draggingLead.id === record.id && dragState?.status === 'dragging' },
                     { 'opacity-70 border-2 border-blue-400 animate-pulse': dragState?.status === 'updating' && dragState?.record?.id === record.id },
@@ -668,7 +668,7 @@
                 <div class="text-[8px] font-mono text-blue-300 uppercase tracking-wider leading-none">{{ callContext.company || callContext.subtitle || '\u2014' }}</div>
               </div>
             </div>
-            <button @click="closeCallModal" class="w-6 h-6 flex items-center justify-center text-blue-300 hover:text-white transition rounded hover:bg-[#3D3A9E]">
+            <button @click="closeCallModal" class="w-6 h-6 flex items-center justify-center text-blue-300 hover:text-white transition rounded-sm hover:bg-[#3D3A9E]">
               <i class="fas fa-times text-sm"></i>
             </button>
           </div>
@@ -695,13 +695,13 @@
               </div>
               <div class="space-y-1 max-h-36 overflow-y-auto custom-scrollbar pr-1">
                 <label v-for="(point, idx) in talkingPoints" :key="idx" class="flex items-start gap-1.5 p-1.5 border border-gray-100 hover:border-[#2F2E8B]/30 hover:bg-[#2F2E8B]/5 cursor-pointer transition-colors rounded">
-                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded text-[#2F2E8B] focus:ring-[#2F2E8B] border-gray-300 w-3 h-3" />
+                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded-sm text-[#2F2E8B] focus:ring-[#2F2E8B] border-gray-300 w-3 h-3" />
                   <span class="text-[10px] text-gray-700 font-mono uppercase tracking-tight leading-snug" :class="{ 'line-through text-gray-400': point.done }">{{ point.text }}</span>
                 </label>
               </div>
               <div class="flex gap-1.5 mt-1.5">
-                <input v-model="newTalkingPoint" @keyup.enter="addTalkingPoint" type="text" placeholder="ADD CUSTOM TALKING POINT..." class="flex-1 border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded outline-none bg-gray-50" />
-                <button type="button" @click="addTalkingPoint" class="px-2.5 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase rounded transition">
+                <input v-model="newTalkingPoint" @keyup.enter="addTalkingPoint" type="text" placeholder="ADD CUSTOM TALKING POINT..." class="flex-1 border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded-sm outline-none bg-gray-50" />
+                <button type="button" @click="addTalkingPoint" class="px-2.5 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase rounded-sm transition">
                   <i class="fas fa-plus text-[10px]"></i>
                 </button>
               </div>
@@ -711,7 +711,7 @@
             <div class="grid grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1">Outcome</label>
-                <select v-model="callOutcome" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded outline-none bg-gray-50">
+                <select v-model="callOutcome" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded-sm outline-none bg-gray-50">
                   <option value="connected">CONNECTED</option>
                   <option value="voicemail">VOICEMAIL</option>
                   <option value="no_answer">NO ANSWER</option>
@@ -722,7 +722,7 @@
               </div>
               <div>
                 <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1">Duration (Min)</label>
-                <input v-model.number="callDurationMin" type="number" min="0" step="0.5" placeholder="0" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded outline-none bg-gray-50" />
+                <input v-model.number="callDurationMin" type="number" min="0" step="0.5" placeholder="0" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded-sm outline-none bg-gray-50" />
               </div>
             </div>
 
@@ -731,7 +731,7 @@
               <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-1">
                 <i class="fas fa-pen text-[#2F2E8B] text-[10px]"></i> Call Notes
               </label>
-              <textarea v-model="callNote" rows="2" placeholder="WHAT WAS DISCUSSED, NEXT STEPS, OBJECTIONS..." class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded outline-none bg-gray-50 resize-none"></textarea>
+              <textarea v-model="callNote" rows="2" placeholder="WHAT WAS DISCUSSED, NEXT STEPS, OBJECTIONS..." class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded-sm outline-none bg-gray-50 resize-none"></textarea>
               <p class="text-[8px] font-mono text-gray-400 mt-0.5 uppercase tracking-wider flex items-center gap-1">
                 <i class="fas fa-info-circle text-[#2F2E8B] text-[9px]"></i> Saved to lead profile and visible in activity log.
               </p>
@@ -741,8 +741,8 @@
           </div>
 
           <div class="flex items-center justify-end gap-2 px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50">
-            <button type="button" @click="closeCallModal" class="px-3.5 py-1.5 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded transition text-[9px] font-mono font-black uppercase tracking-widest">Cancel</button>
-            <button type="button" @click="saveCallNote" :disabled="savingCall || !callNote.trim()" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] disabled:opacity-50 text-white rounded transition text-[9px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
+            <button type="button" @click="closeCallModal" class="px-3.5 py-1.5 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded-sm transition text-[9px] font-mono font-black uppercase tracking-widest">Cancel</button>
+            <button type="button" @click="saveCallNote" :disabled="savingCall || !callNote.trim()" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] disabled:opacity-50 text-white rounded-sm transition text-[9px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
               <i :class="savingCall ? 'fas fa-spinner fa-spin' : 'fas fa-save'"></i>
               {{ savingCall ? 'SAVING...' : 'Save Note & Log Call' }}
             </button>
@@ -809,11 +809,11 @@
           <form @submit.prevent="addCustomStage" class="p-6 space-y-4">
             <div class="space-y-2">
               <label class="block text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">Stage Name *</label>
-              <input v-model="newStageForm.name" type="text" required placeholder="E.G. ON HOLD" class="w-full rounded-none border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] text-sm font-mono font-bold uppercase" ref="addStageInputRef" />
+              <input v-model="newStageForm.name" type="text" required placeholder="E.G. ON HOLD" class="w-full rounded-none border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] text-sm font-mono font-bold uppercase" ref="addStageInputRef" />
             </div>
             <div class="space-y-2">
               <label class="block text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">Position</label>
-              <select v-model="newStageForm.insertAfter" class="w-full rounded-none border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] text-sm font-mono font-bold uppercase">
+              <select v-model="newStageForm.insertAfter" class="w-full rounded-none border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] text-sm font-mono font-bold uppercase">
                 <option value="start">START (FIRST)</option>
                 <option value="end">END (LAST)</option>
                 <option v-for="stage in allPipelineStages" :key="stage.id" :value="stage.id">AFTER -> {{ stage.name }}</option>

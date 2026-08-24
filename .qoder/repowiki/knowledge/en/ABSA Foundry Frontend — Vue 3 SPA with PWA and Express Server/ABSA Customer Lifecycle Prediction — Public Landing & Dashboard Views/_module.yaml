@@ -1,0 +1,16 @@
+schema_version: 1
+module_path: auth_and_pages
+title: ABSA Customer Lifecycle Prediction — Public Landing & Dashboard Views
+scope:
+    - src/views/DashboardHome.vue
+    - src/views/Home.vue
+    - src/views/CustomerDetail.vue
+    - src/views/PortfolioOverview.vue
+    - src/views/TakeAction.vue
+    - src/views/InitialisationScreen.vue
+    - src/views/PWATestPage.vue
+    - src/views/CreateActionPlan.vue
+    - src/views/403.vue
+source_files: []
+depends_on: []
+related_to: []

@@ -110,6 +110,8 @@ const routes = [
     children: [
       { path: '', redirect: '/dashboard/portfolio' },
       { path: 'portfolio', name: 'DashboardHome', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Dashboard' } },
+      { path: 'customer/:id/action-plan', name: 'CreateActionPlan', component: () => import('../views/CreateActionPlan.vue'), meta: { title: 'Create Action Plan' } },
+      { path: 'customer/:id/take-action', name: 'TakeAction', component: () => import('../views/TakeAction.vue'), meta: { title: 'Take Action' } },
       { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue'), meta: { title: 'Customer Detail' } },
       { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue'), meta: { title: 'Branch Manager Dashboard' } },
       { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue'), meta: { title: 'Model Performance' } },
@@ -117,6 +119,12 @@ const routes = [
       { path: 'etl-run-history', name: 'EtlRunHistory', component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'), meta: { title: 'ETL Manager' } },
       { path: 'etl-run-history/batch/:runId', name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { title: 'Batch Execution Detail' } },
       { path: 'etl-config-manager', name: 'EtlConfigManager', component: () => import('../views/Modules/datapipeline/EtlConfigManager.vue'), meta: { title: 'ETL Config Manager' } },
+
+      // ── Strategic & Value Layer ──
+      { path: 'customer-value',    name: 'CustomerValueIntelligence', component: () => import('../views/Modules/intelligence/CustomerValueIntelligence.vue'), meta: { title: 'Customer Value Intelligence' } },
+      { path: 'balance-forecast',  name: 'BalanceForecast',           component: () => import('../views/Modules/intelligence/BalanceForecast.vue'),           meta: { title: 'Balance Forecast' } },
+      { path: 'business-outcomes', name: 'BusinessOutcomes',          component: () => import('../views/Modules/intelligence/BusinessOutcomes.vue'),          meta: { title: 'Business Outcomes' } },
+      { path: 'lifecycle',         name: 'LifecyclePrediction',       component: () => import('../views/Modules/intelligence/LifecyclePrediction.vue'),       meta: { title: 'Customer Lifecycle' } },
      
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue'), meta: { title: 'AI Assistant' } },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue'), meta: { title: 'Settings' } },

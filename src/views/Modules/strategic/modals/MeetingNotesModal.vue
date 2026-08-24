@@ -297,14 +297,14 @@
                   <button
                     type="button"
                     @click="addTimestamp"
-                    class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors"
+                    class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-sm transition-colors"
                   >
                     <i class="fas fa-clock mr-1"></i>Timestamp
                   </button>
                   <button
                     type="button"
                     @click="addActionItem"
-                    class="text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded transition-colors"
+                    class="text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-sm transition-colors"
                   >
                     <i class="fas fa-tasks mr-1"></i>Action Item
                   </button>
@@ -405,13 +405,13 @@ Use [FOLLOW-UP] to mark follow-up items"
                   <input
                     v-model="task.completed"
                     type="checkbox"
-                    class="rounded border-gray-300 text-[#2F2E8B] focus:ring-[#2F2E8B]"
+                    class="rounded-sm border-gray-300 text-[#2F2E8B] focus:ring-[#2F2E8B]"
                   />
                   Mark as completed
                 </label>
                 <select
                   v-model="task.priority"
-                  class="px-2 py-1 border border-gray-200 rounded text-xs"
+                  class="px-2 py-1 border border-gray-200 rounded-sm text-xs"
                 >
                   <option value="low">Low Priority</option>
                   <option value="medium">Medium Priority</option>
@@ -421,7 +421,7 @@ Use [FOLLOW-UP] to mark follow-up items"
               <button
                 type="button"
                 @click="removeFollowUpTask(index)"
-                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded transition-colors"
+                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-sm transition-colors"
               >
                 <i class="fas fa-trash text-xs"></i>
               </button>

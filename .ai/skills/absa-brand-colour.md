@@ -41,7 +41,9 @@ colors: {
 2. **Accent colours sparingly** — Energy and Uplift for warm-red accents, never as primary backgrounds.
 3. **Website/Banking App accent = Enrich only** — no Energy/Uplift in app UI backgrounds per brand matrix.
 4. **Gradients: digital only, backgrounds only, always include Passion** — bottom-left to top-right, 45°, 70:30 ratio.
-5. **Contrast: never same colour for text + background** — use the contrast tables below.
+5. **System State Colours:** For status indicators (e.g., success, warning, churned), use ONLY `green-600` (Success/Active), `amber-700` (Warning/At-Risk), and `red-900` (Critical/Churned).
+6. **FORBIDDEN COLOURS:** Under no circumstances should `blue-*`, `indigo-*`, `purple-*`, or `violet-*` be used anywhere in the UI.
+7. **Contrast: never same colour for text + background** — use the contrast tables below.
 
 ## High-Contrast Pairs (Safe Defaults)
 

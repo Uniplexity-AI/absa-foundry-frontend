@@ -1,5 +1,5 @@
 <template>
-  <div class="action-plans-panel bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div class="action-plans-panel bg-white rounded-lg shadow-none border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-semibold text-gray-900">Action Plans</h2>
       <button
@@ -58,7 +58,7 @@
           <button
             @click="viewMode = 'kanban'"
             :class="viewMode === 'kanban' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'"
-            class="p-2 rounded hover:bg-gray-100"
+            class="p-2 rounded-sm hover:bg-gray-100"
             title="Kanban View"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@
           <button
             @click="viewMode = 'timeline'"
             :class="viewMode === 'timeline' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'"
-            class="p-2 rounded hover:bg-gray-100"
+            class="p-2 rounded-sm hover:bg-gray-100"
             title="Timeline View"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@
           <button
             @click="viewMode = 'list'"
             :class="viewMode === 'list' ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'"
-            class="p-2 rounded hover:bg-gray-100"
+            class="p-2 rounded-sm hover:bg-gray-100"
             title="List View"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@
               <div
                 v-for="actionPlan in getActionPlansByStatus(status.key)"
                 :key="actionPlan.id"
-                class="action-plan-card bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                class="action-plan-card bg-white rounded-lg p-4 shadow-none hover:shadow-md transition-shadow cursor-pointer"
                 @click="openActionPlanDetails(actionPlan)"
               >
                 <div class="flex items-start justify-between mb-2">
@@ -237,7 +237,7 @@
             <div
               v-for="actionPlan in plansByMonth"
               :key="actionPlan.id"
-              class="timeline-item bg-white border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow cursor-pointer"
+              class="timeline-item bg-white border border-gray-200 rounded-lg p-4 hover:shadow-none transition-shadow cursor-pointer"
               @click="openActionPlanDetails(actionPlan)"
             >
               <div class="flex items-start justify-between">
@@ -295,7 +295,7 @@
         <div
           v-for="actionPlan in filteredActionPlans"
           :key="actionPlan.id"
-          class="action-plan-row bg-white border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow cursor-pointer"
+          class="action-plan-row bg-white border border-gray-200 rounded-lg p-4 hover:shadow-none transition-shadow cursor-pointer"
           @click="openActionPlanDetails(actionPlan)"
         >
           <div class="flex items-center justify-between">

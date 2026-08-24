@@ -1,0 +1,1 @@
+Vite-built Vue 3 single-page application that serves the ABSA Intelligence Unit dashboard, CRM, AI agents, and strategic modules behind a lightweight Express static server with PWA support.

@@ -23,6 +23,7 @@ export const useCustomerStore = defineStore('customer', () => {
   const loading = ref(false)
   const error = ref(null)
   const timeline = ref([])
+  const features = ref(null)
 
   // Raw portfolio summary from API (aggregate counts)
   const _portfolioSummary = ref({ total_customers: 0, by_state: {} })
@@ -141,6 +142,19 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  async function fetchCustomerFeatures(id) {
+    error.value = null
+    try {
+      // Gateway exposes the feature snapshot in-process at /features/{id}/latest
+      // (no /api/v1 prefix, unlike the other proxied routes).
+      const { data } = await api.get(`/features/${id}/latest`)
+      features.value = data || null
+    } catch (e) {
+      console.warn('fetchCustomerFeatures failed:', e.message)
+      features.value = null
+    }
+  }
+
   function setFilter(key, value) {
     filters.value[key] = value
     pagination.value.page = 1
@@ -159,11 +173,13 @@ export const useCustomerStore = defineStore('customer', () => {
     loading,
     error,
     timeline,
+    features,
     portfolio,
     filteredCustomers,
     fetchPortfolio,
     fetchCustomerDetail,
     fetchCustomerTimeline,
+    fetchCustomerFeatures,
     setFilter,
     clearFilters,
   }

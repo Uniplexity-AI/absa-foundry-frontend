@@ -216,7 +216,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import LoadingSkeleton from '@/components/absa/LoadingSkeleton.vue'
+import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useETLStore } from '@/stores/etlStore'
 
 const store = useETLStore()

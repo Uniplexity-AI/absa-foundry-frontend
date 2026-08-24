@@ -56,6 +56,28 @@ export const usePredictionStore = defineStore('prediction', () => {
     }
   }
 
+  /** Fetch full prediction (churn + CLV + health + state) for one customer */
+  async function fetchPrediction(customerId) {
+    error.value = null
+    try {
+      const { data } = await api.get(`/api/v1/predictions/${customerId}`, {
+        params: { as_of_date: DEFAULT_AS_OF_DATE },
+      })
+      predictions.value = {
+        ...predictions.value,
+        [customerId]: {
+          churn_probability: data.churn_probability ?? data.probability ?? null,
+          clv_percentile: data.clv_percentile ?? null,
+          health_score: data.health_score ?? null,
+          state: data.state ?? null,
+        },
+      }
+    } catch (e) {
+      console.warn('fetchPrediction failed:', e.message)
+      error.value = e.response?.data?.detail || e.message || 'Failed to load prediction'
+    }
+  }
+
   async function fetchMarkovMatrix() {
     loading.value = true
     error.value = null
@@ -138,6 +160,7 @@ export const usePredictionStore = defineStore('prediction', () => {
     error,
     fetchChurnProbability,
     fetchHealthScore,
+    fetchPrediction,
     fetchMarkovMatrix,
     fetchBatchPredictions,
     fetchChurnDrivers,

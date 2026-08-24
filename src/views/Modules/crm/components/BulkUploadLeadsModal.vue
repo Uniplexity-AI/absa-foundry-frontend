@@ -11,7 +11,7 @@
             <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight font-display">Bulk Upload Leads</h3>
           </div>
         </div>
-        <button @click="close" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-sm">
+        <button @click="close" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none">
           <X :size="18" />
         </button>
       </div>
@@ -27,7 +27,7 @@
             </div>
             <button
               @click="downloadTemplate"
-              class="px-6 py-2 bg-white border border-gray-200 text-gray-600 text-[10px] font-mono font-black uppercase tracking-widest hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-all flex items-center gap-2 shadow-sm"
+              class="px-6 py-2 bg-white border border-gray-200 text-gray-600 text-[10px] font-mono font-black uppercase tracking-widest hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-all flex items-center gap-2 shadow-none"
             >
               <Download :size="14" />
               <span>Download_Template</span>
@@ -52,7 +52,7 @@
             />
             
             <div v-if="!selectedFile" class="relative z-10">
-              <div class="w-20 h-20 bg-white border border-gray-100 mx-auto flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+              <div class="w-20 h-20 bg-white border border-gray-100 mx-auto flex items-center justify-center mb-6 shadow-none group-hover:scale-110 transition-transform duration-500">
                 <Upload :size="32" class="text-gray-300 group-hover:text-[#2F2E8B] transition-colors" />
               </div>
               <p class="text-sm font-black text-gray-900 uppercase tracking-tight mb-2 font-display">Drag & drop your file here</p>
@@ -219,7 +219,7 @@
             <button
               @click="checkDuplicates"
               :disabled="checkingDuplicates"
-              class="px-6 py-2.5 bg-white border border-gray-200 text-gray-900 text-[10px] font-mono font-black uppercase tracking-widest hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-all flex items-center gap-2 shadow-sm disabled:opacity-50"
+              class="px-6 py-2.5 bg-white border border-gray-200 text-gray-900 text-[10px] font-mono font-black uppercase tracking-widest hover:border-[#2F2E8B] hover:text-[#2F2E8B] transition-all flex items-center gap-2 shadow-none disabled:opacity-50"
             >
               <Loader2 v-if="checkingDuplicates" :size="14" class="animate-spin" />
               <Search v-else :size="14" />
@@ -265,7 +265,7 @@
           </div>
 
           <!-- Editable Preview Table -->
-          <div class="bg-white border border-gray-100 overflow-hidden relative shadow-sm">
+          <div class="bg-white border border-gray-100 overflow-hidden relative shadow-none">
             <div class="absolute inset-0 dotted-pattern opacity-[0.01] pointer-events-none"></div>
             <div class="overflow-x-auto max-h-[480px] overflow-y-auto custom-scrollbar relative z-10">
               <table class="w-full text-left border-collapse">
@@ -368,7 +368,7 @@
               { label: 'Validated Unit', value: validNonDuplicateCount, color: 'text-emerald-600', bg: 'bg-emerald-50/30 border-emerald-100' },
               { label: 'Duplicate Detect', value: duplicateCount, color: 'text-amber-600', bg: 'bg-amber-50/30 border-amber-100' },
               { label: 'Critical Errors', value: invalidCount, color: 'text-red-600', bg: 'bg-red-50/30 border-red-100' }
-            ]" :key="stat.label" :class="[stat.bg, 'p-6 border relative overflow-hidden group shadow-sm transition-all hover:scale-[1.02] duration-300']">
+            ]" :key="stat.label" :class="[stat.bg, 'p-6 border relative overflow-hidden group shadow-none transition-all hover:scale-[1.02] duration-300']">
               <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none group-hover:opacity-[0.06] transition-opacity"></div>
               <p class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-1 relative z-10">{{ stat.label }}</p>
               <p class="text-3xl font-black tracking-tighter relative z-10" :class="stat.color">{{ stat.value }}</p>
@@ -399,7 +399,7 @@
               { label: 'Skipped Entities', val: importResults.skipped, icon: AlertTriangle, color: 'text-amber-600', border: 'border-amber-100', bg: 'bg-amber-50/20' },
               { label: 'Failed Protocol', val: importResults.failed, icon: FileWarning, color: 'text-red-600', border: 'border-red-100', bg: 'bg-red-50/20' },
               { label: 'Total Volume', val: importResults.total, icon: TableIcon, color: 'text-[#2F2E8B]', border: 'border-[#2F2E8B]/10', bg: 'bg-[#2F2E8B]/5' }
-            ]" :key="res.label" :class="[res.bg, res.border, 'p-8 border text-center relative group shadow-sm']">
+            ]" :key="res.label" :class="[res.bg, res.border, 'p-8 border text-center relative group shadow-none']">
               <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none group-hover:opacity-[0.08] transition-opacity"></div>
               <component :is="res.icon" :size="24" class="mx-auto mb-4 opacity-40" :class="res.color" />
               <p class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest mb-1 relative z-10">{{ res.label }}</p>

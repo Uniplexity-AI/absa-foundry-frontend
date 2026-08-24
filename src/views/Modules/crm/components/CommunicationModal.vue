@@ -11,14 +11,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Contact *</label>
-            <select v-model="localForm.contactId" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]">
+            <select v-model="localForm.contactId" required class="w-full rounded-lg border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]">
               <option value="">Select Contact</option>
               <option v-for="lead in leads" :key="lead.id" :value="lead.id">{{ lead.name }} ({{ lead.company }})</option>
             </select>
           </div>
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Type *</label>
-            <select v-model="localForm.type" required class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]">
+            <select v-model="localForm.type" required class="w-full rounded-lg border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]">
               <option value="email">Email</option>
               <option value="call">Phone Call</option>
               <option value="whatsapp">WhatsApp</option>
@@ -28,11 +28,11 @@
         </div>
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Subject</label>
-          <input v-model="localForm.subject" type="text" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]" />
+          <input v-model="localForm.subject" type="text" class="w-full rounded-lg border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]" />
         </div>
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Message *</label>
-          <textarea v-model="localForm.message" required rows="6" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]" placeholder="Type your message here..."></textarea>
+          <textarea v-model="localForm.message" required rows="6" class="w-full rounded-lg border-gray-300 shadow-none focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B]" placeholder="Type your message here..."></textarea>
         </div>
         <div class="flex justify-end gap-3">
           <button type="button" @click="$emit('update:modelValue', false)" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>

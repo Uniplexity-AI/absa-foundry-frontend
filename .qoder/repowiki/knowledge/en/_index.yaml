@@ -1,0 +1,57 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: en-US
+branch: main
+nodes_managed: true
+exported_at: "2026-08-23T17:47:19Z"
+modules:
+    "":
+        dir_name: ABSA Foundry Frontend — Vue 3 SPA with PWA and Express Server
+        title: ABSA Foundry Frontend — Vue 3 SPA with PWA and Express Server
+        scope:
+            - src/
+            - public/
+            - scripts/
+            - .ai/
+            - .dockerignore
+            - .env
+            - .gitignore
+            - Absa_colour_guideline (1).pdf
+            - Dockerfile
+            - README.md
+            - REMOTE-DEV-GUIDE.md
+            - TASKS.md
+            - app.yaml
+            - cloudbuild.yaml
+            - index.html
+            - jsconfig.json
+            - package-lock.json
+            - package.json
+            - postcss.config.js
+            - server.js
+            - tailwind.config.js
+            - vite-env.d.ts
+            - vite.config.js
+            - vitest.config.js
+        source_files: []
+        children:
+            - auth_and_pages
+        depends_on: []
+        related_to: []
+    auth_and_pages:
+        dir_name: ABSA Customer Lifecycle Prediction — Public Landing & Dashboard Views
+        title: ABSA Customer Lifecycle Prediction — Public Landing & Dashboard Views
+        scope:
+            - src/views/DashboardHome.vue
+            - src/views/Home.vue
+            - src/views/CustomerDetail.vue
+            - src/views/PortfolioOverview.vue
+            - src/views/TakeAction.vue
+            - src/views/InitialisationScreen.vue
+            - src/views/PWATestPage.vue
+            - src/views/CreateActionPlan.vue
+            - src/views/403.vue
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []

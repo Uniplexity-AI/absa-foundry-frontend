@@ -501,7 +501,7 @@
                             <span v-if="deal._local" class="text-[8px] font-mono font-bold text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 uppercase">Once-Off</span>
                             <span class="text-[10px] font-mono text-gray-500">{{ deal.stage || '—' }}</span>
                             <span class="text-[10px] font-mono font-bold text-gray-900">{{ formatCurrency(deal.amount || deal.value || 0) }}</span>
-                            <button v-if="deal._local" @click.stop="deleteLocalDeal(account.id, deal.id)" class="w-5 h-5 flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition" title="Delete this deal">
+                            <button v-if="deal._local" @click.stop="deleteLocalDeal(account.id, deal.id)" class="w-5 h-5 flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-50 rounded-sm transition" title="Delete this deal">
                               <X :size="10" />
                             </button>
                           </div>

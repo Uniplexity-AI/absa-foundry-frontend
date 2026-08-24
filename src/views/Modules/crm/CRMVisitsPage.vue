@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <BackButton route="/dashboard/crm" variant="icon-only" />
@@ -39,7 +39,7 @@
           </button>
         </div>
 
-        <div class="bg-white border border-gray-200 rounded-sm shadow-sm relative overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
           <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
           <div class="p-4 md:p-6 space-y-4 relative z-10">
             <div v-if="!visits.length" class="text-center py-12 border-2 border-dashed border-gray-100 rounded-sm">
@@ -48,7 +48,7 @@
               <p class="text-xs text-gray-400 mt-2">TECHNICAL_LOGS_EMPTY</p>
             </div>
 
-            <div v-for="v in visits" :key="v.id" class="border border-gray-200 rounded-sm p-4 md:p-5 hover:border-[#2F2E8B]/50 hover:shadow-sm transition bg-white group relative overflow-hidden" :class="{
+            <div v-for="v in visits" :key="v.id" class="border border-gray-200 rounded-sm p-4 md:p-5 hover:border-[#2F2E8B]/50 hover:shadow-none transition bg-white group relative overflow-hidden" :class="{
               'border-l-4 border-l-green-500': v.status === 'completed',
               'border-l-4 border-l-blue-500': v.status === 'in-progress',
               'border-l-4 border-l-gray-300': v.status === 'planned',

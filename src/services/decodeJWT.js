@@ -68,7 +68,7 @@ export function decodeJWT() {
     const token = localStorage.getItem('token')
     if (token) {
       try {
-        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://100.82.12.85:8080'}/auth/logout`, {
+        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'}/auth/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

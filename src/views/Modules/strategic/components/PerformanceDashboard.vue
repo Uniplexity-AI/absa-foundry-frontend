@@ -5,7 +5,7 @@
       <div
         v-for="(category, categoryName) in kpis"
         :key="categoryName"
-        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200"
+        class="bg-white rounded-lg shadow-none p-4 border border-gray-200"
       >
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-sm font-medium text-gray-700 capitalize">
@@ -47,7 +47,7 @@
     <!-- Detailed Performance Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <!-- Financial Performance Chart -->
-      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <div class="bg-white rounded-lg shadow-none p-6 border border-gray-200">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">Financial Performance</h3>
           <div class="flex space-x-2">
@@ -79,7 +79,7 @@
       </div>
 
       <!-- Operational Efficiency Chart -->
-      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <div class="bg-white rounded-lg shadow-none p-6 border border-gray-200">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-gray-900">Operational Efficiency</h3>
           <button 
@@ -155,7 +155,7 @@
     </div>
 
     <!-- KPI Comparison Table -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg shadow-none border border-gray-200 overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold text-gray-900">KPI Performance Comparison</h3>

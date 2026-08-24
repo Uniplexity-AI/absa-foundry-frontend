@@ -1,0 +1,1 @@
+`npm run dev` starts the Vite dev server on port 3000; `npm run build` first runs `scripts/update-sw-cache.js` then produces the `dist/` bundle served by `server.js`; `npm test` runs Vitest specs.

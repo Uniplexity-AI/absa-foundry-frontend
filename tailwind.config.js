@@ -6,6 +6,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        'absa-passion': '#DC0037',
+        'absa-power': '#B50232',
+        'absa-hope': '#95052A',
+        'absa-inspire': '#77021E',
+        'absa-energy': '#FF780F',
+        'absa-uplift': '#F93F24',
+        'absa-enrich': '#131010',
+        'absa-serene': '#FFFFFF',
         primary: '#a40022',
         'on-primary': '#ffffff',
         'primary-container': '#ffd9dd',

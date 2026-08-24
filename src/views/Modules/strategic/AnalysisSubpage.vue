@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -23,7 +23,7 @@
           <div class="flex flex-wrap gap-3">
             <select 
               v-model="selectedLanguage"
-              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-sm"
+              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-none"
             >
               <option value="en">🇬🇧 ENGLISH</option>
               <option value="bem">BEMBA</option>
@@ -53,7 +53,7 @@
 
       <!-- AI-Powered Insights Section -->
       <div v-if="aiInsights.length > 0" class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_OUTPUT // CORE_INSIGHTS</div>
           
@@ -128,7 +128,7 @@
 
 
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_AUDIT // STRATEGIC_MATRIX</div>
           
@@ -243,7 +243,7 @@
             </div>
             
             <button 
-              class="w-full mt-6 py-2 border border-blue-100 bg-blue-50/50 text-[10px] font-mono font-black text-[#2F2E8B] uppercase tracking-widest hover:bg-[#2F2E8B] hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
+              class="w-full mt-6 py-2 border border-blue-100 bg-blue-50/50 text-[10px] font-mono font-black text-[#2F2E8B] uppercase tracking-widest hover:bg-[#2F2E8B] hover:text-white transition-all shadow-none flex items-center justify-center gap-2"
               @click="toggleSWOTExpansion"
             >
               <span>{{ swotExpanded ? 'COLLAPSE_SUMMARY' : 'EXPAND_FULL_MATRIX' }}</span>
@@ -279,7 +279,7 @@
             </div>
             
              <button 
-              class="w-full mt-6 py-2 border border-emerald-100 bg-emerald-50/50 text-[10px] font-mono font-black text-emerald-700 uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+              class="w-full mt-6 py-2 border border-emerald-100 bg-emerald-50/50 text-[10px] font-mono font-black text-emerald-700 uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all shadow-none"
             >
               IMPLEMENT_STRATEGY
             </button>
@@ -319,7 +319,7 @@
 
                <button 
                 @click="runDeepAnalysis"
-                class="w-full mt-6 py-2 border border-amber-100 bg-amber-50/50 text-[10px] font-mono font-black text-amber-700 uppercase tracking-widest hover:bg-amber-500 hover:text-white transition-all shadow-sm"
+                class="w-full mt-6 py-2 border border-amber-100 bg-amber-50/50 text-[10px] font-mono font-black text-amber-700 uppercase tracking-widest hover:bg-amber-500 hover:text-white transition-all shadow-none"
               >
                 ACCESS_MARKET_INTEL
               </button>
@@ -350,7 +350,7 @@
 
                <button 
                 @click="runDeepAnalysis"
-                class="w-full mt-6 py-2 border border-purple-100 bg-purple-50/50 text-[10px] font-mono font-black text-purple-700 uppercase tracking-widest hover:bg-purple-600 hover:text-white transition-all shadow-sm"
+                class="w-full mt-6 py-2 border border-purple-100 bg-purple-50/50 text-[10px] font-mono font-black text-purple-700 uppercase tracking-widest hover:bg-purple-600 hover:text-white transition-all shadow-none"
               >
                 SCAN_ENVIRONMENT
               </button>
@@ -380,7 +380,7 @@
 
                <button 
                 @click="runDeepAnalysis"
-                class="w-full mt-6 py-2 border border-red-100 bg-red-50/50 text-[10px] font-mono font-black text-red-700 uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-sm"
+                class="w-full mt-6 py-2 border border-red-100 bg-red-50/50 text-[10px] font-mono font-black text-red-700 uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-none"
               >
                 ASSESS_COMPETITION
               </button>
@@ -392,7 +392,7 @@
 
       <!-- Analytical Reports & Documents Section -->
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_REGISTRY // DOCUMENT_LIBRARY</div>
           
@@ -452,7 +452,7 @@
 
       <!-- Strategic Notes Section -->
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MEMORY // STRATEGIC_NOTES</div>
           

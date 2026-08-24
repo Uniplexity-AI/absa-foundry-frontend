@@ -123,7 +123,7 @@
     <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       <div v-for="contact in contacts" :key="contact.id"
         @click="viewContact(contact)"
-        class="bg-white border border-gray-200 rounded-sm hover:border-[#2F2E8B]/50 hover:shadow-sm transition cursor-pointer p-4 relative overflow-hidden group">
+        class="bg-white border border-gray-200 rounded-sm hover:border-[#2F2E8B]/50 hover:shadow-none transition cursor-pointer p-4 relative overflow-hidden group">
         <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
 
         <div class="relative z-10">

@@ -4,17 +4,18 @@
 
 The frontend for ABSA Bank Zambia's AI-driven banking analytics platform. It provides Relationship Managers, Branch Managers, and Operations staff with:
 
-1. **Customer Lifecycle Dashboard** — View customer state, churn risk, and CLV
-2. **Portfolio Overview** — Branch-level analytics and health scores
-3. **ETL Pipeline Monitoring** — Run history, data quality metrics, audit trails
-4. **AI Agent Interface** — Model management, champion/challenger, predictions
-5. **Authentication & RBAC** — Role-based views (Admin, RM, Branch Manager, Data Scientist)
+1. **Intelligence Unit** — Customer Value (CLV), Lifecycle Prediction, Balance Forecasting, and Business Outcomes (ROI)
+2. **Customer Lifecycle Dashboard** — Customer detail, state timeline, and NBA recommendations
+3. **Portfolio Overview** — Branch-level analytics and Branch Manager dashboards
+4. **ETL Pipeline Monitoring** — ETL Config Manager, Run history, data quality metrics
+5. **AI Agent Interface** — Model performance, drift monitoring, champion/challenger
+6. **Authentication & RBAC** — Role-based views (Admin, RM, Branch Manager, Data Scientist)
 
 ## Who Uses This
 
 | Role | Primary Views |
 |------|---------------|
-| Relationship Managers | Customer detail, NBA recommendations |
+| Relationship Managers | Customer detail, Counterfactual outcomes, AI prescriptive interventions |
 | Branch Managers | Portfolio overview, branch performance |
 | Data Scientists | Model management, ETL run history |
 | Administrators | User management, system configuration |
@@ -44,6 +45,9 @@ The frontend for ABSA Bank Zambia's AI-driven banking analytics platform. It pro
 | **CLV** | Customer Lifetime Value — predicted total future revenue |
 | **Churn Probability** | Likelihood a customer will leave within 90 days |
 | **Feature Snapshot** | Computed ML features for a customer at a point in time |
+| **Win-Back Pipeline** | Churned customers with a high probability of returning if targeted |
+| **AUM** | Assets Under Management — the total balance held by a customer |
+| **Monte Carlo Simulation** | Mathematical technique used to model probability of different AUM trajectories |
 
 ## Backend Integration
 
@@ -63,3 +67,4 @@ The frontend for ABSA Bank Zambia's AI-driven banking analytics platform. It pro
 - **Air-Gapped:** All assets bundled, no CDN dependencies
 - **ABSA Branding:** Must follow ABSA colour guidelines (see `docs/Absa_colour_guideline (1).md`)
 - **GDPR:** No customer PII in browser console logs or localStorage beyond JWT tokens
+

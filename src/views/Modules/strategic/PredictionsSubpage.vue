@@ -6,7 +6,7 @@
     <div class="max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-sm relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-md border border-gray-200 p-6 mb-6 shadow-none relative overflow-hidden">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div class="flex items-center gap-4">
@@ -23,7 +23,7 @@
           <div class="flex flex-wrap gap-3">
             <select 
               v-model="selectedLanguage"
-              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-sm"
+              class="bg-white border border-gray-200 px-4 py-2 text-[10px] font-mono font-bold uppercase focus:ring-1 focus:ring-[#2F2E8B] rounded-none shadow-none"
             >
               <option value="en">🇬🇧 ENGLISH</option>
               <option value="bem">BEMBA</option>
@@ -50,7 +50,7 @@
       <StrategicNavigation active-tab="predictions" />
       <!-- Predictive Analytics Section -->
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_REGISTRY // PREDICTIVE_MODELS</div>
           
@@ -135,7 +135,7 @@
         <div class="bg-[#F7F7F7] border border-gray-100 p-8 shadow-inner relative overflow-hidden group">
           <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
           <div class="flex flex-col lg:flex-row items-start gap-8 relative z-10">
-            <div class="p-4 bg-white border border-gray-100 shadow-sm">
+            <div class="p-4 bg-white border border-gray-100 shadow-none">
               <i class="fas fa-globe-africa text-[#2F2E8B] text-3xl"></i>
             </div>
             <div class="flex-1">
@@ -198,7 +198,7 @@
 
       <!-- Scenario Planning Section -->
       <div class="mb-12">
-        <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MEMORY // SIMULATION_LAB</div>
           

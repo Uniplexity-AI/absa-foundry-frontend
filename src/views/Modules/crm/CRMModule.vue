@@ -4,7 +4,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Primary Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative blur-scoped">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative blur-scoped">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-2 h-8 bg-[#2F2E8B] rounded-sm"></div>
@@ -56,7 +56,7 @@
 
           <!-- Row 0: Conversion & Health KPIs -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -69,7 +69,7 @@
                 <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ getConversionRate() }}<span class="text-sm font-normal text-gray-400">%</span></p>
               </div>
             </div>
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -82,7 +82,7 @@
                 <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ avgConversionDays }}<span class="text-sm font-normal text-gray-400 ml-1">days</span></p>
               </div>
             </div>
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -95,7 +95,7 @@
                 <p class="text-2xl font-black text-orange-500 tracking-tight">{{ staleLeadsCount }}</p>
               </div>
             </div>
-            <div class="bg-[#2F2E8B] border border-[#2F2E8B] shadow-sm hover:bg-[#1D226B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
+            <div class="bg-[#2F2E8B] border border-[#2F2E8B] shadow-none hover:bg-[#1D226B] transition cursor-pointer group relative overflow-hidden" @click="showAnalyticsModal = true">
               <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-10"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -112,7 +112,7 @@
 
           <!-- Row 1: Counts -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/leads')">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/leads')">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -126,7 +126,7 @@
               </div>
             </div>
 
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/accounts')">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/accounts')">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -140,7 +140,7 @@
               </div>
             </div>
 
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/pipeline')">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/pipeline')">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -154,7 +154,7 @@
               </div>
             </div>
 
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/pipeline')">
+            <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden" @click="router.push('/dashboard/crm/pipeline')">
               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
               <div class="p-4 relative z-10">
                 <div class="flex items-center justify-between mb-3">
@@ -175,7 +175,7 @@
           <!-- Leads -->
           <button
             @click="router.push('/dashboard/crm/leads')"
-            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-sm hover:shadow-xl focus:outline-none"
+            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-none hover:shadow-xl focus:outline-none"
           >
             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity"></div>
             <div class="relative z-10 flex flex-col items-center gap-4">
@@ -195,7 +195,7 @@
           <!-- Events Pipeline -->
           <button
             @click="router.push('/dashboard/crm/pipeline')"
-            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-sm hover:shadow-xl focus:outline-none"
+            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-none hover:shadow-xl focus:outline-none"
           >
             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity"></div>
             <div class="relative z-10 flex flex-col items-center gap-4">
@@ -215,7 +215,7 @@
           <!-- Accounts -->
           <button
             @click="router.push('/dashboard/crm/accounts')"
-            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-sm hover:shadow-xl focus:outline-none"
+            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-none hover:shadow-xl focus:outline-none"
           >
             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity"></div>
             <div class="relative z-10 flex flex-col items-center gap-4">
@@ -235,7 +235,7 @@
           <!-- Calendar -->
           <button
             @click="router.push('/dashboard/crm/meetings')"
-            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-sm hover:shadow-xl focus:outline-none"
+            class="group bg-white border-2 border-gray-200 hover:border-[#2F2E8B] transition-all duration-200 p-8 flex flex-col items-center text-center relative overflow-hidden shadow-none hover:shadow-xl focus:outline-none"
           >
             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity"></div>
             <div class="relative z-10 flex flex-col items-center gap-4">

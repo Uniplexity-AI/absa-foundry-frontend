@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <BackButton route="/dashboard/crm" variant="icon-only" />
@@ -77,7 +77,7 @@
 
         <!-- Stats Grid -->
         <div v-if="showKPIs" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -90,7 +90,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.scheduled || 0 }}</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -103,7 +103,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.today || 0 }}</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -116,7 +116,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.completedThisWeek || 0 }}</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -133,7 +133,7 @@
 
         <!-- Financial KPI Row -->
         <div v-if="showKPIs" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -146,7 +146,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiPipelineValue) }}</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -159,7 +159,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiWonRevenue) }}</p>
             </div>
           </div>
-          <div class="bg-white border border-gray-200 shadow-sm hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -172,7 +172,7 @@
               <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiCAC) }}</p>
             </div>
           </div>
-          <div class="bg-[#2F2E8B] border border-[#2F2E8B] shadow-sm hover:bg-[#1D226B] transition cursor-pointer group relative overflow-hidden">
+          <div class="bg-[#2F2E8B] border border-[#2F2E8B] shadow-none hover:bg-[#1D226B] transition cursor-pointer group relative overflow-hidden">
             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-10"></div>
             <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
@@ -321,7 +321,7 @@
         </div>
 
         <!-- Calendar View -->
-        <div v-if="meetingView === 'calendar'" class="bg-white border border-gray-200 rounded-sm shadow-sm relative overflow-hidden">
+        <div v-if="meetingView === 'calendar'" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
           <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
           <div class="p-4 md:p-6 relative z-10">
             <div class="flex items-center justify-between mb-4">
@@ -364,7 +364,7 @@
         </div>
 
         <!-- Upcoming Meetings -->
-        <div v-if="meetingStats.upcoming && meetingStats.upcoming.length > 0" class="bg-white border border-gray-200 rounded-sm shadow-sm relative overflow-hidden">
+        <div v-if="meetingStats.upcoming && meetingStats.upcoming.length > 0" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
           <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
           <div class="p-4 md:p-6 relative z-10">
             <div class="flex items-center gap-2 mb-4">
@@ -428,7 +428,7 @@
               <button v-for="[key, label] in [['all','All'],['month','By Month'],['range','Date Range']]" :key="key"
                 @click="gcalFilterType = key"
                 :class="['flex-1 py-1 text-[10px] font-mono font-bold uppercase rounded-sm transition',
-                  gcalFilterType === key ? 'bg-white text-[#2F2E8B] shadow-sm' : 'text-gray-500 hover:text-gray-700']">
+                  gcalFilterType === key ? 'bg-white text-[#2F2E8B] shadow-none' : 'text-gray-500 hover:text-gray-700']">
                 {{ label }}
               </button>
             </div>
@@ -454,7 +454,7 @@
             <div class="border border-gray-200 rounded-sm overflow-hidden">
               <!-- Select all row -->
               <label class="flex items-center gap-3 px-3 py-2 bg-gray-50 border-b border-gray-100 cursor-pointer hover:bg-gray-100 transition">
-                <input type="checkbox" :checked="gcalAllSelected" :indeterminate.prop="gcalSomeSelected && !gcalAllSelected" @change="gcalToggleSelectAll" class="rounded accent-[#2F2E8B]" />
+                <input type="checkbox" :checked="gcalAllSelected" :indeterminate.prop="gcalSomeSelected && !gcalAllSelected" @change="gcalToggleSelectAll" class="rounded-sm accent-[#2F2E8B]" />
                 <span class="text-[10px] font-mono font-bold text-gray-500 uppercase">Select All ({{ gcalFilteredMeetings.length }})</span>
               </label>
               <!-- Rows -->
@@ -467,7 +467,7 @@
                   <input type="checkbox"
                     :checked="gcalSelectedIds.includes(String(m._id || m.id))"
                     @change="gcalToggleMeeting(m)"
-                    class="rounded accent-[#2F2E8B] shrink-0" />
+                    class="rounded-sm accent-[#2F2E8B] shrink-0" />
                   <div class="min-w-0">
                     <p class="text-xs font-semibold text-gray-800 truncate">{{ m.title || 'Untitled Meeting' }}</p>
                     <p class="text-[10px] text-gray-400">{{ crmFormatDate(m.start_datetime) }}</p>
@@ -513,7 +513,7 @@
 
             <!-- Save toggle -->
             <label class="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" v-model="gcalSaveEmail" class="rounded accent-[#2F2E8B]" />
+              <input type="checkbox" v-model="gcalSaveEmail" class="rounded-sm accent-[#2F2E8B]" />
               <span class="text-[10px] text-gray-500">Save added emails for next time</span>
             </label>
 

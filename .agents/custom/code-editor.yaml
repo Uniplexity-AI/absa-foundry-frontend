@@ -1,0 +1,12 @@
+name: code-editor
+description: "Token-efficient code editor using local Graphify AST navigation"
+mainAgent: true
+subagent: true
+permissionMode: acceptEdits
+commandExecutionPolicy: auto
+tools:
+  - view_file
+  - replace_file_content
+  - run_command
+rules:
+  - .agents/rules/token-optimization.md

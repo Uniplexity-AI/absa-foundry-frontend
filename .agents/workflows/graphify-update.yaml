@@ -1,0 +1,10 @@
+@"
+name: graphify-update
+description: "Re-index repository code using Graphify AST parser without invoking LLM API keys"
+command: /graphify-update
+steps:
+  - name: Update Graphify AST Graph
+    run: graphify update .
+  - name: Output Confirmation
+    run: echo "Graphify AST graph updated successfully in graphify-out/"
+"@ | Out-File -FilePath .agents/workflows/graphify-update.yaml -Encoding utf8

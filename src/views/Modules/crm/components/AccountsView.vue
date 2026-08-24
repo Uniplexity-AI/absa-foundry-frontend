@@ -78,7 +78,7 @@
               </p>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <div class="relative overflow-hidden bg-gradient-to-br from-[#2F2E8B] to-[#1f1e6b] text-white rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-gradient-to-br from-[#2F2E8B] to-[#1f1e6b] text-white rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-white/60 uppercase tracking-[0.15em]">Total</span>
@@ -88,7 +88,7 @@
                   <div class="text-[6px] font-mono text-white/50 uppercase tracking-widest">Active</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">Contacts</span>
@@ -98,7 +98,7 @@
                   <div class="text-[6px] font-mono font-bold text-gray-500 uppercase tracking-widest">Linked</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">From Leads</span>
@@ -108,7 +108,7 @@
                   <div class="text-[6px] font-mono font-bold text-gray-500 uppercase tracking-widest">Converted</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">This Month</span>
@@ -120,7 +120,7 @@
               </div>
             </div>
             <div class="grid grid-cols-2 gap-1.5">
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">Deal Values</span>
@@ -130,7 +130,7 @@
                   <div class="text-[6px] font-mono font-bold text-gray-500 uppercase tracking-widest">Pipeline</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">Won Revenue</span>
@@ -140,7 +140,7 @@
                   <div class="text-[6px] font-mono font-bold text-gray-500 uppercase tracking-widest">Closed-Won</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">CAC</span>
@@ -150,7 +150,7 @@
                   <div class="text-[6px] font-mono font-bold text-gray-500 uppercase tracking-widest">Avg/Won</div>
                 </div>
               </div>
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm shadow-none">
                 <div class="px-2.5 py-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[7px] font-mono font-bold text-gray-700 uppercase tracking-[0.15em]">Maintenance</span>
@@ -275,7 +275,7 @@
           </div>
           <div class="px-6 pb-5 flex justify-end gap-3">
             <button @click="showBulkAssignModal = false" class="px-4 py-2 text-[9px] font-mono font-bold uppercase tracking-wider border border-gray-300 text-gray-700 hover:bg-gray-50 transition rounded-sm">Cancel</button>
-            <button @click="confirmBulkAssign" :disabled="!bulkAssignTarget || bulkProcessing" class="px-5 py-2 text-[9px] font-mono font-bold uppercase tracking-wider bg-[#2F2E8B] text-white hover:bg-[#3D2F88] transition disabled:opacity-50 flex items-center gap-2 rounded-sm shadow-sm">
+            <button @click="confirmBulkAssign" :disabled="!bulkAssignTarget || bulkProcessing" class="px-5 py-2 text-[9px] font-mono font-bold uppercase tracking-wider bg-[#2F2E8B] text-white hover:bg-[#3D2F88] transition disabled:opacity-50 flex items-center gap-2 rounded-sm shadow-none">
               <Loader2 v-if="bulkProcessing" :size="11" class="animate-spin" />
               <UserPlus v-else :size="12" />
               {{ bulkProcessing ? 'Assigning...' : 'Confirm Assign' }}
@@ -304,7 +304,7 @@
     <div v-if="!loading && accounts.length > 0 && viewMode === 'grid'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
       <div v-for="account in accounts" :key="account.id"
         @click="viewAccount(account)"
-        class="bg-white border border-gray-200 rounded-sm hover:border-[#2F2E8B]/50 hover:shadow-sm transition cursor-pointer relative overflow-hidden group">
+        class="bg-white border border-gray-200 rounded-sm hover:border-[#2F2E8B]/50 hover:shadow-none transition cursor-pointer relative overflow-hidden group">
 
         <!-- Card Header -->
         <div class="p-2 border-b border-gray-100 flex items-center justify-between">

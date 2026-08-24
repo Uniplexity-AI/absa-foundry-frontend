@@ -143,7 +143,7 @@
     <div v-if="showKpis" class="overflow-x-auto pb-2 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-full">
       <div class="flex gap-2 min-w-max">
         <div v-for="stageId in ['new', 'contacted', 'proposal', 'negotiation', 'closed-won', 'closed-lost']" :key="stageId" 
-             class="bg-white border border-gray-200 rounded-sm p-2.5 w-36 shrink-0 shadow-sm">
+             class="bg-white border border-gray-200 rounded-sm p-2.5 w-36 shrink-0 shadow-none">
           <div class="flex items-center justify-between mb-1">
             <div class="text-[8px] font-mono font-black text-[#2F2E8B] uppercase tracking-widest">{{ stageId.replace('-', ' ') }}</div>
             <span class="w-2 h-2 rounded-full bg-[#2F2E8B]"></span>
@@ -190,7 +190,7 @@
                 <h5 class="font-semibold text-sm text-gray-800 truncate">{{ getRecordTitle(record, stage.entity) }}</h5>
                 <p class="text-xs text-gray-500 truncate">{{ getRecordSubtitle(record, stage.entity) }}</p>
               </div>
-              <span :class="getEntityBadgeClass(stage.entity)" class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ml-2 flex-shrink-0">
+              <span :class="getEntityBadgeClass(stage.entity)" class="px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase ml-2 flex-shrink-0">
                 {{ stage.entity.slice(0, -1) }}
               </span>
             </div>
@@ -271,7 +271,7 @@
               @touchstart="$emit('touch-start', $event, record)"
               @touchmove="$emit('touch-move')"
               @touchend="$emit('touch-end', $event, stage.id)"
-              class="bg-white rounded-sm p-1.5 shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-move group relative touch-manipulation active:opacity-50 active:scale-95"
+              class="bg-white rounded-sm p-1.5 shadow-none border border-gray-100 hover:shadow-md transition-all cursor-move group relative touch-manipulation active:opacity-50 active:scale-95"
               :class="[
                 getRecordBorderClass(record, stage.entity),
                 { 'opacity-50': draggingLead && draggingLead.id === record.id }
@@ -279,7 +279,7 @@
             >
               <!-- Entity Type Badge -->
               <div class="absolute top-0.5 right-0.5">
-                <span :class="getEntityBadgeClass(stage.entity)" class="px-1 py-0.5 rounded text-[7px] font-black uppercase">
+                <span :class="getEntityBadgeClass(stage.entity)" class="px-1 py-0.5 rounded-sm text-[7px] font-black uppercase">
                   {{ stage.entity.slice(0, -1) }}
                 </span>
               </div>

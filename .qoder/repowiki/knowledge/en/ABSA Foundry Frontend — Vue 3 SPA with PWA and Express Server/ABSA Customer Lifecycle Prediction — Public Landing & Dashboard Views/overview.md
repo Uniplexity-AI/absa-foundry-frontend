@@ -1,0 +1,1 @@
+Vue single-file views that render the public ABSA landing page, the authenticated portfolio dashboard, customer detail pages, and action-plan workflows for the predictive churn-retention system.

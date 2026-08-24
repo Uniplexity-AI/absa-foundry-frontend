@@ -10,7 +10,7 @@
     <div class="max-w-[1700px] mx-auto px-8 py-12 relative z-10">
       
       <!-- Header with AI Status -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_MODULE // STRATEGIC_GOALS_ENGINE</div>
         
@@ -56,7 +56,7 @@
               <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none group-hover/lang:text-gray-900 transition-colors"></i>
             </div>
 
-            <button class="px-6 py-3 bg-white border border-gray-200 text-[10px] font-mono font-black uppercase tracking-widest hover:bg-gray-50 transition-all shadow-sm">
+            <button class="px-6 py-3 bg-white border border-gray-200 text-[10px] font-mono font-black uppercase tracking-widest hover:bg-gray-50 transition-all shadow-none">
               IMPORT_DATA
             </button>
             <button class="px-6 py-3 bg-gray-900 text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-[#2F2E8B] transition-all shadow-xl shadow-gray-200/50">
@@ -184,7 +184,7 @@
 
       <!-- Goal Statistics -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white border border-gray-200 p-6 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-6 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="flex items-center justify-between relative z-10">
             <div>
@@ -197,7 +197,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-6 shadow-sm relative overflow-hidden group hover:border-green-500/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-6 shadow-none relative overflow-hidden group hover:border-green-500/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="flex items-center justify-between relative z-10">
             <div>
@@ -210,7 +210,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-6 shadow-sm relative overflow-hidden group hover:border-[#3D2F88]/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-6 shadow-none relative overflow-hidden group hover:border-[#3D2F88]/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="flex items-center justify-between relative z-10">
             <div>
@@ -223,7 +223,7 @@
           </div>
         </div>
 
-        <div class="bg-white border border-gray-200 p-6 shadow-sm relative overflow-hidden group hover:border-amber-500/20 transition-colors">
+        <div class="bg-white border border-gray-200 p-6 shadow-none relative overflow-hidden group hover:border-amber-500/20 transition-colors">
           <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
           <div class="flex items-center justify-between relative z-10">
             <div>
@@ -264,7 +264,7 @@
           <div 
             v-for="goal in paginatedGoals"  
             :key="goal.id"
-            class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-all"
+            class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-all"
             :class="{ 'border-l-4 border-l-green-500': goal.progress >= 100 }"
           >
             <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
@@ -288,7 +288,7 @@
               <div class="flex items-center gap-4">
                 <div class="flex flex-col items-end">
                   <span :class="[
-                    'text-[9px] font-mono font-black px-2 py-1 uppercase tracking-widest mb-1 shadow-sm',
+                    'text-[9px] font-mono font-black px-2 py-1 uppercase tracking-widest mb-1 shadow-none',
                     goal.priority === 'high' ? 'bg-red-500 text-white' :
                     goal.priority === 'medium' ? 'bg-amber-500 text-white' :
                     'bg-[#2F2E8B] text-white'
@@ -539,7 +539,7 @@
       </div>
 
       <!-- Smart Alerts & Nudges -->
-      <div class="bg-white border border-gray-200 p-8 shadow-sm relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
+      <div class="bg-white border border-gray-200 p-8 shadow-none relative overflow-hidden group hover:border-[#2F2E8B]/20 transition-colors mb-8">
         <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
         <div class="absolute top-0 right-0 bg-gray-50 border-b border-l border-gray-100 px-3 py-1 text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest z-20">SYSTEM_ALERTS // INTELLIGENT_NUDGES</div>
         

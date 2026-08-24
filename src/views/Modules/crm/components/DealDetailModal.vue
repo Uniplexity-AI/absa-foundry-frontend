@@ -48,7 +48,7 @@
               v-for="tab in tabs"
               :key="tab.id"
               @click="activeTab = tab.id"
-              :class="activeTab === tab.id ? 'bg-white text-[#2F2E8B] border-x border-t border-gray-100 -mb-px font-black shadow-sm' : 'text-gray-400 hover:text-gray-600 font-bold'"
+              :class="activeTab === tab.id ? 'bg-white text-[#2F2E8B] border-x border-t border-gray-100 -mb-px font-black shadow-none' : 'text-gray-400 hover:text-gray-600 font-bold'"
               class="px-6 py-3 transition text-[10px] font-mono uppercase tracking-widest flex items-center gap-2 whitespace-nowrap"
             >
               <component :is="tab.lucideIcon" :size="14" />

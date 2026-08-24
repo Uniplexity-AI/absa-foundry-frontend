@@ -3,7 +3,7 @@
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm relative">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
         <div class="flex items-center gap-2 sm:gap-3">
           <button @click="$router.push('/dashboard/crm')" class="text-gray-500 hover:text-[#2F2E8B] transition p-1.5 sm:p-2">
@@ -126,7 +126,7 @@
                 <h3 class="text-base sm:text-xl font-black text-gray-900 uppercase tracking-tight font-outfit">{{ leadModalTitle }}</h3>
               </div>
             </div>
-            <button @click="closeLeadModal" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-sm">
+            <button @click="closeLeadModal" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none">
               <X :size="18" />
             </button>
           </div>
@@ -666,7 +666,7 @@
                 <div class="text-[8px] font-mono text-blue-300 uppercase tracking-wider leading-none">{{ callDialogLead?.company || '' }}</div>
               </div>
             </div>
-            <button @click="closeCallDialog" class="w-6 h-6 flex items-center justify-center text-blue-300 hover:text-white transition rounded hover:bg-[#3D3A9E]">
+            <button @click="closeCallDialog" class="w-6 h-6 flex items-center justify-center text-blue-300 hover:text-white transition rounded-sm hover:bg-[#3D3A9E]">
               <i class="fas fa-times text-sm"></i>
             </button>
           </div>
@@ -693,13 +693,13 @@
               </div>
               <div class="space-y-1 max-h-36 overflow-y-auto custom-scrollbar pr-1">
                 <label v-for="(point, idx) in callTalkingPoints" :key="idx" class="flex items-start gap-1.5 p-1.5 border border-gray-100 hover:border-[#2F2E8B]/30 hover:bg-[#2F2E8B]/5 cursor-pointer transition-colors rounded">
-                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded text-[#2F2E8B] focus:ring-[#2F2E8B] border-gray-300 w-3 h-3" />
+                  <input type="checkbox" v-model="point.done" class="mt-0.5 rounded-sm text-[#2F2E8B] focus:ring-[#2F2E8B] border-gray-300 w-3 h-3" />
                   <span class="text-[10px] text-gray-700 font-mono uppercase tracking-tight leading-snug" :class="{ 'line-through text-gray-400': point.done }">{{ point.text }}</span>
                 </label>
               </div>
               <div class="flex gap-1.5 mt-1.5">
-                <input v-model="newCallTalkingPoint" @keyup.enter="addCallTalkingPoint" type="text" placeholder="ADD CUSTOM TALKING POINT..." class="flex-1 border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded outline-none bg-gray-50" />
-                <button type="button" @click="addCallTalkingPoint" class="px-2.5 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase rounded transition">
+                <input v-model="newCallTalkingPoint" @keyup.enter="addCallTalkingPoint" type="text" placeholder="ADD CUSTOM TALKING POINT..." class="flex-1 border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded-sm outline-none bg-gray-50" />
+                <button type="button" @click="addCallTalkingPoint" class="px-2.5 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase rounded-sm transition">
                   <i class="fas fa-plus text-[10px]"></i>
                 </button>
               </div>
@@ -709,7 +709,7 @@
             <div class="grid grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1">Outcome</label>
-                <select v-model="callOutcome" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded outline-none bg-gray-50">
+                <select v-model="callOutcome" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono uppercase rounded-sm outline-none bg-gray-50">
                   <option value="connected">CONNECTED</option>
                   <option value="voicemail">VOICEMAIL</option>
                   <option value="no_answer">NO ANSWER</option>
@@ -720,7 +720,7 @@
               </div>
               <div>
                 <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1">Duration (Min)</label>
-                <input v-model.number="callDuration" type="number" min="0" step="0.5" placeholder="0" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded outline-none bg-gray-50" />
+                <input v-model.number="callDuration" type="number" min="0" step="0.5" placeholder="0" class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded-sm outline-none bg-gray-50" />
               </div>
             </div>
 
@@ -729,7 +729,7 @@
               <label class="block text-[8px] font-mono font-bold text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-1">
                 <i class="fas fa-pen text-[#2F2E8B] text-[10px]"></i> Call Notes
               </label>
-              <textarea v-model="callNotes" rows="2" placeholder="WHAT WAS DISCUSSED, NEXT STEPS, OBJECTIONS..." class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded outline-none bg-gray-50 resize-none"></textarea>
+              <textarea v-model="callNotes" rows="2" placeholder="WHAT WAS DISCUSSED, NEXT STEPS, OBJECTIONS..." class="w-full border border-gray-200 focus:border-[#2F2E8B] focus:ring-1 focus:ring-[#2F2E8B] px-2 py-1.5 text-[10px] font-mono rounded-sm outline-none bg-gray-50 resize-none"></textarea>
               <p class="text-[8px] font-mono text-gray-400 mt-0.5 uppercase tracking-wider flex items-center gap-1">
                 <i class="fas fa-info-circle text-[#2F2E8B] text-[9px]"></i> Saved to lead profile and visible in activity log.
               </p>
@@ -737,8 +737,8 @@
           </div>
 
           <div class="flex items-center justify-end gap-2 px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50">
-            <button type="button" @click="closeCallDialog" class="px-3.5 py-1.5 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded transition text-[9px] font-mono font-black uppercase tracking-widest">Cancel</button>
-            <button type="button" @click="saveCallDialogNote" :disabled="!callDialogLead" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] disabled:opacity-50 text-white rounded transition text-[9px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
+            <button type="button" @click="closeCallDialog" class="px-3.5 py-1.5 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded-sm transition text-[9px] font-mono font-black uppercase tracking-widest">Cancel</button>
+            <button type="button" @click="saveCallDialogNote" :disabled="!callDialogLead" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] disabled:opacity-50 text-white rounded-sm transition text-[9px] font-mono font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
               <i class="fas fa-save"></i>
               Save Note & Log Call
             </button>
@@ -761,16 +761,16 @@
                 <div class="text-[7px] font-mono font-bold text-blue-200 uppercase tracking-widest">{{ whatsAppDialogLead?.name || 'CONTACT' }} <span v-if="whatsAppDialogLead?.phone">· {{ whatsAppDialogLead.phone }}</span></div>
               </div>
             </div>
-            <button @click="showWhatsAppDialog = false" class="w-5 h-5 flex items-center justify-center text-blue-300 hover:text-white rounded hover:bg-[#3D3A9E] transition-colors">
+            <button @click="showWhatsAppDialog = false" class="w-5 h-5 flex items-center justify-center text-blue-300 hover:text-white rounded-sm hover:bg-[#3D3A9E] transition-colors">
               <i class="fas fa-times text-[11px]"></i>
             </button>
           </div>
           <div class="p-3.5 space-y-3">
-            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-[#2F2E8B]/5 px-2.5 py-1.5 rounded border border-[#2F2E8B]/10">
+            <div class="flex items-center gap-2 text-[10px] font-mono font-bold text-gray-600 uppercase tracking-widest bg-[#2F2E8B]/5 px-2.5 py-1.5 rounded-sm border border-[#2F2E8B]/10">
               <i class="fas fa-whatsapp text-[#2F2E8B] text-[11px]"></i>
               <span>Send to {{ whatsAppDialogLead?.phone || 'N/A' }}</span>
             </div>
-            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-[#2F2E8B] focus:bg-[#2F2E8B]/5 resize-none rounded transition-colors"></textarea>
+            <textarea v-model="whatsAppMessage" rows="3" placeholder="Type your WhatsApp message..." class="w-full border border-gray-200 bg-gray-50 px-3 py-2 text-[11px] font-mono text-gray-700 outline-none focus:border-[#2F2E8B] focus:bg-[#2F2E8B]/5 resize-none rounded-sm transition-colors"></textarea>
             <div class="bg-[#2F2E8B]/5 border border-[#2F2E8B]/10 px-3 py-2 rounded">
               <p class="text-[8px] font-mono font-bold text-[#2F2E8B] uppercase tracking-widest flex items-center gap-1.5">
                 <i class="fas fa-info-circle text-[9px]"></i> Message logged to lead activity.
@@ -778,12 +778,12 @@
             </div>
           </div>
           <div class="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-2">
-            <a v-if="whatsAppDialogLead?.phone" :href="'https://wa.me/' + whatsAppDialogLead.phone.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+            <a v-if="whatsAppDialogLead?.phone" :href="'https://wa.me/' + whatsAppDialogLead.phone.replace(/[^0-9]/g, '')" target="_blank" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
               <i class="fab fa-whatsapp text-[11px]"></i> Open WhatsApp
             </a>
             <div class="flex items-center gap-2">
               <button @click="showWhatsAppDialog = false" class="px-3 py-1.5 text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest hover:text-gray-700 transition-colors">Cancel</button>
-              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded shadow-sm">
+              <button @click="proceedWithWhatsApp" class="px-4 py-1.5 bg-[#2F2E8B] hover:bg-[#3D3A9E] text-white text-[9px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm shadow-none">
                 <i class="fas fa-save text-[10px]"></i> Save Text
               </button>
             </div>

@@ -152,7 +152,7 @@
           <div class="flex flex-col gap-2 lg:w-1/2 xl:w-2/5">
             <div class="grid grid-cols-2 gap-2">
               <!-- Total -->
-              <div class="relative overflow-hidden bg-gradient-to-br from-[#2F2E8B] to-[#1f1e6b] text-white rounded-sm group transition-all shadow-sm">
+              <div class="relative overflow-hidden bg-gradient-to-br from-[#2F2E8B] to-[#1f1e6b] text-white rounded-sm group transition-all shadow-none">
                 <div class="absolute inset-0 dotted-pattern opacity-[0.08] pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
                   <div class="flex items-center justify-between mb-0.5">
@@ -165,7 +165,7 @@
               </div>
 
               <!-- Hot -->
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-red-400 transition-all shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-red-400 transition-all shadow-none">
                 <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
                 <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-red-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
@@ -179,7 +179,7 @@
               </div>
 
               <!-- Warm -->
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-orange-400 transition-all shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-orange-400 transition-all shadow-none">
                 <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
                 <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-orange-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
@@ -193,7 +193,7 @@
               </div>
 
               <!-- Cold -->
-              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-blue-400 transition-all shadow-sm">
+              <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-blue-400 transition-all shadow-none">
                 <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
                 <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
@@ -209,7 +209,7 @@
 
             <!-- Auto-Assign Feature Card -->
             <div
-              class="relative overflow-hidden bg-white border border-dashed border-gray-300 cursor-pointer hover:border-[#2F2E8B] hover:shadow-sm transition-all group"
+              class="relative overflow-hidden bg-white border border-dashed border-gray-300 cursor-pointer hover:border-[#2F2E8B] hover:shadow-none transition-all group"
               @click="showAutoAssignModal = true"
             >
               <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>

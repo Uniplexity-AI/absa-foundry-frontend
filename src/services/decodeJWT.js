@@ -40,9 +40,15 @@ export function decodeJWT() {
 
 
 
-  const getUserRole = () => {
+  const getUserRoles = () => {
     const decoded = decodeToken()
-    return decoded?.role || null
+    if (Array.isArray(decoded?.roles) && decoded.roles.length) return decoded.roles
+    return decoded?.role ? [decoded.role] : []
+  }
+
+  const getUserRole = () => {
+    const roles = getUserRoles()
+    return roles[0] || null
   }
 
   const getUserEmail = () => {
@@ -52,7 +58,7 @@ export function decodeJWT() {
 
   const getUserName = () => {
     const decoded = decodeToken()
-    return decoded?.name || null
+    return decoded?.display_name || decoded?.name || decoded?.username || null
   }
 
 
@@ -79,12 +85,10 @@ export function decodeJWT() {
         console.warn('Backend logout failed, clearing locally', e)
       }
     }
-    localStorage.removeItem('token')
-    localStorage.removeItem('user_id')
-    localStorage.removeItem('email')
-    localStorage.removeItem('role')
-    localStorage.removeItem('branches')
-    localStorage.removeItem('selected_branch')
+    ;['token','refresh_token','user_id','email','role','roles','userName','display_name',
+      'company_name','tenant_id','branches','selected_branch','active_subaccount_id',
+      'active_subaccount_email','active_subaccount_name']
+      .forEach(k => localStorage.removeItem(k))
 
     // Use router instance if set, otherwise fallback
     if (routerInstance) {
@@ -142,13 +146,14 @@ export function decodeJWT() {
 
   const getBranchId = () => {
     const decoded = decodeToken()
-    return decoded?.branch_id || decoded?.station_id || null
+    return decoded?.branch_code || decoded?.branch_id || decoded?.station_id || null
   }
 
   return {
     getToken,
     decodeToken,
     getUserRole,
+    getUserRoles,
     getUserEmail,
     getUserName,
     getUserId,

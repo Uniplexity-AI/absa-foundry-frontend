@@ -7,8 +7,8 @@
 //   import { useAudit } from '@/config/useAudit';
 //   const { logAudit } = useAudit();
 //
-//   await logAudit('create', 'inventory', { resource_type: 'product', label: item.name });
-//   await logAudit('delete', 'pos',       { resource_type: 'cash_in', resource_id: id });
+//   await logAudit('update', 'customer_lifecycle', { resource_type: 'action_plan', label: item.name });
+//   await logAudit('export', 'portfolio', { resource_type: 'customer_portfolio' });
 //   await logAudit('update', 'settings',  { resource_type: 'branding' });
 //   await logAudit('export', 'sales',     { resource_type: 'pdf_report', period: 'month' });
 // ─────────────────────────────────────────────────────────────────────────────
@@ -21,15 +21,11 @@ export function useAudit() {
 
   /**
    * Resolve the active operator role at call time.
-   * Priority: localStorage 'role' → pos_operator.role → JWT role
+   * Priority: localStorage 'role' → JWT role
    */
   const _resolveRole = () => {
     const localRole = (localStorage.getItem('role') || '').toLowerCase();
     if (localRole) return localRole;
-    try {
-      const op = JSON.parse(localStorage.getItem('pos_operator') || 'null');
-      if (op?.role) return op.role.toLowerCase();
-    } catch (_) {}
     return (getUserRole() || 'unknown').toLowerCase();
   };
 
@@ -37,7 +33,7 @@ export function useAudit() {
    * Log a user action to the backend audit log.
    *
    * @param {string} action   - 'create' | 'update' | 'delete' | 'login' | 'logout' | 'export' | 'import' | 'approve' | 'reject' | ...
-   * @param {string} module   - 'settings' | 'pos' | 'cash-in' | 'inventory' | 'invoices' | 'hr' | 'crm' | 'assets' | ...
+   * @param {string} module   - 'portfolio' | 'customer_lifecycle' | 'etl' | 'models' | 'crm' | 'settings' | ...
    * @param {object} details  - optional context: { resource_type, resource_id, label, old_value, new_value, ... }
    */
   async function logAudit(action, module, details = {}) {

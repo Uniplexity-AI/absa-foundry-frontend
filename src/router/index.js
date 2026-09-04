@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { decodeJWT } from '@/services/decodeJWT.js';
-import { getModuleCards, availableModules } from '@/config/moduleCards';
 import { DEV_BYPASS } from '@/config/devFlags.js';
 
 // Lazy load LandingPage to avoid circular dependency with api.js importing router
@@ -13,22 +12,6 @@ import Login from '@/views/auth/login.vue';
 import ResetPassword from '@/views/auth/ResetPassword.vue';
 
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout.vue';
-
-// ===================================Strategic Management Module ==============================
-
-import OverviewSubpage from '@/views/Modules/strategic/OverviewSubpage.vue';
-import NotesSubpage from '@/views/Modules/strategic/NotesSubpage.vue';
-import GovernanceSubpage from '@/views/Modules/strategic/GovernanceSubpage.vue';
-import ActionsSubpage from '@/views/Modules/strategic/ActionsSubpage.vue';
-import GoalsSubpage from '@/views/Modules/strategic/GoalsSubpage.vue';
-import PredictionsSubpage from '@/views/Modules/strategic/PredictionsSubpage.vue';
-import AnalysisSubpage from '@/views/Modules/strategic/AnalysisSubpage.vue';
-import FundingSubpage from '@/views/Modules/strategic/FundingSubpage.vue';
-import EnvironmentalSubpage from '@/views/Modules/strategic/EnvironmentalSubpage.vue';
-import InternalAnalysisSubpage from '@/views/Modules/strategic/InternalAnalysisSubpage.vue';
-import PositioningSubpage from '@/views/Modules/strategic/PositioningSubpage.vue';
-import BrandStrategySubpage from '@/views/Modules/strategic/BrandStrategySubpage.vue';
-
 
 // Define routes
 const routes = [
@@ -127,12 +110,12 @@ const routes = [
       { path: 'lifecycle',         name: 'LifecyclePrediction',       component: () => import('../views/Modules/intelligence/LifecyclePrediction.vue'),       meta: { title: 'Customer Lifecycle' } },
      
       { path: 'ai', name: 'AiModule', component: () => import('../views/Modules/aiagents/AiModule.vue'), meta: { title: 'AI Assistant' } },
+      { path: 'ai/codebase-insights', name: 'CodebaseInsights', component: () => import('../views/Modules/aiagents/CodebaseInsights.vue'), meta: { title: 'Codebase Insights' } },
       { path: 'settings', name: 'SettingsModule', component: () => import('../views/Modules/settings/SettingsModule.vue'), meta: { title: 'Settings' } },
       { path: 'subaccounts', name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue'), meta: { title: 'Sub Accounts' } },
       { path: 'settings/users', name: 'UserManagement', component: () => import('../views/Modules/settings/UserManagement.vue'), meta: { title: 'User Management' } },
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/Modules/settings/ProfileModule.vue') },
       
-      // { path: 'image-capture', name: 'ImageCaptureModule', component: () => import('../views/Modules/aiagents/ImageCaptureModule.vue') },
     
       { path: 'crm', name: 'CrmModule', component: () => import('../views/Modules/crm/CRMModule.vue') },
       { path: 'crm/leads', name: 'CrmLeads', component: () => import('../views/Modules/crm/CRMLeadsPage.vue') },
@@ -148,19 +131,6 @@ const routes = [
       { path: 'crm/whatsapp', name: 'CrmWhatsApp', component: () => import('../views/Modules/crm/CRMWhatsAppPage.vue') },
       { path: 'crm/acquisition', name: 'CrmAcquisition', component: () => import('../views/Modules/crm/CRMAcquisitionPage.vue') },
       
-      { path: 'strategic-management', redirect: '/dashboard/strategic/overview' },
-      { path: 'strategic/overview', name: 'StrategicOverview', component: OverviewSubpage },
-      { path: 'strategic/notes', name: 'StrategicNotes', component: NotesSubpage },
-      { path: 'strategic/governance', name: 'StrategicGovernance', component: GovernanceSubpage },
-      { path: 'strategic/actions', name: 'StrategicActions', component: ActionsSubpage },
-      { path: 'strategic/goals', name: 'StrategicGoals', component: GoalsSubpage },
-      { path: 'strategic/predictions', name: 'StrategicPredictions', component: PredictionsSubpage },
-      { path: 'strategic/analysis', name: 'StrategicAnalysis', component: AnalysisSubpage },
-      { path: 'strategic/funding', name: 'StrategicFunding', component: FundingSubpage },
-      { path: 'strategic/environmental', name: 'StrategicEnvironmental', component: EnvironmentalSubpage },
-      { path: 'strategic/internal-analysis', name: 'StrategicInternalAnalysis', component: InternalAnalysisSubpage },
-      { path: 'strategic/positioning', name: 'StrategicPositioning', component: PositioningSubpage },
-      { path: 'strategic/brand', name: 'StrategicBrand', component: BrandStrategySubpage },
       
       
      
@@ -198,75 +168,66 @@ const router = createRouter({
   routes,
 });
 
-// Centralized Route Guard: Authentication & Subscription Enforcement
-router.beforeEach(async (to, from, next) => {
+// Centralized Route Guard: authentication + role-scoped area access (ABSA)
+const ABSA_ROLES = { ADMIN: 'ADMIN', RM: 'RELATIONSHIP_MANAGER', DS: 'DATA_SCIENTIST', OPS: 'OPERATIONS' }
+
+const AREA_ROLES = {
+  analytics: [ABSA_ROLES.ADMIN, ABSA_ROLES.RM],
+  models: [ABSA_ROLES.ADMIN, ABSA_ROLES.DS],
+  etl: [ABSA_ROLES.ADMIN, ABSA_ROLES.OPS]
+}
+
+function currentRole() {
+  try {
+    return String(decodeJWT().getUserRole?.() || '').toUpperCase()
+  } catch (e) {
+    return ''
+  }
+}
+
+function homeForRole(role) {
+  if (role === ABSA_ROLES.DS) return '/dashboard/models'
+  if (role === ABSA_ROLES.OPS) return '/dashboard/etl-run-history'
+  return '/dashboard/portfolio'
+}
+
+function requiredArea(path) {
+  if (path.startsWith('/dashboard/models')) return 'models'
+  if (path.startsWith('/dashboard/etl')) return 'etl'
+  if (
+    path.startsWith('/dashboard/customer') || path.startsWith('/dashboard/portfolio') ||
+    path.startsWith('/dashboard/branch-manager') || path.startsWith('/dashboard/customer-value') ||
+    path.startsWith('/dashboard/lifecycle') || path.startsWith('/dashboard/balance-forecast') ||
+    path.startsWith('/dashboard/business-outcomes') || path.startsWith('/portfolio') ||
+    path.startsWith('/customer/')
+  ) return 'analytics'
+  return null
+}
+
+router.beforeEach((to, from, next) => {
+  // Local dev bypass (VITE_DEV_BYPASS=true) — skip all checks
   if (DEV_BYPASS) {
     return next();
   }
 
-  // Handle admin impersonation token from URL query param
-  const impersonateToken = to.query.ub_impersonate;
-  if (impersonateToken) {
-    localStorage.setItem('token', impersonateToken);
-    // Clear the query param and redirect to dashboard
-    const cleanQuery = { ...to.query };
-    delete cleanQuery.ub_impersonate;
-    // Navigate to dashboard/portfolio, the app will decode the JWT and set user context
-    return next({ path: '/dashboard/portfolio', query: cleanQuery, replace: true });
-  }
+  const isAppRoute = to.path.startsWith('/dashboard') || to.path.startsWith('/portfolio') || to.path.startsWith('/customer/')
 
-  const { getUserRole } = decodeJWT();
-  const token = localStorage.getItem('token');
-  const role = getUserRole();
-
-  // 1. Authentication Check
-  if (to.meta.requiresAuth && !token) {
-    return next('/login');
-  }
-
-  // 2. Subscription & Module Access Check (Dashboard routes)
-  if (to.path.startsWith('/dashboard') && to.path !== '/dashboard/portfolio') {
-    // Special handling for profile/settings/subaccounts (usually allowed if logged in)
-    const allowedUniversal = ['/dashboard/profile', '/dashboard/settings', '/dashboard/subaccounts', '/dashboard/portfolio'];
-    if (allowedUniversal.includes(to.path)) {
-      return next();
+  if (isAppRoute) {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      return next('/login');
     }
 
-    // Identify which module this path belongs to
-    const cards = getModuleCards();
-    const targetModule = cards.find(c => to.path.startsWith(c.route));
+    const role = currentRole()
+    if (!role) {
+      return next('/login');
+    }
 
-    if (targetModule) {
-      // Check if this module requires a subscription
-      const moduleDef = availableModules.find(m => m.id === targetModule.id);
-
-      if (moduleDef && moduleDef.requiresSubscription) {
-        // Fetch/Check subscriptions from cache
-        const subDetails = JSON.parse(localStorage.getItem('ub_subscription_details_v1') || '{}');
-        const activeSubs = subDetails.modules || []; // Adjust based on cache structure in SettingsModule.vue
-
-        // If owner/admin, we might want to check against the full fetched list
-        // For now, if it's in the cache, allow. If not, we could consider it unauthorized.
-        // HOWEVER, a better way is to check the 'subscribedModules' logic from DashboardLayout.
-        // Since router guards are async, we can't easily wait for a fetch every time without lag.
-        // We'll trust the cache for now, or allow if user is owner (they see the module and get the 'Subscribe' prompt inside)
-
-        if (role !== 'owner' && role !== 'admin' && role !== 'super_admin' && role !== 'manager') {
-          // For non-admin/non-manager roles, strict check if module is even in their 'allowed' list (from local storage)
-          // Manager role is excluded because it has broad default permissions and the DashboardLayout
-          // will correctly filter what it can see — the stale localStorage check would false-block it.
-          const allowedModules = JSON.parse(localStorage.getItem('ub_allowed_modules') || '[]');
-          if (allowedModules.length > 0 && !allowedModules.includes(targetModule.id)) {
-            return next('/403');
-          }
-        }
-      }
+    const area = requiredArea(to.path)
+    if (area && !(AREA_ROLES[area] || []).includes(role)) {
+      return next({ path: homeForRole(role), replace: true });
     }
   }
-
-  // If navigating to the POS module, set a short-lived session flag so the POS view
-  // can scroll the sale controls into view immediately on mount.
-
 
   next();
 });

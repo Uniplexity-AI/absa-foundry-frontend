@@ -1845,8 +1845,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="postcss">
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;700&display=swap');
-
 .font-outfit {
   font-family: 'Outfit', sans-serif;
 }

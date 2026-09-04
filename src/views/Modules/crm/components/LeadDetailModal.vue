@@ -1674,10 +1674,11 @@ function initLeadMap() {
         popupAnchor: [0, -52]
       });
     } else {
-      icon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41]
+      icon = L.divIcon({
+        className: 'crm-default-marker',
+        html: '<div style="width:20px;height:20px;border:3px solid #fff;border-radius:50% 50% 50% 0;background:#DC0037;box-shadow:0 1px 4px rgba(0,0,0,.35);transform:rotate(-45deg)"></div>',
+        iconSize: [26, 26],
+        iconAnchor: [13, 26]
       });
     }
     

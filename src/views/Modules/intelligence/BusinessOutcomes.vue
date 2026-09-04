@@ -13,11 +13,11 @@
         <p class="text-body-md text-gray-500 mt-1">Retention ROI, revenue protected, success criteria tracking, and pilot performance</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
+        <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[16px]">download</span>
           Export Report
         </button>
-        <button class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-semibold shadow-none">
+        <button @click="downloadBusinessCase" class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[16px]">description</span>
           Download Business Case
         </button>
@@ -372,12 +372,72 @@ import { ref, onMounted, watch, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { downloadCsv, downloadMarkdown, notify, reportFilename, todayLabel, stamp } from '@/utils/absaExport'
 
 const store = useIntelligenceStore()
 const loading = ref(true)
 const activeTab = ref('roi')
 let roiChart = null
 const roiCanvas = ref(null)
+
+// ─── Export / Business Case ──────────────────────────────────────────────────
+
+function exportReport() {
+  const retention = store.outcomesData?.retention_performance ?? fallbackRetention
+  const criteria = store.outcomesData?.success_criteria ?? fallbackCriteria
+  const trend = store.outcomesData?.roi?.trend ?? fallbackRoiTrend
+  const pilot = store.outcomesData?.pilot_vs_control ?? [
+    { metric: 'Monthly Churn Rate', pilot: '5.1%', control: '7.8%', delta: '-2.7pp', significance: 'p < 0.05' },
+    { metric: 'Retention Rate', pilot: '74%', control: '58%', delta: '+16pp', significance: 'p < 0.05' },
+    { metric: 'AUM Change (90D)', pilot: '-1.2%', control: '-4.8%', delta: '+3.6pp', significance: 'p < 0.05' },
+    { metric: 'RM Contacts per Month', pilot: 28, control: 11, delta: '+17', significance: 'p < 0.05' },
+  ]
+  const which = activeTab.value
+  if (which === 'retention') {
+    downloadCsv(reportFilename('retention-performance'), retention, ['entity', 'at_risk', 'contacted', 'retained', 'churned_despite', 'revenue_protected', 'retention_rate'])
+  } else if (which === 'criteria') {
+    downloadCsv(reportFilename('success-criteria'), criteria, ['criterion', 'target', 'current', 'delta', 'status'])
+  } else if (which === 'pilot') {
+    downloadCsv(reportFilename('pilot-vs-control'), pilot, ['metric', 'pilot', 'control', 'delta', 'significance'])
+  } else {
+    downloadCsv(reportFilename('revenue-protected-trend'), trend.map(t => ({ ...t, revenue_m: (t.revenue / 1e6).toFixed(1) })), ['month', 'revenue', 'revenue_m'])
+  }
+  notify('Report exported as CSV', 'success', { autoClose: 2500 })
+}
+
+function downloadBusinessCase() {
+  const md = [
+    '# ABSA Foundry — Business Outcomes & ROI',
+    '',
+    `Generated: ${todayLabel()}  ·  As-of: 2026-07-27`,
+    '',
+    '## Headline ROI',
+    '- Revenue Protected (MTD): **K 48.6M**',
+    '- Customers Retained: **1,284**',
+    '- Intervention Cost: **K 3.2M**',
+    '- Net ROI: **1,418%**',
+    '- System ROI Multiple: **15.2×**',
+    '',
+    '## Retention Performance by Branch / Entity',
+    ...((store.outcomesData?.retention_performance ?? fallbackRetention).map(r =>
+      `- ${r.entity}: flagged ${r.at_risk}, contacted ${r.contacted}, retained ${r.retained} (${r.retention_rate}%)`
+    )),
+    '',
+    '## Success Criteria',
+    ...((store.outcomesData?.success_criteria ?? fallbackCriteria).map(c =>
+      `- [${c.status}] ${c.criterion} — current ${c.current} (target ${c.target})`
+    )),
+    '',
+    '## Pilot vs Control',
+    '- Pilot branches: monthly churn **5.1%**, retention **74%**',
+    '- Control branches: monthly churn **7.8%**, retention **58%**',
+    '- Result: statistically significant (p < 0.05)',
+    '',
+    '_ABSA Foundry — Customer Lifecycle AI (PoC) report._',
+  ].join('\n')
+  downloadMarkdown(`absa-business-case-${stamp()}.md`, md)
+  notify('Business case downloaded (Markdown)', 'success', { autoClose: 2500 })
+}
 
 const tabs = [
   { id: 'roi',       label: 'ROI Summary',          icon: 'trending_up' },

@@ -13,7 +13,7 @@
         <p class="text-body-md text-gray-500 mt-1">CLV scoring, value segmentation, and churn-adjusted priority analysis</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
+        <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[18px]">download</span>
           Export Report
         </button>
@@ -384,14 +384,17 @@
                   <td class="px-3 py-1.5">
                     <button
                       v-if="getQuadrant(c.clv, c.churn_prob) === 'PROTECT'"
+                      @click="assignRmToCustomer(c)"
                       class="px-3 py-1 bg-absa-passion text-absa-serene rounded-sm text-[10px] font-bold hover:bg-absa-power transition-colors shadow-none"
                     >Assign RM</button>
                     <button
                       v-else-if="getQuadrant(c.clv, c.churn_prob) === 'MAINTAIN'"
+                      @click="contactRmForCustomer(c)"
                       class="px-3 py-1 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm text-[10px] font-bold hover:bg-gray-50 transition-colors shadow-none"
                     >Contact RM</button>
                     <button
                       v-else-if="getQuadrant(c.clv, c.churn_prob) === 'MONITOR'"
+                      @click="enrolCampaignForCustomer(c)"
                       class="px-3 py-1 bg-amber-100 text-amber-700 rounded-sm text-[10px] font-bold hover:bg-amber-200 transition-colors shadow-none"
                     >Enrol Campaign</button>
                     <span v-else class="text-xs text-gray-400">&mdash;</span>
@@ -521,7 +524,7 @@
                   </td>
                   <td class="px-3 py-1.5 text-xs font-mono text-absa-enrich">{{ c.aum }}</td>
                   <td class="px-3 py-1.5 text-xs text-gray-500">
-                    <span v-if="c.rm">{{ c.rm }}</span>
+                    <span v-if="hasRm(c)">{{ hasRm(c) }}</span>
                     <span v-else class="text-gray-300 italic text-[11px]">Unassigned</span>
                   </td>
                   <td class="px-3 py-1.5">
@@ -531,11 +534,13 @@
                   </td>
                   <td class="px-3 py-1.5">
                     <button
-                      v-if="!c.rm"
+                      v-if="!hasRm(c)"
+                      @click="assignRmToCustomer(c)"
                       class="px-3 py-1 bg-absa-passion text-absa-serene rounded-sm text-[10px] font-bold hover:bg-absa-power transition-colors shadow-none"
                     >Assign RM</button>
                     <button
                       v-else
+                      @click="contactRmForCustomer(c)"
                       class="px-3 py-1 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm text-[10px] font-bold hover:bg-gray-50 transition-colors shadow-none"
                     >Contact RM</button>
                   </td>
@@ -555,6 +560,8 @@ import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import MlExplainPopover from '@/components/ui/MlExplainPopover.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
+import { assignRm, enrolCustomer, recordAction, getActionState, hydrateStateFromServer } from '@/utils/absaActions'
 
 const store = useIntelligenceStore()
 const loading = ref(true)
@@ -679,7 +686,18 @@ function toggleCustomer(id) {
 }
 
 function bulkAction(action) {
-  console.log(`Bulk action: ${action}`, Array.from(selectedCustomers.value))
+  const ids = Array.from(selectedCustomers.value)
+  if (!ids.length) return
+  if (action === 'Enrol in Campaign') {
+    ids.forEach((id) => enrolCustomer(id, 'Value Retention Cohort'))
+    notify(`Enrolled ${ids.length} customer${ids.length === 1 ? '' : 's'} in Value Retention Cohort`, 'success')
+  } else if (action === 'Assign RM') {
+    ids.forEach((id, i) => assignRm(id, poolRm(i), false))
+    notify(`Assigned RM to ${ids.length} customer${ids.length === 1 ? '' : 's'}`, 'success')
+  } else {
+    recordAction({ type: 'BULK_ACTION', detail: `${action} for ${ids.length} customers` })
+    notify(`Bulk action "${action}" completed for ${ids.length} customers`, 'success')
+  }
   selectedCustomers.value = new Set()
 }
 
@@ -687,9 +705,80 @@ function clearSelection() {
   selectedCustomers.value = new Set()
 }
 
+// ─── Action handlers (row + bulk) ────────────────────────────────────────────
+
+// Deterministic "pool" of RM names so assignments look plausible in the PoC.
+const RM_POOL = ['N. Khumalo', 'B. Zulu', 'A. Nkosi', 'P. Dlamini', 'T. Nkuna', 'L. van Wyk']
+function poolRm(seed) {
+  const s = typeof seed === 'number' ? seed : String(seed).length
+  return RM_POOL[s % RM_POOL.length]
+}
+
+// Local override map so the UI reflects assignments made this session.
+const rmOverrides = ref({})
+
+function hasRm(c) {
+  return (c.rm || rmOverrides.value[c.customer_id]) || null
+}
+
+function assignRmToCustomer(c) {
+  const rm = poolRm(c.customer_id)
+  assignRm(c.customer_id, rm, false)
+  rmOverrides.value = { ...rmOverrides.value, [c.customer_id]: rm }
+  notify(`RM ${rm} assigned to ${c.name}`, 'success')
+}
+
+function contactRmForCustomer(c) {
+  const rm = hasRm(c) || poolRm(c.customer_id)
+  if (!c.rm && !rmOverrides.value[c.customer_id]) {
+    rmOverrides.value = { ...rmOverrides.value, [c.customer_id]: rm }
+  }
+  assignRm(c.customer_id, rm, true)
+  notify(`Contact logged with ${rm} for ${c.name}`, 'success')
+}
+
+function enrolCampaignForCustomer(c) {
+  enrolCustomer(c.customer_id, 'Value Retention Cohort')
+  notify(`${c.name} enrolled in Value Retention Cohort`, 'success')
+}
+
+// ─── Export Report ───────────────────────────────────────────────────────────
+
+function exportReport() {
+  const which = activeTab.value
+  const bands = (store.clvData?.bands ?? []).map(b => ({
+    ...b,
+    avg_clv: b.avg_clv,
+    avg_churn_prob: b.avg_churn_prob,
+    total_aum: b.total_aum,
+  }))
+  const top = store.clvData?.top_customers ?? []
+  if (which === 'segments' || which === 'overview') {
+    downloadCsv(reportFilename('clv-bands'), bands, ['band', 'threshold', 'count', 'avg_clv', 'avg_churn_prob', 'total_aum'])
+  } else {
+    const rows = top.map(c => ({
+      customer_id: c.customer_id, name: c.name, segment: c.segment, band: c.band,
+      clv: c.clv, churn_prob: c.churn_prob, aum: c.aum, rm: hasRm(c) || '', days_since_contact: c.days_since_contact,
+      quadrant: getQuadrant(c.clv, c.churn_prob),
+    }))
+    downloadCsv(reportFilename('priority-customers'), rows, ['customer_id', 'name', 'segment', 'band', 'clv', 'churn_prob', 'aum', 'rm', 'days_since_contact', 'quadrant'])
+  }
+  notify('Report exported as CSV', 'success', { autoClose: 2500 })
+}
+
 // ─── Lifecycle ───────────────────────────────────────────────────────────────
 
 onMounted(async () => {
+  // Rehydrate RM assignments made in previous sessions so UI stays truthful.
+  const overrides = {}
+  const st = getActionState()
+  Object.keys(st).forEach((id) => { if (st[id].rm) overrides[id] = st[id].rm })
+  // Pull server-side per-customer state too (other pilot viewers / browsers).
+  const topIds = (store.clvData?.top_customers ?? []).map((c) => c.customer_id)
+  await Promise.allSettled(topIds.map((id) => hydrateStateFromServer(id)))
+  const st2 = getActionState()
+  Object.keys(st2).forEach((id) => { if (st2[id].rm) overrides[id] = st2[id].rm })
+  if (Object.keys(overrides).length) rmOverrides.value = overrides
   await store.fetchClv()
   loading.value = false
 })

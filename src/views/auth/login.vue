@@ -1,76 +1,58 @@
 <template>
-  <div class="login">
-    <!-- Background: gradient + grid pattern -->
-    <div class="login__bg"></div>
-    <div class="login__pattern"></div>
-
-    <!-- Main Content -->
-    <main class="login__canvas">
-      <!-- Header -->
-      <header class="login__header">
-        <div class="login__logo-wrap">
-          <img
-            alt="Absa Logo"
-            class="login__logo"
-            src="/src/assets/absa-logo.png"
-          />
+  <div class="absa-mesh min-h-screen px-6 py-10 text-absa-enrich lg:flex lg:items-center lg:justify-center">
+    <main class="w-full max-w-md">
+      <div class="mb-6 flex items-center gap-4 border-b border-gray-300 pb-5">
+        <img alt="Absa" class="h-12 w-12 object-contain" src="/src/assets/absa-logo.png" />
+        <div class="border-l-4 border-absa-passion pl-4">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-absa-passion">ABSA Intelligence Unit</p>
+          <h1 class="mt-1 text-xl font-bold tracking-tight text-absa-enrich"></h1>
         </div>
-        <h1 class="login__title">Customer Lifecycle Prediction System</h1>
-        <p class="login__subtitle">Enterprise Decision Intelligence Platform</p>
-        <p class="login__overline">Internal Operations Platform</p>
-      </header>
+      </div>
 
-      <!-- Auth Card -->
-      <div class="login__card">
-        <!-- Error Message Banner -->
-        <div v-if="errorMessage" class="login__error-banner">
-          <svg class="login__error-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="2"/>
-            <line x1="15" y1="9" x2="9" y2="15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="9" y1="9" x2="15" y2="15" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-          <p class="login__error-text">{{ errorMessage }}</p>
-        </div>
+      <AbsaCard accent="passion" :hoverable="false" flat bordered rounded="sm" padding="lg">
+          <div class="mb-7 border-b border-gray-200 pb-4">
+            <h2 class="text-base font-bold text-absa-enrich">Sign in</h2>
+            <p class="mt-1 text-xs leading-5 text-gray-500">Enter  Directory credentials to continue.</p>
+          </div>
+            <div class="mb-5 min-h-12" aria-live="polite">
+              <div v-if="errorMessage" class="flex min-h-12 items-start gap-2 border border-red-900/20 border-l-4 border-l-red-900 bg-red-50 px-3 py-2.5 text-xs leading-5 text-red-900" role="alert">
+                <span class="material-symbols-outlined mt-0.5 text-base" aria-hidden="true">error</span>
+                <p class="font-semibold">{{ errorMessage }}</p>
+              </div>
 
-        <!-- Success Message Banner -->
-        <div v-if="successMessage" class="login__success-banner">
-          <svg class="login__success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="#ffffff" stroke-width="2"/>
-            <polyline points="8 12 11 15 17 9" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p class="login__success-text">{{ successMessage }}</p>
-        </div>
+              <div v-else-if="successMessage" class="flex min-h-12 items-start gap-2 border border-green-600/20 border-l-4 border-l-green-600 bg-green-50 px-3 py-2.5 text-xs leading-5 text-green-700" role="status">
+                <span class="material-symbols-outlined mt-0.5 text-base" aria-hidden="true">check_circle</span>
+                <p class="font-semibold">{{ successMessage }}</p>
+              </div>
+            </div>
 
-        <!-- Form -->
-        <form class="login__form" @submit.prevent="handleSubmit">
-          <!-- Username -->
-          <div class="login__field">
-            <label class="login__label" for="username">Username</label>
+            <form class="space-y-5" @submit.prevent="handleSubmit">
+          <div>
+            <label class="mb-2 block text-sm font-semibold text-absa-enrich" for="username">Username</label>
             <input
               id="username"
               v-model="formData.email"
               type="text"
               required
-              class="login__input"
-              :class="{ 'login__input--error': errors.email }"
+              class="h-11 w-full rounded-sm border border-gray-300 bg-white px-3 text-sm text-absa-enrich placeholder:text-gray-400 transition-colors focus:border-absa-passion focus:outline-none focus:ring-2 focus:ring-absa-passion/15 focus:shadow-[inset_0_0_0_1px_var(--absa-passion)]"
+              :class="{ 'border-red-900 focus:border-red-900 focus:ring-red-900/15 focus:shadow-none': errors.email }"
               placeholder="Enter AD Username"
               autocomplete="username"
               autofocus
             />
-            <p v-if="errors.email" class="login__field-error">{{ errors.email }}</p>
+            <p v-if="errors.email" class="mt-1 text-xs font-semibold text-red-900">{{ errors.email }}</p>
           </div>
 
-          <!-- Password -->
-          <div class="login__field">
-            <label class="login__label" for="password">Password</label>
-            <div class="login__password-wrap">
+          <div>
+            <label class="mb-2 block text-sm font-semibold text-absa-enrich" for="password">Password</label>
+            <div class="relative">
               <input
                 id="password"
                 v-model="formData.password"
                 :type="showPassword ? 'text' : 'password'"
                 required
-                class="login__input"
-                :class="{ 'login__input--error': errors.password }"
+                class="h-11 w-full rounded-sm border border-gray-300 bg-white px-3 pr-11 text-sm text-absa-enrich placeholder:text-gray-400 transition-colors focus:border-absa-passion focus:outline-none focus:ring-2 focus:ring-absa-passion/15 focus:shadow-[inset_0_0_0_1px_var(--absa-passion)]"
+                :class="{ 'border-red-900 focus:border-red-900 focus:ring-red-900/15 focus:shadow-none': errors.password }"
                 placeholder="Enter AD Password"
                 autocomplete="current-password"
                 @keyup="checkCapsLock"
@@ -78,63 +60,45 @@
               />
               <button
                 type="button"
-                class="login__toggle-vis"
+                class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 transition-colors hover:text-absa-passion focus:outline-none focus:ring-2 focus:ring-inset focus:ring-absa-passion"
                 @click="showPassword = !showPassword"
-                aria-label="Toggle password visibility"
+                :aria-label="passwordVisibilityLabel"
               >
-                <!-- Eye on (visible) -->
-                <svg v-if="!showPassword" class="login__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
-                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <!-- Eye off (hidden) -->
-                <svg v-else class="login__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
               </button>
             </div>
-            <!-- Caps Lock Warning -->
-            <p v-if="capsLockOn" class="login__caps-warn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
-                <path d="M6 10l6-4 6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="12" y1="10" x2="12" y2="18" stroke="currentColor" stroke-width="2"/>
-                <line x1="8" y1="18" x2="16" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Caps Lock is ON
-            </p>
-            <p v-if="errors.password" class="login__field-error">{{ errors.password }}</p>
+            <div class="mt-1 min-h-5">
+              <p v-if="capsLockOn" class="flex items-center gap-1 text-xs font-semibold text-amber-700"><span class="material-symbols-outlined text-sm" aria-hidden="true">keyboard_capslock</span> Caps Lock is on</p>
+              <p v-else-if="errors.password" class="text-xs font-semibold text-red-900">{{ errors.password }}</p>
+            </div>
           </div>
 
-          <!-- Submit -->
-          <button
+          <AbsaButton
             type="submit"
-            :disabled="loading"
-            class="login__submit"
+            :loading="loading"
+            block
+            size="lg"
           >
-            <svg v-if="loading" class="login__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="2.5"/>
-              <path d="M12 2a10 10 0 0 1 10 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
             <span>{{ loading ? 'Signing In...' : 'Sign In' }}</span>
-          </button>
-        </form>
-      </div>
+          </AbsaButton>
+            </form>
+          </AbsaCard>
 
-      <!-- Security Warning -->
-      <p class="login__security">Unauthorised access is prohibited and monitored.</p>
+      <footer class="mt-5 flex items-start gap-2 border-t border-gray-300 pt-4 text-[11px] leading-5 text-gray-500">
+        <span class="material-symbols-outlined mt-0.5 text-sm text-absa-passion" aria-hidden="true"></span>
+        <p></p>
+      </footer>
     </main>
-
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { computed, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { login, API_BASE_URL } from '@/services/api'
-import { decodeJWT } from '@/services/decodeJWT'
+import { login } from '@/services/api'
+import { AbsaButton, AbsaCard } from '@/components/ui'
+
+defineOptions({ name: 'LoginView' })
 
 const router = useRouter()
 const loading = ref(false)
@@ -142,6 +106,7 @@ const showPassword = ref(false)
 const capsLockOn = ref(false)
 const errorMessage = ref('')
 const successMessage = ref('')
+const passwordVisibilityLabel = computed(() => (showPassword.value ? 'Hide password' : 'Show password'))
 
 const formData = reactive({
   email: '',
@@ -203,31 +168,35 @@ const handleSubmit = async () => {
       throw new Error('Invalid credentials')
     }
 
-    if (claims.role && !response.role) response.role = claims.role
-    if (claims.email && !response.email) response.email = claims.email
-    if (claims.sub && !response.user_id) response.user_id = claims.sub
-    if (claims.username && !response.name) response.name = claims.username
-    if (claims.company_name && !response.company_name) response.company_name = claims.company_name
-    if (claims.tenant_id && !response.tenant_id) response.tenant_id = claims.tenant_id
+    // ABSA backend JWT claims: sub, username, display_name, email, roles[]
+    const roles = (Array.isArray(claims.roles) && claims.roles.length)
+      ? claims.roles
+      : (claims.role ? [claims.role] : [])
+    const role = roles[0] || ''
+    const userId = claims.sub || claims.user_id || ''
+    const email = claims.email || ''
+    const displayName = claims.display_name || claims.username || email.split('@')[0] || ''
 
-    if (response.user_id) localStorage.setItem('user_id', response.user_id)
-    if (response.role) localStorage.setItem('role', response.role)
-    if (response.email) localStorage.setItem('email', response.email)
-    if (response.company_name) localStorage.setItem('company_name', response.company_name)
-    if (response.tenant_id) localStorage.setItem('tenant_id', response.tenant_id)
-    if (response.name) localStorage.setItem('userName', response.name)
-
-    if (response.role === 'sub_account') {
-      localStorage.setItem('active_subaccount_id', response.user_id)
-      localStorage.setItem('active_subaccount_email', response.email)
-      localStorage.setItem('active_subaccount_name', response.name)
-    }
-
-    if (response.tenant_id) {
-      await fetchAndStoreBranches(response.tenant_id)
-    }
+    localStorage.setItem('user_id', userId)
+    localStorage.setItem('email', email)
+    localStorage.setItem('role', role)
+    localStorage.setItem('roles', JSON.stringify(roles))
+    if (displayName) localStorage.setItem('userName', displayName)
+    // Drop legacy fork keys that this ABSA backend never issues
+    localStorage.removeItem('company_name')
+    localStorage.removeItem('tenant_id')
+    localStorage.removeItem('active_subaccount_id')
+    localStorage.removeItem('active_subaccount_email')
+    localStorage.removeItem('active_subaccount_name')
 
     successMessage.value = 'Login successful!'
+
+    // Role-based landing: ADMIN/RM → portfolio; DS → models; OPS → ETL
+    const landingByRole = {
+      DATA_SCIENTIST: '/dashboard/models',
+      OPERATIONS: '/dashboard/etl-run-history'
+    }
+    const defaultLanding = landingByRole[role] || '/dashboard/portfolio'
 
     setTimeout(() => {
       const intended = localStorage.getItem('intended_route')
@@ -236,7 +205,7 @@ const handleSubmit = async () => {
         router.push(intended)
         return
       }
-      router.push('/dashboard/portfolio')
+      router.push(defaultLanding)
     }, 1000)
   } catch (error) {
     console.error('Login error:', error)
@@ -247,410 +216,4 @@ const handleSubmit = async () => {
   }
 }
 
-// ── Branches ──
-const fetchAndStoreBranches = async (tenantId) => {
-  const { setBranches } = decodeJWT()
-  try {
-    const res = await fetch(`${API_BASE_URL}/subaccounts/branches/list?tenant_id=${tenantId}`)
-    if (res.ok) {
-      const data = await res.json()
-      const branchList = Array.isArray(data) ? data : []
-      setBranches(branchList)
-    }
-  } catch (e) {
-    console.warn('Failed to fetch branches during login:', e)
-    setBranches([])
-  }
-}
 </script>
-
-<style scoped>
-/* ═══════════════════════════════════════════════════════
-   Absa Enterprise Core V3 — Login Page
-   Token reference (from spec):
-     surface:        #fff8f7    surface-container-low: #faf2f1
-     surface-container-highest: #e9e1e0
-     surface-container-lowest:  #ffffff
-     on-surface:     #1e1b1b    on-surface-variant: #5d3f3f
-     outline:        #926e6e    outline-variant: #e7bcbc
-     primary:        #ae0029    primary-container: #dc0037 (Passion)
-     secondary:      #b90734    (Power)
-     error:          #ba1a1a    on-error: #ffffff
-     inverse-surface:#332f2f    inverse-on-surface: #f7efee
-   ═══════════════════════════════════════════════════════ */
-
-.login {
-  --_bg:      #fff8f7;
-  --_scl:     #faf2f1;   /* surface-container-low */
-  --_sch:     #e9e1e0;   /* surface-container-highest */
-  --_sc:      #ffffff;   /* surface-container-lowest (card bg) */
-  --_pri:     #ae0029;   /* primary */
-  --_pric:    #dc0037;   /* primary-container (Passion) */
-  --_sec:     #b90734;   /* secondary (Power) */
-  --_ons:     #1e1b1b;   /* on-surface (Enrich) */
-  --_onsv:    #5d3f3f;   /* on-surface-variant */
-  --_out:     #926e6e;   /* outline */
-  --_outv:    #e7bcbc;   /* outline-variant */
-  --_err:     #ba1a1a;   /* error */
-  --_onerr:   #ffffff;   /* on-error */
-  --_invsf:   #332f2f;   /* inverse-surface */
-  --_invons:  #f7efee;   /* inverse-on-surface */
-  --_font:    'Source Sans 3', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --_sp-xs:   4px;
-  --_sp-sm:   8px;
-  --_sp-md:   16px;
-  --_sp-lg:   24px;
-  --_sp-xl:   32px;
-  --_sp-2xl:  40px;
-  --_r-sm:    4px;
-  --_r-md:    8px;
-  --_r-lg:    12px;
-
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--_font);
-  color: var(--_ons);
-  overflow: hidden;
-}
-
-/* ── Background Gradient ── */
-.login__bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: linear-gradient(to bottom right, var(--_scl), var(--_sch));
-}
-
-/* ── Grid Pattern ── */
-.login__pattern {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(30,27,27,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30,27,27,0.03) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-/* ── Canvas ── */
-.login__canvas {
-  position: relative;
-  z-index: 10;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 480px;
-  padding: var(--_sp-lg);
-}
-
-/* ── Header ── */
-.login__header {
-  text-align: center;
-  margin-bottom: var(--_sp-2xl);
-  width: 100%;
-}
-
-.login__logo-wrap {
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--_sp-lg);
-}
-
-.login__logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  background: #ffffff;
-  border-radius: 50%;
-  padding: 4px;
-  box-shadow: 0 1px 3px rgba(30,27,27,0.08);
-}
-
-/* headline-lg-mobile / headline-lg */
-.login__title {
-  font-family: var(--_font);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 36px;
-  color: var(--_ons);
-  margin: 0 0 var(--_sp-xs);
-  letter-spacing: -0.01em;
-}
-@media (min-width: 768px) {
-  .login__title {
-    font-size: 32px;
-    line-height: 40px;
-  }
-}
-
-/* body-lg */
-.login__subtitle {
-  font-family: var(--_font);
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 28px;
-  color: var(--_onsv);
-  margin: 0 0 var(--_sp-xs);
-}
-
-/* label-md */
-.login__overline {
-  font-family: var(--_font);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: var(--_onsv);
-}
-
-/* ── Card ── */
-.login__card {
-  width: 100%;
-  background: var(--_scl);              /* surface-container-low */
-  border: 1px solid rgba(231,188,188,0.3);
-  border-radius: var(--_r-lg);          /* 12px */
-  box-shadow: 0px 4px 20px rgba(30,27,27,0.05);
-  padding: var(--_sp-xl);
-  margin-bottom: var(--_sp-lg);
-}
-
-/* ── Error Banner ── */
-.login__error-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--_sp-sm);
-  background: var(--_err);
-  border-left: 4px solid #ffffff;
-  padding: 10px;
-  border-radius: 0 var(--_r-sm) var(--_r-sm) 0;
-  margin-bottom: var(--_sp-lg);
-}
-
-.login__error-icon {
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.login__error-text {
-  font-family: var(--_font);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  color: var(--_onerr);
-  margin: 0;
-}
-
-/* ── Success Banner ── */
-.login__success-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--_sp-sm);
-  background: #0f9d58;
-  border-radius: var(--_r-sm);
-  padding: 10px;
-  margin-bottom: var(--_sp-lg);
-}
-
-.login__success-icon {
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.login__success-text {
-  font-family: var(--_font);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  color: #ffffff;
-  margin: 0;
-}
-
-/* ── Form ── */
-.login__form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--_sp-lg);
-}
-
-/* ── Field ── */
-.login__field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--_sp-sm);
-  position: relative;
-}
-
-/* label-md */
-.login__label {
-  font-family: var(--_font);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: var(--_ons);
-}
-
-/* Input — 1px Enrich 20% border, 4px radius */
-.login__input {
-  width: 100%;
-  height: 42px;
-  padding: 0 12px;
-  font-family: var(--_font);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  color: var(--_ons);
-  background: #ffffff;
-  border: 1px solid rgba(30,27,27,0.2);
-  border-radius: var(--_r-sm);
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.login__input::placeholder {
-  color: var(--_out);
-  opacity: 0.7;
-}
-
-.login__input:focus {
-  border-color: var(--_pric);
-  border-width: 2px;
-  padding: 0 11px;                      /* compensate for 2px border */
-  box-shadow: 0 0 0 1px var(--_pric);
-}
-
-.login__input--error {
-  border-color: var(--_err);
-}
-
-.login__input--error:focus {
-  border-color: var(--_err);
-  box-shadow: 0 0 0 1px var(--_err);
-}
-
-/* ── Password wrapper ── */
-.login__password-wrap {
-  position: relative;
-}
-
-.login__password-wrap .login__input {
-  padding-right: 42px;
-}
-
-.login__password-wrap .login__input:focus {
-  padding-right: 41px;
-}
-
-/* Toggle visibility — secondary (Power) color */
-.login__toggle-vis {
-  position: absolute;
-  inset: 0 0 0 auto;
-  display: flex;
-  align-items: center;
-  padding-right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--_sec);
-  transition: color 0.15s ease;
-}
-
-.login__toggle-vis:hover {
-  color: var(--_pri);
-}
-
-.login__toggle-icon {
-  display: block;
-}
-
-/* ── Caps Lock Warning ── */
-.login__caps-warn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: var(--_font);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  color: var(--_err);
-  margin: 0;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 2px;
-}
-
-/* ── Field Error ── */
-.login__field-error {
-  font-family: var(--_font);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--_err);
-  margin: -4px 0 0;
-}
-
-/* ── Submit Button (Primary: Passion bg, Serene text, 4px radius) ── */
-.login__submit {
-  width: 100%;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--_sp-sm);
-  background: var(--_pric);
-  color: #ffffff;
-  font-family: var(--_font);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  border: none;
-  border-radius: var(--_r-sm);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.login__submit:hover {
-  background: var(--_sec);              /* Passion → Power */
-}
-
-.login__submit:focus-visible {
-  outline: 2px solid var(--_pric);
-  outline-offset: 2px;
-}
-
-.login__submit:disabled {
-  opacity: 0.9;
-  cursor: not-allowed;
-}
-
-.login__spinner {
-  animation: loginSpin 1s linear infinite;
-}
-
-/* ── Security Warning ── */
-.login__security {
-  text-align: center;
-  font-family: var(--_font);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  color: var(--_onsv);
-  margin: 0;
-  padding: 0 var(--_sp-md);
-}
-
-/* ═══ Animations ═══ */
-@keyframes loginSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-</style>

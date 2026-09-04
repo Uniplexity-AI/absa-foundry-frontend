@@ -1,5 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import {
+  fetchETLConfigs,
+  fetchETLConfigContent,
+  createETLConfig,
+  saveETLConfig,
+  deleteETLConfig,
+  triggerETLPipeline,
+} from '@/services/etlApi'
+import { notify } from '@/utils/absaExport'
 
 // Tab & Search State
 const activeTab = ref('configurations')
@@ -10,67 +19,46 @@ const isSaving = ref(false)
 const editorView = ref(null)
 const editingConfig = ref(null)
 const editorMode = ref('edit') // 'edit' | 'preview'
+const isNewConfig = ref(false)
 
-// Config Specifications Data
-const configs = ref([
-  {
-    id: 1,
-    name: 'customer_360.yaml',
-    description: 'Aggregates retail banking customer profiles.',
-    status: 'valid',
-    lastModified: '2023-10-24',
-    size: '4.2',
-    content: `spec_version: "v2.1"
-name: "customer_360_aggregation"
-description: "Aggregates retail banking customer profiles."
+// Config Specifications Data (loaded from the backend extraction_specs dir)
+const configs = ref([])
+const configsLoading = ref(false)
+const configsError = ref(null)
 
-source:
-  type: "postgres"
-  connection_ref: "prod_retail_db"
-  query: |
-    SELECT id, first_name, last_name, email, created_at 
-    FROM users 
-    WHERE status = 'active'
-
-output:
-  type: "s3"
-  bucket: "pb-data-lake-raw"
-  prefix: "customer_360/daily/"
-  format: "parquet"`
-  },
-  {
-    id: 2,
-    name: 'daily_transactions_eu.yaml',
-    description: 'European branch transaction ledger sync.',
-    status: 'check needed',
-    lastModified: '2023-10-22',
-    size: '12.8',
-    content: `spec_version: "v2.1"
-name: "daily_transactions_eu"
-description: "European branch transaction ledger sync."
-
-source:
-  type: "postgres"
-  connection_ref: "eu_ledger_db"
-  query: |
-    SELECT transaction_id, amount, currency, timestamp
-    FROM ledger
-    WHERE region = 'EU'
-
-output:
-  type: "s3"
-  bucket: "pb-data-lake-raw"
-  prefix: "transactions/eu/"
-  format: "parquet"`
+// Map backend config rows to the shape the template expects.
+function toDisplayConfig(c) {
+  return {
+    id: c.name,                    // filename is the stable key
+    name: c.name,
+    description: c.description || '',
+    status: c.status === 'ok' ? 'valid' : 'check needed',
+    lastModified: c.last_modified || '',
+    size: c.size_bytes != null ? (c.size_bytes / 1024).toFixed(1) : '—',
+    content: c.content || null,
   }
-])
+}
+
+async function loadConfigs() {
+  configsLoading.value = true
+  configsError.value = null
+  try {
+    const list = await fetchETLConfigs()
+    configs.value = (list || []).map(toDisplayConfig)
+  } catch (e) {
+    configsError.value = e.message || 'Failed to load configs'
+    configs.value = []
+  } finally {
+    configsLoading.value = false
+  }
+}
 
 // Search Filter Computed Property
 const filteredConfigs = computed(() => {
   if (!searchQuery.value.trim()) return configs.value
   const query = searchQuery.value.toLowerCase()
   return configs.value.filter(
-    item => item.name.toLowerCase().includes(query) || item.description.toLowerCase().includes(query)
+    item => (item.name || '').toLowerCase().includes(query) || (item.description || '').toLowerCase().includes(query)
   )
 })
 
@@ -81,59 +69,114 @@ const editorLines = computed(() => {
 })
 
 // Open editor for existing config
-function openEditor(config) {
-  editingConfig.value = JSON.parse(JSON.stringify(config))
+async function openEditor(config) {
+  if (!config) return
+  // Always fetch the freshest content from the backend before editing.
+  try {
+    const detail = await fetchETLConfigContent(config.name)
+    editingConfig.value = {
+      ...config,
+      content: detail.content,
+      lastModified: detail.last_modified || config.lastModified,
+    }
+  } catch (e) {
+    notify(`Failed to load "${config.name}" — ${e.message || 'backend error'}`, 'error')
+    editingConfig.value = JSON.parse(JSON.stringify(config))
+  }
+  isNewConfig.value = false
   editorMode.value = 'edit'
-  editorView.value = config.id
+  editorView.value = config.name
 }
 
 // Open editor for new config
 function openNewEditor() {
-  const newId = Date.now()
   editingConfig.value = {
-    id: newId,
-    name: `new_extraction_${configs.value.length + 1}.yaml`,
+    id: null,
+    name: 'new_extraction.yaml',
     description: 'New data extraction specification.',
     status: 'valid',
-    lastModified: new Date().toISOString().split('T')[0],
+    lastModified: new Date().toISOString().slice(0, 10),
     size: '1.0',
-    content: `spec_version: "v2.1"\nname: "new_extraction"\ndescription: "New specification"`
+    content: `spec_version: "v2.1"
+name: "new_extraction"
+description: "New specification"
+source:
+  type: "postgres"
+  connection_ref: "prod_db"
+output:
+  type: "postgres"
+  table: "staging_new_extraction"`
   }
+  isNewConfig.value = true
   editorMode.value = 'edit'
-  editorView.value = newId
+  editorView.value = 'new'
 }
 
 // Close editor, return to table
 function closeEditor() {
   editorView.value = null
   editingConfig.value = null
+  isNewConfig.value = false
 }
 
-// Save config from inline editor
-function saveConfig() {
-  if (!editingConfig.value) return
+// Save config (create or update) against the backend
+async function saveConfig() {
+  if (!editingConfig.value?.content) return
+  if (!editingConfig.value.content.trim()) {
+    notify('Config content is empty', 'error')
+    return
+  }
   isSaving.value = true
-  setTimeout(() => {
-    const index = configs.value.findIndex(c => c.id === editingConfig.value.id)
-    if (index !== -1) {
-      configs.value[index] = { ...editingConfig.value }
+  try {
+    if (isNewConfig.value) {
+      // Backend derives the filename from the YAML `name:` field.
+      const created = await createETLConfig(editingConfig.value.content)
+      notify(`Config created — ${created.name || 'see backend'}`, 'success')
     } else {
-      configs.value.push({ ...editingConfig.value })
+      const name = editingConfig.value.name || editingConfig.value.id
+      await saveETLConfig(name, editingConfig.value.content)
+      notify(`Config saved — ${name}`, 'success')
     }
+    closeEditor()
+    await loadConfigs()
+  } catch (e) {
+    notify(`Failed to save config — ${e.message || 'backend error'}`, 'error', { autoClose: 5000 })
+  } finally {
     isSaving.value = false
-    editorView.value = null
-    editingConfig.value = null
-  }, 500)
+  }
 }
 
-function deleteConfig(id) {
-  configs.value = configs.value.filter(c => c.id !== id)
+async function deleteConfig(name) {
+  if (!name) return
+  if (!window.confirm(`Delete config "${name}"? This cannot be undone.`)) return
+  try {
+    await deleteETLConfig(name)
+    notify(`Config deleted — ${name}`, 'success')
+    if (editorView.value === name) closeEditor()
+    await loadConfigs()
+  } catch (e) {
+    notify(`Failed to delete — ${e.message || 'backend error'}`, 'error')
+  }
+}
+
+// Run a config (jump to Run History and start it) — wire the play button.
+async function runConfig(config) {
+  const name = config?.name || config?.id
+  if (!name) return
+  try {
+    const res = await triggerETLPipeline(name)
+    notify(`${res.message || `Pipeline triggered — ${name}`}`, 'success', { autoClose: 5000 })
+    activeTab.value = 'run_history'
+  } catch (e) {
+    notify(`Failed to run "${name}" — ${e.message || 'backend error'}`, 'error')
+  }
 }
 
 // ── Relative timestamp helper ──
 function relativeTime(dateStr) {
   if (!dateStr) return '—'
   const then = new Date(dateStr)
+  if (isNaN(then.getTime())) return dateStr.slice(0, 10)
   const now = new Date()
   const diffMs = now - then
   const diffMins = Math.floor(diffMs / 60000)
@@ -145,6 +188,10 @@ function relativeTime(dateStr) {
   if (diffDays < 7) return `${diffDays}d ago`
   return dateStr.slice(0, 10)
 }
+
+onMounted(() => {
+  loadConfigs()
+})
 </script>
 
 <template>
@@ -273,7 +320,16 @@ function relativeTime(dateStr) {
               </button>
             </div>
             <div class="relative z-10 overflow-x-auto bg-white">
-              <table class="w-full text-left text-body-md">
+              <!-- Loading state -->
+              <div v-if="configsLoading" class="p-12 text-center text-body-md text-secondary">
+                Loading extraction specs…
+              </div>
+              <!-- Error state -->
+              <div v-else-if="configsError" class="p-12 text-center text-body-md text-primary">
+                <p>{{ configsError }}</p>
+                <button @click="loadConfigs" class="mt-3 text-[#DC0037] font-semibold hover:underline">Retry</button>
+              </div>
+              <table v-else class="w-full text-left text-body-md">
                 <thead class="bg-white border-b border-gray-300 text-label-caps text-on-surface-variant">
                   <tr>
                     <th class="px-6 py-4 font-bold tracking-widest">Name</th>
@@ -316,10 +372,10 @@ function relativeTime(dateStr) {
                         <button @click="openEditor(config)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded-sm transition-colors" title="Edit">
                           <span class="material-symbols-outlined text-[20px]">edit</span>
                         </button>
-                        <button class="p-1.5 text-on-surface-variant hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded-sm transition-colors" title="Run">
+                        <button @click="runConfig(config)" class="p-1.5 text-on-surface-variant hover:text-[#2e7d32] hover:bg-[#2e7d32]/10 rounded-sm transition-colors" title="Run now">
                           <span class="material-symbols-outlined text-[20px]">play_arrow</span>
                         </button>
-                        <button @click="deleteConfig(config.id)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded-sm transition-colors" title="Delete">
+                        <button @click="deleteConfig(config.name)" class="p-1.5 text-on-surface-variant hover:text-[#DC0037] hover:bg-[#DC0037]/10 rounded-sm transition-colors" title="Delete">
                           <span class="material-symbols-outlined text-[20px]">delete</span>
                         </button>
                       </div>

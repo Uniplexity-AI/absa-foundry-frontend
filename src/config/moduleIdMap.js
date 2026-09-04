@@ -1,19 +1,12 @@
 // Shared mapping of frontend module ids -> backend canonical ids
-// Standardized IDs (hrmodule, users, allshops, finance, etc) match both ends.
-// This map primarily handles aliases or multi-card mappings.
+// This map only handles aliases used by the ABSA lifecycle application.
 export const MODULE_ID_MAP = {
   // Alias : Backend Canonical ID
  
   'ai_agent': 'ai',
-  'sub_accounts': 'allshops',
-  'user_mgmt': 'allshops',
-  'users': 'allshops',
-
-  // Mining/Legacy
-  
-  'image-capture': 'image-capture',
-  'text-scanner': 'image-capture',
-  'text_scanner': 'image-capture',
+  'sub_accounts': 'subaccounts',
+  'user_mgmt': 'subaccounts',
+  'users': 'subaccounts',
 
 
 };

@@ -84,7 +84,28 @@
       <!-- Saved confirmation -->
       <div v-if="saved" class="mt-5 border-l-4 border-[#4CAF50] bg-white-variant p-4">
         <p class="text-body-md font-bold text-on-surface">Action plan saved for {{ customerName }}.</p>
-        <p class="text-label-sm text-secondary">Stored locally for this pilot. Return to the customer profile to continue.</p>
+        <p class="text-label-sm text-secondary">Synced to the pilot backend (etl_clean) and stored locally for this pilot.</p>
+      </div>
+
+      <!-- Saved plan history -->
+      <div v-if="savedPlans.length > 0" class="mt-6">
+        <h2 class="text-headline-md font-headline font-semibold text-on-surface mb-3">Saved Action Plans</h2>
+        <div class="space-y-3">
+          <div v-for="(p, i) in [...savedPlans].reverse()" :key="p.client_id || i" class="border border-gray-300 bg-white p-4">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <p class="text-body-md font-bold text-on-surface">{{ p.title || 'Untitled plan' }}</p>
+              <span class="text-label-sm text-secondary whitespace-nowrap">{{ fmtDate(p.created_at) }}</span>
+            </div>
+            <div class="flex flex-wrap gap-x-6 gap-y-1 text-label-sm text-secondary mb-1">
+              <span>Priority {{ p.priority || '—' }}</span>
+              <span>{{ p.outcome || '—' }}</span>
+              <span v-if="p.assignee">Assigned to {{ p.assignee }}</span>
+              <span v-if="p.dueDate">Due {{ p.dueDate }}</span>
+            </div>
+            <p v-if="p.action" class="text-body-sm text-on-surface">{{ p.action }}</p>
+            <p v-if="p.notes" class="text-label-sm text-secondary mt-1">{{ p.notes }}</p>
+          </div>
+        </div>
       </div>
 
       <!-- Actions -->
@@ -101,6 +122,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { notify } from '@/utils/absaExport'
+import { saveActionPlan, hydrateActionPlansFromServer } from '@/utils/absaActions'
 
 const route = useRoute()
 const router = useRouter()
@@ -139,12 +162,18 @@ const form = ref({
 })
 
 const saved = ref(false)
+const savedPlans = ref([])
 
 function goBack() {
   router.push({
     path: `/dashboard/customer/${customerId.value}`,
     query: { from: route.query.from || undefined, page: route.query.page || undefined },
   })
+}
+
+function fmtDate(d) {
+  if (!d) return '—'
+  try { return new Date(d).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) } catch { return d }
 }
 
 function savePlan() {
@@ -158,15 +187,10 @@ function savePlan() {
     form.value.action = 'Contact the customer and identify the reason for inactivity.'
   }
 
-  const key = `action_plans_${customerId.value}`
-  const plans = JSON.parse(localStorage.getItem(key) || '[]')
-  plans.push({
-    ...form.value,
-    customer_id: customerId.value,
-    created_at: new Date().toISOString(),
-  })
-  localStorage.setItem(key, JSON.stringify(plans))
+  const plans = saveActionPlan(customerId.value, form.value)
+  savedPlans.value = plans
   saved.value = true
+  notify(`Action plan saved for ${customerName.value}`, 'success', { autoClose: 3000 })
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
@@ -177,6 +201,7 @@ onMounted(async () => {
     customerStore.fetchCustomerDetail(id),
     predictionStore.fetchPrediction(id),
     predictionStore.fetchHealthScore(id),
+    hydrateActionPlansFromServer(id).then((plans) => { savedPlans.value = plans }).catch(() => {}),
   ])
 })
 </script>

@@ -64,7 +64,25 @@
 
       <div v-if="saved" class="mt-5 border-l-4 border-[#4CAF50] bg-white-variant p-4">
         <p class="text-body-md font-bold text-on-surface">Action recorded for {{ customerName }}.</p>
-        <p class="text-label-sm text-secondary">Stored locally for this pilot.</p>
+        <p class="text-label-sm text-secondary">Synced to the pilot backend (etl_clean) and stored locally for this pilot.</p>
+      </div>
+
+      <!-- Recorded action history -->
+      <div v-if="recordedActions.length > 0" class="mt-6">
+        <h2 class="text-headline-md font-headline font-semibold text-on-surface mb-3">Recorded Actions</h2>
+        <div class="space-y-3">
+          <div v-for="(a, i) in [...recordedActions].reverse()" :key="a.client_id || i" class="border border-gray-300 bg-white p-4">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <p class="text-body-md font-bold text-on-surface">{{ a.actionTaken || 'Action taken' }}</p>
+              <span class="text-label-sm text-secondary whitespace-nowrap">{{ fmtDate(a.created_at) }}</span>
+            </div>
+            <div class="flex flex-wrap gap-x-6 gap-y-1 text-label-sm text-secondary mb-1">
+              <span>Channel: {{ channelLabel(a.channel) }}</span>
+              <span>Outcome: {{ a.outcome || 'PENDING' }}</span>
+            </div>
+            <p v-if="a.notes" class="text-label-sm text-secondary">{{ a.notes }}</p>
+          </div>
+        </div>
       </div>
 
       <div class="flex items-center gap-2 mt-6">
@@ -79,6 +97,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customerStore'
+import { notify } from '@/utils/absaExport'
+import { saveActionTaken, hydrateActionsTakenFromServer } from '@/utils/absaActions'
 
 const route = useRoute()
 const router = useRouter()
@@ -104,6 +124,7 @@ const form = ref({
 })
 
 const saved = ref(false)
+const recordedActions = ref([])
 
 function goBack() {
   router.push({
@@ -112,23 +133,41 @@ function goBack() {
   })
 }
 
+function fmtDate(d) {
+  if (!d) return '—'
+  try { return new Date(d).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) } catch { return d }
+}
+
+function channelLabel(ch) {
+  return {
+    RM_CALL: 'RM Call', RM_DIRECT: 'RM Direct', DIGITAL: 'Digital (app/web)',
+    MARKETING: 'Marketing', BRANCH: 'Branch Visit',
+  }[ch] || ch || '—'
+}
+
 function saveAction() {
-  const key = `actions_taken_${customerId.value}`
-  const actions = JSON.parse(localStorage.getItem(key) || '[]')
-  actions.push({
+  if (!form.value.actionTaken.trim()) {
+    form.value.actionTaken = action.value.action || action.value.title || 'Customer intervention'
+  }
+  const entry = {
     ...form.value,
     customer_id: customerId.value,
     recommendation: action.value,
-    created_at: new Date().toISOString(),
-  })
-  localStorage.setItem(key, JSON.stringify(actions))
+  }
+  const list = saveActionTaken(customerId.value, entry)
+  recordedActions.value = list
   saved.value = true
+  notify(`Action recorded for ${customerName.value}`, 'success', { autoClose: 3000 })
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 onMounted(async () => {
   const id = customerId.value
-  if (id) await customerStore.fetchCustomerDetail(id)
+  if (!id) return
+  await Promise.allSettled([
+    customerStore.fetchCustomerDetail(id),
+    hydrateActionsTakenFromServer(id).then((list) => { recordedActions.value = list }).catch(() => {}),
+  ])
 })
 </script>
 

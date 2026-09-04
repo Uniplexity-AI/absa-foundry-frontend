@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
+import { formatMarketSegment, isFrontendVisibleMarketSegment, resolveMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
 
@@ -18,7 +19,7 @@ export const useCustomerStore = defineStore('customer', () => {
   // ── State ──
   const customers = ref([])
   const selectedCustomer = ref(null)
-  const filters = ref({ state: null, search: '', branch: null })
+  const filters = ref({ state: null, search: '', branch: null, marketSegment: null })
   const pagination = ref({ page: 1, limit: 25, total: 0 })
   const loading = ref(false)
   const error = ref(null)
@@ -55,6 +56,9 @@ export const useCustomerStore = defineStore('customer', () => {
     if (filters.value.state) {
       list = list.filter((c) => c.state === filters.value.state)
     }
+    if (filters.value.marketSegment !== null) {
+      list = list.filter((c) => c.marketSegment === filters.value.marketSegment)
+    }
     if (filters.value.search) {
       const q = filters.value.search.toLowerCase()
       list = list.filter(
@@ -71,6 +75,7 @@ export const useCustomerStore = defineStore('customer', () => {
   // ── Helpers ──
   function _mapCustomer(raw) {
     const id = raw.customer_id
+    const marketSegment = resolveMarketSegment(raw.market_segment ?? raw.segment)
     return {
       customerId: id,
       fullName: `Customer ${id.replace('CUST', '')}`,
@@ -79,7 +84,10 @@ export const useCustomerStore = defineStore('customer', () => {
       churnProbability: raw.churn_probability ?? null,
       clv: raw.clv ?? null,
       branch: raw.branch_code ?? null,
-      segment: raw.segment ?? null,
+      marketSegment: marketSegment.marketSegment,
+      segmentCode: marketSegment.code,
+      segmentLabel: marketSegment.label,
+      segment: formatMarketSegment(raw.market_segment ?? raw.segment),
       previousState: raw.previous_state,
       isTransition: raw.is_transition,
       computedAt: raw.computed_at,
@@ -100,7 +108,9 @@ export const useCustomerStore = defineStore('customer', () => {
       ])
 
       _portfolioSummary.value = portfolioRes.data
-      customers.value = (listRes.data || []).map(_mapCustomer)
+      customers.value = (listRes.data || [])
+        .filter((customer) => isFrontendVisibleMarketSegment(customer.market_segment ?? customer.segment))
+        .map(_mapCustomer)
       pagination.value.total = customers.value.length
     } catch (e) {
       console.warn('fetchPortfolio failed:', e.message)
@@ -120,6 +130,11 @@ export const useCustomerStore = defineStore('customer', () => {
       const { data } = await api.get(`/api/v1/customers/${id}`, {
         params: { as_of_date: DEFAULT_AS_OF_DATE },
       })
+      if (!isFrontendVisibleMarketSegment(data.market_segment ?? data.segment)) {
+        selectedCustomer.value = null
+        error.value = 'Customer record is unavailable'
+        return
+      }
       selectedCustomer.value = _mapCustomer(data)
     } catch (e) {
       console.warn('fetchCustomerDetail failed:', e.message)

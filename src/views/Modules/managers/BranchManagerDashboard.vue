@@ -69,7 +69,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">RM-Managed Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Premier Banking & Wealth Management · Dedicated RM per customer</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">CIB, Enterprise, Prestige & Premier · Dedicated RM per customer</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ rmTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -97,7 +97,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">Branch Campaign Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Retail Savings, Youth, Business · No dedicated RM · Campaign-based retention</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Mass, Personal, SME & BB · No dedicated RM · Campaign-based retention</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ branchTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -184,7 +184,7 @@
         <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
           <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
           <p class="text-xs text-gray-600">
-            <span class="font-bold text-absa-enrich">Scope:</span> This view covers only <span class="font-semibold">Premier Banking</span> and <span class="font-semibold">Wealth Management</span> customers assigned to a dedicated Relationship Manager. For mass-market retention, see the <span class="font-semibold">Branch Campaigns</span> tab.
+            <span class="font-bold text-absa-enrich">Scope:</span> This view covers <span class="font-semibold">CIB, Enterprise, Prestige and Premier</span> customers assigned to a dedicated Relationship Manager. For Mass, Personal, SME and BB retention, see the <span class="font-semibold">Branch Campaigns</span> tab.
           </p>
         </div>
 
@@ -202,7 +202,7 @@
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 class="text-sm font-bold text-absa-enrich">Relationship Manager Workload</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics · Premium segment only · Sourced from Nightly Inference Batch</p>
+              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics · RM-managed segments · Sourced from Nightly Inference Batch</p>
             </div>
             <div class="flex gap-2">
               <button class="px-3 py-1.5 text-xs font-semibold border border-gray-300 rounded-sm hover:bg-gray-50 flex items-center gap-1.5 shadow-none">
@@ -291,7 +291,7 @@
         <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
           <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
           <p class="text-xs text-gray-600">
-            <span class="font-bold text-absa-enrich">Scope:</span> Mass-market customers — <span class="font-semibold">Retail Savings</span>, <span class="font-semibold">Youth (18–25)</span>, <span class="font-semibold">Standard Business</span> — have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
+            <span class="font-bold text-absa-enrich">Scope:</span> Branch-managed customers — <span class="font-semibold">Mass, Personal, SME and BB</span> — have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
           </p>
         </div>
 
@@ -562,6 +562,7 @@ import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { formatMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
 api.interceptors.request.use((config) => {
@@ -579,10 +580,28 @@ const activeTab       = ref('overview')
 const forecastHorizon = ref(30)
 const caseFilter      = ref('all')
 const branchData      = ref([])
-const segmentData     = ref([])
 const forecastData    = ref(null)
 
 const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' })
+
+const backendSegments = computed(() => {
+  const groups = new Map()
+  for (const customer of customerStore.customers) {
+    if (customer.marketSegment === null) continue
+    const group = groups.get(customer.marketSegment) || {
+      marketSegment: customer.marketSegment,
+      label: formatMarketSegment(customer.marketSegment),
+      total: 0,
+      atRisk: 0,
+    }
+    group.total += 1
+    if (['AT_RISK', 'DORMANT', 'CHURNED'].includes(customer.state)) group.atRisk += 1
+    groups.set(customer.marketSegment, group)
+  }
+  return [...groups.values()]
+    .map((group) => ({ ...group, riskPct: group.total ? Math.round((group.atRisk / group.total) * 100) : 0 }))
+    .sort((a, b) => b.atRisk - a.atRisk)
+})
 
 // ── Portfolio tracks ──
 const rmTrack = computed(() => ({ total: 20630, atRisk: 186, openCases: 42 }))
@@ -649,15 +668,13 @@ const branchPipeline = computed(() => {
 
 // ── Forecast ──
 const forecastWeeks = computed(() => {
-  const segs = [
-    { label: 'Youth (18–25)',    value: 445, track: 'branch' },
-    { label: 'Retail Savings',   value: 312, track: 'branch' },
-    { label: 'Business Current', value: 198, track: 'branch' },
-    { label: 'Premier Banking',  value: 54,  track: 'rm'     },
-    { label: 'Wealth Mgmt',      value: 30,  track: 'rm'     },
-  ]
+  const segs = backendSegments.value.map((segment) => ({
+    label: segment.label,
+    value: segment.atRisk,
+    track: [30, 50, 60, 85].includes(segment.marketSegment) ? 'rm' : 'branch',
+  }))
   const max = Math.max(...segs.map(s => s.value))
-  return segs.map(s => ({ ...s, pct: Math.round(s.value / max * 100) }))
+  return segs.map(s => ({ ...s, pct: max ? Math.round(s.value / max * 100) : 0 }))
 })
 const totalForecast = computed(() => forecastWeeks.value.reduce((s, w) => s + w.value, 0))
 const estimatedAUM  = computed(() => {
@@ -667,9 +684,9 @@ const estimatedAUM  = computed(() => {
 
 // ── RM Table ──
 const relationshipManagers = computed(() => [
-  { name: 'Naledi Khumalo', segment: 'Wealth Management', portfolio: 84,  avgRiskScore: 38, openCases: 8,  actioned: 19, target: 20, retentionRate: 88, daysSinceActivity: 0 },
-  { name: 'Ayanda Nkosi',   segment: 'Premier Banking',   portfolio: 127, avgRiskScore: 48, openCases: 18, actioned: 24, target: 28, retentionRate: 71, daysSinceActivity: 2 },
-  { name: 'Dineo Molefe',   segment: 'Premier Banking',   portfolio: 98,  avgRiskScore: 61, openCases: 16, actioned: 18, target: 25, retentionRate: 65, daysSinceActivity: 1 },
+  { name: 'Naledi Khumalo', segment: formatMarketSegment(30), portfolio: 84,  avgRiskScore: 38, openCases: 8,  actioned: 19, target: 20, retentionRate: 88, daysSinceActivity: 0 },
+  { name: 'Ayanda Nkosi',   segment: formatMarketSegment(85), portfolio: 127, avgRiskScore: 48, openCases: 18, actioned: 24, target: 28, retentionRate: 71, daysSinceActivity: 2 },
+  { name: 'Dineo Molefe',   segment: formatMarketSegment(60), portfolio: 98,  avgRiskScore: 61, openCases: 16, actioned: 18, target: 25, retentionRate: 65, daysSinceActivity: 1 },
 ].map(rm => {
   const pct = (rm.actioned / rm.target) * 100
   const s   = pct >= 80 && rm.retentionRate >= 65 ? 'ON TRACK' : rm.daysSinceActivity > 3 || rm.retentionRate < 50 ? 'AT RISK' : 'MONITOR'
@@ -684,7 +701,7 @@ const rmStatusCounts = computed(() =>
 )
 
 const rmSummaryKpis = computed(() => [
-  { label: 'Active RMs',      value: relationshipManagers.value.length, note: 'Premium segment only' },
+  { label: 'Active RMs',      value: relationshipManagers.value.length, note: 'RM-managed segments' },
   { label: 'On Track',        value: rmStatusCounts.value['ON TRACK'] || 0, valueClass: 'text-absa-passion', note: 'Meeting targets' },
   { label: 'Monitoring',      value: rmStatusCounts.value['MONITOR']  || 0, valueClass: 'text-absa-energy', note: 'Needs attention' },
   { label: 'Needs Attention', value: rmStatusCounts.value['AT RISK']  || 0, valueClass: 'text-absa-passion', note: 'Idle or low retention' },
@@ -692,10 +709,10 @@ const rmSummaryKpis = computed(() => [
 
 // ── Campaigns ──
 const activeCampaigns = ref([
-  { name: 'SMS Retention Offer — Q3 Savings', channel: 'SMS',         channelIcon: 'sms',           segment: 'Retail Savings',    expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Youth Re-engagement Drive',         channel: 'Digital',     channelIcon: 'phone_iphone',  segment: 'Youth (18–25)',     expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Call Centre — Business Win-Back',   channel: 'Call Centre', channelIcon: 'support_agent', segment: 'Standard Business', expires: '2026-08-28', enrolled: 88,  responded: 41,  retained: 33,  conversionPct: 38, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Email — Savings Rate Offer',        channel: 'Email',       channelIcon: 'mail',          segment: 'Retail Savings',    expires: '2026-07-31', enrolled: 204, responded: 55,  retained: 38,  conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500',   dotClass: 'bg-gray-400'  },
+  { name: 'SMS Retention Offer — Personal', channel: 'SMS',         channelIcon: 'sms',           segment: formatMarketSegment(65), expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Mass Re-engagement Drive',       channel: 'Digital',     channelIcon: 'phone_iphone',  segment: formatMarketSegment(75), expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Call Centre — SME Win-Back',     channel: 'Call Centre', channelIcon: 'support_agent', segment: formatMarketSegment(45), expires: '2026-08-28', enrolled: 88, responded: 41, retained: 33, conversionPct: 38, status: 'ACTIVE', statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Email — Personal Savings',       channel: 'Email',       channelIcon: 'mail',          segment: formatMarketSegment(65), expires: '2026-07-31', enrolled: 204, responded: 55, retained: 38, conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500', dotClass: 'bg-gray-400' },
 ])
 
 const campaignKpis = computed(() => [
@@ -706,10 +723,10 @@ const campaignKpis = computed(() => [
 ])
 
 const unenrolledCustomers = ref([
-  { id: 'CU-02341', name: 'Palesa Dlamini',    segment: 'Retail Savings', prob: 82, daysFlagged: 9  },
-  { id: 'CU-03812', name: 'Thabo Khumalo',     segment: 'Youth (18–25)', prob: 79, daysFlagged: 6  },
-  { id: 'CU-01998', name: 'Nomsa Sithole',     segment: 'Retail Savings', prob: 74, daysFlagged: 11 },
-  { id: 'CU-04201', name: 'Lebogang Mahlangu', segment: 'Youth (18–25)', prob: 71, daysFlagged: 4  },
+  { id: 'CU-02341', name: 'Palesa Dlamini',    segment: formatMarketSegment(65), prob: 82, daysFlagged: 9  },
+  { id: 'CU-03812', name: 'Thabo Khumalo',     segment: formatMarketSegment(75), prob: 79, daysFlagged: 6  },
+  { id: 'CU-01998', name: 'Nomsa Sithole',     segment: formatMarketSegment(65), prob: 74, daysFlagged: 11 },
+  { id: 'CU-04201', name: 'Lebogang Mahlangu', segment: formatMarketSegment(75), prob: 71, daysFlagged: 4  },
 ])
 
 // ── Cases ──
@@ -720,31 +737,29 @@ const caseFilters = [
 ]
 
 const allCases = ref([
-  { id: 'CU-00421', name: 'Mpho Radebe',     track: 'rm',     segment: 'Premier Banking',   prob: 91, aum: 'K 2.1M', daysFlagged: 12 },
-  { id: 'CU-00887', name: 'Zanele Motsepe',  track: 'rm',     segment: 'Wealth Management', prob: 88, aum: 'K 1.8M', daysFlagged: 9  },
-  { id: 'CU-02341', name: 'Palesa Dlamini',  track: 'branch', segment: 'Retail Savings',    prob: 82, aum: 'K 38K',  daysFlagged: 9  },
-  { id: 'CU-01142', name: 'Tebogo Mahlangu', track: 'rm',     segment: 'Premier Banking',   prob: 79, aum: 'K 840K', daysFlagged: 7  },
-  { id: 'CU-03812', name: 'Thabo Khumalo',   track: 'branch', segment: 'Youth (18–25)',     prob: 79, aum: 'K 12K',  daysFlagged: 6  },
-  { id: 'CU-00334', name: 'Kefilwe Sithole', track: 'branch', segment: 'Retail Savings',    prob: 74, aum: 'K 52K',  daysFlagged: 14 },
-  { id: 'CU-00756', name: 'Kagiso Nkosi',    track: 'branch', segment: 'Youth (18–25)',     prob: 71, aum: 'K 9K',   daysFlagged: 5  },
-  { id: 'CU-00198', name: 'Dineo Molefe',    track: 'rm',     segment: 'Premier Banking',   prob: 74, aum: 'K 1.2M', daysFlagged: 11 },
+  { id: 'CU-00421', name: 'Mpho Radebe',     track: 'rm',     segment: formatMarketSegment(85), prob: 91, aum: 'K 2.1M', daysFlagged: 12 },
+  { id: 'CU-00887', name: 'Zanele Motsepe',  track: 'rm',     segment: formatMarketSegment(30), prob: 88, aum: 'K 1.8M', daysFlagged: 9  },
+  { id: 'CU-02341', name: 'Palesa Dlamini',  track: 'branch', segment: formatMarketSegment(65), prob: 82, aum: 'K 38K',  daysFlagged: 9  },
+  { id: 'CU-01142', name: 'Tebogo Mahlangu', track: 'rm',     segment: formatMarketSegment(60), prob: 79, aum: 'K 840K', daysFlagged: 7  },
+  { id: 'CU-03812', name: 'Thabo Khumalo',   track: 'branch', segment: formatMarketSegment(75), prob: 79, aum: 'K 12K',  daysFlagged: 6  },
+  { id: 'CU-00334', name: 'Kefilwe Sithole', track: 'branch', segment: formatMarketSegment(65), prob: 74, aum: 'K 52K',  daysFlagged: 14 },
+  { id: 'CU-00756', name: 'Kagiso Nkosi',    track: 'branch', segment: formatMarketSegment(75), prob: 71, aum: 'K 9K',   daysFlagged: 5  },
+  { id: 'CU-00198', name: 'Dineo Molefe',    track: 'rm',     segment: formatMarketSegment(85), prob: 74, aum: 'K 1.2M', daysFlagged: 11 },
 ])
 
 const filteredCases = computed(() =>
   caseFilter.value === 'all' ? allCases.value : allCases.value.filter(c => c.track === caseFilter.value)
 )
 
-const churnSegments = [
-  { name: 'Youth (18–25)',     pct: 38, track: 'branch' },
-  { name: 'Retail Savings',    pct: 22, track: 'branch' },
-  { name: 'Business Current',  pct: 18, track: 'branch' },
-  { name: 'Premier Banking',   pct: 9,  track: 'rm'     },
-  { name: 'Wealth Management', pct: 5,  track: 'rm'     },
-]
+const churnSegments = computed(() => backendSegments.value.map((segment) => ({
+  name: segment.label,
+  pct: segment.riskPct,
+  track: [30, 50, 60, 85].includes(segment.marketSegment) ? 'rm' : 'branch',
+})))
 
 const aiPriorityActions = ref([
   { urgency: 'URGENT', urgencyClass: 'bg-red-100 text-absa-passion', title: '2 Premier clients uncontacted for 10+ days', detail: 'High AUM accounts at critical churn risk. Assign to available RM immediately.', meta: '2 RM-managed · K 3.9M' },
-  { urgency: 'HIGH',   urgencyClass: 'bg-amber-100 text-amber-700',  title: '276 Youth customers with no campaign enrolment', detail: 'Youth churn accelerating. Enrol in the Youth Re-engagement Drive campaign.', meta: '276 branch-managed' },
+  { urgency: 'HIGH',   urgencyClass: 'bg-amber-100 text-amber-700',  title: '276 Mass customers with no campaign enrolment', detail: 'Mass-segment churn is accelerating. Enrol customers in the Mass Re-engagement Drive campaign.', meta: '276 branch-managed' },
 ])
 
 // ── Fetch ──
@@ -752,13 +767,11 @@ onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
     predictionStore.fetchChurnDrivers()
-    const [bRes, sRes, fRes] = await Promise.all([
+    const [bRes, fRes] = await Promise.all([
       api.get('/api/v1/churn-intel/branches', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/churn-intel/segments', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
       api.get('/api/v1/forecasts/churn',      { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
     ])
     branchData.value   = bRes.data.branches || []
-    segmentData.value  = sRes.data.segments || []
     forecastData.value = fRes.data
   } catch (e) {
     console.warn('BranchManagerDashboard: API error', e.message)

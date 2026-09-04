@@ -187,6 +187,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { recordExecuted, recordAction } from '@/utils/absaActions'
+import { notify } from '@/utils/absaExport'
 
 defineOptions({ name: 'AiCampaignModal' })
 
@@ -201,7 +203,7 @@ const emit = defineEmits(['update:modelValue', 'campaign-launched'])
 const selectedCampaign = ref(null)
 
 const cohortDrivers = [
-  { icon: 'signal_cellular_nodata', label: 'Digital Inactivity', contribution: 38, desc: '0 app/web logins in 45+ days — strongest predictor of 90-day churn' },
+  { icon: 'signal_cellular_nodata', label: 'Digital Inactivity', contribution: 38, desc: '0 app/web logins in 45+ days ï¿½ strongest predictor of 90-day churn' },
   { icon: 'account_balance_wallet', label: 'Balance Decline', contribution: 27, desc: 'AUM dropped >25% in the last 60 days across this cohort' },
   { icon: 'cancel_schedule_send', label: 'Direct Debit Failure', contribution: 19, desc: '1+ failed recurring payment detected in the last 30 days' },
 ]
@@ -218,7 +220,7 @@ const aiCampaigns = [
   {
     id: 'relationship-retention', rank: 2,
     tag: 'HIGH VALUE', tagClass: 'bg-amber-100 text-amber-700',
-    title: 'Relationship Retention — RM Outreach',
+    title: 'Relationship Retention ï¿½ RM Outreach',
     channel: 'Phone Call (RM-initiated)', channelIcon: 'call',
     description: 'Assign a senior RM for a personalised check-in call. Offer a fee-waiver or rate review based on customer tenure.',
     upliftScore: 51, successRate: '74%', aumProtected: 'K 31.2M', confidence: 79, duration: '7 days', cost: 'Medium',
@@ -240,8 +242,18 @@ function close() {
 
 function launch() {
   if (!selectedCampaign.value) return
+  recordExecuted(
+    props.customers.map((c) => c.customer_id || c.id).filter(Boolean),
+    selectedCampaign.value.title
+  )
+  recordAction({
+    type: 'CAMPAIGN_LAUNCHED',
+    detail: `Launched ${selectedCampaign.value.title} from ${props.sourceContext}`,
+    meta: { campaign: selectedCampaign.value.title, context: props.sourceContext, customers: props.customers.length },
+  })
   emit('campaign-launched', { campaign: selectedCampaign.value, customers: props.customers })
   close()
+  notify(`Campaign launched: ${selectedCampaign.value.title} (${props.customers.length} customer${props.customers.length === 1 ? '' : 's'})`, 'success')
 }
 </script>
 

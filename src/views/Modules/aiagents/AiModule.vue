@@ -61,13 +61,6 @@
             <i class="fas fa-magic"></i>
             <span class="hidden sm:inline">Demo Agent</span>
           </router-link> -->
-          <router-link 
-            to="/dashboard/image-capture"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm bg-white border border-gray-300 hover:border-[#2F2E8B] hover:text-[#2F2E8B] text-gray-600 text-[10px] font-mono font-bold uppercase transition-all shadow-none"
-          >
-            <i class="fas fa-camera"></i>
-            <span class="hidden sm:inline">Image Capture</span>
-          </router-link>
           <button 
             @click="showOfflineModal = true"
             class="flex items-center gap-2 px-3 py-2 rounded-sm text-[10px] font-mono font-bold uppercase transition-all shadow-none bg-white border border-gray-300 hover:border-green-600 hover:text-green-600 text-gray-600"

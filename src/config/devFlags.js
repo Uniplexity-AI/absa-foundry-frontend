@@ -6,13 +6,15 @@
  */
 export const DEV_BYPASS = import.meta.env.VITE_DEV_BYPASS === 'true'
 
-/** Mock JWT payload used when DEV_BYPASS is active. */
+/** Mock JWT payload used when DEV_BYPASS is active (ABSA-shaped claims). */
 export const DEV_AUTH_PAYLOAD = {
-  email: 'dev@absa.co.zm',
-  tenantId: 'dev-tenant-001',
-  role: 'admin',
-  companyName: 'ABSA Intelligence Unit',
-  firstName: 'Dev',
+  sub: '00000000-0000-0000-0000-000000000001',
+  username: 'dev.admin',
+  display_name: 'Dev Administrator',
+  email: 'dev.admin@absa.co.zm',
+  roles: ['ADMIN'],
+  role: 'ADMIN',
+  branch_code: null,
   exp: Math.floor(Date.now() / 1000) + 86400
 }
 

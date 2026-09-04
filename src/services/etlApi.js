@@ -99,6 +99,61 @@ export async function fetchETLConfigs() {
 }
 
 /**
+ * Fetch a single config's raw YAML content by filename.
+ * @param {string} name — filename, e.g. "customer_360.yaml"
+ * @returns {Promise<{ name: string, content: string, last_modified: string }>}
+ */
+export async function fetchETLConfigContent(name) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/configs/${encodeURIComponent(name)}`, {
+    headers: _headers(),
+  })
+  return _handleRes(res)
+}
+
+/**
+ * Create a new extraction spec. The backend derives the filename from the
+ * YAML `name:` field (falls back to a timestamp name if absent).
+ * @param {string} content — full YAML content
+ * @returns {Promise<{ name: string, content: string, last_modified: string }>}
+ */
+export async function createETLConfig(content) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/configs`, {
+    method: 'POST',
+    headers: _headers(),
+    body: JSON.stringify({ content }),
+  })
+  return _handleRes(res)
+}
+
+/**
+ * Update (or upsert) an extraction spec by filename.
+ * @param {string} name — filename, e.g. "customer_360.yaml"
+ * @param {string} content — full YAML content
+ * @returns {Promise<{ name: string, content: string, last_modified: string }>}
+ */
+export async function saveETLConfig(name, content) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/configs/${encodeURIComponent(name)}`, {
+    method: 'PUT',
+    headers: _headers(),
+    body: JSON.stringify({ content }),
+  })
+  return _handleRes(res)
+}
+
+/**
+ * Delete an extraction spec by filename.
+ * @param {string} name — filename, e.g. "customer_360.yaml"
+ * @returns {Promise<{ status: string, name: string }>}
+ */
+export async function deleteETLConfig(name) {
+  const res = await fetch(`${API_BASE_URL}/api/etl/configs/${encodeURIComponent(name)}`, {
+    method: 'DELETE',
+    headers: _headers(),
+  })
+  return _handleRes(res)
+}
+
+/**
  * Trigger an ETL pipeline run with a given config.
  * @param {string} configName — filename, e.g. "customer_360.yaml"
  * @param {boolean} [dryRun=false]

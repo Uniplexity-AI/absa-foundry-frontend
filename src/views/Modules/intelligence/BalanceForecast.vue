@@ -13,7 +13,7 @@
         <p class="text-body-md text-gray-500 mt-1">Projected portfolio value under optimistic, base, and pessimistic churn scenarios</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
+        <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[16px]">download</span>
           Export Report
         </button>
@@ -307,6 +307,7 @@ import { ref, onMounted, watch, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 
 const store = useIntelligenceStore()
 const loading = ref(true)
@@ -349,6 +350,30 @@ function formatAum(val) {
 function segBarWidth(value, seg) {
   const max = seg.current_aum || 1
   return Math.max(2, Math.min(100, (value / max) * 100))
+}
+
+// ─── Export ───────────────────────────────────────────────────────────────────
+
+function exportReport() {
+  const which = activeTab.value
+  const f = store.forecastData ?? {}
+  if (which === 'forecast') {
+    const cps = f.ci_checkpoints ?? []
+    const rows = cps.length
+      ? cps
+      : (f.labels ?? []).map((lbl, i) => ({
+          checkpoint: lbl,
+          optimistic: f.scenarios?.optimistic?.[i],
+          base: f.scenarios?.base?.[i],
+          pessimistic: f.scenarios?.pessimistic?.[i],
+        }))
+    downloadCsv(reportFilename('aum-forecast'), rows)
+  } else if (which === 'by_segment') {
+    downloadCsv(reportFilename('forecast-by-segment'), f.by_segment ?? fallbackSegments, ['segment', 'current_aum', 'projected_remaining', 'aum_at_risk', 'projected_exits', 'pct_change'])
+  } else {
+    downloadCsv(reportFilename('forecast-sensitivity'), f.sensitivity ?? fallbackSensitivity, ['scenario', 'churn_assumption', 'projected_aum', 'delta', 'pct_change', 'is_base'])
+  }
+  notify('Report exported as CSV', 'success', { autoClose: 2500 })
 }
 
 function renderChart() {

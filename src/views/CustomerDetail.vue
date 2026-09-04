@@ -41,12 +41,49 @@
       </div>
 
       <!-- ═══ AI Next Best Action Engine ═══ -->
+      <div v-if="activeOverride" class="mb-3 flex items-center gap-3 bg-absa-enrich text-white px-4 py-2 rounded-sm text-xs">
+        <span class="material-symbols-outlined text-[16px]">edit</span>
+        <span class="font-bold">Override active:</span>
+        <span>{{ activeOverride.toOffer }}</span>
+        <span class="text-gray-300">— {{ activeOverride.reason }}</span>
+        <button @click="resetOverride" class="ml-auto text-[11px] font-bold underline hover:text-absa-energy">Undo override</button>
+      </div>
       <AiNbaPanel
         :churn-prob="churnProb"
         :customer-id="customerId"
         @execute="showCampaignModal = true"
-        @override="showOverrideDialog = true"
+        @override="openOverrideDialog"
       />
+
+      <!-- Override Dialog -->
+      <div v-if="showOverrideDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40" @click="showOverrideDialog = false"></div>
+        <div class="relative w-full max-w-lg bg-white border border-gray-200 shadow-2xl">
+          <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h3 class="text-sm font-bold text-absa-enrich">Override AI Recommendation</h3>
+              <p class="text-xs text-gray-500 mt-0.5">RM discretion overrides the prescribed intervention for {{ customerId }}</p>
+            </div>
+            <button @click="showOverrideDialog = false" class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div class="p-6 space-y-4">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Alternative Action</label>
+              <select v-model="overrideOffer" class="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:ring-1 focus:ring-absa-passion">
+                <option v-for="opt in overrideOptions" :key="opt" :value="opt">{{ opt }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Reason for override</label>
+              <textarea v-model="overrideReason" rows="3" placeholder="e.g. Customer is a high-value HNI with a personal relationship — RM will contact directly." class="w-full border border-gray-300 rounded-sm px-3 py-2 text-sm focus:ring-1 focus:ring-absa-passion resize-none"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-1">
+              <button @click="showOverrideDialog = false" class="px-4 py-2 border border-gray-300 text-xs font-bold text-absa-enrich rounded-sm hover:bg-gray-50">Cancel</button>
+              <button @click="doOverride" class="px-4 py-2 bg-absa-passion text-white text-xs font-bold rounded-sm hover:bg-absa-power">APPLY OVERRIDE</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- ═══ Customer Profile Header ═══ -->
       <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
@@ -67,13 +104,32 @@
                 <div><span class="text-gray-500 block text-[11px] uppercase">Last Snapshot</span><span class="font-bold text-absa-enrich">{{ computedAt || '—' }}</span></div>
                 <div><span class="text-gray-500 block text-[11px] uppercase">State Since</span><span class="font-bold text-absa-enrich">{{ stateSince || '—' }}</span></div>
                 <div v-if="customer.branch"><span class="text-gray-500 block text-[11px] uppercase">Branch</span><span class="font-bold text-absa-enrich">{{ customer.branch }}</span></div>
-                <div v-if="customer.segment"><span class="text-gray-500 block text-[11px] uppercase">Segment</span><span class="font-bold text-absa-enrich">{{ customer.segment }}</span></div>
+                <div><span class="text-gray-500 block text-[11px] uppercase">Market segment</span><span class="font-bold text-absa-enrich">{{ customer.segment }}</span></div>
               </div>
             </div>
           </div>
           <div class="flex items-center gap-2 flex-wrap shrink-0">
             <button @click="goToActionPlan" class="bg-absa-passion text-white text-xs font-bold py-2.5 px-4 shadow-none hover:bg-absa-power transition-colors">CREATE ACTION PLAN</button>
-            <button class="border border-gray-300 text-absa-enrich text-xs font-bold py-2.5 px-4 hover:bg-gray-50 transition-colors">MORE</button>
+            <div class="relative">
+              <button @click="showMoreMenu = !showMoreMenu" class="border border-gray-300 text-absa-enrich text-xs font-bold py-2.5 px-4 hover:bg-gray-50 transition-colors flex items-center gap-1">
+                MORE
+                <span class="material-symbols-outlined text-[16px]">expand_more</span>
+              </button>
+              <div v-if="showMoreMenu" class="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-200 shadow-lg z-30 py-1">
+                <button @click="exportProfile()" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] text-gray-400">download</span>
+                  Export Profile (JSON)
+                </button>
+                <button @click="goToTakeAction(actionPlan[0])" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] text-gray-400">flash_on</span>
+                  Take Action
+                </button>
+                <button @click="copyCustomerId" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] text-gray-400">content_copy</span>
+                  Copy Customer ID
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -359,7 +415,7 @@
           <div class="pp-metric"><span class="pp-metric__label">Account status</span><span class="pp-metric__value">{{ state.replace('_', ' ') }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Customer since</span><span class="pp-metric__value">{{ customerSince || '—' }}</span></div>
           <div v-if="customer.branch" class="pp-metric"><span class="pp-metric__label">Branch</span><span class="pp-metric__value">{{ customer.branch }}</span></div>
-          <div v-if="customer.segment" class="pp-metric"><span class="pp-metric__label">Segment</span><span class="pp-metric__value">{{ customer.segment }}</span></div>
+          <div class="pp-metric"><span class="pp-metric__label">Market segment</span><span class="pp-metric__value">{{ customer.segment }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Health score</span><span class="pp-metric__value">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Last activity</span><span class="pp-metric__value">{{ lastActivity }}</span></div>
         </div>
@@ -387,6 +443,8 @@ import AiNbaPanel from '@/components/intelligence/AiNbaPanel.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { notify } from '@/utils/absaExport'
+import { overrideRecommendation, getOverride, hydrateStateFromServer } from '@/utils/absaActions'
 
 const route = useRoute()
 const router = useRouter()
@@ -443,6 +501,9 @@ const InfoDot = defineComponent({
 const loading = ref(true)
 const showCampaignModal = ref(false)
 const showOverrideDialog = ref(false)
+const showMoreMenu = ref(false)
+const overrideReason = ref('')
+const overrideOffer = ref('Fee Waiver (3 months)')
 const reasonCodes = ref([])
 const recommendations = ref([])
 
@@ -752,12 +813,63 @@ function exportProfile() {
   a.download = `${customerId.value || 'customer'}-profile.json`
   a.click()
   URL.revokeObjectURL(url)
+  notify(`Profile exported for ${customerId.value}`, 'success', { autoClose: 2500 })
+  showMoreMenu.value = false
+}
+
+async function copyCustomerId() {
+  try {
+    await navigator.clipboard.writeText(customerId.value)
+    notify(`Customer ID ${customerId.value} copied`, 'success', { autoClose: 2000 })
+  } catch {
+    notify('Could not copy — clipboard unavailable', 'error', { autoClose: 2500 })
+  }
+  showMoreMenu.value = false
+}
+
+// ── Override dialog ──────────────────────────────────────────────────────────
+const overrideOptions = [
+  'Fee Waiver (3 months)',
+  'Rate Review on Home Loan',
+  'Digital Reactivation SMS',
+  'RM Courtesy Call',
+  'No Action — Escalate to Branch',
+]
+
+const activeOverride = ref(null)
+
+function openOverrideDialog() {
+  showOverrideDialog.value = true
+  showMoreMenu.value = false
+}
+
+function doOverride() {
+  if (!overrideReason.value.trim()) {
+    notify('Please add a reason for the override', 'error', { autoClose: 2500 })
+    return
+  }
+  activeOverride.value = overrideRecommendation(customerId.value, 'AI Prescribed Intervention', overrideOffer.value, overrideReason.value.trim())
+  showOverrideDialog.value = false
+  overrideReason.value = ''
+  notify(`Override applied — ${overrideOffer.value}`, 'success', { autoClose: 3000 })
+}
+
+function resetOverride() {
+  activeOverride.value = null
+  showOverrideDialog.value = false
+  overrideReason.value = ''
+  notify('Override removed — AI recommendation restored', 'info', { autoClose: 2500 })
 }
 
 onMounted(async () => {
   loading.value = true
   const id = customerId.value
   if (!id) { loading.value = false; return }
+
+  // Pull any server-persisted state first (other pilot viewers / browsers),
+  // then rehydrate a prior override for this customer, if any.
+  await hydrateStateFromServer(id)
+  activeOverride.value = getOverride(id)
 
   await Promise.allSettled([
     customerStore.fetchCustomerDetail(id),

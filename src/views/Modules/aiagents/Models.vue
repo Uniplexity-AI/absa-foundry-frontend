@@ -39,10 +39,24 @@
           <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors font-label text-sm font-semibold shadow-none">
             <i class="fa-solid fa-download text-[13px]"></i> Export MRM Report
           </button>
-          <button class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors font-label text-sm font-semibold shadow-none">
-            <i class="fa-solid fa-rotate-right text-[13px]"></i> Request Retrain
+          <button v-if="canRetrain" @click="requestRetrain" :disabled="retraining"
+            :class="['px-4 py-2 text-absa-serene rounded-sm flex items-center gap-2 transition-colors font-label text-sm font-semibold shadow-none',
+              retraining ? 'bg-gray-400 cursor-not-allowed' : 'bg-absa-passion hover:bg-absa-power']">
+            <i v-if="retraining" class="fa-solid fa-spinner fa-spin text-[13px]"></i>
+            <i v-else class="fa-solid fa-rotate-right text-[13px]"></i>
+            {{ retraining ? 'Retraining…' : 'Request Retrain' }}
           </button>
         </div>
+      </div>
+
+      <!-- Retrain status strip -->
+      <div v-if="retraining || retrainError" class="mb-4 px-4 py-2 text-xs rounded-sm flex items-center gap-2"
+        :class="retrainError ? 'bg-red-100 text-absa-inspire' : 'bg-amber-50 text-amber-700 border border-amber-200'">
+        <i v-if="!retrainError" class="fa-solid fa-spinner fa-spin"></i>
+        <i v-else class="fa-solid fa-circle-exclamation"></i>
+        <span v-if="retraining">Retraining the churn model in the background — this page will refresh automatically when done (registry updates).</span>
+        <span v-else>{{ retrainError }}</span>
+        <button v-if="retraining" @click="stopRetrainPolling" class="ml-auto text-[11px] font-bold underline hover:opacity-70">Dismiss</button>
       </div>
 
       <!-- ── Tab Navigation ── -->
@@ -167,29 +181,29 @@
               <!-- Threshold slider -->
               <div class="flex items-center gap-4 mb-6">
                 <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider w-24">Threshold</span>
-                <input type="range" v-model="threshold" min="0.1" max="0.9" step="0.05" class="flex-grow accent-absa-passion h-1.5 cursor-pointer" />
-                <span class="font-mono text-sm font-bold text-absa-enrich w-12 text-right">{{ threshold.toFixed(2) }}</span>
+                <span class="font-mono text-sm font-bold text-absa-enrich">{{ thresholdLabel }}</span>
+                <span class="text-[10px] text-gray-400">optimal (Youden's J) · holdout evaluation</span>
               </div>
-              <!-- Matrix grid -->
+              <!-- Matrix grid: real holdout confusion matrix from the model registry -->
               <div class="grid grid-cols-2 gap-2 max-w-xs mx-auto">
                 <div class="rounded-sm p-4 text-center bg-green-50 border border-green-200">
                   <p class="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">True Negative</p>
-                  <p class="text-3xl font-bold text-absa-enrich font-mono">{{ confusionMatrix.tn }}</p>
+                  <p class="text-3xl font-bold text-absa-enrich font-mono">{{ confusionMatrix.tn ?? '—' }}</p>
                   <p class="text-[10px] text-gray-500 mt-1">Correctly predicted "Retain"</p>
                 </div>
                 <div class="rounded-sm p-4 text-center bg-red-50 border border-absa-passion/30">
                   <p class="text-[10px] font-bold text-absa-inspire uppercase tracking-wider mb-1">False Positive</p>
-                  <p class="text-3xl font-bold text-absa-inspire font-mono">{{ confusionMatrix.fp }}</p>
+                  <p class="text-3xl font-bold text-absa-inspire font-mono">{{ confusionMatrix.fp ?? '—' }}</p>
                   <p class="text-[10px] text-gray-500 mt-1">Wrongly flagged "Churn"</p>
                 </div>
                 <div class="rounded-sm p-4 text-center bg-amber-50 border border-amber-200">
                   <p class="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-1">False Negative</p>
-                  <p class="text-3xl font-bold text-amber-700 font-mono">{{ confusionMatrix.fn }}</p>
+                  <p class="text-3xl font-bold text-amber-700 font-mono">{{ confusionMatrix.fn ?? '—' }}</p>
                   <p class="text-[10px] text-gray-500 mt-1">Missed churners (risk)</p>
                 </div>
                 <div class="rounded-sm p-4 text-center bg-green-50 border border-green-200">
                   <p class="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">True Positive</p>
-                  <p class="text-3xl font-bold text-green-700 font-mono">{{ confusionMatrix.tp }}</p>
+                  <p class="text-3xl font-bold text-green-700 font-mono">{{ confusionMatrix.tp ?? '—' }}</p>
                   <p class="text-[10px] text-gray-500 mt-1">Correctly caught churners</p>
                 </div>
               </div>
@@ -626,7 +640,10 @@ import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useModelsStore } from '@/stores/modelsStore'
+import { useIntelligenceStore } from '@/stores/intelligenceStore'
 import Chart from 'chart.js/auto'
+import { notify } from '@/utils/absaExport'
+import { decodeJWT } from '@/services/decodeJWT'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
 api.interceptors.request.use((config) => {
@@ -636,8 +653,25 @@ api.interceptors.request.use((config) => {
 })
 
 const modelsStore = useModelsStore()
+const intelligenceStore = useIntelligenceStore()
 const loading = ref(true)
 const activeTab = ref('overview')
+
+// Retrain job state
+const retraining = ref(false)
+const retrainStartedAt = ref(null)
+const retrainPollTimer = ref(null)
+const retrainError = ref('')
+
+// Request Retrain is available to Data Scientists + Admin
+const canRetrain = computed(() => {
+  try {
+    const roles = (decodeJWT().getUserRoles?.() || []).map((r) => String(r).toUpperCase())
+    return roles.includes('ADMIN') || roles.includes('DATA_SCIENTIST')
+  } catch (e) {
+    return false
+  }
+})
 
 // Raw backend data
 const performanceHistory = ref([])
@@ -656,31 +690,33 @@ const tabs = computed(() => [
 ])
 
 // ── Static / derived data ──
-const lastEvaluatedDate = '2025-10-24'
-const lastDriftScan = '2025-10-24'
+const lastEvaluatedDate = computed(() => performanceHistory.value.length
+  ? performanceHistory.value[performanceHistory.value.length - 1].date
+  : '—')
+// Drift endpoint does not expose a scan timestamp yet; tie to latest eval.
+const lastDriftScan = computed(() => lastEvaluatedDate.value)
 
-const activeAlerts = ref([
-  {
-    id: 1, severity: 'CRITICAL', severityClass: 'bg-red-100 text-absa-passion',
-    feature: 'tenure_months', message: 'PSI exceeded CRITICAL threshold (0.25)',
-    currentValue: '0.31', threshold: '0.25', since: '3 days ago',
-  },
-  {
-    id: 2, severity: 'WARNING', severityClass: 'bg-amber-100 text-amber-700',
-    feature: 'avg_monthly_balance', message: 'PSI exceeded WARNING threshold (0.10)',
-    currentValue: '0.18', threshold: '0.10', since: '1 day ago',
-  },
-])
+// Real alerts from the live feature-drift scan (PSI thresholds)
+const activeAlerts = computed(() => featureDriftList.value
+  .filter(f => f.status === 'CRITICAL' || f.status === 'WARNING')
+  .map((f, i) => ({
+    id: i + 1,
+    severity: f.status,
+    severityClass: f.status === 'CRITICAL' ? 'bg-red-100 text-absa-passion' : 'bg-amber-100 text-amber-700',
+    feature: f.name,
+    message: `PSI ${f.score} — above ${f.status === 'CRITICAL' ? 'critical' : 'warning'} threshold`,
+    currentValue: f.score,
+    threshold: f.status === 'CRITICAL' ? '0.25' : '0.10',
+    since: 'latest scan',
+  })))
 
-const resolvedAlerts = ref([
-  { feature: 'credit_utilization', alert: 'PSI exceeded 0.10 WARNING', triggered: '2025-09-14', resolved: '2025-09-21', resolution: 'Feature distribution normalized post quarter-end' },
-  { feature: 'num_products', alert: 'AUC-ROC drop below 0.80 threshold', triggered: '2025-08-02', resolved: '2025-08-10', resolution: 'Model retrained on extended dataset — v1.3.0 deployed' },
-])
+// Resolution history requires an alerting store (not yet in pilot backend).
+const resolvedAlerts = ref([])
 
 // ── Model Details ──
 const modelDetails = computed(() => {
   const m = modelsStore.championChurn
-  return { name: m?.id || 'churn_lgbm_v1.4.2', status: m?.status || 'ACTIVE' }
+  return { name: m?.id || '—', status: m?.status || '—' }
 })
 
 // ── Overview KPIs ──
@@ -688,20 +724,25 @@ const modelMetrics = computed(() => {
   const m = modelsStore.championChurn
   const metrics = m?.metrics || {}
   return {
-    aucRoc: { value: metrics.auc != null ? (metrics.auc * 100).toFixed(1) + '%' : '87.4%' },
-    logLoss: { value: metrics.log_loss != null ? metrics.log_loss.toFixed(4) : '0.2841' },
-    brier: { value: metrics.brier != null ? metrics.brier.toFixed(4) : '0.1193' },
+    aucRoc: { value: metrics.auc != null ? (metrics.auc * 100).toFixed(1) + '%' : '—' },
+    logLoss: { value: metrics.log_loss != null ? metrics.log_loss.toFixed(4) : '—' },
+    brier: { value: metrics.brier != null ? metrics.brier.toFixed(4) : '—' },
   }
 })
 
-const overviewKpis = computed(() => [
-  { label: 'AUC-ROC',     value: modelMetrics.value.aucRoc.value, note: 'Discrimination power' },
-  { label: 'Log Loss',    value: modelMetrics.value.logLoss.value, note: 'Lower is better' },
-  { label: 'Brier Score', value: modelMetrics.value.brier.value, note: 'Calibration quality' },
-  { label: 'KS Stat',     value: '0.412', note: 'Separation strength' },
-  { label: 'F1 Score',    value: '0.741', note: 'At threshold 0.45' },
-  { label: 'Model Ver.',  value: 'v1.4.2', note: 'Champion · LightGBM' },
-])
+const overviewKpis = computed(() => {
+  const m = modelsStore.championChurn
+  const metrics = m?.metrics || {}
+  const pct = (v) => v != null ? (v * 100).toFixed(1) + '%' : '—'
+  return [
+    { label: 'AUC-ROC',     value: pct(metrics.auc), note: 'Holdout discrimination' },
+    { label: 'KS Stat',     value: metrics.ks_statistic != null ? metrics.ks_statistic.toFixed(3) : '—', note: 'Score separation (next retrain)' },
+    { label: 'Log Loss',    value: metrics.log_loss != null ? metrics.log_loss.toFixed(4) : '—', note: 'Lower is better' },
+    { label: 'Brier Score', value: metrics.brier != null ? metrics.brier.toFixed(4) : '—', note: 'Calibration quality' },
+    { label: 'F1 @ optimal', value: m?.classification?.f1 != null ? m.classification.f1.toFixed(3) : '—', note: `Threshold ${m?.classification_threshold ?? '—'}` },
+    { label: 'Model Ver.',  value: m?.id || '—', note: 'Champion (live registry)' },
+  ]
+})
 
 const driftingFeatureCount = computed(() =>
   featureDriftList.value.filter(f => parseFloat(f.score) > 0.20).length || 2
@@ -714,54 +755,91 @@ const avgLatency = computed(() => {
   return avg.toFixed(1) + 'ms'
 })
 
-// ── Confusion Matrix with threshold slider ──
-const threshold = ref(0.45)
+// ── Confusion Matrix ──
+// Real holdout evaluation from the model registry (computed at training
+// time at the optimal threshold). Realised-outcome matrices replace this
+// once prediction logging accrues labels.
+const threshold = ref(null)  // display-only: registry optimal threshold
 const confusionMatrix = computed(() => {
-  const t = threshold.value
-  return {
-    tn: Math.round(3200 + (t - 0.45) * 2000),
-    fp: Math.round(800  - (t - 0.45) * 2000),
-    fn: Math.round(420  + (t - 0.45) * 800),
-    tp: Math.round(1180 - (t - 0.45) * 800),
-  }
+  const m = modelsStore.championChurn
+  const cm = m?.classification?.confusion_matrix
+  if (!cm) return { tn: null, fp: null, fn: null, tp: null, total: 0 }
+  const [[tn, fp], [fn, tp]] = cm
+  return { tn, fp, fn, tp, total: tn + fp + fn + tp }
 })
+const thresholdLabel = computed(() =>
+  modelsStore.championChurn?.metrics?.optimal_threshold != null
+    ? modelsStore.championChurn.metrics.optimal_threshold.toFixed(3)
+    : '—')
 const derivedMetrics = computed(() => {
-  const { tp, fp, fn } = confusionMatrix.value
-  const p = tp + fp > 0 ? (tp / (tp + fp)).toFixed(2) : '—'
-  const r = tp + fn > 0 ? (tp / (tp + fn)).toFixed(2) : '—'
-  const pf = parseFloat(p), rf = parseFloat(r)
-  const f1 = (pf + rf > 0) ? ((2 * pf * rf) / (pf + rf)).toFixed(2) : '—'
-  return { precision: p, recall: r, f1 }
+  const m = modelsStore.championChurn
+  const c = m?.classification || {}
+  const fm = (v) => v != null ? v.toFixed(2) : '—'
+  return { precision: fm(c.precision), recall: fm(c.recall), f1: fm(c.f1) }
 })
 
 // ── Segment Performance ──
-const segmentPerformance = ref([
-  { name: 'Retail Savings',      customers: '124,440', auc: '0.891', f1: '0.762', status: 'STABLE',  statusClass: 'bg-green-100 text-green-700',  dotClass: 'bg-green-600' },
-  { name: 'Business Current',    customers: '38,210',  auc: '0.854', f1: '0.701', status: 'STABLE',  statusClass: 'bg-green-100 text-green-700',  dotClass: 'bg-green-600' },
-  { name: 'Wealth Management',   customers: '12,090',  auc: '0.821', f1: '0.680', status: 'MONITOR', statusClass: 'bg-amber-100 text-amber-700',  dotClass: 'bg-amber-500' },
-  { name: 'Youth (18–25)',       customers: '29,770',  auc: '0.799', f1: '0.634', status: 'REVIEW',  statusClass: 'bg-red-100 text-absa-passion',  dotClass: 'bg-absa-passion' },
-  { name: 'Premier Banking',     customers: '8,540',   auc: '0.876', f1: '0.731', status: 'STABLE',  statusClass: 'bg-green-100 text-green-700',  dotClass: 'bg-green-600' },
-])
+// Per-segment AUC/F1 requires scored outcomes per segment — not tracked in
+// the pilot. Show live segment composition (from the CLV band summary);
+// model-quality cells read '—'.
+const segmentPerformance = computed(() => {
+  const bands = intelligenceStore.clvData?.bands || []
+  const total = bands.reduce((s, b) => s + b.count, 0)
+  return bands.map(b => ({
+    name: b.band,
+    customers: b.count.toLocaleString(),
+    auc: '—', f1: '—',
+    status: 'PILOT',
+    statusClass: 'bg-gray-100 text-gray-500',
+    dotClass: 'bg-gray-400',
+    share: total ? ((b.count / total) * 100).toFixed(1) + '%' : '—',
+  }))
+})
 
 // ── Threshold Table ──
-const thresholdTable = ref([
-  { threshold: '0.30', precision: '0.61', recall: '0.94', f1: '0.74', fpRate: '0.28', cost: 'R 4.2M / month', recommended: false },
-  { threshold: '0.40', precision: '0.71', recall: '0.87', f1: '0.78', fpRate: '0.18', cost: 'R 2.9M / month', recommended: false },
-  { threshold: '0.45', precision: '0.76', recall: '0.81', f1: '0.78', fpRate: '0.14', cost: 'R 2.4M / month', recommended: true  },
-  { threshold: '0.50', precision: '0.82', recall: '0.74', f1: '0.78', fpRate: '0.10', cost: 'R 1.8M / month', recommended: false },
-  { threshold: '0.60', precision: '0.89', recall: '0.61', f1: '0.72', fpRate: '0.06', cost: 'R 1.1M / month', recommended: false },
-])
+// Real operating points from the registry: Youden-J optimal and F1-optimal,
+// evaluated on the holdout at training time. Cost column needs a business
+// cost model — not tracked.
+const thresholdTable = computed(() => {
+  const m = modelsStore.championChurn
+  const rows = []
+  const opt = m?.metrics || {}
+  const cls = m?.classification
+  const f1t = m?.classification_threshold
+  if (cls && opt.optimal_threshold != null) {
+    const [[tn, fp], [fn, tp]] = cls.confusion_matrix || [[0, 0], [0, 0]]
+    rows.push({
+      threshold: opt.optimal_threshold.toFixed(2),
+      precision: cls.precision?.toFixed(2) ?? '—',
+      recall: cls.recall?.toFixed(2) ?? '—',
+      f1: cls.f1?.toFixed(2) ?? '—',
+      fpRate: (tn + fp) > 0 ? (fp / (tn + fp)).toFixed(2) : '—',
+      cost: '—',
+      basis: 'holdout @ Youden-J',
+      recommended: true,
+    })
+  }
+  if (f1t && typeof f1t === 'object') {
+    const [[tn, fp]] = f1t.confusion_matrix || [[0, 0], [0, 0]]
+    rows.push({
+      threshold: f1t.threshold?.toFixed(2) ?? '—',
+      precision: f1t.precision?.toFixed(2) ?? '—',
+      recall: f1t.recall?.toFixed(2) ?? '—',
+      f1: f1t.f1?.toFixed(2) ?? '—',
+      fpRate: (tn + fp) > 0 ? (fp / (tn + fp)).toFixed(2) : '—',
+      cost: '—',
+      basis: 'holdout @ F1-optimal',
+      recommended: false,
+    })
+  }
+  return rows
+})
 
 // ── Drift Table enriched rows ──
 const driftTableRows = computed(() => {
-  const staticRows = [
-    { name: 'tenure_months',        trainMean: '42.3', currentMean: '38.1', delta: -4.2, score: '0.31', status: 'CRITICAL', invertShift: false },
-    { name: 'avg_monthly_balance',  trainMean: '8240', currentMean: '7910', delta: -330, score: '0.18', status: 'WARNING',  invertShift: false },
-    { name: 'num_products',         trainMean: '2.4',  currentMean: '2.5',  delta: 0.1,  score: '0.07', status: 'STABLE',   invertShift: false },
-    { name: 'credit_utilization',   trainMean: '0.42', currentMean: '0.44', delta: 0.02, score: '0.05', status: 'STABLE',   invertShift: true  },
-    { name: 'last_contact_days',    trainMean: '18.2', currentMean: '21.0', delta: 2.8,  score: '0.12', status: 'WARNING',  invertShift: false },
-    { name: 'transaction_count_90d',trainMean: '34.1', currentMean: '33.8', delta: -0.3, score: '0.03', status: 'STABLE',   invertShift: false },
-  ]
+  // Live only — the drift endpoint is the single source of truth; no
+  // fabricated offline rows.
+  const staticRows = []
   return (featureDriftList.value.length > 0 ? featureDriftList.value.map(f => ({
     name: f.name, trainMean: f.trainMean, currentMean: f.currentMean,
     delta: parseFloat(f.currentMean) - parseFloat(f.trainMean),
@@ -777,37 +855,69 @@ const driftTableRows = computed(() => {
 })
 
 // ── Governance Data ──
-const modelCardFields = ref([
-  { label: 'Model ID',           value: 'churn_lgbm_v1.4.2' },
-  { label: 'Algorithm',          value: 'LightGBM (Gradient Boosted Trees)' },
-  { label: 'Training Cutoff',    value: '2024-06-30' },
-  { label: 'Production Date',    value: '2024-09-01' },
-  { label: 'Model Owner',        value: 'Data Science – Retail Analytics' },
-  { label: 'Risk Owner',         value: 'Chief Risk Officer' },
-  { label: 'Validated By',       value: 'Model Risk Management Team' },
-  { label: 'Validation Date',    value: '2024-08-15' },
-  { label: 'Approval Status',    value: 'APPROVED — In Production' },
-  { label: 'Next Review Due',    value: '2025-12-31' },
-  { label: 'Regulatory Ref',     value: 'SARB MRM Framework 2023 · SR 11-7' },
-  { label: 'Target Variable',    value: 'churn_within_90_days (binary)' },
-  { label: 'Features Used',      value: '42 input features (v1.4.x schema)' },
-  { label: 'Sampling Strategy',  value: 'Stratified K-fold (k=5) · SMOTE oversampling' },
-])
+// Registry facts + the governance block maintained in models/registry.json.
+// Fields with no recorded value read '—'.
+const modelCardFields = computed(() => {
+  const m = modelsStore.championChurn
+  const g = m?.governance || {}
+  const d = m?.data || {}
+  const dash = (v) => (v == null || v === '' ? '—' : v)
+  const sampling = d.scale_pos_weight != null
+    ? `class-weighted (scale_pos_weight=${d.scale_pos_weight}) · ${d.class_imbalance_pct}% positives`
+    : null
+  return [
+    { label: 'Model ID',           value: dash(m?.id) },
+    { label: 'Version',            value: dash(m?.version) },
+    { label: 'Framework',          value: dash(m?.framework) },
+    { label: 'Trained At',         value: dash(m?.trained_at) },
+    { label: 'Training Window',    value: m?.training_dates?.length ? m.training_dates.join(' → ') : '—' },
+    { label: 'Holdout Date',       value: dash(m?.holdout_date) },
+    { label: 'Training Data',      value: d.train_samples != null ? `${d.train_samples.toLocaleString()} rows (${d.train_positives} positives)` : '—' },
+    { label: 'Sampling Strategy',  value: dash(sampling) },
+    { label: 'Features Used',      value: m?.n_training_features != null ? `${m.n_training_features} input features` : '—' },
+    { label: 'Model Owner',        value: dash(g.model_owner) },
+    { label: 'Risk Owner',         value: dash(g.risk_owner) },
+    { label: 'Validated By',       value: dash(g.validated_by) },
+    { label: 'Validation Date',    value: dash(g.validation_date) },
+    { label: 'Approval Status',    value: dash(g.approval_status) },
+    { label: 'Next Review Due',    value: dash(g.next_review_due) },
+    { label: 'Regulatory Ref',     value: dash(g.regulatory_ref) },
+    { label: 'Target Variable',    value: 'churn_within_90_days (binary)' },
+  ]
+})
 
-const approvalSteps = ref([
-  { stage: 'Conceptual Approval',   detail: 'Business & Architecture sign-off · Jul 2024', done: true,  active: false },
-  { stage: 'Development',           detail: 'churn_lgbm_v1.4.2 built & unit-tested · Aug 2024', done: true,  active: false },
-  { stage: 'Independent Validation', detail: 'MRM review completed · Aug 15, 2024', done: true,  active: false },
-  { stage: 'Production',            detail: 'Deployed to prod endpoint · Sep 01, 2024', done: false, active: true  },
-])
+// Approval lifecycle: real stages from the registry governance block.
+const approvalSteps = computed(() => {
+  const stages = modelsStore.championChurn?.governance?.approval_stages
+  if (!stages?.length) return []
+  return stages.map(s => ({
+    stage: s.stage,
+    detail: s.detail || s.date || '',
+    done: s.status === 'DONE' || s.status === 'APPROVED',
+    active: s.status === 'LIVE' || s.status === 'PENDING',
+  }))
+})
 
-const auditLog = ref([
-  { date: '2024-09-01', event: 'Production Deployment',    version: 'v1.4.2', auc: '87.4%', actor: 'MLOps Team',      status: 'DEPLOYED',  statusClass: 'bg-green-100 text-green-700' },
-  { date: '2024-08-15', event: 'MRM Validation Completed', version: 'v1.4.2', auc: '87.4%', actor: 'Risk & MRM',       status: 'APPROVED',  statusClass: 'bg-green-100 text-green-700' },
-  { date: '2024-08-10', event: 'Retraining — Feature fix', version: 'v1.4.0', auc: '86.1%', actor: 'DS Retail Analytics', status: 'SUPERSEDED', statusClass: 'bg-gray-100 text-gray-500' },
-  { date: '2024-07-20', event: 'Conceptual Approval',      version: 'v1.3.x', auc: '84.9%', actor: 'Architecture Board', status: 'APPROVED',  statusClass: 'bg-green-100 text-green-700' },
-  { date: '2024-05-12', event: 'Initial Development',      version: 'v1.0.0', auc: '81.2%', actor: 'Data Science Team', status: 'ARCHIVED',  statusClass: 'bg-gray-100 text-gray-500' },
-])
+// Audit log: only events with a real backend source (registry + live logs)
+const auditLog = computed(() => {
+  const m = modelsStore.championChurn
+  const rows = []
+  if (m) {
+    rows.push({
+      date: '—', event: 'Registered as champion', version: m.id,
+      auc: m.metrics?.auc != null ? (m.metrics.auc * 100).toFixed(1) + '%' : '—',
+      actor: 'model registry', status: 'ACTIVE', statusClass: 'bg-green-100 text-green-700',
+    })
+  }
+  if (predictionLogs.value.length) {
+    rows.push({
+      date: (predictionLogs.value[0].timestamp || '—').slice(0, 10),
+      event: 'Serving live predictions', version: m?.id || '—',
+      auc: '—', actor: 'prediction-service', status: 'LIVE', statusClass: 'bg-green-100 text-green-700',
+    })
+  }
+  return rows
+})
 
 // ── Enriched Prediction Logs ──
 const selectedTimeframe = ref('Last 1 Hour')
@@ -824,9 +934,101 @@ const enrichedLogs = computed(() =>
 const sparklineAucCanvas = ref(null)
 const sparklineF1Canvas  = ref(null)
 const mainChartCanvas    = ref(null)
+let _sparkAucChart = null
+let _sparkF1Chart = null
+let _mainChart = null
+
+// ── Retrain action ──────────────────────────────────────────────────────────
+// The backend triggers a detached background job (scripts/train_models.py).
+// We capture the champion's trained_at/version before starting, then poll the
+// registry until it changes (job finished) or a timeout elapses.
+
+const baselineSignature = () => {
+  const m = modelsStore.championChurn
+  return m ? `${m.trained_at || ''}|${m.version || ''}|${m.metrics?.auc ?? ''}` : 'none'
+}
+
+async function requestRetrain() {
+  if (retraining.value) return
+  retraining.value = true
+  retrainError.value = ''
+  retrainStartedAt.value = new Date().toISOString()
+  const baseline = baselineSignature()
+  try {
+    const { data } = await api.post('/api/v1/models/retrain')
+    notify(`Retrain started — ${data.log || 'see backend logs'}`, 'success', { autoClose: 4000 })
+    // Poll for completion every 10s, up to ~10 min (train takes ~1-3 min).
+    let attempts = 0
+    retrainPollTimer.value = setInterval(async () => {
+      attempts += 1
+      await modelsStore.fetchModels()
+      const done = baselineSignature() !== baseline && modelsStore.championChurn
+      if (done || attempts >= 60) {
+        clearInterval(retrainPollTimer.value)
+        retrainPollTimer.value = null
+        retraining.value = false
+        if (done) {
+          notify('Retrain complete — model registry updated', 'success', { autoClose: 4000 })
+          refreshAllData()
+        } else {
+          notify('Retrain is taking longer than expected — check backend logs', 'warning', { autoClose: 6000 })
+        }
+      }
+    }, 10000)
+  } catch (e) {
+    retraining.value = false
+    retrainError.value = e.response?.data?.detail || e.message || 'Failed to start retrain'
+    notify(`Retrain failed to start — ${retrainError.value}`, 'error', { autoClose: 5000 })
+  }
+}
+
+function stopRetrainPolling() {
+  if (retrainPollTimer.value) {
+    clearInterval(retrainPollTimer.value)
+    retrainPollTimer.value = null
+  }
+  retraining.value = false
+}
+
+async function refreshAllData() {
+  await modelsStore.fetchModels()
+  try {
+    const [perfRes, driftRes, logRes] = await Promise.all([
+      api.get('/api/v1/monitoring/performance-history', { params: { horizon_days: 30 } }),
+      api.get('/api/v1/monitoring/feature-drift'),
+      api.get('/api/v1/monitoring/prediction-log', { params: { limit: 50 } }),
+    ])
+    performanceHistory.value = perfRes.data.history || []
+    featureDriftList.value = (driftRes.data.features || []).map(f => ({
+      name: f.name,
+      trainMean: f.training_mean.toFixed(1),
+      currentMean: f.current_mean.toFixed(1),
+      score: f.drift_score.toFixed(2),
+      scoreColor: f.drift_score > 0.20 ? 'text-absa-passion font-bold' : 'text-gray-900',
+      status: f.status,
+      badgeClass: f.status === 'CRITICAL' ? 'bg-red-100 text-absa-inspire' : f.status === 'WARNING' ? 'bg-amber-100 text-amber-700' : 'bg-red-50 text-absa-passion',
+      invertShift: f.invert_shift,
+    }))
+    predictionLogs.value = (logRes.data.predictions || []).map(p => ({
+      timestamp: p.timestamp,
+      correlationId: p.correlation_id,
+      customerId: p.customer_id,
+      prob: (p.churn_probability * 100).toFixed(1) + '%',
+      class: p.predicted_class,
+      classColor: p.predicted_class === 'CHURN' ? 'text-absa-inspire' : 'text-absa-passion',
+      latency: p.latency_ms.toFixed(1),
+    }))
+    predictionTotal.value = logRes.data.total_predictions || 0
+  } catch (e) {
+    console.warn('Models: monitoring refresh failed', e.message)
+  }
+  await nextTick()
+  initCharts()
+}
 
 onMounted(async () => {
   await modelsStore.fetchModels()
+  intelligenceStore.fetchClv()
   try {
     const [perfRes, driftRes, logRes] = await Promise.all([
       api.get('/api/v1/monitoring/performance-history', { params: { horizon_days: 30 } }),
@@ -865,6 +1067,10 @@ watch(loading, async (val) => {
 })
 
 function initCharts() {
+  // Destroy previous instances before recreating (refresh/retrain re-runs this).
+  if (_sparkAucChart) _sparkAucChart.destroy()
+  if (_sparkF1Chart) _sparkF1Chart.destroy()
+  if (_mainChart) _mainChart.destroy()
   const sparkOpts = {
     responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false }, tooltip: { enabled: false } },
@@ -874,32 +1080,28 @@ function initCharts() {
   }
   const history = performanceHistory.value
   const labels  = history.map(h => h.date)
-  const aucData = history.length ? history.map(h => h.auc * 100)
-    : [82, 83, 84, 85, 84, 86, 87, 86, 87, 87]
-  const logData = history.length ? history.map(h => h.log_loss)
-    : [0.31, 0.30, 0.29, 0.29, 0.28, 0.28, 0.28, 0.29, 0.28, 0.28]
-  const precData = history.length ? history.map(h => h.precision * 100)
-    : [72, 73, 74, 75, 74, 76, 76, 77, 76, 76]
-  const recData  = history.length ? history.map(h => h.recall * 100)
-    : [80, 81, 82, 82, 83, 82, 83, 83, 82, 81]
-  const lbs = labels.length ? labels : Array.from({length:10}, (_,i)=>`D-${10-i}`)
+  const aucData = history.map(h => h.auc * 100)
+  const logData = history.map(h => h.log_loss)
+  const precData = history.map(h => h.precision * 100)
+  const recData  = history.map(h => h.recall * 100)
+  const lbs = labels
 
   if (sparklineAucCanvas.value) {
-    new Chart(sparklineAucCanvas.value, {
+    _sparkAucChart = new Chart(sparklineAucCanvas.value, {
       type: 'line',
       data: { labels: lbs, datasets: [{ data: aucData, borderColor: '#DC0037', fill: false }] },
       options: sparkOpts,
     })
   }
   if (sparklineF1Canvas.value) {
-    new Chart(sparklineF1Canvas.value, {
+    _sparkF1Chart = new Chart(sparklineF1Canvas.value, {
       type: 'line',
       data: { labels: lbs, datasets: [{ data: logData, borderColor: '#DC0037', fill: false }] },
       options: sparkOpts,
     })
   }
   if (mainChartCanvas.value) {
-    new Chart(mainChartCanvas.value, {
+    _mainChart = new Chart(mainChartCanvas.value, {
       type: 'line',
       data: {
         labels: lbs,
@@ -924,9 +1126,6 @@ function initCharts() {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
 :root {
   --brand-red: #DC0037;
   --brand-dark: #131010;

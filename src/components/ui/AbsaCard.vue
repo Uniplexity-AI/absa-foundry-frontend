@@ -38,6 +38,8 @@
 <script setup>
 import { computed } from 'vue'
 
+defineOptions({ name: 'AbsaCard' })
+
 const props = defineProps({
   /** Card padding size */
   padding: {
@@ -54,13 +56,29 @@ const props = defineProps({
   /** Enable hover lift + gradient effect */
   hoverable: { type: Boolean, default: true },
   /** Flat style — no shadow, lighter border */
-  flat: { type: Boolean, default: false }
+  flat: { type: Boolean, default: false },
+  /** Render the standard card border */
+  bordered: { type: Boolean, default: true },
+  /** Corner treatment for the card shell */
+  rounded: {
+    type: String,
+    default: 'xl',
+    validator: (v) => ['none', 'sm', 'md', 'lg', 'xl'].includes(v)
+  }
 })
 
 const paddingClasses = {
   sm: 'p-3',
   md: 'p-5',
   lg: 'p-8'
+}
+
+const roundedClasses = {
+  none: '',
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+  xl: 'rounded-xl'
 }
 
 const accentColorClass = computed(() => {
@@ -80,10 +98,10 @@ const hoverGradient = computed(() => {
 })
 
 const cardClasses = computed(() => [
-  'relative bg-white border overflow-hidden group transition-all duration-200 rounded-xl',
+  'relative bg-white overflow-hidden group transition-all duration-200',
+  roundedClasses[props.rounded],
   paddingClasses[props.padding],
   props.hoverable ? 'hover:shadow-md hover:-translate-y-0.5' : '',
-  props.flat ? 'shadow-none border-gray-100' : 'shadow-sm',
-  'border-[#E8E8EC]'
+  props.bordered ? (props.flat ? 'border border-gray-300 shadow-none' : 'border border-[#E8E8EC] shadow-sm') : 'border-0 shadow-none'
 ])
 </script>

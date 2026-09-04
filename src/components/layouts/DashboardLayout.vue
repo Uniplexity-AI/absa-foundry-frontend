@@ -16,45 +16,49 @@
           </button>
           <div class="absolute left-0 top-full mt-2 w-64 bg-white/20 backdrop-blur-xl border border-white/20 rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out z-50 before:absolute before:inset-x-0 before:-top-2 before:h-2 before:content-['']">
             <nav class="flex flex-col p-2">
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/portfolio" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/portfolio" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                 <span class="text-body-md font-medium">Dashboard</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">store</span>
                 <span class="text-body-md font-medium">Branch Manager</span>
               </router-link>
 
-              <div class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <div v-if="canAnalytics" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">star</span>
                 <span class="text-body-md font-medium">Customer Value</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">waterfall_chart</span>
                 <span class="text-body-md font-medium">Lifecycle Prediction</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">show_chart</span>
                 <span class="text-body-md font-medium">Balance Forecast</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monetization_on</span>
                 <span class="text-body-md font-medium">Business Outcomes</span>
               </router-link>
 
               <div class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">AI &amp; DATA</div>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/models" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canModels" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/models" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monitoring</span>
                 <span class="text-body-md font-medium">Model Performance</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-run-history" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-run-history" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">schedule</span>
                 <span class="text-body-md font-medium">Run History</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-config-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-config-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">settings</span>
                 <span class="text-body-md font-medium">ETL Config Manager</span>
+              </router-link>
+              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/ai/codebase-insights" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">insights</span>
+                <span class="text-body-md font-medium">Codebase Insights</span>
               </router-link>
             </nav>
           </div>
@@ -72,12 +76,20 @@
         <div class="flex items-center gap-4">
           <div class="hidden md:flex relative w-96">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
-            <input class="w-full bg-surface-container rounded py-2 pl-10 pr-4 text-body-md border-none focus:ring-1 focus:ring-primary" placeholder="Search customer, account or ID..." type="text" />
+            <input
+              v-model="searchQuery"
+              @keyup.enter="submitSearch"
+              @input="searchQuery = searchQuery"
+              class="w-full bg-surface-container rounded py-2 pl-10 pr-4 text-body-md border-none focus:ring-1 focus:ring-primary"
+              placeholder="Search customer, account or ID... (Enter to open)"
+              type="text"
+            />
           </div>
-          <button class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
+          <button @click="toggleNotifications" class="relative text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
             <span class="material-symbols-outlined">notifications</span>
+            <span v-if="notificationCount > 0" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#DC0037] text-white text-[9px] font-bold rounded-full flex items-center justify-center">{{ notificationCount }}</span>
           </button>
-          <button class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
+          <button @click="openHelp" class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
             <span class="material-symbols-outlined">help</span>
           </button>
           <div class="flex items-center gap-2">
@@ -89,6 +101,43 @@
           </div>
         </div>
       </header>
+
+      <!-- Notifications dropdown -->
+      <div v-if="showNotifications" class="fixed top-16 right-6 z-50 w-96 bg-white border border-gray-200 shadow-xl">
+        <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+          <span class="text-xs font-bold text-absa-enrich uppercase tracking-wider">Notifications</span>
+          <button @click="clearNotifications" class="text-[11px] font-semibold text-absa-passion hover:underline">Mark all read</button>
+        </div>
+        <div class="max-h-96 overflow-y-auto">
+          <div v-if="notifications.length === 0" class="px-4 py-8 text-center text-xs text-gray-500">No new notifications</div>
+          <button v-for="(n, i) in notifications" :key="i" @click="openNotification(n)" class="w-full text-left px-4 py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+            <div class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-[16px] text-absa-passion mt-0.5">{{ n.icon || 'info' }}</span>
+              <div>
+                <p class="text-xs font-bold text-absa-enrich">{{ n.title }}</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">{{ n.body }}</p>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Help modal -->
+      <div v-if="showHelp" class="fixed inset-0 z-50 flex items-center justify-center p-4" @click.self="showHelp = false">
+        <div class="absolute inset-0 bg-black/30" @click="showHelp = false"></div>
+        <div class="relative w-full max-w-md bg-white border border-gray-200 shadow-2xl">
+          <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-absa-enrich">Intelligence Unit — Help</h3>
+            <button @click="showHelp = false" class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div class="p-5 space-y-3 text-xs text-gray-600">
+            <p><strong class="text-absa-enrich">Customer search:</strong> type a customer ID (e.g. CUST00042) or name in the header search and press Enter.</p>
+            <p><strong class="text-absa-enrich">Alerts:</strong> acknowledge critical alerts on the Portfolio dashboard to clear them.</p>
+            <p><strong class="text-absa-enrich">Reports:</strong> every intelligence page has an Export button that downloads a CSV report.</p>
+            <p><strong class="text-absa-enrich">Pilot scope:</strong> data is synthetic ABSA data (as-of 2026-07-27) for the PoC pilot.</p>
+          </div>
+        </div>
+      </div>
       <div class="absa-content pt-14">
         <router-view />
       </div>
@@ -112,6 +161,50 @@ const pageTitle = computed(() => {
   return route.meta.title || 'Dashboard'
 })
 
+// ── Header: search / notifications / help ──
+const searchQuery = ref('')
+const showNotifications = ref(false)
+const showHelp = ref(false)
+
+const notifications = ref([
+  { title: 'High churn risk flagged', body: 'Customer CUST00421 has a 91% churn probability.', icon: 'warning', to: '/dashboard/customer/CUST00421' },
+  { title: 'Campaign cohort ready', body: '34 customers are eligible for the Digital Reactivation campaign.', icon: 'campaign', to: '/dashboard/lifecycle' },
+  { title: 'Pilot data snapshot refreshed', body: 'Synthetic ABSA data as-of 2026-07-27 is loaded.', icon: 'database', to: '/dashboard/portfolio' },
+])
+const notificationCount = computed(() => notifications.value.length)
+
+function toggleNotifications() {
+  showNotifications.value = !showNotifications.value
+  showHelp.value = false
+}
+
+function openNotification(n) {
+  showNotifications.value = false
+  if (n?.to) router.push(n.to)
+}
+
+function clearNotifications() {
+  notifications.value = []
+}
+
+function openHelp() {
+  showHelp.value = !showHelp.value
+  showNotifications.value = false
+}
+
+async function submitSearch() {
+  const q = (searchQuery.value || '').trim()
+  if (!q) return
+  const normalized = q.toUpperCase().replace(/\s+/g, '')
+  // Customer ID patterns seen in the synthetic portfolio: CUST####, CU-####, CU####
+  if (/^CUST?\d{2,}/i.test(q) || /^CU-?\d{2,}/i.test(q)) {
+    router.push(`/dashboard/customer/${encodeURIComponent(q)}`)
+  } else {
+    router.push({ path: '/dashboard/portfolio', query: { q } })
+  }
+  searchQuery.value = ''
+}
+
 // ── State ──
 
 async function handleLogout() {
@@ -130,7 +223,7 @@ async function handleLogout() {
     console.warn('Backend logout failed, clearing locally', e)
   }
   // Clear all auth data
-  ;['token','refresh_token','user_id','email','role','userName','company_name','branches','selected_branch']
+  ;['token','refresh_token','user_id','email','role','roles','userName','display_name','company_name','tenant_id','branches','selected_branch']
     .forEach(k => localStorage.removeItem(k))
   router.push('/login')
 }
@@ -140,28 +233,43 @@ onMounted(() => {
   fetchSubscribedModules()
 })
 
-// ── User Info ──
+// ── User Info (ABSA roles: ADMIN / RELATIONSHIP_MANAGER / DATA_SCIENTIST / OPERATIONS) ──
+const ROLE_LABELS = {
+  ADMIN: 'Administrator',
+  RELATIONSHIP_MANAGER: 'Relationship Manager',
+  DATA_SCIENTIST: 'Data Scientist',
+  OPERATIONS: 'Operations Analyst'
+}
+
 const userEmail = computed(() => {
   try { return decodeJWT().getUserEmail?.() || 'User' }
   catch { return 'User' }
 })
 
-const userInitials = computed(() => {
-  const email = userEmail.value
-  if (email && email !== 'User') {
-    return email.split('@')[0].slice(0, 2).toUpperCase()
-  }
-  return 'TT'
+const currentRole = computed(() => {
+  try { return String(decodeJWT().getUserRole?.() || '').toUpperCase() }
+  catch { return '' }
 })
+
+const canAnalytics = computed(() => ['ADMIN', 'RELATIONSHIP_MANAGER'].includes(currentRole.value))
+const canModels = computed(() => ['ADMIN', 'DATA_SCIENTIST'].includes(currentRole.value))
+const canEtl = computed(() => ['ADMIN', 'OPERATIONS'].includes(currentRole.value))
 
 const userName = computed(() => {
+  try {
+    const n = decodeJWT().getUserName?.()
+    if (n) return n
+  } catch (e) {}
   const email = userEmail.value
-  return email !== 'User' ? email.split('@')[0].replace(/[._]/g, ' ') : 'Tina Tembo'
+  return email !== 'User' ? email.split('@')[0].replace(/[._]/g, ' ') : 'Absa User'
 })
 
-const userRole = computed(() => {
-  try { return decodeJWT().getUserRole?.() || 'Relationship Manager' }
-  catch { return 'Relationship Manager' }
+const userRole = computed(() => ROLE_LABELS[currentRole.value] || 'Relationship Manager')
+
+const userInitials = computed(() => {
+  const parts = String(userName.value).replace(/[()]/g, '').trim().split(/\s+/)
+  const initials = ((parts[0] || '')[0] || '') + ((parts[1] || '')[0] || '')
+  return (initials || 'AU').toUpperCase()
 })
 
 const canAccessSettings = computed(() => isAdmin.value || isSuperAdmin.value || hasPermission('settings', 'read'))

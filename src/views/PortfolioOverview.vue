@@ -160,12 +160,18 @@
               <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white">
                 <h3 class="text-sm font-bold text-absa-enrich">Predictive Lifecycle Ledger</h3>
                 <div class="flex gap-2">
-                  <button class="p-1.5 border border-gray-300 rounded-sm text-gray-500 hover:bg-gray-50">
+                  <select v-model="ledgerMarketSegment" aria-label="Filter ledger by market segment" class="rounded-sm border border-gray-300 bg-white px-2 py-1.5 text-xs text-absa-enrich focus:border-absa-passion focus:outline-none focus:ring-1 focus:ring-absa-passion" @change="ledgerPage = 1">
+                    <option value="">All segments</option>
+                    <option v-for="segment in marketSegmentOptions" :key="segment.code" :value="segment.marketSegment === null ? 'other' : String(segment.marketSegment)">
+                      {{ segment.code }} — {{ segment.label }}
+                    </option>
+                  </select>
+                  <button @click="toggleLedgerFilter" title="Filter: show at-risk only" :class="['p-1.5 border rounded-sm transition-colors', ledgerAtRiskOnly ? 'border-absa-passion text-absa-passion bg-red-50' : 'border-gray-300 text-gray-500 hover:bg-gray-50']">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                     </svg>
                   </button>
-                  <button class="p-1.5 border border-gray-300 rounded-sm text-gray-500 hover:bg-gray-50">
+                  <button @click="exportLedgerCsv" title="Export ledger as CSV" class="p-1.5 border border-gray-300 rounded-sm text-gray-500 hover:bg-gray-50">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                     </svg>
@@ -178,6 +184,7 @@
                     <tr class="border-b border-gray-200 bg-gray-50">
                       <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">Name</th>
                       <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">State</th>
+                      <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">Segment</th>
                       <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">Health ↑</th>
                       <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">Churn Prob</th>
                       <th class="px-3 py-2 text-[11px] font-bold text-gray-500 uppercase tracking-wider" scope="col">CLV (ZMW)</th>
@@ -185,10 +192,10 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-100">
-                    <tr v-if="customerStore.customers.length === 0">
-                      <td colspan="6" class="p-12 text-center text-xs text-gray-500">No customer data available</td>
+                    <tr v-if="ledgerRows.length === 0">
+                      <td colspan="7" class="p-12 text-center text-xs text-gray-500">No customers match the current ledger filters</td>
                     </tr>
-                    <tr v-for="customer in customerStore.customers.slice((ledgerPage - 1) * 5, ledgerPage * 5)" :key="customer.customerId">
+                    <tr v-for="customer in ledgerRows" :key="customer.customerId">
                       <td class="px-3 py-1.5 whitespace-nowrap">
                         <div>
                             <router-link :to="`/dashboard/customer/${encodeURIComponent(customer.customerId)}`" class="text-xs font-bold text-absa-enrich hover:text-absa-passion transition-colors">{{ customer.fullName }}</router-link>
@@ -198,6 +205,7 @@
                       <td class="px-3 py-1.5 whitespace-nowrap">
                         <span class="text-xs">{{ customer.state }}</span>
                       </td>
+                      <td class="px-3 py-1.5 text-xs text-gray-600">{{ customer.segment }}</td>
                       <td class="px-3 py-1.5 whitespace-nowrap">
                         <div class="text-xs font-bold font-mono text-absa-enrich mb-1">{{ customer.healthScore ?? '--' }}</div>
                         <div class="progress-bar-container">
@@ -219,7 +227,7 @@
               </div>
               <!-- Pagination -->
               <div class="p-4 border-t border-gray-200 bg-white flex items-center justify-between mt-auto">
-                <span class="text-xs text-gray-500">Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ customerStore.pagination.total }} customers</span>
+                <span class="text-xs text-gray-500">Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ ledgerTotal }} customers</span>
                 <div class="flex gap-2">
                   <button @click="ledgerPage--" :disabled="ledgerPage <= 1" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage <= 1 ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50']">Previous</button>
                   <button @click="ledgerPage++" :disabled="ledgerPage >= ledgerTotalPages" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage >= ledgerTotalPages ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-absa-enrich hover:bg-gray-50']">Next</button>
@@ -271,6 +279,59 @@
           </div>
         </div>
       </div>
+
+      <!-- Recent RM Activity -->
+      <div class="bg-white rounded-sm border border-gray-300 shadow-none mt-8 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[20px] text-absa-passion">history</span>
+            <h3 class="text-sm font-bold text-absa-enrich">Recent RM Activity</h3>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-label-sm text-gray-500">{{ recentActivity.length }} recent</span>
+            <button @click="refreshActivity" class="text-xs font-bold text-absa-passion hover:text-absa-power flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">refresh</span> Refresh
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <th class="px-3 py-2">Action</th>
+                <th class="px-3 py-2">Customer</th>
+                <th class="px-3 py-2">Detail</th>
+                <th class="px-3 py-2">Performed By</th>
+                <th class="px-3 py-2">When</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr v-if="recentActivity.length === 0">
+                <td colspan="5" class="px-3 py-8 text-center text-xs text-gray-500">
+                  No RM actions yet — assign an RM, enrol a campaign or launch an intervention to see activity here.
+                </td>
+              </tr>
+              <tr v-for="a in recentActivity" :key="a.key" class="hover:bg-gray-50 transition-colors">
+                <td class="px-3 py-2">
+                  <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', actionBadgeClass(a.type)]">
+                    <span class="material-symbols-outlined text-[12px]">{{ actionIcon(a.type) }}</span>
+                    {{ actionLabel(a.type) }}
+                  </span>
+                </td>
+                <td class="px-3 py-2">
+                  <router-link v-if="a.customerId" :to="`/dashboard/customer/${encodeURIComponent(a.customerId)}`" class="text-xs font-bold text-absa-enrich hover:text-absa-passion font-mono">
+                    {{ a.customerId }}
+                  </router-link>
+                  <span v-else class="text-xs text-gray-400">—</span>
+                </td>
+                <td class="px-3 py-2 text-xs text-gray-600 max-w-[360px] truncate">{{ a.detail }}</td>
+                <td class="px-3 py-2 text-xs text-gray-500">{{ a.actor }}</td>
+                <td class="px-3 py-2 text-xs text-gray-500 whitespace-nowrap">{{ fmtActivityTime(a.at) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -283,6 +344,9 @@ import { Doughnut, Bar } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
+import { acknowledgeAlert as persistAck, isAlertAcked, hydrateLogFromServer, getActionLog } from '@/utils/absaActions'
+import { MARKET_SEGMENT_OPTIONS } from '@/config/customerSegments'
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
@@ -293,6 +357,11 @@ const route = useRoute()
 onMounted(async () => {
   await customerStore.fetchPortfolio()
   ledgerPage.value = parseInt(route.query.page) || 1
+  // Header search may arrive as ?q= — prefill + enable filter
+  if (route.query.q) {
+    searchText.value = String(route.query.q)
+    ledgerAtRiskOnly.value = false
+  }
   // Batch-fetch predictions for visible customers
   const ids = customerStore.customers.slice(0, 50).map(c => c.customerId)
   predictionStore.fetchBatchPredictions(ids, selectedSnapshot.value)
@@ -382,21 +451,91 @@ const histogramChartOptions = {
 
 const totalCustomersSparkline = ref([])
 
-// Ledger pagination
+// Ledger pagination + filter
 const ledgerPage = ref(1)
 const ledgerPageSize = 5
-const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(customerStore.customers.length / ledgerPageSize)))
-const ledgerStart = computed(() => customerStore.customers.length === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
-const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, customerStore.customers.length))
+const ledgerAtRiskOnly = ref(false)
+const ledgerMarketSegment = ref('')
+const searchText = ref('')
+const marketSegmentOptions = MARKET_SEGMENT_OPTIONS
+
+// Filterable, pageable ledger rows (churn risk only when filter active)
+const ledgerFiltered = computed(() => {
+  let rows = customerStore.customers || []
+  if (ledgerAtRiskOnly.value) {
+    rows = rows.filter(c => {
+      const p = predictionStore.getChurnProbability(c.customerId)
+      return p != null && p > 0.5
+    })
+  }
+  if (ledgerMarketSegment.value) {
+    rows = rows.filter((customer) => (
+      ledgerMarketSegment.value === 'other'
+        ? customer.marketSegment === null
+        : customer.marketSegment === Number(ledgerMarketSegment.value)
+    ))
+  }
+  const q = (searchText.value || '').trim().toLowerCase()
+  if (q) {
+    rows = rows.filter(c =>
+      (c.fullName || '').toLowerCase().includes(q) ||
+      (c.customerId || '').toLowerCase().includes(q) ||
+      (c.state || '').toLowerCase().includes(q)
+    )
+  }
+  return rows
+})
+
+const ledgerTotal = computed(() => ledgerFiltered.value.length)
+const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(ledgerFiltered.value.length / ledgerPageSize)))
+const ledgerRows = computed(() => ledgerFiltered.value.slice((ledgerPage.value - 1) * ledgerPageSize, ledgerPage.value * ledgerPageSize))
+const ledgerStart = computed(() => ledgerFiltered.value.length === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
+const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, ledgerFiltered.value.length))
+
+function toggleLedgerFilter() {
+  ledgerAtRiskOnly.value = !ledgerAtRiskOnly.value
+  ledgerPage.value = 1
+  notify(ledgerAtRiskOnly.value ? 'Filter: showing at-risk customers only' : 'Filter cleared — showing all customers', 'info', { autoClose: 2000 })
+}
+
+function exportLedgerCsv() {
+  const rows = ledgerFiltered.value.map(c => ({
+    customerId: c.customerId,
+    fullName: c.fullName,
+      state: c.state,
+      marketSegment: c.marketSegment ?? '',
+      segmentCode: c.segmentCode,
+      segmentLabel: c.segmentLabel,
+    healthScore: c.healthScore ?? '',
+    churnProbabilityPct: predictionStore.getChurnProbability(c.customerId) != null
+      ? Math.round(predictionStore.getChurnProbability(c.customerId) * 100) + '%'
+      : '',
+    clvPercentile: predictionStore.predictions[c.customerId]?.clv_percentile != null
+      ? 'P' + (predictionStore.predictions[c.customerId].clv_percentile * 100).toFixed(0)
+      : '',
+  }))
+  if (!rows.length) {
+    notify('Nothing to export — no customers in the ledger', 'error', { autoClose: 3000 })
+    return
+  }
+  downloadCsv(reportFilename(`portfolio-ledger${ledgerAtRiskOnly.value ? '-at-risk' : ''}`), rows, ['customerId', 'fullName', 'state', 'marketSegment', 'segmentCode', 'segmentLabel', 'healthScore', 'churnProbabilityPct', 'clvPercentile'])
+  notify(`Exported ${rows.length} customers to CSV`, 'success', { autoClose: 2500 })
+}
 
 // Critical Alerts — derived from live prediction + portfolio data
 const alerts = computed(() => {
   const list = []
+  const unseen = (alert) => {
+    if (!alert.id) return true
+    return !isAlertAcked(alert.customerId || 'portfolio', alert.id)
+  }
 
   // 1. High churn risk customers (churn_probability > 60%)
   const highRisk = Object.entries(predictionStore.predictions)
     .filter(([, p]) => p.churn_probability > 0.6)
     .map(([id, p]) => ({
+      id: `churn-${id}`,
+      customerId: id,
       name: id,
       time: `${Math.round(p.churn_probability * 100)}% risk`,
       title: 'High Churn Probability',
@@ -410,6 +549,8 @@ const alerts = computed(() => {
   // 2. Portfolio-level: Dormancy is the dominant state
   if (customerStore.portfolio.dormantPct > 40) {
     list.push({
+      id: 'dormancy',
+      customerId: 'portfolio',
       name: 'Portfolio Dormancy',
       time: `${customerStore.portfolio.dormantPct}%`,
       title: 'Dormancy Dominant',
@@ -424,6 +565,8 @@ const alerts = computed(() => {
   const topDriver = predictionStore.churnDrivers[0]
   if (topDriver && topDriver.contribution_pct > 30) {
     list.push({
+      id: 'top-driver',
+      customerId: 'portfolio',
       name: 'Top Churn Driver',
       time: `${topDriver.contribution_pct}%`,
       title: topDriver.driver_name,
@@ -434,13 +577,58 @@ const alerts = computed(() => {
     })
   }
 
-  return list
+  return list.filter(unseen)
 })
 
-const acknowledgeAlert = (index) => {
-  // Alerts are computed from live data — mark as acknowledged by filtering
-  // For now, this is a no-op since alerts auto-refresh from store data
+const acknowledgeAlert = (alertIndex) => {
+  const alert = alerts.value[alertIndex]
+  if (!alert) return
+  persistAck(alert.customerId || 'portfolio', alert.id)
+  notify(`Alert acknowledged — ${alert.title || alert.name}`, 'success', { autoClose: 2500 })
 }
+
+// ── Recent RM Activity ───────────────────────────────────────────────────────
+const activityRows = ref([])
+
+const recentActivity = computed(() => activityRows.value.slice(0, 8))
+
+const ACTION_META = {
+  RM_ASSIGNED:         { label: 'RM Assigned',         icon: 'person_add',      cls: 'bg-absa-passion/10 text-absa-passion' },
+  RM_CONTACTED:        { label: 'RM Contacted',        icon: 'call',            cls: 'bg-absa-passion/10 text-absa-passion' },
+  CAMPAIGN_ENROLLED:   { label: 'Campaign Enrolled',   icon: 'campaign',        cls: 'bg-amber-100 text-amber-700' },
+  CAMPAIGN_LAUNCHED:   { label: 'Campaign Launched',   icon: 'rocket_launch',   cls: 'bg-absa-passion/10 text-absa-passion' },
+  ALERT_ACKNOWLEDGED:  { label: 'Alert Acknowledged', icon: 'notifications_off', cls: 'bg-gray-100 text-gray-600' },
+  NBA_OVERRIDE:        { label: 'NBA Override',        icon: 'edit',            cls: 'bg-red-100 text-absa-inspire' },
+  ACTION_PLAN_CREATED: { label: 'Action Plan Created', icon: 'checklist',       cls: 'bg-absa-passion/10 text-absa-passion' },
+  ACTION_RECORDED:     { label: 'Action Recorded',     icon: 'task_alt',        cls: 'bg-green-100 text-green-700' },
+  BULK_ACTION:         { label: 'Bulk Action',         icon: 'select_all',      cls: 'bg-gray-100 text-gray-600' },
+}
+
+function actionLabel(type) {
+  return ACTION_META[type]?.label || String(type || 'ACTION').replace(/_/g, ' ')
+}
+function actionIcon(type) {
+  return ACTION_META[type]?.icon || 'check'
+}
+function actionBadgeClass(type) {
+  return ACTION_META[type]?.cls || 'bg-gray-100 text-gray-600'
+}
+
+function fmtActivityTime(t) {
+  if (!t) return '—'
+  try { return new Date(t).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) } catch { return t }
+}
+
+async function refreshActivity() {
+  await hydrateLogFromServer(50)
+  activityRows.value = getActionLog().map((a) => ({ ...a, key: a.serverId || a.id }))
+}
+
+onMounted(async () => {
+  // Fetch the shared action log (local + server) for Recent RM Activity.
+  // Portfolio + predictions are fetched by the primary onMounted above.
+  refreshActivity()
+})
 </script>
 
 

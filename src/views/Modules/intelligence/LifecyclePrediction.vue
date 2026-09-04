@@ -13,7 +13,7 @@
         <p class="text-body-md text-gray-500 mt-1">Stage distribution, transition analysis, onboarding health, and win-back intelligence</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
+        <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[18px]">download</span>
           Export Report
         </button>
@@ -448,6 +448,7 @@
                     <button v-if="w.status === 'ELIGIBLE'" @click="campaignCustomers = [w]; showCampaignModal = true" class="px-3 py-1 bg-absa-passion text-white rounded-sm text-[10px] font-bold hover:bg-absa-power transition-colors shadow-none flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">auto_awesome</span>AI Campaign</button>
                     <button
                       v-else-if="w.status === 'IN CAMPAIGN'"
+                      @click="viewCampaign(w)"
                       class="px-3 py-1 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm text-[10px] font-bold hover:bg-gray-50 transition-colors shadow-none"
                     >View Campaign</button>
                     <span v-else class="text-xs text-gray-400">&mdash;</span>
@@ -476,6 +477,7 @@ import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 
 const store = useIntelligenceStore()
 const loading = ref(true)
@@ -611,6 +613,44 @@ function bulkAddToCampaign() {
 
 function clearWinbackSelection() {
   selectedWinback.value = new Set()
+}
+
+// ─── Export / Row actions ────────────────────────────────────────────────────
+
+function exportReport() {
+  const which = activeTab.value
+  const distribution = (store.lifecycleData?.distribution ?? []).map(s => ({
+    stage: s.stage, label: s.label, count: s.count, pct: s.pct, mom_delta: s.mom_delta,
+  }))
+  if (which === 'distribution') {
+    downloadCsv(reportFilename('lifecycle-distribution'), distribution, ['stage', 'label', 'count', 'pct', 'mom_delta'])
+  } else if (which === 'transitions') {
+    const matrix = store.lifecycleData?.transitions?.matrix ?? []
+    const labels = transitionStageLabels.value
+    const rows = matrix.map((row, i) => {
+      const obj = { from: labels[i] ?? `Stage ${i + 1}` }
+      row.forEach((cell, j) => { obj[labels[j] ?? `Stage ${j + 1}`] = cell })
+      return obj
+    })
+    downloadCsv(reportFilename('lifecycle-transitions'), rows)
+  } else if (which === 'onboarding') {
+    const ob = store.lifecycleData?.onboarding ?? {}
+    downloadCsv(reportFilename('onboarding-health'), [{
+      total_new: ob.total_new, activated_30d: ob.activated_30d, activated_60d: ob.activated_60d,
+      activated_90d: ob.activated_90d, early_at_risk: ob.early_at_risk, avg_products: ob.avg_products,
+      digital_enrolled: ob.digital_enrolled, activation_30_pct: activation30Pct.value,
+      activation_60_pct: activation60Pct.value, activation_90_pct: activation90Pct.value,
+    }])
+  } else {
+    const wb = store.lifecycleData?.win_back ?? []
+    downloadCsv(reportFilename('winback-pipeline'), wb, ['customer_id', 'name', 'last_product', 'months_since_churn', 'prob', 'est_value', 'status'])
+  }
+  notify('Report exported as CSV', 'success', { autoClose: 2500 })
+}
+
+function viewCampaign(row) {
+  if (!row) return
+  notify(`Customer ${row.customer_id} is in an active win-back campaign. Open Customer Detail for the full journey.`, 'info', { autoClose: 4000 })
 }
 
 onMounted(async () => {

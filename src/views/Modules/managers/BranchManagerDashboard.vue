@@ -722,30 +722,17 @@ const campaignKpis = computed(() => [
   { label: 'Retained via Campaign', value: Math.round(branchTrack.value.inCampaign * 0.34 * 0.68).toLocaleString(), valueClass: 'text-green-600', note: 'Confirmed no churn MTD' },
 ])
 
-const unenrolledCustomers = ref([
-  { id: 'CU-02341', name: 'Palesa Dlamini',    segment: formatMarketSegment(65), prob: 82, daysFlagged: 9  },
-  { id: 'CU-03812', name: 'Thabo Khumalo',     segment: formatMarketSegment(75), prob: 79, daysFlagged: 6  },
-  { id: 'CU-01998', name: 'Nomsa Sithole',     segment: formatMarketSegment(65), prob: 74, daysFlagged: 11 },
-  { id: 'CU-04201', name: 'Lebogang Mahlangu', segment: formatMarketSegment(75), prob: 71, daysFlagged: 4  },
-])
+// ── Unenrolled high-risk (populated from API) ──
+const unenrolledCustomers = ref([])
 
-// ── Cases ──
+// ── Cases (populated from API) ──
 const caseFilters = [
   { id: 'all',    label: 'All'     },
   { id: 'rm',     label: 'RM'      },
   { id: 'branch', label: 'Branch'  },
 ]
 
-const allCases = ref([
-  { id: 'CU-00421', name: 'Mpho Radebe',     track: 'rm',     segment: formatMarketSegment(85), prob: 91, aum: 'K 2.1M', daysFlagged: 12 },
-  { id: 'CU-00887', name: 'Zanele Motsepe',  track: 'rm',     segment: formatMarketSegment(30), prob: 88, aum: 'K 1.8M', daysFlagged: 9  },
-  { id: 'CU-02341', name: 'Palesa Dlamini',  track: 'branch', segment: formatMarketSegment(65), prob: 82, aum: 'K 38K',  daysFlagged: 9  },
-  { id: 'CU-01142', name: 'Tebogo Mahlangu', track: 'rm',     segment: formatMarketSegment(60), prob: 79, aum: 'K 840K', daysFlagged: 7  },
-  { id: 'CU-03812', name: 'Thabo Khumalo',   track: 'branch', segment: formatMarketSegment(75), prob: 79, aum: 'K 12K',  daysFlagged: 6  },
-  { id: 'CU-00334', name: 'Kefilwe Sithole', track: 'branch', segment: formatMarketSegment(65), prob: 74, aum: 'K 52K',  daysFlagged: 14 },
-  { id: 'CU-00756', name: 'Kagiso Nkosi',    track: 'branch', segment: formatMarketSegment(75), prob: 71, aum: 'K 9K',   daysFlagged: 5  },
-  { id: 'CU-00198', name: 'Dineo Molefe',    track: 'rm',     segment: formatMarketSegment(85), prob: 74, aum: 'K 1.2M', daysFlagged: 11 },
-])
+const allCases = ref([])
 
 const filteredCases = computed(() =>
   caseFilter.value === 'all' ? allCases.value : allCases.value.filter(c => c.track === caseFilter.value)
@@ -757,22 +744,47 @@ const churnSegments = computed(() => backendSegments.value.map((segment) => ({
   track: [30, 50, 60, 85].includes(segment.marketSegment) ? 'rm' : 'branch',
 })))
 
-const aiPriorityActions = ref([
-  { urgency: 'URGENT', urgencyClass: 'bg-red-100 text-absa-passion', title: '2 Premier clients uncontacted for 10+ days', detail: 'High AUM accounts at critical churn risk. Assign to available RM immediately.', meta: '2 RM-managed · K 3.9M' },
-  { urgency: 'HIGH',   urgencyClass: 'bg-amber-100 text-amber-700',  title: '276 Mass customers with no campaign enrolment', detail: 'Mass-segment churn is accelerating. Enrol customers in the Mass Re-engagement Drive campaign.', meta: '276 branch-managed' },
-])
+// ── AI Priority Actions (populated from API) ──
+const aiPriorityActions = ref([])
 
 // ── Fetch ──
 onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
     predictionStore.fetchChurnDrivers()
-    const [bRes, fRes] = await Promise.all([
-      api.get('/api/v1/churn-intel/branches', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/forecasts/churn',      { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+
+    const [bRes, fRes, casesRes, unenrolledRes, actionsRes] = await Promise.all([
+      api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+      api.get('/api/v1/forecasts/churn',            { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+      api.get('/api/v1/churn-intel/at-risk-cases',  { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 50 } }),
+      api.get('/api/v1/churn-intel/unenrolled-high-risk', { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 10 } }),
+      api.get('/api/v1/churn-intel/priority-actions', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
     ])
+
     branchData.value   = bRes.data.branches || []
     forecastData.value = fRes.data
+
+    // Map at-risk cases: add segment label for display
+    allCases.value = (casesRes.data || []).map(c => ({
+      ...c,
+      segment: formatMarketSegment(c.segment_code),
+    }))
+
+    // Map unenrolled customers: add segment label
+    unenrolledCustomers.value = (unenrolledRes.data || []).map(c => ({
+      ...c,
+      segment: formatMarketSegment(c.segment_code),
+    }))
+
+    // Map priority actions: camelCase for template binding
+    aiPriorityActions.value = (actionsRes.data || []).map(a => ({
+      urgency:       a.urgency,
+      urgencyClass:  a.urgency_class,
+      title:         a.title,
+      detail:        a.detail,
+      meta:          a.meta,
+    }))
+
   } catch (e) {
     console.warn('BranchManagerDashboard: API error', e.message)
   } finally {

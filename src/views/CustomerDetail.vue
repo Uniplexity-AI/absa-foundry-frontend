@@ -55,6 +55,13 @@
         @override="openOverrideDialog"
       />
 
+      <!-- AI narration of the rule-engine decision (Ollama, ADR-005) -->
+      <AiNarrationPanel
+        v-if="customerId"
+        class="mt-3"
+        :customer-id="customerId"
+      />
+
       <!-- Override Dialog -->
       <div v-if="showOverrideDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/40" @click="showOverrideDialog = false"></div>
@@ -440,6 +447,7 @@ import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiNbaPanel from '@/components/intelligence/AiNbaPanel.vue'
+import AiNarrationPanel from '@/components/intelligence/AiNarrationPanel.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'

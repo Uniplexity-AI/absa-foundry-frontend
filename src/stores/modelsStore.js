@@ -33,7 +33,10 @@ export const useModelsStore = defineStore('models', () => {
     error.value = null
     try {
       const { data } = await api.get('/api/v1/models')
+      // Spread the raw registry entry so per-family cards can read task / trained_at /
+      // artifacts etc. The id/type/status/metrics shorthands are kept for existing callers.
       models.value = (data.models || []).map((m) => ({
+        ...m,
         id: m.model_id,
         type: m.type,
         status: m.status,

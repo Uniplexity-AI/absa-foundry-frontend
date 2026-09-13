@@ -27,11 +27,11 @@
           </div>
           <div class="flex items-center gap-3 mt-1">
             <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">{{ modelDetails.name || 'Churn Model' }}</h1>
-            <span v-if="modelDetails.status" class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 rounded-sm">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse"></span>{{ modelDetails.status }}
+            <span v-if="modelDetails.status" class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-bold uppercase tracking-wider bg-brand-soft-success text-status-success rounded-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-pulse"></span>{{ modelDetails.status }}
             </span>
             <span class="inline-flex items-center px-2 py-0.5 text-xs font-bold bg-gray-100 text-gray-600 rounded-sm font-mono">CHAMPION</span>
-            <span class="inline-flex items-center px-2 py-0.5 text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 rounded-sm">RISK TIER: HIGH</span>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-bold bg-status-warning/10 text-status-warning border border-status-warning/30 rounded-sm">RISK TIER: HIGH</span>
           </div>
           <p class="text-body-md text-gray-500 mt-1">{{ modelsStore.modelCount }} models in registry · Churn Prediction Pipeline · Last evaluated {{ lastEvaluatedDate }}</p>
         </div>
@@ -39,7 +39,7 @@
           <button class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors font-label text-sm font-semibold shadow-none">
             <i class="fa-solid fa-download text-[13px]"></i> Export MRM Report
           </button>
-          <button v-if="canRetrain" @click="requestRetrain" :disabled="retraining"
+          <button v-if="canRetrain" @click="triggerRetrainAction" :disabled="retraining"
             :class="['px-4 py-2 text-absa-serene rounded-sm flex items-center gap-2 transition-colors font-label text-sm font-semibold shadow-none',
               retraining ? 'bg-gray-400 cursor-not-allowed' : 'bg-absa-passion hover:bg-absa-power']">
             <i v-if="retraining" class="fa-solid fa-spinner fa-spin text-[13px]"></i>
@@ -51,7 +51,7 @@
 
       <!-- Retrain status strip -->
       <div v-if="retraining || retrainError" class="mb-4 px-4 py-2 text-xs rounded-sm flex items-center gap-2"
-        :class="retrainError ? 'bg-red-100 text-absa-inspire' : 'bg-amber-50 text-amber-700 border border-amber-200'">
+        :class="retrainError ? 'bg-absa-passion/10 text-absa-inspire' : 'bg-status-warning/10 text-status-warning border border-status-warning/30'">
         <i v-if="!retrainError" class="fa-solid fa-spinner fa-spin"></i>
         <i v-else class="fa-solid fa-circle-exclamation"></i>
         <span v-if="retraining">Retraining the churn model in the background — this page will refresh automatically when done (registry updates).</span>
@@ -92,7 +92,7 @@
             <div class="p-4 rounded-sm border border-gray-300 flex flex-col justify-between h-[140px]">
               <div class="flex justify-between items-start">
                 <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">AUC-ROC</h3>
-                <span class="text-[11px] font-semibold text-green-600 flex items-center gap-1"><i class="fa-solid fa-arrow-up text-[9px]"></i>+0.3%</span>
+                <span class="text-[11px] font-semibold text-status-success flex items-center gap-1"><i class="fa-solid fa-arrow-up text-[9px]"></i>+0.3%</span>
               </div>
               <div class="text-2xl font-bold text-absa-enrich font-mono mb-1">{{ modelMetrics.aucRoc.value }}</div>
               <div class="h-8 w-full relative"><canvas ref="sparklineAucCanvas"></canvas></div>
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Active Alerts Strip -->
-        <div v-if="activeAlerts.length > 0" class="mb-6 rounded-sm border border-absa-passion/30 bg-red-50 p-4">
+        <div v-if="activeAlerts.length > 0" class="mb-6 rounded-sm border border-absa-passion/30 bg-absa-passion/10 p-4">
           <p class="text-[11px] font-bold text-absa-passion uppercase tracking-wider mb-2 flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation"></i> {{ activeAlerts.length }} Active Alert{{ activeAlerts.length > 1 ? 's' : '' }} — Action Required
           </p>
@@ -169,150 +169,261 @@
       <!-- ═══════════════════════════════════════════════════ -->
       <!-- TAB: PERFORMANCE                                    -->
       <!-- ═══════════════════════════════════════════════════ -->
-      <template v-else-if="activeTab === 'performance'">
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
-          <!-- Confusion Matrix -->
-          <div class="border border-gray-300 rounded-sm overflow-hidden">
-            <div class="p-4 border-b border-gray-200">
-              <h3 class="text-sm font-bold text-absa-enrich">Confusion Matrix</h3>
-              <p class="text-[11px] text-gray-500 mt-0.5">At decision threshold: {{ threshold.toFixed(2) }}</p>
+      
+        <!-- ========================================== -->
+        <!-- TAB: CALIBRATION                           -->
+        <!-- ========================================== -->
+        <template v-else-if="activeTab === 'calibration'">
+          <div class="border border-gray-300 rounded-sm overflow-hidden mb-6 p-6 bg-white">
+            <h3 class="text-lg font-bold text-absa-enrich mb-2">Threshold Calibration</h3>
+            <p class="text-sm text-gray-500 mb-6">Adjust the classification threshold to simulate the trade-off between Precision and Recall. Production models will not be affected until the proposal is approved.</p>
+            
+            <div class="mb-8">
+              <label class="block text-sm font-bold text-gray-700 mb-2">Threshold: {{ calibrationThreshold }}</label>
+              <input type="range" v-model.number="calibrationThreshold" min="0" max="1" step="0.01" class="w-full accent-absa-passion">
+              <div class="flex justify-between text-xs text-gray-400 mt-1">
+                <span>0.0 (High Recall / False Positives)</span>
+                <span>1.0 (High Precision / False Negatives)</span>
+              </div>
             </div>
-            <div class="p-6">
-              <!-- Threshold slider -->
-              <div class="flex items-center gap-4 mb-6">
-                <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider w-24">Threshold</span>
-                <span class="font-mono text-sm font-bold text-absa-enrich">{{ thresholdLabel }}</span>
-                <span class="text-[10px] text-gray-400">optimal (Youden's J) · holdout evaluation</span>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
+                <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated True Positives</p>
+                <p class="text-2xl font-mono text-status-success mt-1">{{ simulatedMetrics.tp }}</p>
               </div>
-              <!-- Matrix grid: real holdout confusion matrix from the model registry -->
-              <div class="grid grid-cols-2 gap-2 max-w-xs mx-auto">
-                <div class="rounded-sm p-4 text-center bg-green-50 border border-green-200">
-                  <p class="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">True Negative</p>
-                  <p class="text-3xl font-bold text-absa-enrich font-mono">{{ confusionMatrix.tn ?? '—' }}</p>
-                  <p class="text-[10px] text-gray-500 mt-1">Correctly predicted "Retain"</p>
-                </div>
-                <div class="rounded-sm p-4 text-center bg-red-50 border border-absa-passion/30">
-                  <p class="text-[10px] font-bold text-absa-inspire uppercase tracking-wider mb-1">False Positive</p>
-                  <p class="text-3xl font-bold text-absa-inspire font-mono">{{ confusionMatrix.fp ?? '—' }}</p>
-                  <p class="text-[10px] text-gray-500 mt-1">Wrongly flagged "Churn"</p>
-                </div>
-                <div class="rounded-sm p-4 text-center bg-amber-50 border border-amber-200">
-                  <p class="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-1">False Negative</p>
-                  <p class="text-3xl font-bold text-amber-700 font-mono">{{ confusionMatrix.fn ?? '—' }}</p>
-                  <p class="text-[10px] text-gray-500 mt-1">Missed churners (risk)</p>
-                </div>
-                <div class="rounded-sm p-4 text-center bg-green-50 border border-green-200">
-                  <p class="text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">True Positive</p>
-                  <p class="text-3xl font-bold text-green-700 font-mono">{{ confusionMatrix.tp ?? '—' }}</p>
-                  <p class="text-[10px] text-gray-500 mt-1">Correctly caught churners</p>
+              <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
+                <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated False Positives</p>
+                <p class="text-2xl font-mono text-status-warning mt-1">{{ simulatedMetrics.fp }}</p>
+              </div>
+              <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
+                <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated True Negatives</p>
+                <p class="text-2xl font-mono text-status-success mt-1">{{ simulatedMetrics.tn }}</p>
+              </div>
+              <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
+                <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated False Negatives</p>
+                <p class="text-2xl font-mono text-status-warning mt-1">{{ simulatedMetrics.fn }}</p>
+              </div>
+            </div>
+            
+            <div class="flex justify-end gap-3">
+              <button @click="resetCalibration" class="px-4 py-2 border border-gray-300 rounded text-sm font-bold text-gray-600 hover:bg-gray-50">Reset</button>
+              <button @click="submitCalibration" :disabled="savingThreshold" class="px-4 py-2 bg-absa-passion text-white rounded text-sm font-bold hover:bg-absa-power disabled:opacity-50">
+                {{ savingThreshold ? 'Submitting...' : 'Submit Calibration Proposal' }}
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- ========================================== -->
+        <!-- TAB: SIMULATION                            -->
+        <!-- ========================================== -->
+        <template v-else-if="activeTab === 'simulation'">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="border border-gray-300 rounded-sm p-6 bg-white">
+              <h3 class="text-lg font-bold text-absa-enrich mb-2">What-If Sandbox</h3>
+              <p class="text-sm text-gray-500 mb-6">Modify feature values to see their impact on the churn probability.</p>
+              
+              <div class="space-y-4 mb-6">
+                <div v-for="feat in simulationFeatures" :key="feat.name">
+                  <label class="block text-xs font-bold text-gray-700 mb-1">{{ feat.label }}</label>
+                  <input type="number" v-model.number="feat.value" @input="debounceSimulate" class="w-full border-gray-300 rounded-sm p-2 text-sm">
                 </div>
               </div>
-              <!-- Derived metrics at threshold -->
-              <div class="grid grid-cols-3 gap-3 mt-6 pt-4 border-t border-gray-200">
-                <div class="text-center">
-                  <p class="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Precision</p>
-                  <p class="text-lg font-bold text-absa-enrich font-mono mt-1">{{ derivedMetrics.precision }}</p>
+            </div>
+            
+            <div class="border border-gray-300 rounded-sm p-6 bg-gray-50">
+              <h3 class="text-lg font-bold text-absa-enrich mb-6">Simulation Result</h3>
+              
+              <div v-if="simulationResult" class="space-y-6">
+                <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span class="text-sm font-bold text-gray-600">Simulated Probability</span>
+                  <span class="text-3xl font-mono" :class="simulationResult.classification === 'HIGH_RISK' ? 'text-absa-passion' : 'text-status-success'">
+                    {{ (simulationResult.simulated_probability * 100).toFixed(1) }}%
+                  </span>
                 </div>
-                <div class="text-center">
-                  <p class="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Recall</p>
-                  <p class="text-lg font-bold text-absa-enrich font-mono mt-1">{{ derivedMetrics.recall }}</p>
+                
+                <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+                  <span class="text-sm font-bold text-gray-600">Classification</span>
+                  <span class="px-3 py-1 rounded text-xs font-bold" :class="simulationResult.classification === 'HIGH_RISK' ? 'bg-absa-passion/10 text-absa-passion' : 'bg-status-success/20 text-status-success'">
+                    {{ simulationResult.classification }}
+                  </span>
                 </div>
-                <div class="text-center">
-                  <p class="text-[10px] text-gray-500 uppercase tracking-wider font-bold">F1 Score</p>
-                  <p class="text-lg font-bold text-absa-enrich font-mono mt-1">{{ derivedMetrics.f1 }}</p>
+                
+                <div class="flex justify-between items-center">
+                  <span class="text-sm font-bold text-gray-600">Probability Delta</span>
+                  <span class="text-lg font-mono" :class="simulationResult.delta > 0 ? 'text-status-warning' : 'text-status-success'">
+                    {{ simulationResult.delta > 0 ? '+' : '' }}{{ (simulationResult.delta * 100).toFixed(1) }}%
+                  </span>
+                </div>
+              </div>
+              <div v-else class="text-center text-gray-400 py-10">
+                Loading simulation...
+              </div>
+            </div>
+          </div>
+        </template>
+
+        
+        <!-- ========================================== -->
+        <!-- TAB: TRAINING                              -->
+        <!-- ========================================== -->
+        <template v-else-if="activeTab === 'training'">
+          <div class="border border-gray-300 rounded-sm overflow-hidden mb-6 p-6 bg-white">
+            <h3 class="text-lg font-bold text-absa-enrich mb-2">Model Retraining</h3>
+            <p class="text-sm text-gray-500 mb-6">Select features from the Feature Registry to include in the next retraining run. The pipeline will run asynchronously.</p>
+            
+            <div class="mb-6">
+              <h4 class="text-xs font-bold text-gray-700 uppercase mb-3">Feature Registry</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div v-for="feat in availableFeatures" :key="feat.id" class="border border-gray-200 rounded p-3 flex items-center gap-3 hover:bg-gray-50">
+                  <input type="checkbox" :value="feat.id" v-model="selectedFeaturesForTraining" class="accent-absa-passion rounded-sm">
+                  <div>
+                    <p class="text-sm font-bold text-gray-800">{{ feat.name }}</p>
+                    <p class="text-[10px] text-gray-500">{{ feat.feature_type }} &middot; Status: {{ feat.status }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-end pt-4 border-t border-gray-100">
+              <button @click="triggerRetrainAction" :disabled="retraining || selectedFeaturesForTraining.length === 0" class="px-4 py-2 bg-absa-passion text-white rounded text-sm font-bold hover:bg-absa-power disabled:opacity-50">
+                <i class="fa-solid fa-spinner fa-spin mr-2" v-if="retraining"></i>
+                {{ retraining ? 'Training in progress...' : 'Trigger Retraining Pipeline' }}
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <!-- ========================================== -->
+        <!-- TAB: CHAMPION/CHALLENGER                   -->
+        <!-- ========================================== -->
+        <template v-else-if="activeTab === 'champion'">
+          <div class="border border-gray-300 rounded-sm overflow-hidden mb-6 p-6 bg-white">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h3 class="text-lg font-bold text-absa-enrich mb-1">Model Comparison</h3>
+                <p class="text-sm text-gray-500">Compare the production Champion against the Nominated Challenger.</p>
+              </div>
+              <button @click="loadComparison" class="px-3 py-1 border border-gray-300 rounded text-xs font-bold text-gray-600 hover:bg-gray-50">
+                <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
+              </button>
+            </div>
+            
+            <div v-if="!modelComparisonData || !modelComparisonData.champion" class="text-center py-10 text-gray-500 text-sm">
+              Loading comparison...
+            </div>
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Champion Card -->
+              <div class="border border-status-success/30 bg-status-success/10 rounded-sm p-5 relative">
+                <div class="absolute top-4 right-4 bg-status-success text-white text-[10px] font-bold px-2 py-0.5 rounded">LIVE</div>
+                <h4 class="font-bold text-absa-enrich mb-1">CHAMPION</h4>
+                <p class="font-mono text-[10px] text-gray-600 mb-4">{{ modelComparisonData.champion.id }}</p>
+                
+                <div class="space-y-3 mb-6">
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Status</span>
+                    <span class="font-bold text-status-success">{{ modelComparisonData.champion.status }}</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Model Version</span>
+                    <span class="font-mono font-bold">{{ modelComparisonData.champion.model_version }}</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">AUC-ROC</span>
+                    <span class="font-bold">{{ comparisonMetric(modelComparisonData.champion) }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Challenger Card -->
+              <div class="border border-gray-300 rounded-sm p-5 bg-gray-50">
+                <div v-if="modelComparisonData.challenger">
+                  <h4 class="font-bold text-absa-enrich mb-1">CHALLENGER</h4>
+                  <p class="font-mono text-[10px] text-gray-600 mb-4">{{ modelComparisonData.challenger.id }}</p>
+                  
+                  <div class="space-y-3 mb-6">
+                    <div class="flex justify-between text-sm">
+                      <span class="text-gray-600">Status</span>
+                      <span class="font-bold text-status-warning">{{ modelComparisonData.challenger.status }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-gray-600">Model Version</span>
+                      <span class="font-mono font-bold">{{ modelComparisonData.challenger.model_version }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-gray-600">AUC-ROC</span>
+                      <span class="font-bold">{{ comparisonMetric(modelComparisonData.challenger) }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
+                    <button v-if="modelComparisonData.challenger.status === 'TRAINED'" @click="actionValidate(modelComparisonData.challenger.id)" class="flex-1 px-3 py-1.5 border border-absa-passion text-absa-passion hover:bg-absa-passion/10 rounded text-xs font-bold transition-colors">Validate</button>
+                    <button v-if="modelComparisonData.challenger.status === 'VALIDATED'" @click="actionApprove(modelComparisonData.challenger.id)" class="flex-1 px-3 py-1.5 border border-absa-passion text-absa-passion hover:bg-absa-passion/10 rounded text-xs font-bold transition-colors">Approve</button>
+                    <button v-if="modelComparisonData.challenger.status === 'APPROVED'" @click="actionPromote(modelComparisonData.challenger.id)" class="flex-1 px-3 py-1.5 bg-absa-passion text-white hover:bg-absa-power rounded text-xs font-bold transition-colors">Promote to Champion</button>
+                  </div>
+                </div>
+                <div v-else class="h-full flex flex-col items-center justify-center text-gray-400 py-8">
+                  <i class="fa-solid fa-ghost text-3xl mb-3"></i>
+                  <p class="text-sm font-bold">No Active Challenger</p>
+                  <p class="text-xs mt-1">Train a new model to create a challenger.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Segment-Level Performance -->
-          <div class="border border-gray-300 rounded-sm overflow-hidden">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
-              <div>
-                <h3 class="text-sm font-bold text-absa-enrich">Performance by Segment</h3>
-                <p class="text-[11px] text-gray-500 mt-0.5">AUC-ROC disaggregated by customer segment</p>
-              </div>
-              <span class="text-[10px] text-gray-400 font-mono">SARB Fairness Monitoring</span>
+          <!-- Registered model families — the panel above only covers churn,
+               so the CLV family (value erosion + future value) is listed here. -->
+          <div class="mt-6 bg-white border border-gray-300 rounded-sm overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-200">
+              <h3 class="text-sm font-bold text-absa-enrich">Registered Model Families</h3>
+              <p class="text-[11px] text-gray-500 mt-0.5">
+                Every entry in <span class="font-mono">models/registry.json</span> — champion and family champions alike.
+              </p>
             </div>
             <table class="w-full text-left">
-              <thead>
-                <tr class="border-b border-gray-200 text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-50">
-                  <th class="px-4 py-3">Segment</th>
-                  <th class="px-4 py-3">Customers</th>
-                  <th class="px-4 py-3">AUC-ROC</th>
-                  <th class="px-4 py-3">F1</th>
-                  <th class="px-4 py-3">Status</th>
+              <thead class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                <tr>
+                  <th class="px-5 py-2">Model</th>
+                  <th class="px-3 py-2">Family</th>
+                  <th class="px-3 py-2">Task</th>
+                  <th class="px-3 py-2">Primary metric</th>
+                  <th class="px-3 py-2">Status</th>
+                  <th class="px-3 py-2">Trained</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-100 text-sm">
-                <tr v-for="seg in segmentPerformance" :key="seg.name" class="hover:bg-gray-50 transition-colors">
-                  <td class="px-4 py-3 font-semibold text-absa-enrich">{{ seg.name }}</td>
-                  <td class="px-4 py-3 text-gray-600 font-mono text-xs">{{ seg.customers }}</td>
-                  <td class="px-4 py-3 font-mono text-xs font-bold">{{ seg.auc }}</td>
-                  <td class="px-4 py-3 font-mono text-xs">{{ seg.f1 }}</td>
-                  <td class="px-4 py-3">
-                    <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', seg.statusClass]">
-                      <span class="w-1 h-1 rounded-full" :class="seg.dotClass"></span>{{ seg.status }}
+              <tbody>
+                <tr v-for="m in registeredModels" :key="m.id" class="border-t border-gray-100">
+                  <td class="px-5 py-2 font-mono text-xs text-absa-enrich">{{ m.id }}</td>
+                  <td class="px-3 py-2 text-xs">{{ m.family || m.type }}</td>
+                  <td class="px-3 py-2 text-xs">{{ m.task || 'classification' }}</td>
+                  <td class="px-3 py-2 text-xs font-mono font-bold text-absa-enrich">{{ primaryMetric(m) }}</td>
+                  <td class="px-3 py-2">
+                    <span :class="['px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase',
+                                   m.status === 'champion' ? 'bg-brand-soft-success text-status-success' : 'bg-gray-100 text-gray-600']">
+                      {{ m.status }}
                     </span>
+                  </td>
+                  <td class="px-3 py-2 text-xs text-gray-500">{{ m.trained_at || '—' }}</td>
+                </tr>
+                <tr v-if="!registeredModels.length">
+                  <td colspan="6" class="px-5 py-6 text-center text-xs text-gray-400">
+                    No models registered — run scripts/train_models.py
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
-
-        <!-- Threshold Sensitivity -->
-        <div class="border border-gray-300 rounded-sm overflow-hidden">
-          <div class="p-4 border-b border-gray-200">
-            <h3 class="text-sm font-bold text-absa-enrich">Threshold Sensitivity Analysis</h3>
-            <p class="text-[11px] text-gray-500 mt-0.5">How Precision, Recall and F1 respond across decision thresholds</p>
-          </div>
-          <div class="p-5">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left">
-                <thead>
-                  <tr class="border-b border-gray-200 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                    <th class="px-3 py-3">Threshold</th>
-                    <th class="px-3 py-3">Precision</th>
-                    <th class="px-3 py-3">Recall</th>
-                    <th class="px-3 py-3">F1 Score</th>
-                    <th class="px-3 py-3">FP Rate</th>
-                    <th class="px-3 py-3">Estimated Cost (Interventions)</th>
-                    <th class="px-3 py-3">Recommended</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 text-sm font-mono">
-                  <tr v-for="row in thresholdTable" :key="row.threshold" :class="['hover:bg-gray-50 transition-colors', row.recommended ? 'bg-amber-50' : '']">
-                    <td class="px-3 py-3 font-bold" :class="row.recommended ? 'text-absa-passion' : 'text-absa-enrich'">{{ row.threshold }}</td>
-                    <td class="px-3 py-3 text-gray-700">{{ row.precision }}</td>
-                    <td class="px-3 py-3 text-gray-700">{{ row.recall }}</td>
-                    <td class="px-3 py-3 font-bold text-absa-enrich">{{ row.f1 }}</td>
-                    <td class="px-3 py-3" :class="parseFloat(row.fpRate) > 0.15 ? 'text-absa-passion font-bold' : 'text-gray-700'">{{ row.fpRate }}</td>
-                    <td class="px-3 py-3 text-gray-600">{{ row.cost }}</td>
-                    <td class="px-3 py-3">
-                      <span v-if="row.recommended" class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-sm">
-                        <i class="fa-solid fa-star text-[9px]"></i> OPTIMAL
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </template>
-
-      <!-- ═══════════════════════════════════════════════════ -->
-      <!-- TAB: DRIFT & STABILITY                              -->
-      <!-- ═══════════════════════════════════════════════════ -->
-      <template v-else-if="activeTab === 'drift'">
+        </template>
+<template v-else-if="activeTab === 'monitoring'">
         <!-- PSI Summary bar -->
         <div class="grid grid-cols-3 gap-4 mb-6">
           <div class="border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Features Monitored</p>
             <p class="text-2xl font-bold text-absa-enrich font-mono">{{ featureDriftList.length || 12 }}</p>
           </div>
-          <div class="border rounded-sm p-4" :class="driftingFeatureCount > 0 ? 'border-absa-inspire/50 bg-red-50' : 'border-gray-300'">
+          <div class="border rounded-sm p-4" :class="driftingFeatureCount > 0 ? 'border-absa-inspire/50 bg-absa-passion/10' : 'border-gray-300'">
             <p class="text-[11px] font-bold uppercase tracking-wider mb-2" :class="driftingFeatureCount > 0 ? 'text-absa-inspire' : 'text-gray-500'">Drifting Features (PSI &gt; 0.20)</p>
             <p class="text-2xl font-bold font-mono" :class="driftingFeatureCount > 0 ? 'text-absa-inspire' : 'text-absa-passion'">{{ driftingFeatureCount }}</p>
           </div>
@@ -383,8 +494,8 @@
         <div class="border border-l-4 border-l-absa-passion border-gray-300 rounded-sm p-4 bg-white">
           <p class="text-[11px] font-bold text-absa-passion uppercase tracking-wider mb-1">PSI Interpretation Guide</p>
           <div class="grid grid-cols-3 gap-4 text-xs text-gray-600">
-            <div><span class="font-bold text-green-600">PSI &lt; 0.10</span> — No significant change. Model is stable.</div>
-            <div><span class="font-bold text-amber-600">0.10 ≤ PSI &lt; 0.25</span> — Moderate shift. Investigation recommended.</div>
+            <div><span class="font-bold text-status-success">PSI &lt; 0.10</span> — No significant change. Model is stable.</div>
+            <div><span class="font-bold text-status-warning">0.10 ≤ PSI &lt; 0.25</span> — Moderate shift. Investigation recommended.</div>
             <div><span class="font-bold text-absa-passion">PSI ≥ 0.25</span> — Major shift. Retraining or model review required immediately.</div>
           </div>
         </div>
@@ -402,7 +513,7 @@
                 <h3 class="text-sm font-bold text-absa-enrich">Model Card</h3>
                 <p class="text-[11px] text-gray-500 mt-0.5">SR 11-7 / SARB MRM Framework compliant documentation</p>
               </div>
-              <span class="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-sm border border-green-200">APPROVED</span>
+              <span class="text-[10px] font-bold text-status-success bg-brand-soft-success px-2 py-0.5 rounded-sm border border-status-success/30">APPROVED</span>
             </div>
             <div class="divide-y divide-gray-100">
               <div v-for="field in modelCardFields" :key="field.label" class="px-5 py-3 flex items-start">
@@ -438,13 +549,13 @@
             </div>
 
             <!-- Risk Classification -->
-            <div class="border border-amber-200 bg-amber-50 rounded-sm p-4">
-              <p class="text-[11px] font-bold text-amber-700 uppercase tracking-wider mb-3">Risk Classification</p>
+            <div class="border border-status-warning/30 bg-status-warning/10 rounded-sm p-4">
+              <p class="text-[11px] font-bold text-status-warning uppercase tracking-wider mb-3">Risk Classification</p>
               <div class="space-y-2 text-xs">
-                <div class="flex justify-between"><span class="text-gray-600">Model Risk Tier</span><span class="font-bold text-amber-700">HIGH</span></div>
+                <div class="flex justify-between"><span class="text-gray-600">Model Risk Tier</span><span class="font-bold text-status-warning">HIGH</span></div>
                 <div class="flex justify-between"><span class="text-gray-600">Next Validation Due</span><span class="font-bold text-absa-enrich">2025-12-31</span></div>
-                <div class="flex justify-between"><span class="text-gray-600">Annual Review</span><span class="font-bold text-green-600">Completed</span></div>
-                <div class="flex justify-between"><span class="text-gray-600">Materiality</span><span class="font-bold text-amber-700">HIGH</span></div>
+                <div class="flex justify-between"><span class="text-gray-600">Annual Review</span><span class="font-bold text-status-success">Completed</span></div>
+                <div class="flex justify-between"><span class="text-gray-600">Materiality</span><span class="font-bold text-status-warning">HIGH</span></div>
               </div>
             </div>
           </div>
@@ -486,7 +597,7 @@
       <!-- ═══════════════════════════════════════════════════ -->
       <!-- TAB: PREDICTION LOGS                                -->
       <!-- ═══════════════════════════════════════════════════ -->
-      <template v-else-if="activeTab === 'logs'">
+      <template v-else-if="activeTab === 'audit'">
         <div class="border border-gray-300 rounded-sm overflow-hidden">
           <div class="p-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
@@ -563,13 +674,13 @@
               <h3 class="text-sm font-bold text-absa-enrich">Active Alerts</h3>
               <p class="text-[11px] text-gray-500 mt-0.5">Requires action from model owner or risk team</p>
             </div>
-            <span v-if="activeAlerts.length > 0" class="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 text-absa-passion rounded-sm text-xs font-bold">
+            <span v-if="activeAlerts.length > 0" class="inline-flex items-center gap-1 px-2 py-0.5 bg-absa-passion/10 text-absa-passion rounded-sm text-xs font-bold">
               <span class="w-1.5 h-1.5 rounded-full bg-absa-passion animate-pulse"></span>{{ activeAlerts.length }} Active
             </span>
-            <span v-else class="text-xs font-semibold text-green-600">All clear</span>
+            <span v-else class="text-xs font-semibold text-status-success">All clear</span>
           </div>
           <div v-if="activeAlerts.length === 0" class="p-8 text-center text-gray-500 text-sm">
-            <i class="fa-solid fa-shield-check text-2xl text-green-500 mb-2"></i>
+            <i class="fa-solid fa-shield-check text-2xl text-status-success mb-2"></i>
             <p>No active alerts. Model is operating within thresholds.</p>
           </div>
           <table v-else class="w-full text-left">
@@ -595,7 +706,7 @@
                 <td class="px-4 py-3 font-mono text-xs text-gray-500">{{ alert.threshold }}</td>
                 <td class="px-4 py-3 text-xs text-gray-500">{{ alert.since }}</td>
                 <td class="px-4 py-3">
-                  <button class="text-xs font-semibold text-absa-passion border border-absa-passion/30 px-2 py-0.5 rounded-sm hover:bg-red-50 transition-colors">Investigate</button>
+                  <button class="text-xs font-semibold text-absa-passion border border-absa-passion/30 px-2 py-0.5 rounded-sm hover:bg-absa-passion/10 transition-colors">Investigate</button>
                 </td>
               </tr>
             </tbody>
@@ -623,7 +734,7 @@
                 <td class="px-4 py-3 text-xs text-gray-700">{{ row.alert }}</td>
                 <td class="px-4 py-3 font-mono text-xs text-gray-500">{{ row.triggered }}</td>
                 <td class="px-4 py-3 font-mono text-xs text-gray-500">{{ row.resolved }}</td>
-                <td class="px-4 py-3 text-xs text-green-600 font-semibold">{{ row.resolution }}</td>
+                <td class="px-4 py-3 text-xs text-status-success font-semibold">{{ row.resolution }}</td>
               </tr>
             </tbody>
           </table>
@@ -638,6 +749,19 @@
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
+import { 
+  fetchChampion, 
+  fetchFeatures, 
+  fetchModelComparison, 
+  fetchAuditLogs,
+  submitCalibrationProposal,
+  triggerRetrain as triggerApiRetrain,
+  validateModel,
+  approveModel,
+  promoteModel,
+  simulatePrediction,
+  simulateCalibration 
+} from '@/services/modelManagementApi'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useModelsStore } from '@/stores/modelsStore'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
@@ -659,6 +783,21 @@ const activeTab = ref('overview')
 
 // Retrain job state
 const retraining = ref(false)
+
+  const selectedFeaturesForTraining = ref([])
+  const modelComparisonData = ref(null)
+
+  async function loadComparison() {
+    try {
+      modelComparisonData.value = await fetchModelComparison()
+    } catch (e) {
+      console.warn("Failed to load model comparison", e)
+    }
+  }
+
+  // Load comparison on mount
+  onMounted(loadComparison)
+
 const retrainStartedAt = ref(null)
 const retrainPollTimer = ref(null)
 const retrainError = ref('')
@@ -682,11 +821,12 @@ const predictionTotal = ref(0)
 // ── Tab definitions ──
 const tabs = computed(() => [
   { id: 'overview',    label: 'Overview',         icon: 'fa-gauge-high' },
-  { id: 'performance', label: 'Performance',       icon: 'fa-chart-line' },
-  { id: 'drift',       label: 'Drift & Stability', icon: 'fa-arrows-left-right' },
-  { id: 'governance',  label: 'Governance',        icon: 'fa-file-shield' },
-  { id: 'logs',        label: 'Prediction Logs',   icon: 'fa-list-ul' },
-  { id: 'alerts',      label: 'Alerts',            icon: 'fa-bell', badge: activeAlerts.value.length || null },
+  { id: 'calibration', label: 'Calibration',       icon: 'fa-sliders' },
+  { id: 'simulation',  label: 'Simulation',        icon: 'fa-flask' },
+  { id: 'training',    label: 'Training',          icon: 'fa-dumbbell' },
+  { id: 'champion',    label: 'Champion/Challenger', icon: 'fa-trophy' },
+  { id: 'audit',       label: 'Audit History',     icon: 'fa-list-check' },
+  { id: 'monitoring',  label: 'Monitoring',        icon: 'fa-chart-line' },
 ])
 
 // ── Static / derived data ──
@@ -702,7 +842,7 @@ const activeAlerts = computed(() => featureDriftList.value
   .map((f, i) => ({
     id: i + 1,
     severity: f.status,
-    severityClass: f.status === 'CRITICAL' ? 'bg-red-100 text-absa-passion' : 'bg-amber-100 text-amber-700',
+    severityClass: f.status === 'CRITICAL' ? 'bg-absa-passion/10 text-absa-passion' : 'bg-status-warning/10 text-status-warning',
     feature: f.name,
     message: `PSI ${f.score} — above ${f.status === 'CRITICAL' ? 'critical' : 'warning'} threshold`,
     currentValue: f.score,
@@ -778,6 +918,39 @@ const derivedMetrics = computed(() => {
   return { precision: fm(c.precision), recall: fm(c.recall), f1: fm(c.f1) }
 })
 
+// Interactive MLOps features state
+const activeThreshold = ref(0.50)
+const calibrationThreshold = ref(0.50)
+const savingThreshold = ref(false)
+
+// Simulated matrix based on baseline 1000 users for interactive slider demo
+const simulatedMetrics = ref({ tp: 150, fp: 50, tn: 800, fn: 50 })
+  let calTimeout = null
+  watch(calibrationThreshold, (newVal) => {
+    if (calTimeout) clearTimeout(calTimeout)
+    calTimeout = setTimeout(async () => {
+      try {
+        simulatedMetrics.value = await simulateCalibration(newVal)
+      } catch (e) {
+        console.warn("Failed to simulate calibration", e)
+      }
+    }, 300)
+  })
+
+// Simulation what-if state
+const simulationFeatures = ref([
+  { name: 'savings_balance', value: 5000 },
+  { name: 'days_since_last_txn', value: 14 },
+  { name: 'mobile_app_logins', value: 3 },
+])
+const simulating = ref(false)
+const simulationResult = ref(null)
+
+// Retraining state
+const availableFeatures = ref([])
+const modelComparison = ref(null)
+const promotingModel = ref(false)
+
 // ── Segment Performance ──
 // Per-segment AUC/F1 requires scored outcomes per segment — not tracked in
 // the pilot. Show live segment composition (from the CLV band summary);
@@ -847,9 +1020,9 @@ const driftTableRows = computed(() => {
   })) : staticRows).map(r => ({
     ...r,
     deltaStr: (r.delta >= 0 ? '+' : '') + r.delta.toFixed(r.delta % 1 === 0 ? 0 : 2),
-    scoreClass: parseFloat(r.score) > 0.25 ? 'text-absa-inspire' : parseFloat(r.score) > 0.10 ? 'text-amber-600' : 'text-absa-passion',
-    badgeClass: r.status === 'CRITICAL' ? 'bg-red-100 text-absa-inspire' : r.status === 'WARNING' ? 'bg-amber-100 text-amber-700' : 'bg-red-50 text-absa-passion',
-    dotClass: r.status === 'CRITICAL' ? 'bg-absa-inspire' : r.status === 'WARNING' ? 'bg-amber-500' : 'bg-absa-passion',
+    scoreClass: parseFloat(r.score) > 0.25 ? 'text-absa-inspire' : parseFloat(r.score) > 0.10 ? 'text-status-warning' : 'text-absa-passion',
+    badgeClass: r.status === 'CRITICAL' ? 'bg-absa-passion/10 text-absa-inspire' : r.status === 'WARNING' ? 'bg-status-warning/10 text-status-warning' : 'bg-absa-passion/10 text-absa-passion',
+    dotClass: r.status === 'CRITICAL' ? 'bg-absa-inspire' : r.status === 'WARNING' ? 'bg-status-warning/100' : 'bg-absa-passion',
     shiftDir: r.invertShift ? 'left' : 'right',
   }))
 })
@@ -906,14 +1079,14 @@ const auditLog = computed(() => {
     rows.push({
       date: '—', event: 'Registered as champion', version: m.id,
       auc: m.metrics?.auc != null ? (m.metrics.auc * 100).toFixed(1) + '%' : '—',
-      actor: 'model registry', status: 'ACTIVE', statusClass: 'bg-green-100 text-green-700',
+      actor: 'model registry', status: 'ACTIVE', statusClass: 'bg-brand-soft-success text-status-success',
     })
   }
   if (predictionLogs.value.length) {
     rows.push({
       date: (predictionLogs.value[0].timestamp || '—').slice(0, 10),
       event: 'Serving live predictions', version: m?.id || '—',
-      auc: '—', actor: 'prediction-service', status: 'LIVE', statusClass: 'bg-green-100 text-green-700',
+      auc: '—', actor: 'prediction-service', status: 'LIVE', statusClass: 'bg-brand-soft-success text-status-success',
     })
   }
   return rows
@@ -925,7 +1098,7 @@ const enrichedLogs = computed(() =>
   predictionLogs.value.map(log => {
     const probValue = parseFloat(log.prob) / 100
     const riskBand  = probValue > 0.70 ? 'HIGH' : probValue > 0.40 ? 'MEDIUM' : 'LOW'
-    const riskBandClass = probValue > 0.70 ? 'bg-red-100 text-absa-inspire' : probValue > 0.40 ? 'bg-amber-100 text-amber-700' : 'bg-red-50 text-absa-passion'
+    const riskBandClass = probValue > 0.70 ? 'bg-absa-passion/10 text-absa-inspire' : probValue > 0.40 ? 'bg-status-warning/10 text-status-warning' : 'bg-absa-passion/10 text-absa-passion'
     return { ...log, probValue, riskBand, riskBandClass }
   })
 )
@@ -955,8 +1128,8 @@ async function requestRetrain() {
   retrainStartedAt.value = new Date().toISOString()
   const baseline = baselineSignature()
   try {
-    const { data } = await api.post('/api/v1/models/retrain')
-    notify(`Retrain started — ${data.log || 'see backend logs'}`, 'success', { autoClose: 4000 })
+    const data = await triggerApiRetrain(selectedFeaturesForTraining.value, 'latest')
+    notify(`Retrain started — job ${data.job_id}`, 'success', { autoClose: 4000 })
     // Poll for completion every 10s, up to ~10 min (train takes ~1-3 min).
     let attempts = 0
     retrainPollTimer.value = setInterval(async () => {
@@ -1006,7 +1179,7 @@ async function refreshAllData() {
       score: f.drift_score.toFixed(2),
       scoreColor: f.drift_score > 0.20 ? 'text-absa-passion font-bold' : 'text-gray-900',
       status: f.status,
-      badgeClass: f.status === 'CRITICAL' ? 'bg-red-100 text-absa-inspire' : f.status === 'WARNING' ? 'bg-amber-100 text-amber-700' : 'bg-red-50 text-absa-passion',
+      badgeClass: f.status === 'CRITICAL' ? 'bg-absa-passion/10 text-absa-inspire' : f.status === 'WARNING' ? 'bg-status-warning/10 text-status-warning' : 'bg-absa-passion/10 text-absa-passion',
       invertShift: f.invert_shift,
     }))
     predictionLogs.value = (logRes.data.predictions || []).map(p => ({
@@ -1043,7 +1216,7 @@ onMounted(async () => {
       score: f.drift_score.toFixed(2),
       scoreColor: f.drift_score > 0.20 ? 'text-absa-passion font-bold' : 'text-gray-900',
       status: f.status,
-      badgeClass: f.status === 'CRITICAL' ? 'bg-red-100 text-absa-inspire' : f.status === 'WARNING' ? 'bg-amber-100 text-amber-700' : 'bg-red-50 text-absa-passion',
+      badgeClass: f.status === 'CRITICAL' ? 'bg-absa-passion/10 text-absa-inspire' : f.status === 'WARNING' ? 'bg-status-warning/10 text-status-warning' : 'bg-absa-passion/10 text-absa-passion',
       invertShift: f.invert_shift,
     }))
     predictionLogs.value = (logRes.data.predictions || []).map(p => ({
@@ -1122,6 +1295,142 @@ function initCharts() {
       },
     })
   }
+
+  // --- MLOps Governed Functions ---
+
+  async function loadMLOpsData() {
+    try {
+      const champ = await fetchChampion()
+      activeThreshold.value = champ.optimal_threshold || 0.50
+      calibrationThreshold.value = activeThreshold.value
+      
+      const f = await fetchFeatures()
+      availableFeatures.value = f
+      
+      const comp = await fetchModelComparison()
+      modelComparison.value = comp
+      
+      const logs = await fetchAuditLogs()
+      auditLogs.value = logs
+      
+      await doSimulate()
+    } catch (e) {
+      console.warn("Failed to load MLOps governed data", e)
+    }
+  }
+
+  async function submitCalibration() {
+    savingThreshold.value = true
+    try {
+      const champ = await fetchChampion()
+      await submitCalibrationProposal(champ.id, calibrationThreshold.value, simulatedMetrics.value)
+      notify('Calibration proposal submitted for approval', 'success', { autoClose: 3000 })
+    } catch (e) {
+      notify('Failed to submit calibration proposal', 'error', { autoClose: 5000 })
+    } finally {
+      savingThreshold.value = false
+    }
+  }
+
+  function resetCalibration() {
+    calibrationThreshold.value = activeThreshold.value
+  }
+
+  let simTimeout = null
+  function debounceSimulate() {
+    clearTimeout(simTimeout)
+    simTimeout = setTimeout(doSimulate, 300)
+  }
+
+  async function doSimulate() {
+    simulating.value = true
+    try {
+      const payload = {
+          features: {},
+          baseline_probability: 0.50, // mock baseline
+          threshold: calibrationThreshold.value
+      }
+      simulationFeatures.value.forEach(feat => { payload.features[feat.name] = feat.value })
+      simulationResult.value = await simulatePrediction(payload)
+    } catch (e) {
+      console.warn("Simulation failed", e)
+    } finally {
+      simulating.value = false
+    }
+  }
+
+  // Registry rows expose evaluation_metrics (there is no top-level auc_roc).
+  // Classifiers carry `auc`; the CLV regressor carries `rmse`.
+  function comparisonMetric(m) {
+    const em = m?.evaluation_metrics || {}
+    if (em.auc != null) return Number(em.auc).toFixed(3)
+    if (em.rmse != null) return `RMSE ${Number(em.rmse).toFixed(1)}`
+    return 'N/A'
+  }
+
+  // ── Registered model families (registry.json models[]) ──
+  const registeredModels = computed(() => modelsStore.models || [])
+
+  function primaryMetric(m) {
+    const em = m?.metrics || {}
+    if (em.auc != null) return `AUC ${Number(em.auc).toFixed(3)}`
+    if (em.rmse != null) return `RMSE ${Number(em.rmse).toFixed(1)}`
+    if (em.mae != null) return `MAE ${Number(em.mae).toFixed(1)}`
+    return '—'
+  }
+
+  async function triggerRetrainAction() {
+    retraining.value = true
+    try {
+      // Use the features ticked in the Feature Registry — the API exposes
+      // allowed_for_training (not is_active), and an empty list trains on nothing.
+      const selected = selectedFeaturesForTraining.value.length
+        ? [...selectedFeaturesForTraining.value]
+        : availableFeatures.value.filter(feat => feat.allowed_for_training).map(feat => feat.id)
+      if (!selected.length) {
+        notify('Select at least one feature to train on', 'warning', { autoClose: 5000 })
+        return
+      }
+      const res = await triggerApiRetrain(selected, "latest")
+      notify('Background training job queued (Job ID: ' + res.job_id + ')', 'success', { autoClose: 4000 })
+      await refreshAllData()
+    } catch (e) {
+      notify('Failed to start training job', 'error', { autoClose: 5000 })
+    } finally {
+      retraining.value = false
+    }
+  }
+  
+  async function actionValidate(id) {
+    try {
+        await validateModel(id)
+        notify('Model validated successfully', 'success')
+        await loadMLOpsData()
+    } catch(e) { notify('Validation failed', 'error') }
+  }
+
+  async function actionApprove(id) {
+    try {
+        await approveModel(id)
+        notify('Model approved successfully', 'success')
+        await loadMLOpsData()
+    } catch(e) { notify('Approval failed', 'error') }
+  }
+
+  async function actionPromote(id) {
+    promotingModel.value = true
+    try {
+      await promoteModel(id)
+      notify('Model promoted to production Champion!', 'success', { autoClose: 4000 })
+      await loadMLOpsData()
+    } catch (e) {
+      notify('Failed to promote model', 'error', { autoClose: 5000 })
+    } finally {
+      promotingModel.value = false
+    }
+  }
+
+  onMounted(loadMLOpsData)
 }
 </script>
 

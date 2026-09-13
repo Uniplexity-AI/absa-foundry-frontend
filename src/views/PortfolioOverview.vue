@@ -227,7 +227,11 @@
               </div>
               <!-- Pagination -->
               <div class="p-4 border-t border-gray-200 bg-white flex items-center justify-between mt-auto">
-                <span class="text-xs text-gray-500">Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ ledgerTotal }} customers</span>
+                <span class="text-xs text-gray-500">
+                  Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ ledgerTotal.toLocaleString() }} customers
+                  <span v-if="ledgerWindowed" class="text-gray-400">· paging the first {{ ledgerHeld.toLocaleString() }} loaded</span>
+                  <span v-else-if="ledgerHasFilter" class="text-gray-400">matching</span>
+                </span>
                 <div class="flex gap-2">
                   <button @click="ledgerPage--" :disabled="ledgerPage <= 1" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage <= 1 ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50']">Previous</button>
                   <button @click="ledgerPage++" :disabled="ledgerPage >= ledgerTotalPages" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage >= ledgerTotalPages ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-absa-enrich hover:bg-gray-50']">Next</button>
@@ -486,11 +490,25 @@ const ledgerFiltered = computed(() => {
   return rows
 })
 
-const ledgerTotal = computed(() => ledgerFiltered.value.length)
-const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(ledgerFiltered.value.length / ledgerPageSize)))
+// A ledger filter (risk / segment / search) narrows the rows we hold, so once one
+// is active the honest denominator is the filtered count. With no filter the
+// denominator is the real portfolio size from the server — never the size of the
+// fetched page, which is capped at 500 rows and previously masqueraded as the
+// portfolio total.
+const ledgerHasFilter = computed(() =>
+  ledgerAtRiskOnly.value || !!ledgerMarketSegment.value || !!(searchText.value || '').trim()
+)
+const ledgerHeld = computed(() => ledgerFiltered.value.length)
+const ledgerTotal = computed(() =>
+  ledgerHasFilter.value ? ledgerHeld.value : (customerStore.pagination.total || ledgerHeld.value)
+)
+// Paging is over the rows we actually hold, so "Next" can never land on an empty page.
+const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(ledgerHeld.value / ledgerPageSize)))
 const ledgerRows = computed(() => ledgerFiltered.value.slice((ledgerPage.value - 1) * ledgerPageSize, ledgerPage.value * ledgerPageSize))
-const ledgerStart = computed(() => ledgerFiltered.value.length === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
-const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, ledgerFiltered.value.length))
+const ledgerStart = computed(() => ledgerHeld.value === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
+const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, ledgerHeld.value))
+// True when the portfolio is larger than what this session loaded.
+const ledgerWindowed = computed(() => !ledgerHasFilter.value && ledgerHeld.value < ledgerTotal.value)
 
 function toggleLedgerFilter() {
   ledgerAtRiskOnly.value = !ledgerAtRiskOnly.value

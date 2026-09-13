@@ -119,7 +119,11 @@ const errors = reactive({
 })
 
 // ── Caps Lock Detection ──
+// Autofill helpers and password-manager extensions dispatch a plain Event
+// rather than a KeyboardEvent, and plain events have no getModifierState().
+// Guard the call so typing can never throw from this handler.
 const checkCapsLock = (e) => {
+  if (typeof e?.getModifierState !== 'function') return
   capsLockOn.value = e.getModifierState('CapsLock')
 }
 

@@ -20,6 +20,10 @@
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                 <span class="text-body-md font-medium">Dashboard</span>
               </router-link>
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customers" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">group</span>
+                <span class="text-body-md font-medium">My Customers</span>
+              </router-link>
               <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">store</span>
                 <span class="text-body-md font-medium">Branch Manager</span>
@@ -92,11 +96,45 @@
           <button @click="openHelp" class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
             <span class="material-symbols-outlined">help</span>
           </button>
-          <div class="flex items-center gap-2">
-            <div class="absa-topbar__avatar">{{ userInitials }}</div>
-            <div class="hidden md:block">
-              <p class="text-body-md font-body-md font-semibold">{{ userName }}</p>
-              <p class="text-label-sm font-label-sm text-secondary">{{ userRole }}</p>
+          <div ref="userMenuRef" class="relative">
+            <button
+              type="button"
+              class="flex items-center gap-2 rounded-full pl-0.5 pr-1.5 py-1 hover:bg-surface-container-low transition-colors"
+              aria-haspopup="menu"
+              :aria-expanded="showUserMenu ? 'true' : 'false'"
+              aria-label="Account menu"
+              @click="toggleUserMenu"
+            >
+              <div class="absa-topbar__avatar">{{ userInitials }}</div>
+              <div class="hidden md:block text-left">
+                <p class="text-body-md font-body-md font-semibold">{{ userName }}</p>
+                <p class="text-label-sm font-label-sm text-secondary">{{ userRole }}</p>
+              </div>
+              <span class="material-symbols-outlined text-secondary text-[18px] hidden md:inline">expand_more</span>
+            </button>
+
+            <!-- Account menu -->
+            <div
+              v-if="showUserMenu"
+              role="menu"
+              class="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-200 shadow-xl z-50"
+            >
+              <div class="px-4 py-3 border-b border-gray-200">
+                <p class="text-xs font-bold text-absa-enrich truncate">{{ userName }}</p>
+                <p class="text-[11px] text-gray-500 truncate mt-0.5">{{ userEmail }}</p>
+                <span class="inline-block mt-2 text-[10px] font-bold uppercase tracking-wider text-absa-passion border border-gray-200 rounded-sm px-2 py-0.5">
+                  {{ userRole }}
+                </span>
+              </div>
+              <button
+                type="button"
+                role="menuitem"
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-absa-passion hover:bg-red-50 transition-colors flex items-center gap-2"
+                @click="handleLogout"
+              >
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                Sign out
+              </button>
             </div>
           </div>
         </div>
@@ -146,7 +184,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
@@ -161,10 +199,12 @@ const pageTitle = computed(() => {
   return route.meta.title || 'Dashboard'
 })
 
-// ── Header: search / notifications / help ──
+// ── Header: search / notifications / help / account menu ──
 const searchQuery = ref('')
 const showNotifications = ref(false)
 const showHelp = ref(false)
+const showUserMenu = ref(false)
+const userMenuRef = ref(null)
 
 const notifications = ref([
   { title: 'High churn risk flagged', body: 'Customer CUST00421 has a 91% churn probability.', icon: 'warning', to: '/dashboard/customer/CUST00421' },
@@ -176,6 +216,7 @@ const notificationCount = computed(() => notifications.value.length)
 function toggleNotifications() {
   showNotifications.value = !showNotifications.value
   showHelp.value = false
+  showUserMenu.value = false
 }
 
 function openNotification(n) {
@@ -190,17 +231,38 @@ function clearNotifications() {
 function openHelp() {
   showHelp.value = !showHelp.value
   showNotifications.value = false
+  showUserMenu.value = false
+}
+
+// ── Account menu (corner avatar) ──
+function toggleUserMenu() {
+  showUserMenu.value = !showUserMenu.value
+  if (showUserMenu.value) {
+    showNotifications.value = false
+    showHelp.value = false
+  }
+}
+
+function onDocumentPointerDown(event) {
+  if (!showUserMenu.value) return
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
+    showUserMenu.value = false
+  }
+}
+
+function onDocumentKeydown(event) {
+  if (event.key === 'Escape') showUserMenu.value = false
 }
 
 async function submitSearch() {
   const q = (searchQuery.value || '').trim()
   if (!q) return
-  const normalized = q.toUpperCase().replace(/\s+/g, '')
   // Customer ID patterns seen in the synthetic portfolio: CUST####, CU-####, CU####
   if (/^CUST?\d{2,}/i.test(q) || /^CU-?\d{2,}/i.test(q)) {
-    router.push(`/dashboard/customer/${encodeURIComponent(q)}`)
+    router.push({ name: 'CustomerProfile', params: { id: q } })
   } else {
-    router.push({ path: '/dashboard/portfolio', query: { q } })
+    // Free-text queries land on the My Customers list with the query pre-applied.
+    router.push({ name: 'MyCustomers', query: { q } })
   }
   searchQuery.value = ''
 }
@@ -208,29 +270,22 @@ async function submitSearch() {
 // ── State ──
 
 async function handleLogout() {
-  try {
-    const token = localStorage.getItem('token')
-    if (token) {
-      await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      })
-    }
-  } catch (e) {
-    console.warn('Backend logout failed, clearing locally', e)
-  }
-  // Clear all auth data
-  ;['token','refresh_token','user_id','email','role','roles','userName','display_name','company_name','tenant_id','branches','selected_branch']
-    .forEach(k => localStorage.removeItem(k))
-  router.push('/login')
+  showUserMenu.value = false
+  // Single canonical sign-out path (clears the session, revokes the token and
+  // redirects) — see services/decodeJWT.js.
+  await decodeJWT().logout()
 }
 
 // Restore saved preference on mount
 onMounted(() => {
   fetchSubscribedModules()
+  document.addEventListener('pointerdown', onDocumentPointerDown)
+  document.addEventListener('keydown', onDocumentKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('pointerdown', onDocumentPointerDown)
+  document.removeEventListener('keydown', onDocumentKeydown)
 })
 
 // ── User Info (ABSA roles: ADMIN / RELATIONSHIP_MANAGER / DATA_SCIENTIST / OPERATIONS) ──

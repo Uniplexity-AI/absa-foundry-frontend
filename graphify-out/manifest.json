@@ -120,9 +120,9 @@
     "semantic_hash": "5575bab52dfe52bdb3ed89e455b953eb"
   },
   "src/components/layouts/DashboardLayout.vue": {
-    "mtime": 1788361418.5216155,
-    "seen": 1788533387.3745396,
-    "ast_hash": "927e65e70637757f5ca18c5d97dcff84",
+    "mtime": 1789299113.673375,
+    "seen": 1789322341.3318138,
+    "ast_hash": "6c24cdb8775421b0325ecfcc3551b272",
     "semantic_hash": ""
   },
   "src/components/layouts/SuperAdminLayout.vue": {
@@ -288,10 +288,10 @@
     "semantic_hash": "0b80294d52237ccde557c33f02b8ce6d"
   },
   "src/composables/settings/useSettingsBase.js": {
-    "mtime": 1784671739.126534,
-    "seen": 1787736273.645472,
-    "ast_hash": "9266ffe60d84c75223b69a362191578d",
-    "semantic_hash": "9266ffe60d84c75223b69a362191578d"
+    "mtime": 1789318703.9732718,
+    "seen": 1789322341.3318138,
+    "ast_hash": "4ed736155b6a49fdf259a61ac22f56c1",
+    "semantic_hash": ""
   },
   "src/composables/settings/useSettingsBranding.js": {
     "mtime": 1784664927.7261126,
@@ -389,12 +389,6 @@
     "ast_hash": "74c5444069bd765243bf010ee5bf45f3",
     "semantic_hash": "74c5444069bd765243bf010ee5bf45f3"
   },
-  "src/composables/useNetworkStatus.js": {
-    "mtime": 1784671739.130336,
-    "seen": 1787736273.645472,
-    "ast_hash": "78a2c2ec1aaab80745d03b51969bd31d",
-    "semantic_hash": "78a2c2ec1aaab80745d03b51969bd31d"
-  },
   "src/composables/usePwaInstall.js": {
     "mtime": 1784664927.756692,
     "seen": 1787736273.645472,
@@ -402,22 +396,16 @@
     "semantic_hash": "ac4bfd7d361a09f5bd98a3accf5bd024"
   },
   "src/composables/useRBAC.js": {
-    "mtime": 1784671739.1331143,
-    "seen": 1787736273.645472,
-    "ast_hash": "0322743c1b8f0db17cd07a6cbf7f97d9",
-    "semantic_hash": "0322743c1b8f0db17cd07a6cbf7f97d9"
+    "mtime": 1789318689.3863325,
+    "seen": 1789322341.3318138,
+    "ast_hash": "193a6ead5a67ce5318fc8b2bf2c97647",
+    "semantic_hash": ""
   },
   "src/composables/useTelemetryComparison.js": {
     "mtime": 1784664927.762875,
     "seen": 1787736273.645472,
     "ast_hash": "a137353073fbe8169680b4b64fed6d64",
     "semantic_hash": "a137353073fbe8169680b4b64fed6d64"
-  },
-  "src/composables/useUserManagement.js": {
-    "mtime": 1784671739.1354184,
-    "seen": 1787736273.645472,
-    "ast_hash": "6ec61f963a91de82e26b8877009e3633",
-    "semantic_hash": "6ec61f963a91de82e26b8877009e3633"
   },
   "src/config/currency.js": {
     "mtime": 1784664927.7728832,
@@ -444,10 +432,10 @@
     "semantic_hash": ""
   },
   "src/config/rbac.js": {
-    "mtime": 1784671739.1380272,
-    "seen": 1787736273.645472,
-    "ast_hash": "742292516456324ce01b357a5771904c",
-    "semantic_hash": "742292516456324ce01b357a5771904c"
+    "mtime": 1789318681.138029,
+    "seen": 1789322341.3318138,
+    "ast_hash": "c2060c8ec0bd22d0f5c2c647e627c364",
+    "semantic_hash": ""
   },
   "src/config/useActivityTracker.js": {
     "mtime": 1784671739.1401463,
@@ -480,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/router/index.js": {
-    "mtime": 1788361418.5216155,
-    "seen": 1788533387.3755553,
-    "ast_hash": "884757b6a80370f3363c1abe87e17fc3",
+    "mtime": 1789299113.6793714,
+    "seen": 1789322341.3318138,
+    "ast_hash": "061e438c531e50facd1d708f0cea48e4",
     "semantic_hash": ""
   },
   "src/services/api.js": {
@@ -534,9 +522,9 @@
     "semantic_hash": "1db3743564238e47a2ef4049381c487c"
   },
   "src/services/decodeJWT.js": {
-    "mtime": 1788361417.013357,
-    "seen": 1788533387.3755553,
-    "ast_hash": "98c613472608c8601a30bea8ea955e0b",
+    "mtime": 1789299113.6533706,
+    "seen": 1789322341.3318138,
+    "ast_hash": "0e2bf557a37393484da2832f1ef0b7cc",
     "semantic_hash": ""
   },
   "src/services/documents_api.js": {
@@ -582,9 +570,9 @@
     "semantic_hash": "e3fb1f628c836c8ceca7c614b4466645"
   },
   "src/stores/customerStore.js": {
-    "mtime": 1788355038.8184826,
-    "seen": 1788355202.6123497,
-    "ast_hash": "58bcc6813f6771f5a4d665f03f3b2075",
+    "mtime": 1789302872.9205794,
+    "seen": 1789322341.3318138,
+    "ast_hash": "113821b278df1ebd6997fc5dd70fcbd2",
     "semantic_hash": ""
   },
   "src/stores/dashboard.js": {
@@ -636,8 +624,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1789141152.5319052,
-    "seen": 1789288792.550265,
+    "mtime": 1789322156.4641912,
+    "seen": 1789322341.3318138,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },
@@ -694,12 +682,6 @@
     "seen": 1789288792.550265,
     "ast_hash": "7b535fa87116c7f5c3afad5bddad4828",
     "semantic_hash": ""
-  },
-  "src/views/DashboardHome.vue": {
-    "mtime": 1787219932.987061,
-    "seen": 1787736273.645472,
-    "ast_hash": "75c53aed877110a20ad43b79bf374f97",
-    "semantic_hash": "75c53aed877110a20ad43b79bf374f97"
   },
   "src/views/Home.vue": {
     "mtime": 1787219933.0512736,
@@ -1164,9 +1146,9 @@
     "semantic_hash": "293b7dfa59bd100bcd9d62090560f8b0"
   },
   "src/views/PortfolioOverview.vue": {
-    "mtime": 1788354903.4879122,
-    "seen": 1788354906.6466427,
-    "ast_hash": "27533410e06861727c7b4a665f78c684",
+    "mtime": 1789302894.7912674,
+    "seen": 1789322341.3330517,
+    "ast_hash": "b57e4135fecaf73e3da3a7fbbd89f598",
     "semantic_hash": ""
   },
   "src/views/TakeAction.vue": {
@@ -1194,9 +1176,9 @@
     "semantic_hash": "0652c2115e4e7e40168a100830993128"
   },
   "src/views/auth/login.vue": {
-    "mtime": 1788531727.1747806,
-    "seen": 1788533387.3765664,
-    "ast_hash": "c080740b7548d859bd92bfc3824c8c91",
+    "mtime": 1789299632.6390276,
+    "seen": 1789322341.3330517,
+    "ast_hash": "5622740433c719bd5384c9bd2fcabb59",
     "semantic_hash": ""
   },
   "tailwind.config.js": {
@@ -2493,6 +2475,60 @@
     "mtime": 1788844907.8247993,
     "seen": 1789288792.550265,
     "ast_hash": "d18b379ff48fb4f57ebda073f116c20f",
+    "semantic_hash": ""
+  },
+  "scripts/_check_exports.mjs": {
+    "mtime": 1789318932.944315,
+    "seen": 1789322341.3318138,
+    "ast_hash": "1cb22ad6d6f6e076026d42b3336c641a",
+    "semantic_hash": ""
+  },
+  "src/components/CustomerStatePill.vue": {
+    "mtime": 1789292165.2549758,
+    "seen": 1789322341.3318138,
+    "ast_hash": "a3c974011243a27c1168b6d4b62d2a76",
+    "semantic_hash": ""
+  },
+  "src/components/ingest/AddCustomerModal.vue": {
+    "mtime": 1789320909.7274718,
+    "seen": 1789322341.3318138,
+    "ast_hash": "942094bc331ca23311b39a2484603113",
+    "semantic_hash": ""
+  },
+  "src/components/ingest/LoadCustomerDataModal.vue": {
+    "mtime": 1789301546.0698955,
+    "seen": 1789322341.3318138,
+    "ast_hash": "25e6af3b743a3224a9169f0e2dbf4f5b",
+    "semantic_hash": ""
+  },
+  "src/services/customerAdminApi.js": {
+    "mtime": 1789303931.6698103,
+    "seen": 1789322341.3318138,
+    "ast_hash": "83c407a2b85aa41675294b181f2efbd6",
+    "semantic_hash": ""
+  },
+  "src/services/customerProfileApi.js": {
+    "mtime": 1789298073.696279,
+    "seen": 1789322341.3318138,
+    "ast_hash": "37f87f3829b31e05eb76af0c2021d07d",
+    "semantic_hash": ""
+  },
+  "src/services/ingestApi.js": {
+    "mtime": 1789320892.292178,
+    "seen": 1789322341.3318138,
+    "ast_hash": "dd2a01d12b2987958747ad601000c5e8",
+    "semantic_hash": ""
+  },
+  "src/views/CustomerProfile.vue": {
+    "mtime": 1789304733.5831783,
+    "seen": 1789322341.3318138,
+    "ast_hash": "75b84e1bcc0c03213977a97901c21c35",
+    "semantic_hash": ""
+  },
+  "src/views/MyCustomers.vue": {
+    "mtime": 1789319691.2934537,
+    "seen": 1789322341.3330517,
+    "ast_hash": "2f38e7789f921c551b84b9f146cae259",
     "semantic_hash": ""
   }
 }

@@ -12,7 +12,6 @@ import {
   PERMISSION_ENTITIES,
   PERMISSION_TYPES,
   ALL_PERMISSIONS,
-  ORGANIZATION_TYPES,
   ACCESS_SCOPES,
   FONT_FAMILIES,
   DEFAULT_UI_PREFERENCES,
@@ -172,51 +171,6 @@ export function useRBAC() {
         // Use defaults if API fails
         tenantRoles.value = [...DEFAULT_ROLES];
       }
-      // ─── Derive healthcare_addons from entity permissions and sync to localStorage ───
-      // This ensures healthcare_role_perms is populated even before the user visits Settings.
-      try {
-        const hcTranslated = {};
-        for (const role of tenantRoles.value) {
-          const rId = (role.id || '').toLowerCase();
-          if (!rId) continue;
-          const perms = role.permissions || {};
-          if (['owner', 'admin', 'super_admin'].includes(rId)) {
-            const full = {};
-            HC_SUB_ENTITY_KEYS.forEach(k => { full[k.replace(/_([a-z])/g, (_, c) => c.toUpperCase())] = true; });
-            hcTranslated[rId] = full;
-            continue;
-          }
-          const result = {};
-          for (const snakeKey of HC_SUB_ENTITY_KEYS) {
-            const camelKey = snakeKey.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
-            const addons = perms.healthcare_addons;
-            if (Array.isArray(addons)) {
-              result[camelKey] = addons.includes(snakeKey);
-              continue;
-            }
-            const entityPerms = perms[snakeKey];
-            result[camelKey] = Array.isArray(entityPerms) && entityPerms.length > 0;
-          }
-          hcTranslated[rId] = result;
-        }
-        if (Object.keys(hcTranslated).length > 0) {
-          localStorage.setItem('healthcare_role_perms', JSON.stringify(hcTranslated));
-        }
-        // ─── Also store the current user's healthcare_admin CRUD permissions ───
-        const currentRole = (localStorage.getItem('role') || '').toLowerCase().trim();
-        const userRoleDef = tenantRoles.value.find(r => (r.id || '').toLowerCase() === currentRole);
-        if (userRoleDef?.permissions?.healthcare_admin) {
-          localStorage.setItem('healthcare_admin_perms', JSON.stringify(userRoleDef.permissions.healthcare_admin));
-        } else if (['owner', 'admin', 'super_admin'].includes(currentRole)) {
-          // These roles bypass all checks — store full perms
-          localStorage.setItem('healthcare_admin_perms', JSON.stringify(['read', 'write', 'edit', 'delete']));
-        } else {
-          localStorage.removeItem('healthcare_admin_perms');
-        }
-      } catch (e) {
-        console.warn('[useRBAC] Failed to sync healthcare perms:', e);
-      }
-      // ─── End healthcare perms sync ───────────────────────────────────────────
     } catch (err) {
       console.error('Error fetching roles:', err);
       tenantRoles.value = [...DEFAULT_ROLES];
@@ -772,7 +726,6 @@ export function useRBAC() {
     PERMISSION_ENTITIES,
     PERMISSION_TYPES,
     ALL_PERMISSIONS,
-    ORGANIZATION_TYPES,
     ACCESS_SCOPES,
     DEFAULT_UI_PREFERENCES,
     ORIGINAL_UI_PREFERENCES

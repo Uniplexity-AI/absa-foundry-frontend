@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>absa-foundry-frontend — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 6883 nodes, 8636 edges, 428 communities. Commit: 72dd22e</p>
+<p class="subtitle">Generated from graphify knowledge graph: 7105 nodes, 9002 edges, 429 communities. Commit: b79924e</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -75,9 +75,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#accountdetailmodal-vue">AccountDetailModal.vue</a>
     <a href="#usecrmmodule">useCRMModule</a>
     <a href="#accountsview-vue">AccountsView.vue</a>
+    <a href="#businessoutcomes-vue">BusinessOutcomes.vue</a>
     <a href="#leadsview-vue">LeadsView.vue</a>
     <a href="#models-vue">Models.vue</a>
-    <a href="#bulkuploadleadsmodal-vue">BulkUploadLeadsModal.vue</a>
     <a href="#other">Other</a>
 </div>
 
@@ -94,15 +94,15 @@ flowchart LR
     class BUILD_GRAPH_321CBB04 module;
     OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>45 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
-    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>52 nodes</small>")
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>51 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>62 nodes</small>")
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>163 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>1277 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>1451 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>306 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>51 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>40 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
     ACCOUNTDETAILMODAL_VUE_645D977D("AccountDetailModal.vue<br/><small>129 nodes</small>")
     class ACCOUNTDETAILMODAL_VUE_645D977D module;
@@ -110,26 +110,26 @@ flowchart LR
     class USECRMMODULE_61828D9C module;
     ACCOUNTSVIEW_VUE_A9506722("AccountsView.vue<br/><small>70 nodes</small>")
     class ACCOUNTSVIEW_VUE_A9506722 module;
+    BUSINESSOUTCOMES_VUE_30B602DC("BusinessOutcomes.vue<br/><small>66 nodes</small>")
+    class BUSINESSOUTCOMES_VUE_30B602DC module;
     LEADSVIEW_VUE_10F58956("LeadsView.vue<br/><small>62 nodes</small>")
     class LEADSVIEW_VUE_10F58956 module;
-    MODELS_VUE_641107F5("Models.vue<br/><small>52 nodes</small>")
+    MODELS_VUE_641107F5("Models.vue<br/><small>59 nodes</small>")
     class MODELS_VUE_641107F5 module;
-    BULKUPLOADLEADSMODAL_VUE_856650D5("BulkUploadLeadsModal.vue<br/><small>49 nodes</small>")
-    class BULKUPLOADLEADSMODAL_VUE_856650D5 module;
-    OTHER_D0941E68("Other<br/><small>4418 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>4353 nodes</small>")
     class OTHER_D0941E68 module;
-    OTHER_D0941E68 -->|imports x183| SERVE_API_35EC8E86
-    SERVE_API_35EC8E86 -->|contains x132| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x179| SERVE_API_35EC8E86
+    SERVE_API_35EC8E86 -->|contains x166| OTHER_D0941E68
     USECRMMODULE_61828D9C -->|indirect call x115| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x37| CLI_SKILLS_9964CBB8
+    OTHER_D0941E68 -->|imports x36| CLI_SKILLS_9964CBB8
     ACCOUNTSVIEW_VUE_A9506722 -->|contains x27| OTHER_D0941E68
     ACCOUNTDETAILMODAL_VUE_645D977D -->|calls x26| SERVE_API_35EC8E86
+    OTHER_D0941E68 -->|imports x26| BUSINESSOUTCOMES_VUE_30B602DC
     LEADSVIEW_VUE_10F58956 -->|contains x26| OTHER_D0941E68
-    MODELS_VUE_641107F5 -->|imports x23| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x16| CLI_SKILLS_9964CBB8
-    OTHER_D0941E68 -->|imports x15| USECRMMODULE_61828D9C
-    OTHER_D0941E68 -->|imports x12| TESTS_FIXTURES_B84B1DCC
-    TESTS_FIXTURES_B84B1DCC -->|re exports x10| OTHER_D0941E68
+    BUSINESSOUTCOMES_VUE_30B602DC -->|imports x21| OTHER_D0941E68
+    MODELS_VUE_641107F5 -->|imports x19| OTHER_D0941E68
+    SERVE_API_35EC8E86 -->|imports x18| CLI_SKILLS_9964CBB8
+    OTHER_D0941E68 -->|imports x14| USECRMMODULE_61828D9C
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>2</td><td><code>313</code></td></tr><tr><td>Graph Build</td><td>200</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 285, 293, 297, 299, 300, 305, 306, 307, 311, 333, 355, 358, 359, 361, 363, 364, 365, 366, 369, 370, 372, 373, 374, 375, 376, 377, 378, 379, 381, 382, 383, 384, 385, 387, 389, 390, 391, 393, 394, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415</code></td></tr><tr><td>Outputs &amp; Docs</td><td>45</td><td><code>142, 169, 367, 368</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>52</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>62</td><td><code>94, 190, 276, 320, 392, 315, 345</code></td></tr><tr><td>Serving API</td><td>1277</td><td><code>2, 5, 4, 8, 20, 39, 32, 31, 35, 41, 45, 49, 11, 61, 64, 70, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 136, 137, 138, 197, 159, 161, 167, 191, 38, 240, 238, 6, 229, 256, 51, 270, 309, 329, 386, 395, 412, 302, 450</code></td></tr><tr><td>Security &amp; Global Graph</td><td>306</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>51</td><td><code>242, 255, 289, 411</code></td></tr><tr><td>AccountDetailModal.vue</td><td>129</td><td><code>1</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>LeadsView.vue</td><td>62</td><td><code>7</code></td></tr><tr><td>Models.vue</td><td>52</td><td><code>33</code></td></tr><tr><td>BulkUploadLeadsModal.vue</td><td>49</td><td><code>14</code></td></tr><tr><td>Other</td><td>4418</td><td><code>12, 13, 15, 16, 19, 220, 21, 22, 173, 245, 26, 66, 27, 24, 29, 23, 25, 30, 34, 17, 28, 176, 37, 36, 40, 42, 46, 57, 48, 50, 67, 52, 53, 54, 56, 58, 60, 62, 65, 71, 72, 75, 76, 80, 92, 146, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 147, 254, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 130, 131, 9, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 148, 149, 150, 152, 154, 155, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 177, 178, 179, 180, 175, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 43, 55, 200, 201, 203, 204, 205, 206, 208, 209, 210, 196, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 223, 224, 225, 226, 227, 228, 230, 233, 234, 235, 236, 241, 250, 10, 243, 251, 267, 249, 282, 174, 244, 231, 253, 258, 262, 269, 275, 248, 277, 279, 280, 281, 283, 296, 310, 266, 286, 287, 290, 291, 292, 294, 18, 268, 295, 298, 303, 304, 318, 319, 239, 312, 316, 321, 325, 47, 198, 252, 257, 260, 322, 323, 324, 326, 328, 332, 346, 151, 271, 330, 331, 334, 336, 337, 338, 339, 340, 272, 278, 284, 343, 348, 44, 106, 232, 288, 327, 349, 416, 417, 418, 428, 429, 430, 68, 77, 78, 79, 261, 314, 317, 335, 341, 342, 344, 356, 422, 423, 424, 425, 431, 432, 433, 434, 435, 441, 442, 443, 444, 445, 446, 447, 448, 449</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>2</td><td><code>313</code></td></tr><tr><td>Graph Build</td><td>200</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 285, 293, 297, 299, 300, 305, 306, 307, 311, 347, 355, 358, 359, 361, 363, 364, 365, 366, 369, 370, 372, 373, 374, 375, 376, 377, 378, 379, 381, 382, 383, 384, 385, 387, 389, 390, 391, 393, 394, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415</code></td></tr><tr><td>Outputs &amp; Docs</td><td>45</td><td><code>142, 169, 367, 368</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>51</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>163</td><td><code>23, 51, 94, 190, 151, 276, 320, 260, 392, 315, 345</code></td></tr><tr><td>Serving API</td><td>1451</td><td><code>2, 5, 10, 4, 8, 18, 40, 20, 39, 32, 31, 11, 35, 41, 45, 49, 61, 64, 70, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 136, 137, 138, 38, 159, 161, 167, 191, 240, 238, 6, 229, 256, 270, 309, 329, 386, 395, 412, 302, 450</code></td></tr><tr><td>Security &amp; Global Graph</td><td>306</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>40</td><td><code>242, 255, 289, 411</code></td></tr><tr><td>AccountDetailModal.vue</td><td>129</td><td><code>1</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>BusinessOutcomes.vue</td><td>66</td><td><code>17</code></td></tr><tr><td>LeadsView.vue</td><td>62</td><td><code>7</code></td></tr><tr><td>Models.vue</td><td>59</td><td><code>33</code></td></tr><tr><td>Other</td><td>4353</td><td><code>220, 14, 173, 12, 15, 13, 16, 19, 21, 22, 176, 66, 26, 27, 24, 29, 30, 25, 34, 28, 36, 37, 42, 46, 58, 48, 57, 43, 50, 52, 53, 54, 56, 67, 197, 60, 62, 65, 71, 72, 75, 76, 80, 92, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 130, 131, 9, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 146, 148, 149, 150, 152, 154, 155, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 177, 178, 179, 180, 175, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 55, 200, 201, 203, 204, 205, 206, 208, 209, 210, 196, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 223, 224, 225, 226, 227, 228, 230, 233, 234, 235, 236, 241, 250, 243, 244, 251, 267, 231, 249, 282, 147, 174, 254, 239, 253, 258, 262, 269, 275, 277, 279, 280, 245, 281, 283, 296, 310, 266, 286, 287, 290, 291, 292, 294, 248, 268, 295, 298, 303, 304, 318, 319, 312, 316, 321, 325, 47, 198, 252, 257, 322, 323, 324, 326, 328, 332, 346, 271, 330, 331, 334, 336, 337, 338, 339, 340, 272, 278, 284, 333, 343, 348, 44, 106, 232, 288, 327, 349, 350, 417, 418, 428, 429, 430, 68, 77, 78, 79, 261, 314, 317, 335, 341, 342, 344, 356, 422, 423, 424, 425, 431, 432, 433, 434, 435, 441, 442, 443, 444, 445, 446, 447, 448, 449</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>6883 nodes · 8636 edges · 428 communities (343 shown, 85 thin omitted)</li>
+      <li>7105 nodes · 9002 edges · 429 communities (343 shown, 86 thin omitted)</li>
       <li>Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 464 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useCRMModule()` - 243 edges</li>
@@ -251,7 +251,7 @@ flowchart LR
     package_dependencies_docx_3a6922bb("docx<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94("dotenv<br/><small>package.json</small>")
     dotenv_4de95cba("dotenv<br/><small>package.json</small>")
-    barcode_detector_edc5badc("barcode-detector<br/><small>package.json</small>")
+    axios_e1f9a946("axios<br/><small>package.json</small>")
     package_dependencies_fontsource_inter_776ee5dd("@fontsource/inter<br/><small>package.json</small>")
     fontsource_inter_4297cd41("@fontsource/inter<br/><small>package.json</small>")
     package_dependencies_heroicons_vue_da721873("@heroicons/vue<br/><small>package.json</small>")
@@ -262,7 +262,7 @@ flowchart LR
     mathjax_fcd70ecc("mathjax<br/><small>package.json</small>")
     package_dependencies_three_fa61a1dd("three<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94 -->|imports| dotenv_4de95cba
-    package_dependencies_barcode_detector_91658496 -->|imports| barcode_detector_edc5badc
+    package_dependencies_axios_18638368 -->|imports| axios_e1f9a946
     package_dependencies_fontsource_inter_776ee5dd -->|imports| fontsource_inter_4297cd41
     package_dependencies_heroicons_vue_da721873 -->|imports| heroicons_vue_13d32207
     package_dependencies_material_symbols_font_400_5c18e11b -->|imports| material_symbols_font_400_4ba1af70
@@ -276,7 +276,7 @@ flowchart LR
     class package_dependencies_docx_3a6922bb function;
     class package_dependencies_dotenv_27698e94 function;
     class dotenv_4de95cba function;
-    class barcode_detector_edc5badc function;
+    class axios_e1f9a946 function;
     class package_dependencies_fontsource_inter_776ee5dd function;
     class fontsource_inter_4297cd41 function;
     class package_dependencies_heroicons_vue_da721873 function;
@@ -477,11 +477,11 @@ flowchart LR
 </tr>
 <tr>
   <td>22</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td>barcode-detector node in package.json.</td>
+  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td>axios node in package.json.</td>
 </tr>
 <tr>
   <td>23</td>
@@ -533,11 +533,11 @@ flowchart LR
 </tr>
 <tr>
   <td>29</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
   <td>No direct outbound edge</td>
-  <td>barcode-detector node in package.json.</td>
+  <td>axios node in package.json.</td>
 </tr>
 <tr>
   <td>30</td>
@@ -900,12 +900,12 @@ flowchart LR
 
 <!-- ====== 5. CLI & Skill Installers ====== -->
 <h2 id="cli-skills">5. CLI &amp; Skill Installers</h2>
-<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 52 nodes and 65 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 51 nodes and 64 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: CLI &amp; Skill Installers (52 nodes, 65 edges)
+    %% Section: CLI &amp; Skill Installers (51 nodes, 64 edges)
     subgraph cli_skills_src_App_vue_6c3541eb["src/App.vue"]
         src_app_46efd68e("App.vue")
         src_app_startautohidetimer_43305554("startAutoHideTimer()<br/><small>src/App.vue</small>")
@@ -951,7 +951,7 @@ flowchart LR
     src_services_decodejwt_0fa40e58 -->|imports| src_config_devflags_dev_bypass_0a92a1a6
     src_services_decodejwt_0fa40e58 -->|imports| src_config_devflags_ensuredevauthsession_908c9cfa
     src_services_decodejwt_0fa40e58 -->|imports| src_config_devflags_65c4d74a
-    %% Omitted for readability: 34 nodes, 0 edges
+    %% Omitted for readability: 33 nodes, 0 edges
     class src_app_46efd68e ui;
     class src_app_startautohidetimer_43305554 ui;
     class src_app_installpwa_11c91f16 ui;
@@ -1065,14 +1065,6 @@ flowchart LR
 </tr>
 <tr>
   <td>10</td>
-  <td><code>setRouter()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
-  <td><span class="tag tag-endpoint">API</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>setRouter() node in src/services/decodeJWT.js.</td>
-</tr>
-<tr>
-  <td>11</td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
@@ -1080,7 +1072,7 @@ flowchart LR
   <td>App.vue node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>11</td>
   <td><code>{ fetchPreferences }</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1088,7 +1080,7 @@ flowchart LR
   <td>{ fetchPreferences } node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>12</td>
   <td><code>{ initializeRBAC }</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1096,7 +1088,7 @@ flowchart LR
   <td>{ initializeRBAC } node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>13</td>
   <td><code>isMfeModalOpen</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1104,7 +1096,7 @@ flowchart LR
   <td>isMfeModalOpen node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>14</td>
   <td><code>mfePortalLink</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1112,7 +1104,7 @@ flowchart LR
   <td>mfePortalLink node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>15</td>
   <td><code>showInstallToast</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1120,7 +1112,7 @@ flowchart LR
   <td>showInstallToast node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>16</td>
   <td><code>devFlags.js</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1128,7 +1120,7 @@ flowchart LR
   <td>devFlags.js node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>17</td>
   <td><code>DEV_AUTH_PAYLOAD</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
@@ -1136,7 +1128,7 @@ flowchart LR
   <td>DEV_AUTH_PAYLOAD node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>18</td>
   <td><code>DEV_BYPASS</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1144,7 +1136,7 @@ flowchart LR
   <td>DEV_BYPASS node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>19</td>
   <td><code>usePreferences.js</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>LeadDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
@@ -1152,7 +1144,7 @@ flowchart LR
   <td>usePreferences.js node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>20</td>
   <td><code>preferences</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1160,7 +1152,7 @@ flowchart LR
   <td>preferences node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>21</td>
   <td><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1168,7 +1160,7 @@ flowchart LR
   <td>main.js node in src/main.js.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>22</td>
   <td><code>app</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1176,7 +1168,7 @@ flowchart LR
   <td>app node in src/main.js.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>23</td>
   <td><code>pinia</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1184,7 +1176,7 @@ flowchart LR
   <td>pinia node in src/main.js.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>24</td>
   <td><code>router</code><br><small style="color:var(--muted)">src/router/index.js</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
@@ -1192,7 +1184,7 @@ flowchart LR
   <td>router node in src/router/index.js.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>25</td>
   <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>AccountDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>AccountFormModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountFormModal.vue</small><br><code>AccountsView.vue</code><br><small style="color:var(--muted)">crm/components/AccountsView.vue</small><br>+41 more</td>
@@ -1200,7 +1192,7 @@ flowchart LR
   <td>decodeJWT.js node in src/services/decodeJWT.js.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>26</td>
   <td><code>1. RM Dashboard — Summary Cards (FR-DASH-01)</code><br><small style="color:var(--muted)">.ai/skills/rm-dashboard-colour-mapping.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1208,7 +1200,7 @@ flowchart LR
   <td>Documentation node describing 1. RM Dashboard — Summary Cards (FR-DASH-01).</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>27</td>
   <td><code>2. Priority Alerts (FR-DASH-02)</code><br><small style="color:var(--muted)">.ai/skills/rm-dashboard-colour-mapping.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1216,7 +1208,7 @@ flowchart LR
   <td>Documentation node describing 2. Priority Alerts (FR-DASH-02).</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>28</td>
   <td><code>3. Customer Table (FR-DASH-03)</code><br><small style="color:var(--muted)">.ai/skills/rm-dashboard-colour-mapping.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1224,12 +1216,20 @@ flowchart LR
   <td>Documentation node describing 3. Customer Table (FR-DASH-03).</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>29</td>
   <td><code>4. Customer Detail — AI Health Score Gauge (FR-CUST-02)</code><br><small style="color:var(--muted)">.ai/skills/rm-dashboard-colour-mapping.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>Documentation node describing 4. Customer Detail — AI Health Score Gauge (FR-CUST-02).</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>5. State Timeline (FR-CUST-03)</code><br><small style="color:var(--muted)">.ai/skills/rm-dashboard-colour-mapping.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5. State Timeline (FR-CUST-03).</td>
 </tr>
 </table>
 
@@ -1244,69 +1244,92 @@ flowchart LR
 <tr><td><code>src/main.js</code></td><td>5 nodes</td></tr>
 <tr><td><code>src/config/devFlags.js</code></td><td>4 nodes</td></tr>
 <tr><td><code>src/config/usePreferences.js</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/services/decodeJWT.js</code></td><td>2 nodes</td></tr>
 <tr><td><code>src/router/index.js</code></td><td>1 nodes</td></tr>
+<tr><td><code>src/services/decodeJWT.js</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x44, imports x9, imports x8, calls x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x43, imports x9, imports x8, calls x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 6. Ingestion & Updates ====== -->
 <h2 id="ingest-cache-update">6. Ingestion &amp; Updates</h2>
-<p>Ingestion &amp; Updates groups implementation around overview, qoder, repowiki, content, mostly in Project Overview/Architecture Overview/Deployment Architecture.md, content/Authentication &amp; Authorization/Google OAuth Integration.md, public/manifest.json. This section covers 62 nodes and 55 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Ingestion &amp; Updates groups implementation around components, ingest, overview, loadcustomerdatamodalvue, mostly in components/ingest/LoadCustomerDataModal.vue, components/ingest/AddCustomerModal.vue, Project Overview/Architecture Overview/Deployment Architecture.md. This section covers 163 nodes and 196 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Ingestion &amp; Updates (62 nodes, 55 edges)
-    subgraph ingest_cache_update_public_manifest_json_f73c96b8["public/manifest.json"]
-        public_manifest_background_color_5a35b652("background_color<br/><small>public/manifest.json</small>")
-        public_manifest_description_25b602b8("description<br/><small>public/manifest.json</small>")
-        public_manifest_display_36ace0b3("display<br/><small>public/manifest.json</small>")
-        public_manifest_icons_8f77cdcc("icons<br/><small>public/manifest.json</small>")
-        public_manifest_388917a5("manifest.json")
-        public_manifest_name_15b4c29b("name<br/><small>public/manifest.json</small>")
-        public_manifest_orientation_d5606a1f("orientation<br/><small>public/manifest.json</small>")
-        public_manifest_short_name_78e974be("short_name<br/><small>public/manifest.json</small>")
-        public_manifest_start_url_8e1f7f7a("start_url<br/><small>public/manifest.json</small>")
-        public_manifest_theme_color_be80c7b7("theme_color<br/><small>public/manifest.json</small>")
+    %% Section: Ingestion &amp; Updates (163 nodes, 196 edges)
+    subgraph ingest_cache_update_src_services_ingestApi_js_2cf99530["src/services/ingestApi.js"]
+        src_services_ingestapi_fetchingestruns_f0d2bc91("fetchIngestRuns()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_fetchingestschema_3f722cf6("fetchIngestSchema()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_remapcsv_ee3bfa08("remapCsv()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_addcustomer_392cea4e("addCustomer()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_authheaders_cd3fee3f("_authHeaders()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_handleres_973f8a89("_handleRes()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_computecustomerstates_56f15e20("computeCustomerStates()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_loadcsv_30aee374("loadCsv()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_previewcsv_4b5c0a2f("previewCsv()<br/><small>src/services/ingestApi.js</small>")
+        src_services_ingestapi_runcorebanking_28fdc5ad("runCoreBanking()<br/><small>src/services/ingestApi.js</small>")
     end
-    subgraph ingest_cache_update_scripts_update_sw_cache_js_a4dda567["scripts/update-sw-cache.js"]
-        scripts_update_sw_cache_dirname_7ffebd35("__dirname<br/><small>scripts/update-sw-cache.js</small>")
-        scripts_update_sw_cache_filename_c00c3915("__filename<br/><small>scripts/update-sw-cache.js</small>")
-        scripts_update_sw_cache_swcontent_093aa938("swContent<br/><small>scripts/update-sw-cache.js</small>")
-        scripts_update_sw_cache_swpath_d26945d7("swPath<br/><small>scripts/update-sw-cache.js</small>")
-        scripts_update_sw_cache_2ccd5bb5("update-sw-cache.js")
+    subgraph ingest_cache_update_components_ingest_LoadCustom_6c05cf12["components/ingest/LoadCustomerDataModal.vue"]
+        src_components_ingest_loadcustomerdatamodal_4e137c1a("LoadCustomerDataModal.vue")
+        src_components_ingest_loadcustomerdatamodal_runc_f0364d2b("runCore()<br/><small>components/ingest/LoadCustomerDataModal.vue</small>")
+        src_components_ingest_loadcustomerdatamodal_runl_9aefccff("runLoad()<br/><small>components/ingest/LoadCustomerDataModal.vue</small>")
+        src_components_ingest_loadcustomerdatamodal_chan_fe4b5b0d("changeDataset()<br/><small>components/ingest/LoadCustomerDataModal.vue</small>")
+        src_components_ingest_loadcustomerdatamodal_ensu_43c8d802("ensureSchema()<br/><small>components/ingest/LoadCustomerDataModal.vue</small>")
     end
-    subgraph ingest_cache_update_package_json_0f1a7c02["package.json"]
-        package_dependencies_vue3_google_login_874efc30("vue3-google-login<br/><small>package.json</small>")
-        vue3_google_login_b75c9652("vue3-google-login<br/><small>package.json</small>")
+    subgraph ingest_cache_update_components_ingest_AddCustome_ac2280f2["components/ingest/AddCustomerModal.vue"]
+        src_components_ingest_addcustomermodal_266caf24("AddCustomerModal.vue")
+        src_components_ingest_addcustomermodal_submit_668b17ba("submit()<br/><small>components/ingest/AddCustomerModal.vue</small>")
+        src_components_ingest_addcustomermodal_ensuresch_7dc1f992("ensureSchema()<br/><small>components/ingest/AddCustomerModal.vue</small>")
     end
-    scripts_fix_duplicate_fetch_e264707a("fix_duplicate_fetch.py")
-    package_dependencies_vue3_google_login_874efc30 -->|imports| vue3_google_login_b75c9652
-    %% Omitted for readability: 44 nodes, 0 edges
-    class public_manifest_background_color_5a35b652 function;
-    class public_manifest_description_25b602b8 function;
-    class public_manifest_display_36ace0b3 function;
-    class public_manifest_icons_8f77cdcc function;
-    class public_manifest_388917a5 function;
-    class public_manifest_name_15b4c29b function;
-    class public_manifest_orientation_d5606a1f function;
-    class public_manifest_short_name_78e974be function;
-    class public_manifest_start_url_8e1f7f7a function;
-    class public_manifest_theme_color_be80c7b7 function;
-    class scripts_update_sw_cache_dirname_7ffebd35 function;
-    class scripts_update_sw_cache_filename_c00c3915 function;
-    class scripts_update_sw_cache_swcontent_093aa938 function;
-    class scripts_update_sw_cache_swpath_d26945d7 function;
-    class scripts_update_sw_cache_2ccd5bb5 module;
-    class package_dependencies_vue3_google_login_874efc30 function;
-    class vue3_google_login_b75c9652 function;
-    class scripts_fix_duplicate_fetch_e264707a module;
+    src_components_ingest_addcustomermodal_ensuresch_7dc1f992 -->|calls| src_services_ingestapi_fetchingestschema_3f722cf6
+    src_components_ingest_loadcustomerdatamodal_chan_fe4b5b0d -->|calls| src_services_ingestapi_remapcsv_ee3bfa08
+    src_components_ingest_loadcustomerdatamodal_ensu_43c8d802 -->|calls| src_services_ingestapi_fetchingestschema_3f722cf6
+    src_services_ingestapi_addcustomer_392cea4e -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_addcustomer_392cea4e -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_computecustomerstates_56f15e20 -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_computecustomerstates_56f15e20 -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_fetchingestruns_f0d2bc91 -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_fetchingestruns_f0d2bc91 -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_fetchingestschema_3f722cf6 -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_fetchingestschema_3f722cf6 -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_loadcsv_30aee374 -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_loadcsv_30aee374 -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_previewcsv_4b5c0a2f -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_previewcsv_4b5c0a2f -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_remapcsv_ee3bfa08 -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_services_ingestapi_remapcsv_ee3bfa08 -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_runcorebanking_28fdc5ad -->|calls| src_services_ingestapi_authheaders_cd3fee3f
+    src_services_ingestapi_runcorebanking_28fdc5ad -->|calls| src_services_ingestapi_handleres_973f8a89
+    src_components_ingest_addcustomermodal_submit_668b17ba -->|calls| src_services_ingestapi_addcustomer_392cea4e
+    src_components_ingest_addcustomermodal_submit_668b17ba -->|calls| src_services_ingestapi_computecustomerstates_56f15e20
+    src_components_ingest_loadcustomerdatamodal_runc_f0364d2b -->|calls| src_services_ingestapi_runcorebanking_28fdc5ad
+    src_components_ingest_loadcustomerdatamodal_runl_9aefccff -->|calls| src_services_ingestapi_loadcsv_30aee374
+    src_components_ingest_addcustomermodal_266caf24 -->|imports| src_services_ingestapi_addcustomer_392cea4e
+    %% Omitted for readability: 145 nodes, 7 edges
+    class src_services_ingestapi_fetchingestruns_f0d2bc91 function;
+    class src_services_ingestapi_fetchingestschema_3f722cf6 function;
+    class src_services_ingestapi_remapcsv_ee3bfa08 function;
+    class src_services_ingestapi_addcustomer_392cea4e function;
+    class src_services_ingestapi_authheaders_cd3fee3f function;
+    class src_services_ingestapi_handleres_973f8a89 function;
+    class src_services_ingestapi_computecustomerstates_56f15e20 function;
+    class src_services_ingestapi_loadcsv_30aee374 function;
+    class src_services_ingestapi_previewcsv_4b5c0a2f function;
+    class src_services_ingestapi_runcorebanking_28fdc5ad function;
+    class src_components_ingest_loadcustomerdatamodal_4e137c1a ui;
+    class src_components_ingest_loadcustomerdatamodal_runc_f0364d2b ui;
+    class src_components_ingest_loadcustomerdatamodal_runl_9aefccff ui;
+    class src_components_ingest_loadcustomerdatamodal_chan_fe4b5b0d ui;
+    class src_components_ingest_loadcustomerdatamodal_ensu_43c8d802 ui;
+    class src_components_ingest_addcustomermodal_266caf24 ui;
+    class src_components_ingest_addcustomermodal_submit_668b17ba ui;
+    class src_components_ingest_addcustomermodal_ensuresch_7dc1f992 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1330,243 +1353,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>Deployment Architecture.md</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>nonEmpty()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>submit()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Deployment Architecture.md.</td>
+  <td>nonEmpty() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>Air-Gapped Deployment Requirements</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>resetForm()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Air-Gapped Deployment Requirements.</td>
+  <td>resetForm() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>Appendices</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>rowCountFor()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Appendices.</td>
+  <td>rowCountFor() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>Architecture Overview</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>showMasterError()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Architecture Overview.</td>
+  <td>showMasterError() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>CI/CD Pipeline Setup</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>showSnapshotError()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing CI/CD Pipeline Setup.</td>
+  <td>showSnapshotError() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>Conclusion</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>submit()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Conclusion.</td>
+  <td><code>addCustomer()</code><br><small style="color:var(--muted)">src/services/ingestApi.js</small><br><code>computeCustomerStates()</code><br><small style="color:var(--muted)">src/services/ingestApi.js</small><br><code>emit</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small><br>+2 more</td>
+  <td>submit() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>Containerization Strategy (Docker)</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>validateField()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>masterErrors</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small><br><code>snapshotErrors</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Containerization Strategy (Docker).</td>
+  <td>validateField() node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>Core Components</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Core Components.</td>
+  <td><code>AddCustomerModal.vue</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>MyCustomers.vue</code><br><small style="color:var(--muted)">src/views/MyCustomers.vue</small></td>
+  <td><code>absaExport.js</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>addCustomer()</code><br><small style="color:var(--muted)">src/services/ingestApi.js</small><br><code>computeCustomerStates()</code><br><small style="color:var(--muted)">src/services/ingestApi.js</small><br>+3 more</td>
+  <td>AddCustomerModal.vue node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>Dependency Analysis</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>attempted</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Dependency Analysis.</td>
+  <td>attempted node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>Deployment Architecture</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>byKey</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Deployment Architecture.</td>
+  <td>byKey node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>Detailed Component Analysis</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>computeSnapshot</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Detailed Component Analysis.</td>
+  <td>computeSnapshot node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>Disaster Recovery Procedures</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>customerId</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Disaster Recovery Procedures.</td>
+  <td>customerId node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>Environment Configuration Management</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>submit()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Environment Configuration Management.</td>
+  <td>emit node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>Google Cloud Platform Deployment (App Engine)</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>filledSnapshotCount</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Google Cloud Platform Deployment (App Engine).</td>
+  <td>filledSnapshotCount node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>Introduction</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>hasErrors</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Introduction.</td>
+  <td>hasErrors node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>Monitoring Setup</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>master</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Monitoring Setup.</td>
+  <td>master node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>Performance Considerations</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>MASTER_GROUPS</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Performance Considerations.</td>
+  <td>MASTER_GROUPS node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>Project Structure</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>masterDataset</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Project Structure.</td>
+  <td>masterDataset node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>PWA Manifest and Service Worker Integration</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>masterErrors</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing PWA Manifest and Service Worker Integration.</td>
+  <td><code>validateField()</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td>masterErrors node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>Scaling Strategies and Load Balancing</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>masterFields</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Scaling Strategies and Load Balancing.</td>
+  <td>masterFields node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>Security Considerations for Production</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>masterGroups</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Security Considerations for Production.</td>
+  <td>masterGroups node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>Static Asset Serving and CDN Integration</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>offPilotDate</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Static Asset Serving and CDN Integration.</td>
+  <td>offPilotDate node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>Table of Contents</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>partialWarning</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Table of Contents.</td>
+  <td>partialWarning node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>Troubleshooting Guide</code><br><small style="color:var(--muted)">Project Overview/Architecture Overview/Deployment Architecture.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>props</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Troubleshooting Guide.</td>
+  <td>props node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>Google OAuth Integration.md</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>schema</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Google OAuth Integration.md.</td>
+  <td>schema node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>API Client and Token Lifecycle</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>schemaError</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing API Client and Token Lifecycle.</td>
+  <td>schemaError node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>Appendices</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>schemaLoading</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Appendices.</td>
+  <td>schemaLoading node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>Architecture Overview</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>serverErrors</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Architecture Overview.</td>
+  <td>serverErrors node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>Auth Store</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>skipMaster</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Auth Store.</td>
+  <td>skipMaster node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>Backend Integration Points</code><br><small style="color:var(--muted)">content/Authentication &amp; Authorization/Google OAuth Integration.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
+  <td><code>snapshot</code><br><small style="color:var(--muted)">components/ingest/AddCustomerModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing Backend Integration Points.</td>
+  <td>snapshot node in components/ingest/AddCustomerModal.vue.</td>
 </tr>
 </table>
 
@@ -1575,30 +1598,31 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>Project Overview/Architecture Overview/Deployment Architecture.md</code></td><td>24 nodes</td></tr>
+      <tr><td><code>components/ingest/LoadCustomerDataModal.vue</code></td><td>47 nodes</td></tr>
+<tr><td><code>components/ingest/AddCustomerModal.vue</code></td><td>43 nodes</td></tr>
+<tr><td><code>Project Overview/Architecture Overview/Deployment Architecture.md</code></td><td>24 nodes</td></tr>
 <tr><td><code>content/Authentication &amp; Authorization/Google OAuth Integration.md</code></td><td>19 nodes</td></tr>
+<tr><td><code>src/services/ingestApi.js</code></td><td>11 nodes</td></tr>
 <tr><td><code>public/manifest.json</code></td><td>10 nodes</td></tr>
 <tr><td><code>scripts/update-sw-cache.js</code></td><td>5 nodes</td></tr>
 <tr><td><code>package.json</code></td><td>2 nodes</td></tr>
-<tr><td><code>scripts/fix_duplicate_fetch.py</code></td><td>1 nodes</td></tr>
-<tr><td><code>scripts/update_colors.py</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x54, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x152, calls x33, imports x9, imports x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 7. Serving API ====== -->
 <h2 id="serve-api">7. Serving API</h2>
-<p>Serving API groups implementation around qoder, repowiki, content, crm, mostly in crm/components/LeadDetailModal.vue, src/services/crm_api.js, Modules/settings/SubAccountModule.vue. This section covers 1277 nodes and 1640 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around views, qoder, repowiki, content, mostly in crm/components/LeadDetailModal.vue, src/services/crm_api.js, Modules/settings/SubAccountModule.vue. This section covers 1451 nodes and 1898 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (1277 nodes, 1640 edges)
+    %% Section: Serving API (1451 nodes, 1898 edges)
     subgraph serve_api_src_services_telemetry_comparison_api_e4e6ddda["src/services/telemetry_comparison_api.js"]
         src_services_telemetry_comparison_api_telemetryc_feee5b40("TelemetryComparisonService<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_70367f3d("getMachineMetrics()<br/><small>src/services/telemetry_comparison_api.js</small>")
@@ -1617,10 +1641,10 @@ flowchart LR
         src_views_modules_crm_components_leaddetailmodal_549668e1("exportReport()<br/><small>crm/components/LeadDetailModal.vue</small>")
         src_views_modules_crm_components_leaddetailmodal_12dae36f("saveMeeting()<br/><small>crm/components/LeadDetailModal.vue</small>")
     end
-    src_views_modules_managers_branchmanagerdashboar_2c5fc4c6("BranchManagerDashboard.vue")
-    src_views_modules_crm_components_documentsview_7a9d1cc6("DocumentsView.vue")
-    src_services_crm_api_createleadnote_36d4ec35("createLeadNote()<br/><small>src/services/crm_api.js</small>")
-    src_views_customerdetail_9a83761f("CustomerDetail.vue")
+    src_composables_settings_usesettingsmodules_be15250a("useSettingsModules.js")
+    src_services_customeradminapi_bulkdeletecustomer_288cf538("bulkDeleteCustomers()<br/><small>src/services/customerAdminApi.js</small>")
+    src_views_customerprofile_f8c995ed("CustomerProfile.vue")
+    src_views_mycustomers_618d83ab("MyCustomers.vue")
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_70367f3d
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_be0034e3
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_cc3c33f5
@@ -1633,7 +1657,8 @@ flowchart LR
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_bd71a1f4
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_6a6b7d37
     src_services_telemetry_comparison_api_telemetryc_0cff7dbc -->|calls| src_services_telemetry_comparison_api_telemetryc_da656d92
-    %% Omitted for readability: 1259 nodes, 0 edges
+    src_views_mycustomers_618d83ab -->|imports| src_services_customeradminapi_bulkdeletecustomer_288cf538
+    %% Omitted for readability: 1433 nodes, 0 edges
     class src_services_telemetry_comparison_api_telemetryc_feee5b40 klass;
     class src_services_telemetry_comparison_api_telemetryc_70367f3d function;
     class src_services_telemetry_comparison_api_telemetryc_be0034e3 function;
@@ -1648,10 +1673,10 @@ flowchart LR
     class src_services_telemetry_comparison_api_telemetryc_6a6b7d37 function;
     class src_views_modules_crm_components_leaddetailmodal_549668e1 ui;
     class src_views_modules_crm_components_leaddetailmodal_12dae36f ui;
-    class src_views_modules_managers_branchmanagerdashboar_2c5fc4c6 ui;
-    class src_views_modules_crm_components_documentsview_7a9d1cc6 ui;
-    class src_services_crm_api_createleadnote_36d4ec35 function;
-    class src_views_customerdetail_9a83761f ui;
+    class src_composables_settings_usesettingsmodules_be15250a ui;
+    class src_services_customeradminapi_bulkdeletecustomer_288cf538 function;
+    class src_views_customerprofile_f8c995ed ui;
+    class src_views_mycustomers_618d83ab ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1924,15 +1949,15 @@ flowchart LR
 <tr><td><code>src/services/crm_api.js</code></td><td>88 nodes</td></tr>
 <tr><td><code>Modules/settings/SubAccountModule.vue</code></td><td>68 nodes</td></tr>
 <tr><td><code>src/views/CustomerDetail.vue</code></td><td>66 nodes</td></tr>
+<tr><td><code>src/views/CustomerProfile.vue</code></td><td>65 nodes</td></tr>
+<tr><td><code>src/views/MyCustomers.vue</code></td><td>61 nodes</td></tr>
 <tr><td><code>crm/components/DocumentsView.vue</code></td><td>49 nodes</td></tr>
 <tr><td><code>en/content/Troubleshooting &amp; Maintenance.md</code></td><td>35 nodes</td></tr>
-<tr><td><code>Architecture &amp; Design/Security Architecture/Secure API Communication.md</code></td><td>33 nodes</td></tr>
-<tr><td><code>Modules/managers/BranchManagerDashboard.vue</code></td><td>33 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1088, calls x344, indirect call x93, imports x48. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1234, calls x404, indirect call x114, imports x63. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2281,12 +2306,12 @@ flowchart LR
 
 <!-- ====== 9. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">9. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around components, composables, usebulkselectjs, absasectionheadervue, mostly in src/composables/useBulkSelect.js, components/ui/AbsaSectionHeader.vue, components/ui/BackButton.vue. This section covers 51 nodes and 51 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around components, composables, usebulkselectjs, tests, mostly in src/composables/useBulkSelect.js, components/ui/BackButton.vue, components/ui/PageHeader.vue. This section covers 40 nodes and 39 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (51 nodes, 51 edges)
+    %% Section: Tests &amp; Fixtures (40 nodes, 39 edges)
     subgraph tests_fixtures_src_composables_useBulkSelect_js_efd5ab13["src/composables/useBulkSelect.js"]
         src_composables_usebulkselect_usebulkselect_togg_2f950faa("toggleSelectAll()<br/><small>src/composables/useBulkSelect.js</small>")
         src_composables_usebulkselect_usebulkselect_isal_9a2e764c("isAllPageSelected()<br/><small>src/composables/useBulkSelect.js</small>")
@@ -2298,9 +2323,9 @@ flowchart LR
         src_components_tests_backbutton_spec_mockback_374f399e("mockBack<br/><small>components/__tests__/BackButton.spec.js</small>")
         src_components_tests_backbutton_spec_mockpush_57cd3089("mockPush<br/><small>components/__tests__/BackButton.spec.js</small>")
     end
-    subgraph tests_fixtures_components_ui_KpiSection_vue_fb8d0d9a["components/ui/KpiSection.vue"]
-        src_components_ui_kpisection_togglekpis_286972f5("toggleKpis()<br/><small>components/ui/KpiSection.vue</small>")
-        src_components_ui_kpisection_emit_54ffca07("emit<br/><small>components/ui/KpiSection.vue</small>")
+    subgraph tests_fixtures_components_ui_AbsaButton_vue_dc45f7b8["components/ui/AbsaButton.vue"]
+        src_components_ui_absabutton_fe908300("AbsaButton.vue")
+        src_components_ui_absabutton_buttonclasses_a6dc21ed("buttonClasses<br/><small>components/ui/AbsaButton.vue</small>")
     end
     subgraph tests_fixtures_package_json_2ed39c94["package.json"]
         package_devdependencies_vue_test_utils_c8f33d06("@vue/test-utils<br/><small>package.json</small>")
@@ -2313,7 +2338,6 @@ flowchart LR
     src_components_ui_selectallcheckbox_1a2ab997("SelectAllCheckbox.vue")
     src_composables_tests_usebulkselect_spec_cb22d055("useBulkSelect.spec.js")
     src_views_modules_crm_components_leadsview_toggl_29122c5e("toggleSelectAllManual()<br/><small>crm/components/LeadsView.vue</small>")
-    src_components_ui_kpisection_togglekpis_286972f5 -->|calls| src_components_ui_kpisection_emit_54ffca07
     src_composables_usebulkselect_usebulkselect_togg_2f950faa -->|calls| src_composables_usebulkselect_usebulkselect_isal_9a2e764c
     src_views_modules_crm_components_leadsview_toggl_29122c5e -->|calls| src_composables_usebulkselect_usebulkselect_togg_2f950faa
     src_components_tests_bulkactionsbar_spec_273f49b6 -->|imports| src_components_ui_bulkactionsbar_ccc4fd13
@@ -2322,7 +2346,7 @@ flowchart LR
     src_composables_tests_usebulkselect_spec_cb22d055 -->|imports| src_composables_usebulkselect_e81231e1
     src_components_tests_backbutton_spec_ad12f47d -->|imports| src_components_ui_backbutton_5c73886f
     package_devdependencies_vue_test_utils_c8f33d06 -->|imports| vue_test_utils_baf810f0
-    %% Omitted for readability: 33 nodes, 0 edges
+    %% Omitted for readability: 22 nodes, 0 edges
     class src_composables_usebulkselect_usebulkselect_togg_2f950faa function;
     class src_composables_usebulkselect_usebulkselect_isal_9a2e764c function;
     class src_composables_usebulkselect_usebulkselect_d577bc68 ui;
@@ -2330,8 +2354,8 @@ flowchart LR
     class src_components_tests_backbutton_spec_ad12f47d test;
     class src_components_tests_backbutton_spec_mockback_374f399e test;
     class src_components_tests_backbutton_spec_mockpush_57cd3089 test;
-    class src_components_ui_kpisection_togglekpis_286972f5 ui;
-    class src_components_ui_kpisection_emit_54ffca07 ui;
+    class src_components_ui_absabutton_fe908300 ui;
+    class src_components_ui_absabutton_buttonclasses_a6dc21ed async;
     class package_devdependencies_vue_test_utils_c8f33d06 function;
     class vue_test_utils_baf810f0 function;
     class src_components_tests_bulkactionsbar_spec_273f49b6 test;
@@ -2364,14 +2388,6 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>toggleKpis()</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td>toggleKpis() node in components/ui/KpiSection.vue.</td>
-</tr>
-<tr>
-  <td>2</td>
   <td><code>handleBack()</code><br><small style="color:var(--muted)">components/ui/PageHeader.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2379,7 +2395,7 @@ flowchart LR
   <td>handleBack() node in components/ui/PageHeader.vue.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>2</td>
   <td><code>BulkActionsBar.spec.js</code><br><small style="color:var(--muted)">components/__tests__/BulkActionsBar.spec.js</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -2387,7 +2403,7 @@ flowchart LR
   <td>BulkActionsBar.spec.js node in components/__tests__/BulkActionsBar.spec.js.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>3</td>
   <td><code>SelectAllCheckbox.spec.js</code><br><small style="color:var(--muted)">components/__tests__/SelectAllCheckbox.spec.js</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -2395,7 +2411,7 @@ flowchart LR
   <td>SelectAllCheckbox.spec.js node in components/__tests__/SelectAllCheckbox.spec.js.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>4</td>
   <td><code>AbsaButton.vue</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2403,7 +2419,7 @@ flowchart LR
   <td>AbsaButton.vue node in components/ui/AbsaButton.vue.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>5</td>
   <td><code>buttonClasses</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -2411,7 +2427,7 @@ flowchart LR
   <td>buttonClasses node in components/ui/AbsaButton.vue.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>6</td>
   <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2419,7 +2435,7 @@ flowchart LR
   <td>props node in components/ui/AbsaButton.vue.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>7</td>
   <td><code>sizeClasses</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -2427,63 +2443,7 @@ flowchart LR
   <td>sizeClasses node in components/ui/AbsaButton.vue.</td>
 </tr>
 <tr>
-  <td>9</td>
-  <td><code>AbsaSectionHeader.vue</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>AbsaSectionHeader.vue node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>barColorClass</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>barColorClass node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>barHeightClass</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>barHeightClass node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>barWidth</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>barWidth node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>props node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>titleClass</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>titleClass node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>titleTag</code><br><small style="color:var(--muted)">components/ui/AbsaSectionHeader.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>titleTag node in components/ui/AbsaSectionHeader.vue.</td>
-</tr>
-<tr>
-  <td>16</td>
+  <td>8</td>
   <td><code>AbsaStatCard.vue</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2491,7 +2451,7 @@ flowchart LR
   <td>AbsaStatCard.vue node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>9</td>
   <td><code>formattedValue</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2499,7 +2459,7 @@ flowchart LR
   <td>formattedValue node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>10</td>
   <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2507,7 +2467,7 @@ flowchart LR
   <td>props node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>11</td>
   <td><code>ArchiveBrowser.vue</code><br><small style="color:var(--muted)">components/ui/ArchiveBrowser.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2515,7 +2475,7 @@ flowchart LR
   <td>ArchiveBrowser.vue node in components/ui/ArchiveBrowser.vue.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>12</td>
   <td><code>BulkActionsBar.vue</code><br><small style="color:var(--muted)">components/ui/BulkActionsBar.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>BulkActionsBar.spec.js</code><br><small style="color:var(--muted)">components/__tests__/BulkActionsBar.spec.js</small></td>
@@ -2523,7 +2483,7 @@ flowchart LR
   <td>BulkActionsBar.vue node in components/ui/BulkActionsBar.vue.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>13</td>
   <td><code>EmptyState.vue</code><br><small style="color:var(--muted)">components/ui/EmptyState.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2531,7 +2491,7 @@ flowchart LR
   <td>EmptyState.vue node in components/ui/EmptyState.vue.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>14</td>
   <td><code>ui/index.js</code><br><small style="color:var(--muted)">components/ui/index.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>CRMAccountsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMAccountsPage.vue</small><br><code>CRMAcquisitionPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMAcquisitionPage.vue</small><br><code>CRMCallsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMCallsPage.vue</small><br>+12 more</td>
@@ -2539,31 +2499,7 @@ flowchart LR
   <td>ui/index.js node in components/ui/index.js.</td>
 </tr>
 <tr>
-  <td>23</td>
-  <td><code>KpiSection.vue</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardHome.vue</code><br><small style="color:var(--muted)">src/views/DashboardHome.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>KpiSection.vue node in components/ui/KpiSection.vue.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>toggleKpis()</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>emit node in components/ui/KpiSection.vue.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>props</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>props node in components/ui/KpiSection.vue.</td>
-</tr>
-<tr>
-  <td>26</td>
+  <td>15</td>
   <td><code>PageHeader.vue</code><br><small style="color:var(--muted)">components/ui/PageHeader.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2571,7 +2507,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>16</td>
   <td><code>props</code><br><small style="color:var(--muted)">components/ui/PageHeader.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2579,7 +2515,7 @@ flowchart LR
   <td>props node in components/ui/PageHeader.vue.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>17</td>
   <td><code>router</code><br><small style="color:var(--muted)">components/ui/PageHeader.vue</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -2587,7 +2523,7 @@ flowchart LR
   <td>router node in components/ui/PageHeader.vue.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>18</td>
   <td><code>SelectAllCheckbox.vue</code><br><small style="color:var(--muted)">components/ui/SelectAllCheckbox.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>SelectAllCheckbox.spec.js</code><br><small style="color:var(--muted)">components/__tests__/SelectAllCheckbox.spec.js</small></td>
@@ -2595,12 +2531,100 @@ flowchart LR
   <td>SelectAllCheckbox.vue node in components/ui/SelectAllCheckbox.vue.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>19</td>
   <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>LeadsView.vue</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small><br><code>useBulkSelect.spec.js</code><br><small style="color:var(--muted)">composables/__tests__/useBulkSelect.spec.js</small></td>
   <td><code>clearSelection()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small><br><code>getSelectedItems()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small><br><code>isAllPageSelected()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small><br>+5 more</td>
   <td>useBulkSelect() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>getSelectedItems()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>getSelectedItems() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>isAllPageSelected()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>toggleSelectAll()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small><br><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>isPartiallySelected()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>isPartiallySelected() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>isSelected()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>isSelected() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>selectAll()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>selectAll() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>toggleSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>toggleSelect() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>toggleSelectAll()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>toggleSelectAllManual()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small><br><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><code>isAllPageSelected()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>toggleSelectAll() node in src/composables/useBulkSelect.js.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>toggleSelectAllManual()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>toggleSelectAll()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>toggleSelectAllManual() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>useBulkSelect.spec.js</code><br><small style="color:var(--muted)">composables/__tests__/useBulkSelect.spec.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useBulkSelect()</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small><br><code>useBulkSelect.js</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td>useBulkSelect.spec.js node in composables/__tests__/useBulkSelect.spec.js.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>items</code><br><small style="color:var(--muted)">composables/__tests__/useBulkSelect.spec.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>items node in composables/__tests__/useBulkSelect.spec.js.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>useBulkSelect.js</code><br><small style="color:var(--muted)">src/composables/useBulkSelect.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>LeadsView.vue</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small><br><code>useBulkSelect.spec.js</code><br><small style="color:var(--muted)">composables/__tests__/useBulkSelect.spec.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>useBulkSelect.js node in src/composables/useBulkSelect.js.</td>
 </tr>
 </table>
 
@@ -2610,18 +2634,18 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>src/composables/useBulkSelect.js</code></td><td>9 nodes</td></tr>
-<tr><td><code>components/ui/AbsaSectionHeader.vue</code></td><td>7 nodes</td></tr>
 <tr><td><code>components/ui/BackButton.vue</code></td><td>5 nodes</td></tr>
 <tr><td><code>components/ui/AbsaButton.vue</code></td><td>4 nodes</td></tr>
-<tr><td><code>components/ui/KpiSection.vue</code></td><td>4 nodes</td></tr>
 <tr><td><code>components/ui/PageHeader.vue</code></td><td>4 nodes</td></tr>
 <tr><td><code>components/__tests__/BackButton.spec.js</code></td><td>3 nodes</td></tr>
 <tr><td><code>components/ui/AbsaStatCard.vue</code></td><td>3 nodes</td></tr>
+<tr><td><code>package.json</code></td><td>2 nodes</td></tr>
+<tr><td><code>composables/__tests__/useBulkSelect.spec.js</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x25, re exports x10, indirect call x7, imports x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x16, re exports x8, indirect call x7, imports x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2902,7 +2926,7 @@ flowchart LR
   <td>24</td>
   <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br>+1 more</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
   <td>No direct outbound edge</td>
   <td>formatCurrency() node in crm/components/AccountDetailModal.vue.</td>
 </tr>
@@ -3624,8 +3648,368 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. LeadsView.vue ====== -->
-<h2 id="leadsview-vue">13. LeadsView.vue</h2>
+<!-- ====== 13. BusinessOutcomes.vue ====== -->
+<h2 id="businessoutcomes-vue">13. BusinessOutcomes.vue</h2>
+<p>BusinessOutcomes.vue groups implementation around views, modules, intelligence, businessoutcomesvue, mostly in Modules/intelligence/BusinessOutcomes.vue, Modules/intelligence/BalanceForecast.vue, src/utils/absaExport.js. This section covers 66 nodes and 94 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: BusinessOutcomes.vue (66 nodes, 94 edges)
+    subgraph businessoutcomes_vue_src_utils_absaExport_js_df6b84b4["src/utils/absaExport.js"]
+        src_utils_absaexport_downloadcsv_5f20edf8("downloadCsv()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_downloadtext_892cb502("downloadText()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_tocsv_1bdb3708("toCsv()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_downloadjson_a0fd6ac8("downloadJson()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_downloadmarkdown_5c5e7634("downloadMarkdown()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_reportfilename_56214f48("reportFilename()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_stamp_7483bce6("stamp()<br/><small>src/utils/absaExport.js</small>")
+        src_utils_absaexport_todaylabel_9d683539("todayLabel()<br/><small>src/utils/absaExport.js</small>")
+    end
+    subgraph businessoutcomes_vue_Modules_intelligence_Busine_a6bee354["Modules/intelligence/BusinessOutcomes.vue"]
+        src_views_modules_intelligence_businessoutcomes_cacf6102("BusinessOutcomes.vue")
+        src_views_modules_intelligence_businessoutcomes_9a625089("downloadBusinessCase()<br/><small>Modules/intelligence/BusinessOutcomes.vue</small>")
+        src_views_modules_intelligence_businessoutcomes_f193a6e6("exportReport()<br/><small>Modules/intelligence/BusinessOutcomes.vue</small>")
+    end
+    subgraph businessoutcomes_vue_Modules_intelligence_Balanc_5ff3e180["Modules/intelligence/BalanceForecast.vue"]
+        src_views_modules_intelligence_balanceforecast_513c9fbd("BalanceForecast.vue")
+        src_views_modules_intelligence_balanceforecast_e_af153d8a("exportReport()<br/><small>Modules/intelligence/BalanceForecast.vue</small>")
+    end
+    src_views_modules_intelligence_customervalueinte_c1c9a62c("exportReport()<br/><small>Modules/intelligence/CustomerValueIntelligence.vue</small>")
+    src_views_modules_intelligence_lifecyclepredicti_5a48d68d("exportReport()<br/><small>Modules/intelligence/LifecyclePrediction.vue</small>")
+    src_components_tests_loadingskeleton_spec_929265b9("LoadingSkeleton.spec.js")
+    src_components_loadingskeleton_58fa1701("LoadingSkeleton.vue")
+    src_views_portfoliooverview_exportledgercsv_e451b059("exportLedgerCsv()<br/><small>src/views/PortfolioOverview.vue</small>")
+    src_utils_absaexport_downloadcsv_5f20edf8 -->|calls| src_utils_absaexport_downloadtext_892cb502
+    src_utils_absaexport_downloadcsv_5f20edf8 -->|calls| src_utils_absaexport_tocsv_1bdb3708
+    src_utils_absaexport_downloadjson_a0fd6ac8 -->|calls| src_utils_absaexport_downloadtext_892cb502
+    src_utils_absaexport_downloadmarkdown_5c5e7634 -->|calls| src_utils_absaexport_downloadtext_892cb502
+    src_utils_absaexport_reportfilename_56214f48 -->|calls| src_utils_absaexport_stamp_7483bce6
+    src_views_modules_intelligence_balanceforecast_e_af153d8a -->|calls| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_balanceforecast_e_af153d8a -->|calls| src_utils_absaexport_reportfilename_56214f48
+    src_views_modules_intelligence_businessoutcomes_9a625089 -->|calls| src_utils_absaexport_todaylabel_9d683539
+    src_views_modules_intelligence_businessoutcomes_9a625089 -->|calls| src_utils_absaexport_downloadmarkdown_5c5e7634
+    src_views_modules_intelligence_businessoutcomes_9a625089 -->|calls| src_utils_absaexport_stamp_7483bce6
+    src_views_modules_intelligence_businessoutcomes_f193a6e6 -->|calls| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_businessoutcomes_f193a6e6 -->|calls| src_utils_absaexport_reportfilename_56214f48
+    src_views_modules_intelligence_customervalueinte_c1c9a62c -->|calls| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_customervalueinte_c1c9a62c -->|calls| src_utils_absaexport_reportfilename_56214f48
+    src_views_modules_intelligence_lifecyclepredicti_5a48d68d -->|calls| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_lifecyclepredicti_5a48d68d -->|calls| src_utils_absaexport_reportfilename_56214f48
+    src_views_portfoliooverview_exportledgercsv_e451b059 -->|calls| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_portfoliooverview_exportledgercsv_e451b059 -->|calls| src_utils_absaexport_reportfilename_56214f48
+    src_components_tests_loadingskeleton_spec_929265b9 -->|imports| src_components_loadingskeleton_58fa1701
+    src_views_modules_intelligence_balanceforecast_513c9fbd -->|imports| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_balanceforecast_513c9fbd -->|imports| src_utils_absaexport_reportfilename_56214f48
+    src_views_modules_intelligence_balanceforecast_513c9fbd -->|imports| src_components_loadingskeleton_58fa1701
+    src_views_modules_intelligence_businessoutcomes_cacf6102 -->|imports| src_utils_absaexport_downloadcsv_5f20edf8
+    src_views_modules_intelligence_businessoutcomes_cacf6102 -->|imports| src_utils_absaexport_downloadmarkdown_5c5e7634
+    %% Omitted for readability: 48 nodes, 4 edges
+    class src_utils_absaexport_downloadcsv_5f20edf8 function;
+    class src_utils_absaexport_downloadtext_892cb502 function;
+    class src_utils_absaexport_tocsv_1bdb3708 function;
+    class src_utils_absaexport_downloadjson_a0fd6ac8 function;
+    class src_utils_absaexport_downloadmarkdown_5c5e7634 function;
+    class src_utils_absaexport_reportfilename_56214f48 function;
+    class src_utils_absaexport_stamp_7483bce6 function;
+    class src_utils_absaexport_todaylabel_9d683539 function;
+    class src_views_modules_intelligence_businessoutcomes_cacf6102 ui;
+    class src_views_modules_intelligence_businessoutcomes_9a625089 ui;
+    class src_views_modules_intelligence_businessoutcomes_f193a6e6 ui;
+    class src_views_modules_intelligence_balanceforecast_513c9fbd ui;
+    class src_views_modules_intelligence_balanceforecast_e_af153d8a ui;
+    class src_views_modules_intelligence_customervalueinte_c1c9a62c ui;
+    class src_views_modules_intelligence_lifecyclepredicti_5a48d68d ui;
+    class src_components_tests_loadingskeleton_spec_929265b9 test;
+    class src_components_loadingskeleton_58fa1701 ui;
+    class src_views_portfoliooverview_exportledgercsv_e451b059 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BalanceForecast.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small><br><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>CustomerValueIntelligence.vue</code><br><small style="color:var(--muted)">Modules/intelligence/CustomerValueIntelligence.vue</small><br>+9 more</td>
+  <td><code>downloadText()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>toCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>downloadCsv() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>downloadJson()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadText()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>downloadJson() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>downloadMarkdown()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>downloadBusinessCase()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><code>downloadText()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>downloadText()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>downloadJson()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>downloadMarkdown()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>downloadText() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>escapeCell()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>toCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>escapeCell() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BalanceForecast.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small><br><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>CustomerValueIntelligence.vue</code><br><small style="color:var(--muted)">Modules/intelligence/CustomerValueIntelligence.vue</small><br>+9 more</td>
+  <td><code>stamp()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>reportFilename() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>stamp()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>downloadBusinessCase()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>stamp() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>toCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><code>escapeCell()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>toCsv() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>todayLabel()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small><br><code>downloadBusinessCase()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>todayLabel() node in src/utils/absaExport.js.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>formatAum()</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatAum() node in Modules/intelligence/BalanceForecast.vue.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>renderChart()</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>renderChart() node in Modules/intelligence/BalanceForecast.vue.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>segBarWidth()</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>segBarWidth() node in Modules/intelligence/BalanceForecast.vue.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>downloadBusinessCase()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadMarkdown()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>stamp()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br>+1 more</td>
+  <td>downloadBusinessCase() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>isDeltaPositive()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>isDeltaPositive() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>renderRoiChart()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>renderRoiChart() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>retentionRateClass()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>retentionRateClass() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>statusBadgeClass()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>statusBadgeClass() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>statusDotClass()</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>statusDotClass() node in Modules/intelligence/BusinessOutcomes.vue.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">Modules/intelligence/CustomerValueIntelligence.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>getQuadrant()</code><br><small style="color:var(--muted)">Modules/intelligence/CustomerValueIntelligence.vue</small><br><code>hasRm()</code><br><small style="color:var(--muted)">Modules/intelligence/CustomerValueIntelligence.vue</small><br>+2 more</td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">Modules/intelligence/LifecyclePrediction.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>exportLedgerCsv()</code><br><small style="color:var(--muted)">src/views/PortfolioOverview.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>downloadCsv()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>reportFilename()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small></td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>LoadingSkeleton.vue</code><br><small style="color:var(--muted)">src/components/LoadingSkeleton.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>BalanceForecast.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small><br><code>BatchExecutionDetail.vue</code><br><small style="color:var(--muted)">Modules/datapipeline/BatchExecutionDetail.vue</small><br><code>BranchManagerDashboard.vue</code><br><small style="color:var(--muted)">Modules/managers/BranchManagerDashboard.vue</small><br>+10 more</td>
+  <td>No direct outbound edge</td>
+  <td>LoadingSkeleton.vue node in src/components/LoadingSkeleton.vue.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>LoadingSkeleton.spec.js</code><br><small style="color:var(--muted)">components/__tests__/LoadingSkeleton.spec.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>LoadingSkeleton.vue</code><br><small style="color:var(--muted)">src/components/LoadingSkeleton.vue</small></td>
+  <td>LoadingSkeleton.spec.js node in components/__tests__/LoadingSkeleton.spec.js.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>AbsaBadge.vue</code><br><small style="color:var(--muted)">components/ui/AbsaBadge.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>BalanceForecast.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BalanceForecast.vue</small><br><code>BusinessOutcomes.vue</code><br><small style="color:var(--muted)">Modules/intelligence/BusinessOutcomes.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>AbsaBadge.vue node in components/ui/AbsaBadge.vue.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>badgeClasses</code><br><small style="color:var(--muted)">components/ui/AbsaBadge.vue</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>badgeClasses node in components/ui/AbsaBadge.vue.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>dotColorClass</code><br><small style="color:var(--muted)">components/ui/AbsaBadge.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dotColorClass node in components/ui/AbsaBadge.vue.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaBadge.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>props node in components/ui/AbsaBadge.vue.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>sizeClasses</code><br><small style="color:var(--muted)">components/ui/AbsaBadge.vue</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>sizeClasses node in components/ui/AbsaBadge.vue.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>Modules/intelligence/BusinessOutcomes.vue</code></td><td>16 nodes</td></tr>
+<tr><td><code>Modules/intelligence/BalanceForecast.vue</code></td><td>15 nodes</td></tr>
+<tr><td><code>src/utils/absaExport.js</code></td><td>10 nodes</td></tr>
+<tr><td><code>components/ui/AbsaCard.vue</code></td><td>7 nodes</td></tr>
+<tr><td><code>src/stores/intelligenceStore.js</code></td><td>7 nodes</td></tr>
+<tr><td><code>components/ui/AbsaBadge.vue</code></td><td>6 nodes</td></tr>
+<tr><td><code>src/components/LoadingSkeleton.vue</code></td><td>1 nodes</td></tr>
+<tr><td><code>components/__tests__/LoadingSkeleton.spec.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x55, calls x18, imports x11, imports x9. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. LeadsView.vue ====== -->
+<h2 id="leadsview-vue">14. LeadsView.vue</h2>
 <p>LeadsView.vue groups implementation around leadsviewvue, views, modules, crm, mostly in crm/components/LeadsView.vue. This section covers 62 nodes and 61 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -3964,68 +4348,57 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 14. Models.vue ====== -->
-<h2 id="models-vue">14. Models.vue</h2>
-<p>Models.vue groups implementation around modelsvue, views, modules, aiagents, mostly in Modules/aiagents/Models.vue. This section covers 52 nodes and 51 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 15. Models.vue ====== -->
+<h2 id="models-vue">15. Models.vue</h2>
+<p>Models.vue groups implementation around modelsvue, views, modules, aiagents, mostly in Modules/aiagents/Models.vue, components/telemetry/ChurnProbabilityBar.vue. This section covers 59 nodes and 60 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Models.vue (52 nodes, 51 edges)
-    src_views_modules_aiagents_models_f9f56342("Models.vue")
-    src_views_modules_aiagents_models_drifttablerows_da504f68("driftTableRows<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_modelcardfield_77acb59e("modelCardFields<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_approvalsteps_b11c4275("approvalSteps<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_auditlog_a49b2394("auditLog<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_selectedtimefr_df04366e("selectedTimeframe<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_enrichedlogs_df6277ae("enrichedLogs<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_sparklineaucca_0ff8cad6("sparklineAucCanvas<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_sparklinef1can_b2c5375d("sparklineF1Canvas<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_mainchartcanva_ed8ef7a9("mainChartCanvas<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_stopretrainpol_b743de78("stopRetrainPolling()<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_api_8a6d986e("api<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_modelsstore_e8584842("modelsStore<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_intelligencest_40899c37("intelligenceStore<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_loading_d824ad58("loading<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_activetab_84eb643a("activeTab<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_retraining_458b6b2c("retraining<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_selectedfeatur_2226c797("selectedFeaturesForTraining<br/><small>Modules/aiagents/Models.vue</small>")
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_drifttablerows_da504f68
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_modelcardfield_77acb59e
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_approvalsteps_b11c4275
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_auditlog_a49b2394
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_selectedtimefr_df04366e
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_enrichedlogs_df6277ae
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_sparklineaucca_0ff8cad6
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_sparklinef1can_b2c5375d
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_mainchartcanva_ed8ef7a9
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_stopretrainpol_b743de78
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_api_8a6d986e
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_modelsstore_e8584842
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_intelligencest_40899c37
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_loading_d824ad58
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_activetab_84eb643a
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_retraining_458b6b2c
-    src_views_modules_aiagents_models_f9f56342 -->|contains| src_views_modules_aiagents_models_selectedfeatur_2226c797
-    %% Omitted for readability: 34 nodes, 0 edges
+    %% Section: Models.vue (59 nodes, 60 edges)
+    subgraph models_vue_Modules_aiagents_Models_vue_fba3011a["Modules/aiagents/Models.vue"]
+        src_views_modules_aiagents_models_requestretrain_55bde89d("requestRetrain()<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_initcharts_tri_3c66306f("triggerRetrainAction()<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_overviewkpis_05588863("overviewKpis<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_refreshalldata_3de3c8b1("refreshAllData()<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_baselinesignat_a2d4cfd5("baselineSignature()<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_f9f56342("Models.vue")
+        src_views_modules_aiagents_models_activealerts_57c165f9("activeAlerts<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_activetab_84eb643a("activeTab<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_activethreshol_b8583c9e("activeThreshold<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_api_8a6d986e("api<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_approvalsteps_b11c4275("approvalSteps<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_auditlog_a49b2394("auditLog<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_availablefeatu_551acaa2("availableFeatures<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_avglatency_42ca9530("avgLatency<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_calibrationthr_1e06a237("calibrationThreshold<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_canretrain_47a18331("canRetrain<br/><small>Modules/aiagents/Models.vue</small>")
+        src_views_modules_aiagents_models_confusionmatri_13e325b5("confusionMatrix<br/><small>Modules/aiagents/Models.vue</small>")
+    end
+    src_components_telemetry_churnprobabilitybar_pct_02c7e0fb("pct<br/><small>components/telemetry/ChurnProbabilityBar.vue</small>")
+    src_views_modules_aiagents_models_initcharts_tri_3c66306f -->|calls| src_views_modules_aiagents_models_refreshalldata_3de3c8b1
+    src_views_modules_aiagents_models_requestretrain_55bde89d -->|calls| src_views_modules_aiagents_models_baselinesignat_a2d4cfd5
+    src_views_modules_aiagents_models_requestretrain_55bde89d -->|calls| src_views_modules_aiagents_models_refreshalldata_3de3c8b1
+    src_views_modules_aiagents_models_overviewkpis_05588863 -->|calls| src_components_telemetry_churnprobabilitybar_pct_02c7e0fb
+    %% Omitted for readability: 41 nodes, 0 edges
+    class src_views_modules_aiagents_models_requestretrain_55bde89d ui;
+    class src_views_modules_aiagents_models_initcharts_tri_3c66306f ui;
+    class src_views_modules_aiagents_models_overviewkpis_05588863 ui;
+    class src_views_modules_aiagents_models_refreshalldata_3de3c8b1 ui;
+    class src_views_modules_aiagents_models_baselinesignat_a2d4cfd5 ui;
     class src_views_modules_aiagents_models_f9f56342 ui;
-    class src_views_modules_aiagents_models_drifttablerows_da504f68 ui;
-    class src_views_modules_aiagents_models_modelcardfield_77acb59e ui;
+    class src_views_modules_aiagents_models_activealerts_57c165f9 ui;
+    class src_views_modules_aiagents_models_activetab_84eb643a ui;
+    class src_views_modules_aiagents_models_activethreshol_b8583c9e ui;
+    class src_views_modules_aiagents_models_api_8a6d986e api;
     class src_views_modules_aiagents_models_approvalsteps_b11c4275 ui;
     class src_views_modules_aiagents_models_auditlog_a49b2394 ui;
-    class src_views_modules_aiagents_models_selectedtimefr_df04366e ui;
-    class src_views_modules_aiagents_models_enrichedlogs_df6277ae ui;
-    class src_views_modules_aiagents_models_sparklineaucca_0ff8cad6 ui;
-    class src_views_modules_aiagents_models_sparklinef1can_b2c5375d ui;
-    class src_views_modules_aiagents_models_mainchartcanva_ed8ef7a9 ui;
-    class src_views_modules_aiagents_models_stopretrainpol_b743de78 ui;
-    class src_views_modules_aiagents_models_api_8a6d986e api;
-    class src_views_modules_aiagents_models_modelsstore_e8584842 ui;
-    class src_views_modules_aiagents_models_intelligencest_40899c37 ui;
-    class src_views_modules_aiagents_models_loading_d824ad58 ui;
-    class src_views_modules_aiagents_models_activetab_84eb643a ui;
-    class src_views_modules_aiagents_models_retraining_458b6b2c ui;
-    class src_views_modules_aiagents_models_selectedfeatur_2226c797 ui;
+    class src_views_modules_aiagents_models_availablefeatu_551acaa2 ui;
+    class src_views_modules_aiagents_models_avglatency_42ca9530 ui;
+    class src_views_modules_aiagents_models_calibrationthr_1e06a237 ui;
+    class src_views_modules_aiagents_models_canretrain_47a18331 ui;
+    class src_views_modules_aiagents_models_confusionmatri_13e325b5 ui;
+    class src_components_telemetry_churnprobabilitybar_pct_02c7e0fb ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4049,6 +4422,46 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>baselineSignature()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>requestRetrain()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>baselineSignature() node in Modules/aiagents/Models.vue.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>triggerRetrainAction()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>refreshAllData()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td>triggerRetrainAction() node in Modules/aiagents/Models.vue.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>loadComparison()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Models.vue</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><code>fetchModelComparison()</code><br><small style="color:var(--muted)">src/services/modelManagementApi.js</small></td>
+  <td>loadComparison() node in Modules/aiagents/Models.vue.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>refreshAllData()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>requestRetrain()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small><br><code>triggerRetrainAction()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><code>initCharts()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td>refreshAllData() node in Modules/aiagents/Models.vue.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>requestRetrain()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>baselineSignature()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small><br><code>notify()</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>refreshAllData()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small><br>+1 more</td>
+  <td>requestRetrain() node in Modules/aiagents/Models.vue.</td>
+</tr>
+<tr>
+  <td>6</td>
   <td><code>stopRetrainPolling()</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4056,7 +4469,15 @@ flowchart LR
   <td>stopRetrainPolling() node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>7</td>
+  <td><code>pct</code><br><small style="color:var(--muted)">components/telemetry/ChurnProbabilityBar.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>overviewKpis</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>pct node in components/telemetry/ChurnProbabilityBar.vue.</td>
+</tr>
+<tr>
+  <td>8</td>
   <td><code>Models.vue</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4064,7 +4485,7 @@ flowchart LR
   <td>Models.vue node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>9</td>
   <td><code>activeAlerts</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4072,7 +4493,7 @@ flowchart LR
   <td>activeAlerts node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>10</td>
   <td><code>activeTab</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4080,7 +4501,7 @@ flowchart LR
   <td>activeTab node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>5</td>
+  <td>11</td>
   <td><code>activeThreshold</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4088,7 +4509,7 @@ flowchart LR
   <td>activeThreshold node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>12</td>
   <td><code>api</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -4096,7 +4517,7 @@ flowchart LR
   <td>api node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>13</td>
   <td><code>approvalSteps</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4104,7 +4525,7 @@ flowchart LR
   <td>approvalSteps node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>14</td>
   <td><code>auditLog</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4112,7 +4533,7 @@ flowchart LR
   <td>auditLog node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>15</td>
   <td><code>availableFeatures</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4120,7 +4541,7 @@ flowchart LR
   <td>availableFeatures node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>16</td>
   <td><code>avgLatency</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4128,7 +4549,7 @@ flowchart LR
   <td>avgLatency node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>17</td>
   <td><code>calibrationThreshold</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4136,7 +4557,7 @@ flowchart LR
   <td>calibrationThreshold node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>18</td>
   <td><code>canRetrain</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4144,7 +4565,7 @@ flowchart LR
   <td>canRetrain node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>19</td>
   <td><code>confusionMatrix</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4152,7 +4573,7 @@ flowchart LR
   <td>confusionMatrix node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>20</td>
   <td><code>derivedMetrics</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4160,7 +4581,7 @@ flowchart LR
   <td>derivedMetrics node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>21</td>
   <td><code>driftingFeatureCount</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4168,7 +4589,7 @@ flowchart LR
   <td>driftingFeatureCount node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>22</td>
   <td><code>driftTableRows</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4176,7 +4597,7 @@ flowchart LR
   <td>driftTableRows node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>23</td>
   <td><code>enrichedLogs</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4184,7 +4605,7 @@ flowchart LR
   <td>enrichedLogs node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>24</td>
   <td><code>featureDriftList</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4192,7 +4613,7 @@ flowchart LR
   <td>featureDriftList node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>25</td>
   <td><code>intelligenceStore</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4200,7 +4621,7 @@ flowchart LR
   <td>intelligenceStore node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>26</td>
   <td><code>lastDriftScan</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4208,7 +4629,7 @@ flowchart LR
   <td>Starts scanning or handles scan status.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>27</td>
   <td><code>lastEvaluatedDate</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4216,7 +4637,7 @@ flowchart LR
   <td>lastEvaluatedDate node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>28</td>
   <td><code>loading</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4224,7 +4645,7 @@ flowchart LR
   <td>loading node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>29</td>
   <td><code>mainChartCanvas</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4232,61 +4653,13 @@ flowchart LR
   <td>mainChartCanvas node in Modules/aiagents/Models.vue.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>30</td>
   <td><code>modelCardFields</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>modelCardFields node in Modules/aiagents/Models.vue.</td>
 </tr>
-<tr>
-  <td>25</td>
-  <td><code>modelComparison</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modelComparison node in Modules/aiagents/Models.vue.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>modelComparisonData</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modelComparisonData node in Modules/aiagents/Models.vue.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>modelDetails</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modelDetails node in Modules/aiagents/Models.vue.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>modelMetrics</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modelMetrics node in Modules/aiagents/Models.vue.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>modelsStore</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modelsStore node in Modules/aiagents/Models.vue.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>performanceHistory</code><br><small style="color:var(--muted)">Modules/aiagents/Models.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>performanceHistory node in Modules/aiagents/Models.vue.</td>
-</tr>
 </table>
 
 <div class="grid">
@@ -4294,358 +4667,25 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>Modules/aiagents/Models.vue</code></td><td>52 nodes</td></tr>
+      <tr><td><code>Modules/aiagents/Models.vue</code></td><td>58 nodes</td></tr>
+<tr><td><code>components/telemetry/ChurnProbabilityBar.vue</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x51. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 15. BulkUploadLeadsModal.vue ====== -->
-<h2 id="bulkuploadleadsmodal-vue">15. BulkUploadLeadsModal.vue</h2>
-<p>BulkUploadLeadsModal.vue groups implementation around crm, bulkuploadleadsmodalvue, views, modules, mostly in crm/components/BulkUploadLeadsModal.vue, src/services/crm_api.js. This section covers 49 nodes and 55 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: BulkUploadLeadsModal.vue (49 nodes, 55 edges)
-    subgraph bulkuploadleadsmodal_vue_crm_components_BulkUplo_f064e305["crm/components/BulkUploadLeadsModal.vue"]
-        src_views_modules_crm_components_bulkuploadleads_d7d3434a("close()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_e982d1fa("downloadTemplate()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_3321114b("getFieldErrorClass()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_6fa9243f("getValidationMessage()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_543af645("hasValidationError()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_890e7192("nextStep()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_16645c95("emit<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_a76657c8("isValidEmail()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_8ff176f1("getMappedValue()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_d712ea87("validateRow()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_4fa01efe("processImport()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_c7f75fae("BulkUploadLeadsModal.vue")
-        src_views_modules_crm_components_bulkuploadleads_a05b19da("autoMapColumns()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_40530d32("canProceed<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_7aebe6e4("checkDuplicates()<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_0c111ea9("checkingDuplicates<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-        src_views_modules_crm_components_bulkuploadleads_06fb3d69("columnMapping<br/><small>crm/components/BulkUploadLeadsModal.vue</small>")
-    end
-    src_services_crm_api_downloadleadtemplate_d3678b31("downloadLeadTemplate()<br/><small>src/services/crm_api.js</small>")
-    src_views_modules_crm_components_bulkuploadleads_d7d3434a -->|calls| src_views_modules_crm_components_bulkuploadleads_16645c95
-    src_views_modules_crm_components_bulkuploadleads_e982d1fa -->|calls| src_services_crm_api_downloadleadtemplate_d3678b31
-    src_views_modules_crm_components_bulkuploadleads_3321114b -->|calls| src_views_modules_crm_components_bulkuploadleads_a76657c8
-    src_views_modules_crm_components_bulkuploadleads_6fa9243f -->|calls| src_views_modules_crm_components_bulkuploadleads_a76657c8
-    src_views_modules_crm_components_bulkuploadleads_543af645 -->|calls| src_views_modules_crm_components_bulkuploadleads_8ff176f1
-    src_views_modules_crm_components_bulkuploadleads_890e7192 -->|calls| src_views_modules_crm_components_bulkuploadleads_d712ea87
-    src_views_modules_crm_components_bulkuploadleads_4fa01efe -->|calls| src_views_modules_crm_components_bulkuploadleads_16645c95
-    src_views_modules_crm_components_bulkuploadleads_d712ea87 -->|calls| src_views_modules_crm_components_bulkuploadleads_a76657c8
-    %% Omitted for readability: 31 nodes, 0 edges
-    class src_views_modules_crm_components_bulkuploadleads_d7d3434a ui;
-    class src_views_modules_crm_components_bulkuploadleads_e982d1fa ui;
-    class src_views_modules_crm_components_bulkuploadleads_3321114b ui;
-    class src_views_modules_crm_components_bulkuploadleads_6fa9243f ui;
-    class src_views_modules_crm_components_bulkuploadleads_543af645 ui;
-    class src_views_modules_crm_components_bulkuploadleads_890e7192 ui;
-    class src_views_modules_crm_components_bulkuploadleads_16645c95 ui;
-    class src_views_modules_crm_components_bulkuploadleads_a76657c8 ui;
-    class src_views_modules_crm_components_bulkuploadleads_8ff176f1 ui;
-    class src_views_modules_crm_components_bulkuploadleads_d712ea87 ui;
-    class src_views_modules_crm_components_bulkuploadleads_4fa01efe ui;
-    class src_views_modules_crm_components_bulkuploadleads_c7f75fae ui;
-    class src_views_modules_crm_components_bulkuploadleads_a05b19da ui;
-    class src_views_modules_crm_components_bulkuploadleads_40530d32 ui;
-    class src_views_modules_crm_components_bulkuploadleads_7aebe6e4 ui;
-    class src_views_modules_crm_components_bulkuploadleads_0c111ea9 ui;
-    class src_views_modules_crm_components_bulkuploadleads_06fb3d69 ui;
-    class src_services_crm_api_downloadleadtemplate_d3678b31 function;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>downloadLeadTemplate()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>downloadTemplate()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>downloadLeadTemplate() node in src/services/crm_api.js.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>autoMapColumns()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>autoMapColumns() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>checkDuplicates()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>checkDuplicates() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>close()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>close() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>deleteAllDuplicates()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>deleteAllDuplicates() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>deleteAllInvalid()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>deleteAllInvalid() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>deleteRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>deleteRow() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>downloadTemplate()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>downloadLeadTemplate()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>downloadTemplate() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>formatFileSize()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>formatFileSize() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>getFieldErrorClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>getFieldErrorClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>getMappedValue()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>hasValidationError()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>getMappedValue() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>getPriorityClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getPriorityClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>getRowClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getRowClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>getSampleData()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getSampleData() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>getValidationMessage()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>getValidationMessage() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>handleFileDrop()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>handleFileDrop() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>handleFileSelect()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>handleFileSelect() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>hasValidationError()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>getMappedValue()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>hasValidationError() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>isFieldRequired()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>isFieldRequired() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>getFieldErrorClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>getValidationMessage()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>isValidEmail() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>nextStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>nextStep() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>previousStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>previousStep() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>processImport()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>processLeadsBulkUpload()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>processImport() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>uploadFile()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>uploadLeadsBulkFile()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>uploadFile() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>nextStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>validateRow() node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>BulkUploadLeadsModal.vue</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>CRMLeadsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMLeadsPage.vue</small></td>
-  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>API_BASE_URL</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br>+2 more</td>
-  <td>BulkUploadLeadsModal.vue node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>canProceed</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>canProceed node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>checkingDuplicates</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>checkingDuplicates node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>columnMapping</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>columnMapping node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>currentStep</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>currentStep node in crm/components/BulkUploadLeadsModal.vue.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>crm/components/BulkUploadLeadsModal.vue</code></td><td>48 nodes</td></tr>
-<tr><td><code>src/services/crm_api.js</code></td><td>1 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x47, calls x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x55, calls x4, indirect call x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, Modules/aiagents/AiModule.vue, crm/components/CRMAnalyticsModal.vue. This section covers 4418 nodes and 5087 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, Modules/aiagents/AiModule.vue, crm/components/CRMAnalyticsModal.vue. This section covers 4353 nodes and 4921 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (4418 nodes, 5087 edges)
+    %% Section: Other (4353 nodes, 4921 edges)
     subgraph other_src_utils_pwaManager_js_c8f1bf9b["src/utils/pwaManager.js"]
         src_utils_pwamanager_pwamanager_a606e8c5("PWAManager<br/><small>src/utils/pwaManager.js</small>")
         src_utils_pwamanager_pwamanager_checkandshowprom_6203035d("checkAndShowPrompt()<br/><small>src/utils/pwaManager.js</small>")
@@ -4661,11 +4701,11 @@ flowchart LR
         src_utils_pwamanager_pwamanager_forceprompt_76d35f55("forcePrompt()<br/><small>src/utils/pwaManager.js</small>")
         src_utils_pwamanager_pwamanager_init_0efc1806("init()<br/><small>src/utils/pwaManager.js</small>")
     end
-    src_views_modules_intelligence_balanceforecast_513c9fbd("BalanceForecast.vue")
-    src_views_modules_intelligence_businessoutcomes_cacf6102("BusinessOutcomes.vue")
-    src_views_modules_intelligence_customervalueinte_792b2fab("CustomerValueIntelligence.vue")
+    src_views_modules_aiagents_models_initcharts_a1afc909("initCharts()<br/><small>Modules/aiagents/Models.vue</small>")
+    src_views_modules_datapipeline_etlconfigmanager_f8acff10("EtlConfigManager.vue")
     src_composables_settings_usesettingsbase_7bed58ee("useSettingsBase.js")
     src_composables_userbac_7fc51b41("useRBAC.js")
+    src_services_currencyservice_currencyservice_40311acd("CurrencyService<br/><small>src/services/currencyService.js</small>")
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_checkandshowprom_6203035d
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_showprompt_a204623a
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_install_1a5fb45d
@@ -4686,7 +4726,7 @@ flowchart LR
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstallsuccess_f8a69fff
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstalldismiss_c54c22cc
     src_composables_settings_usesettingsbase_7bed58ee -->|imports| src_composables_userbac_7fc51b41
-    %% Omitted for readability: 4400 nodes, 0 edges
+    %% Omitted for readability: 4335 nodes, 0 edges
     class src_utils_pwamanager_pwamanager_a606e8c5 klass;
     class src_utils_pwamanager_pwamanager_checkandshowprom_6203035d function;
     class src_utils_pwamanager_pwamanager_showprompt_a204623a function;
@@ -4700,11 +4740,11 @@ flowchart LR
     class src_utils_pwamanager_pwamanager_resetuserprefere_fdd6dd1b function;
     class src_utils_pwamanager_pwamanager_forceprompt_76d35f55 function;
     class src_utils_pwamanager_pwamanager_init_0efc1806 function;
-    class src_views_modules_intelligence_balanceforecast_513c9fbd ui;
-    class src_views_modules_intelligence_businessoutcomes_cacf6102 ui;
-    class src_views_modules_intelligence_customervalueinte_792b2fab ui;
+    class src_views_modules_aiagents_models_initcharts_a1afc909 ui;
+    class src_views_modules_datapipeline_etlconfigmanager_f8acff10 ui;
     class src_composables_settings_usesettingsbase_7bed58ee ui;
     class src_composables_userbac_7fc51b41 ui;
+    class src_services_currencyservice_currencyservice_40311acd klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4728,243 +4768,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><span class="tag tag-class">Class</span></td>
+  <td><code>useSettingsAiAgents()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>constructor()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>dismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br>+16 more</td>
-  <td>PWAManager node in src/utils/pwaManager.js.</td>
+  <td><code>saveAgentSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small><br><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>useSettingsAiAgents() node in composables/settings/useSettingsAiAgents.js.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>onClick()</code><br><small style="color:var(--muted)">src/components/InstallAppButton.vue</small></td>
-  <td><span class="tag tag-cmd">Entry</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>triggerInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
-  <td>onClick() node in src/components/InstallAppButton.vue.</td>
+  <td><code>saveAgentSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useSettingsAiAgents()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>saveAgentSettings() node in composables/settings/useSettingsAiAgents.js.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>Step()</code><br><small style="color:var(--muted)">src/components/InstallAppButton.vue</small></td>
+  <td><code>useSettingsAudit()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Step() node in src/components/InstallAppButton.vue.</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>useSettingsAudit() node in composables/settings/useSettingsAudit.js.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>bindGlobalListener()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
+  <td><code>fetchAuditLogs()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>bindGlobalListener() node in src/composables/usePwaInstall.js.</td>
+  <td>fetchAuditLogs() node in composables/settings/useSettingsAudit.js.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>closeInstructionsModal()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>usePwaInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>closeInstructionsModal() node in src/composables/usePwaInstall.js.</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>SettingsAiAgents.vue</code><br><small style="color:var(--muted)">settings/components/SettingsAiAgents.vue</small><br><code>SettingsAudit.vue</code><br><small style="color:var(--muted)">settings/components/SettingsAudit.vue</small><br><code>SettingsBranding.vue</code><br><small style="color:var(--muted)">settings/components/SettingsBranding.vue</small><br>+29 more</td>
+  <td><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>fetchOwnerSubscription()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>getPermissionsForEntity()</code><br><small style="color:var(--muted)">src/config/rbac.js</small><br>+10 more</td>
+  <td>useSettingsBase() node in composables/settings/useSettingsBase.js.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>triggerInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
+  <td><code>fetchOwnerSubscription()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>onClick()</code><br><small style="color:var(--muted)">src/components/InstallAppButton.vue</small><br><code>usePwaInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
   <td>No direct outbound edge</td>
-  <td>triggerInstall() node in src/composables/usePwaInstall.js.</td>
+  <td>fetchOwnerSubscription() node in composables/settings/useSettingsBase.js.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>usePwaInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>InstallAppButton.vue</code><br><small style="color:var(--muted)">src/components/InstallAppButton.vue</small></td>
-  <td><code>closeInstructionsModal()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small><br><code>triggerInstall()</code><br><small style="color:var(--muted)">src/composables/usePwaInstall.js</small></td>
-  <td>usePwaInstall() node in src/composables/usePwaInstall.js.</td>
+  <td><code>navigateTo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>navigateTo() node in composables/settings/useSettingsBase.js.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>.checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>resetActiveTab()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>init()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>setupInteractionTracking()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>shouldShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>showPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>Builds structured prompts for model calls.</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>resetActiveTab() node in composables/settings/useSettingsBase.js.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>.constructor()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>init()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>.constructor() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>applyVisualStylePreset()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br><code>previewThemeMode()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br><code>resetUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br>+3 more</td>
+  <td>useSettingsBranding() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>.dismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>applyVisualStylePreset()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>getDismissalCount()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>hidePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>.dismiss() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>applyVisualStylePreset() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>.forcePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>previewThemeMode()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>hidePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>Builds structured prompts for model calls.</td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>previewThemeMode() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>.getDismissalCount()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>resetUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>dismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>getInstallStats()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br>+1 more</td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td>No direct outbound edge</td>
-  <td>.getDismissalCount() node in src/utils/pwaManager.js.</td>
+  <td>resetUIPreferences() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>.getInstallStats()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>saveUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>getDismissalCount()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>getLastPromptTime()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>isInstalled()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br>+1 more</td>
-  <td>.getInstallStats() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>saveUIPreferences() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>.getLastPromptTime()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>updateBrandColor()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>getInstallStats()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>shouldShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
   <td>No direct outbound edge</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td>updateBrandColor() node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>.hidePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>dismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>forcePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>install()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>disableTelegramBot()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br><code>loadTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br><code>loadTelegramConversations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br>+2 more</td>
+  <td>useSettingsIntegrations() node in composables/settings/useSettingsIntegrations.js.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>.init()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>disableTelegramBot()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>constructor()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>setupInteractionTracking()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>.init() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>disableTelegramBot() node in composables/settings/useSettingsIntegrations.js.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>.install()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>loadTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>hidePrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>onInstallDismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>onInstallSuccess()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>.install() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>.isInstalled()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>loadTelegramConversations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>getInstallStats()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>shouldShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
   <td>No direct outbound edge</td>
-  <td>.isInstalled() node in src/utils/pwaManager.js.</td>
+  <td>loadTelegramConversations() node in composables/settings/useSettingsIntegrations.js.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>.isPermanentlyDismissed()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td><code>getInstallStats()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>shouldShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>saveTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
   <td>No direct outbound edge</td>
-  <td>.isPermanentlyDismissed() node in src/utils/pwaManager.js.</td>
+  <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>.onInstallDismiss()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>install()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>.onInstallDismiss() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>handleLogoUpload()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>removeCompanyLogo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br>+2 more</td>
+  <td>useSettingsProfile() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>.onInstallSuccess()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>install()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>.onInstallSuccess() node in src/utils/pwaManager.js.</td>
+  <td><code>updateProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td><code>normalizeTenantToProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td>fetchTenantDetailsForSettings() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>.onPromptReady()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>handleLogoUpload()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td>No direct outbound edge</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td>handleLogoUpload() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>.resetUserPreferences()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>normalizeTenantToProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td>No direct outbound edge</td>
-  <td>.resetUserPreferences() node in src/utils/pwaManager.js.</td>
+  <td>normalizeTenantToProfile() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>.setupInteractionTracking()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>removeCompanyLogo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>init()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>.setupInteractionTracking() node in src/utils/pwaManager.js.</td>
+  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>removeCompanyLogo() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>.shouldShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>updateProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td><code>getDismissalCount()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>getLastPromptTime()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>isInstalled()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br>+1 more</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td>updateProfile() node in composables/settings/useSettingsProfile.js.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>.showPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
+  <td><code>mounted()</code><br><small style="color:var(--muted)">src/utils/v-role.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>checkAndShowPrompt()</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small><br><code>PWAManager</code><br><small style="color:var(--muted)">src/utils/pwaManager.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useAuthStore</code><br><small style="color:var(--muted)">src/stores/auth.js</small></td>
+  <td>mounted() node in src/utils/v-role.js.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>clearPreferences()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td><span class="tag tag-func">Test</span></td>
+  <td><code>settings/index.js</code><br><small style="color:var(--muted)">composables/settings/index.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>clearPreferences() node in src/views/PWATestPage.vue.</td>
+  <td>settings/index.js node in composables/settings/index.js.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>demoInstall()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td><span class="tag tag-func">Test</span></td>
+  <td><code>useSettingsAiAgents.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>hideToast()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td>demoInstall() node in src/views/PWATestPage.vue.</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>useSettingsAiAgents.js node in composables/settings/useSettingsAiAgents.js.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>hideToast()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td><span class="tag tag-func">Test</span></td>
-  <td><code>demoInstall()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small><br><code>showToast()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>hideToast() node in src/views/PWATestPage.vue.</td>
+  <td><code>useSettingsAudit.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>useSettingsAudit.js node in composables/settings/useSettingsAudit.js.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>showStats()</code><br><small style="color:var(--muted)">src/views/PWATestPage.vue</small></td>
-  <td><span class="tag tag-func">Test</span></td>
+  <td><code>useSettingsBranding.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>showStats() node in src/views/PWATestPage.vue.</td>
+  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td>useSettingsBranding.js node in composables/settings/useSettingsBranding.js.</td>
 </tr>
 </table>
 
@@ -4980,12 +5020,12 @@ flowchart LR
 <tr><td><code>Modules/crm/CRMMeetingsPage.vue</code></td><td>53 nodes</td></tr>
 <tr><td><code>Modules/settings/UserManagement.vue</code></td><td>52 nodes</td></tr>
 <tr><td><code>Modules/crm/CRMPipelinePage.vue</code></td><td>51 nodes</td></tr>
-<tr><td><code>src/views/DashboardHome.vue</code></td><td>42 nodes</td></tr>
+<tr><td><code>crm/components/BulkUploadLeadsModal.vue</code></td><td>48 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x3751, calls x782, imports x170, imports x165. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x3710, calls x746, imports x146, indirect call x128. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4996,17 +5036,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>6883</td></tr>
-      <tr><td>Edges</td><td>8636</td></tr>
+      <tr><td>Nodes</td><td>7105</td></tr>
+      <tr><td>Edges</td><td>9002</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>428</td></tr>
+      <tr><td>Communities</td><td>429</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>8172</td></tr>
+      <tr><td>EXTRACTED</td><td>8538</td></tr>
       <tr><td>INFERRED</td><td>464</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -5015,7 +5055,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>absa-foundry-frontend — Architecture Documentation</p>
-  <p>Generated: 2026-09-13 08:39 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-09-13 17:59 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

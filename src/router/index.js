@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { decodeJWT } from '@/services/decodeJWT.js';
+import { decodeJWT, setRouter } from '@/services/decodeJWT.js';
 import { DEV_BYPASS } from '@/config/devFlags.js';
 
 // Lazy load LandingPage to avoid circular dependency with api.js importing router
@@ -93,6 +93,11 @@ const routes = [
     children: [
       { path: '', redirect: '/dashboard/portfolio' },
       { path: 'portfolio', name: 'DashboardHome', component: () => import('../views/PortfolioOverview.vue'), meta: { title: 'Dashboard' } },
+
+      // ── My Customers (RM workspace) ──
+      { path: 'customers', name: 'MyCustomers', component: () => import('../views/MyCustomers.vue'), meta: { title: 'My Customers' } },
+      { path: 'customers/:id', name: 'CustomerProfile', component: () => import('../views/CustomerProfile.vue'), meta: { title: 'Customer Profile' } },
+
       { path: 'customer/:id/action-plan', name: 'CreateActionPlan', component: () => import('../views/CreateActionPlan.vue'), meta: { title: 'Create Action Plan' } },
       { path: 'customer/:id/take-action', name: 'TakeAction', component: () => import('../views/TakeAction.vue'), meta: { title: 'Take Action' } },
       { path: 'customer/:id', name: 'CustomerDetail', component: () => import('../views/CustomerDetail.vue'), meta: { title: 'Customer Detail' } },
@@ -168,6 +173,10 @@ const router = createRouter({
   routes,
 });
 
+// Let services (e.g. decodeJWT.logout) redirect through the router instead of
+// forcing a full page load, which would abort in-flight requests.
+setRouter(router);
+
 // Centralized Route Guard: authentication + role-scoped area access (ABSA)
 const ABSA_ROLES = { ADMIN: 'ADMIN', RM: 'RELATIONSHIP_MANAGER', DS: 'DATA_SCIENTIST', OPS: 'OPERATIONS' }
 
@@ -195,6 +204,7 @@ function requiredArea(path) {
   if (path.startsWith('/dashboard/models')) return 'models'
   if (path.startsWith('/dashboard/etl')) return 'etl'
   if (
+    // '/dashboard/customer' also covers the /dashboard/customers list + profile routes
     path.startsWith('/dashboard/customer') || path.startsWith('/dashboard/portfolio') ||
     path.startsWith('/dashboard/branch-manager') || path.startsWith('/dashboard/customer-value') ||
     path.startsWith('/dashboard/lifecycle') || path.startsWith('/dashboard/balance-forecast') ||

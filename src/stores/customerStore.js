@@ -14,6 +14,12 @@ api.interceptors.request.use((config) => {
 
 const DEFAULT_AS_OF_DATE = '2026-07-27'
 
+// `/api/v1/customers` caps `limit` at 500 (server-side, returns HTTP 422 above
+// that) and responds with a bare array — no total, no headers. So the client can
+// hold at most this many rows, and that number must never be presented as the
+// portfolio size.
+const LEDGER_FETCH_LIMIT = 500
+
 // ── Store ───────────────────────────────────────────────────────
 export const useCustomerStore = defineStore('customer', () => {
   // ── State ──
@@ -21,6 +27,9 @@ export const useCustomerStore = defineStore('customer', () => {
   const selectedCustomer = ref(null)
   const filters = ref({ state: null, search: '', branch: null, marketSegment: null })
   const pagination = ref({ page: 1, limit: 25, total: 0 })
+  // True portfolio size for the current snapshot (authoritative, from the server).
+  // `customers.length` is only how many rows the client managed to fetch.
+  const loadedCount = computed(() => customers.value.length)
   const loading = ref(false)
   const error = ref(null)
   const timeline = ref([])
@@ -67,7 +76,9 @@ export const useCustomerStore = defineStore('customer', () => {
           c.fullName?.toLowerCase().includes(q),
       )
     }
-    pagination.value.total = list.length
+    // NOTE: deliberately does not write pagination.total. Filtering narrows the
+    // rows we already hold; it must not overwrite the authoritative portfolio
+    // size (use `filteredCustomers.length` for the filtered count).
     const start = (pagination.value.page - 1) * pagination.value.limit
     return list.slice(start, start + pagination.value.limit)
   })
@@ -102,16 +113,22 @@ export const useCustomerStore = defineStore('customer', () => {
     const dateParams = { as_of_date: params.as_of_date || DEFAULT_AS_OF_DATE }
 
     try {
-      const [portfolioRes, listRes] = await Promise.all([
+      const [portfolioRes, countRes, listRes] = await Promise.all([
         api.get('/api/v1/customers/portfolio', { params: dateParams }),
-        api.get('/api/v1/customers', { params: { ...dateParams, limit: 500, offset: 0 } }),
+        api.get('/api/v1/customers/count', { params: dateParams }),
+        api.get('/api/v1/customers', { params: { ...dateParams, limit: LEDGER_FETCH_LIMIT, offset: 0 } }),
       ])
 
       _portfolioSummary.value = portfolioRes.data
       customers.value = (listRes.data || [])
         .filter((customer) => isFrontendVisibleMarketSegment(customer.market_segment ?? customer.segment))
         .map(_mapCustomer)
-      pagination.value.total = customers.value.length
+
+      // The authoritative portfolio size. Deriving this from
+      // `customers.value.length` is what made the ledger read "of 500 customers"
+      // for a 5,000-customer portfolio — it was reporting the fetch page size.
+      pagination.value.total =
+        countRes.data?.total ?? portfolioRes.data?.total_customers ?? customers.value.length
     } catch (e) {
       console.warn('fetchPortfolio failed:', e.message)
       error.value = e.response?.data?.detail || e.message || 'Failed to load portfolio data'
@@ -185,6 +202,7 @@ export const useCustomerStore = defineStore('customer', () => {
     selectedCustomer,
     filters,
     pagination,
+    loadedCount,
     loading,
     error,
     timeline,

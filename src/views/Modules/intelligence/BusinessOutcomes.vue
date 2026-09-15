@@ -52,27 +52,27 @@
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">REVENUE PROTECTED</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 48.6M</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatK(store.outcomesData?.roi?.revenue_protected) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Cumulative MTD</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CUSTOMERS RETAINED</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">1,284</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.customers_retained?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Via AI interventions</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">INTERVENTION COST</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">K 3.2M</p>
+            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatK(store.outcomesData?.roi?.intervention_cost) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Total campaign + RM cost</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">NET ROI</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">1,418%</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.net_roi_pct?.toLocaleString() ?? '—' }}%</p>
             <p class="text-[11px] text-gray-500 mt-1">Revenue protected ÷ cost</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">SYSTEM ROI MULTIPLE</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">15.2×</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.roi_multiple?.toLocaleString() ?? '—' }}×</p>
             <p class="text-[11px] text-gray-500 mt-1">K returned per K1 spent</p>
           </div>
         </div>
@@ -118,7 +118,7 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr
-                  v-for="row in (store.outcomesData?.retention_performance ?? fallbackRetention)"
+                  v-for="row in (store.outcomesData?.retention_performance ?? [])"
                   :key="row.entity"
                   class="hover:bg-gray-50 transition-colors"
                 >
@@ -173,7 +173,7 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr
-                  v-for="row in (store.outcomesData?.success_criteria ?? fallbackCriteria)"
+                  v-for="row in (store.outcomesData?.success_criteria ?? [])"
                   :key="row.criterion"
                   class="hover:bg-gray-50 transition-colors"
                 >
@@ -372,26 +372,32 @@ import { ref, onMounted, watch, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { downloadCsv, downloadMarkdown, notify, reportFilename, todayLabel, stamp } from '@/utils/absaExport'
 
 const store = useIntelligenceStore()
+const snapshotStore = useSnapshotStore()
 const loading = ref(true)
 const activeTab = ref('roi')
 let roiChart = null
+
+function formatK(val) {
+  if (val == null) return '—'
+  if (typeof val === 'string') return val
+  if (Math.abs(val) >= 1e9) return 'K ' + (val / 1e9).toFixed(2) + 'B'
+  if (Math.abs(val) >= 1e6) return 'K ' + (val / 1e6).toFixed(1) + 'M'
+  if (Math.abs(val) >= 1e3) return 'K ' + (val / 1e3).toFixed(1) + 'K'
+  return 'K ' + val.toLocaleString()
+}
 const roiCanvas = ref(null)
 
 // ─── Export / Business Case ──────────────────────────────────────────────────
 
 function exportReport() {
-  const retention = store.outcomesData?.retention_performance ?? fallbackRetention
-  const criteria = store.outcomesData?.success_criteria ?? fallbackCriteria
-  const trend = store.outcomesData?.roi?.trend ?? fallbackRoiTrend
-  const pilot = store.outcomesData?.pilot_vs_control ?? [
-    { metric: 'Monthly Churn Rate', pilot: '5.1%', control: '7.8%', delta: '-2.7pp', significance: 'p < 0.05' },
-    { metric: 'Retention Rate', pilot: '74%', control: '58%', delta: '+16pp', significance: 'p < 0.05' },
-    { metric: 'AUM Change (90D)', pilot: '-1.2%', control: '-4.8%', delta: '+3.6pp', significance: 'p < 0.05' },
-    { metric: 'RM Contacts per Month', pilot: 28, control: 11, delta: '+17', significance: 'p < 0.05' },
-  ]
+  const retention = store.outcomesData?.retention_performance ?? []
+  const criteria = store.outcomesData?.success_criteria ?? []
+  const trend = store.outcomesData?.roi?.trend ?? []
+  const pilot = store.outcomesData?.pilot_vs_control ?? []
   const which = activeTab.value
   if (which === 'retention') {
     downloadCsv(reportFilename('retention-performance'), retention, ['entity', 'at_risk', 'contacted', 'retained', 'churned_despite', 'revenue_protected', 'retention_rate'])
@@ -409,22 +415,22 @@ function downloadBusinessCase() {
   const md = [
     '# ABSA Foundry — Business Outcomes & ROI',
     '',
-    `Generated: ${todayLabel()}  ·  As-of: 2026-07-27`,
+    `Generated: ${todayLabel()}  ·  As-of: ${snapshotStore.asOfDate}`,
     '',
     '## Headline ROI',
-    '- Revenue Protected (MTD): **K 48.6M**',
-    '- Customers Retained: **1,284**',
-    '- Intervention Cost: **K 3.2M**',
-    '- Net ROI: **1,418%**',
-    '- System ROI Multiple: **15.2×**',
+    `- Revenue Protected (MTD): **${formatK(store.outcomesData?.roi?.revenue_protected)}**`,
+    `- Customers Retained: **${store.outcomesData?.roi?.customers_retained?.toLocaleString() ?? '—'}**`,
+    `- Intervention Cost: **${formatK(store.outcomesData?.roi?.intervention_cost)}**`,
+    `- Net ROI: **${store.outcomesData?.roi?.net_roi_pct?.toLocaleString() ?? '—'}%**`,
+    `- System ROI Multiple: **${store.outcomesData?.roi?.roi_multiple?.toLocaleString() ?? '—'}×**`,
     '',
     '## Retention Performance by Branch / Entity',
-    ...((store.outcomesData?.retention_performance ?? fallbackRetention).map(r =>
+    ...((store.outcomesData?.retention_performance ?? []).map(r =>
       `- ${r.entity}: flagged ${r.at_risk}, contacted ${r.contacted}, retained ${r.retained} (${r.retention_rate}%)`
     )),
     '',
     '## Success Criteria',
-    ...((store.outcomesData?.success_criteria ?? fallbackCriteria).map(c =>
+    ...((store.outcomesData?.success_criteria ?? []).map(c =>
       `- [${c.status}] ${c.criterion} — current ${c.current} (target ${c.target})`
     )),
     '',
@@ -444,38 +450,6 @@ const tabs = [
   { id: 'retention', label: 'Retention Performance', icon: 'verified'    },
   { id: 'criteria',  label: 'Success Criteria',      icon: 'checklist'   },
   { id: 'pilot',     label: 'Pilot vs Control',      icon: 'compare'     },
-]
-
-const fallbackRetention = [
-  { entity: 'Sandton City',    at_risk: 312, contacted: 290, retained: 218, churned_despite:  72, revenue_protected: 'R 8.4M', retention_rate: 75 },
-  { entity: 'Rosebank',        at_risk: 241, contacted: 220, retained: 167, churned_despite:  53, revenue_protected: 'R 6.1M', retention_rate: 76 },
-  { entity: 'Cape Town CBD',   at_risk: 198, contacted: 185, retained: 128, churned_despite:  57, revenue_protected: 'R 5.2M', retention_rate: 69 },
-  { entity: 'Durban Pavilion', at_risk: 176, contacted: 160, retained: 104, churned_despite:  56, revenue_protected: 'R 4.0M', retention_rate: 65 },
-  { entity: 'Midrand',         at_risk: 144, contacted: 130, retained:  78, churned_despite:  52, revenue_protected: 'R 2.9M', retention_rate: 60 },
-  { entity: 'Pretoria East',   at_risk: 120, contacted: 110, retained:  61, churned_despite:  49, revenue_protected: 'R 2.3M', retention_rate: 55 },
-  { entity: 'Port Elizabeth',  at_risk:  98, contacted:  88, retained:  46, churned_despite:  42, revenue_protected: 'R 1.7M', retention_rate: 52 },
-]
-
-const fallbackCriteria = [
-  { criterion: 'Reduce monthly portfolio churn rate from 6.8% to below 6.0% within 90 days of go-live',  target: '< 6.0%',    current: '5.1%',     delta: '-0.9pp',  status: 'MET'      },
-  { criterion: 'Achieve minimum 70% retention rate on AI-flagged at-risk customers after intervention',   target: '>= 70%',    current: '74%',      delta: '+4pp',    status: 'MET'      },
-  { criterion: 'Protect a minimum of R 30M in AUM from churn within the first quarter',                  target: 'R 30M',     current: 'R 48.6M',  delta: '+R18.6M', status: 'MET'      },
-  { criterion: 'Deploy AI model across all 13 pilot branches within 60 days',                            target: '13 / 60D',  current: '13 / 60D', delta: 'On time', status: 'MET'      },
-  { criterion: 'RM daily contact rate to exceed 20 meaningful customer touches per RM per month',        target: '20 / mo',   current: '28 / mo',  delta: '+8',      status: 'ON TRACK' },
-  { criterion: 'Achieve system ROI multiple of 10x or greater by end of pilot period',                   target: '>= 10x',    current: '15.2x',    delta: '+5.2x',   status: 'MET'      },
-  { criterion: 'Model precision (churn prediction accuracy) to exceed 75% on holdout set',               target: '>= 75%',    current: '78.3%',    delta: '+3.3pp',  status: 'MET'      },
-  { criterion: 'Maintain customer satisfaction (NPS) above 42 during intervention period',               target: '> 42',      current: '39',       delta: '-3',      status: 'MONITOR'  },
-  { criterion: 'Complete POPIA compliance review and sign-off before data processing begins',            target: 'Pre-go-live', current: 'Done',   delta: 'Done',    status: 'MET'      },
-  { criterion: 'Reduce average RM time-to-contact on at-risk flag to under 48 hours',                   target: '< 48h',     current: '51h',      delta: '+3h',     status: 'AT RISK'  },
-]
-
-const fallbackRoiTrend = [
-  { month: 'Feb', revenue: 3200000  },
-  { month: 'Mar', revenue: 5800000  },
-  { month: 'Apr', revenue: 7400000  },
-  { month: 'May', revenue: 9100000  },
-  { month: 'Jun', revenue: 11200000 },
-  { month: 'Jul', revenue: 11900000 },
 ]
 
 function statusBadgeClass(s) {
@@ -509,7 +483,7 @@ function isDeltaPositive(delta) {
 function renderRoiChart() {
   if (!roiCanvas.value) return
   if (roiChart) roiChart.destroy()
-  const trend = store.outcomesData?.roi?.trend ?? fallbackRoiTrend
+  const trend = store.outcomesData?.roi?.trend ?? []
   roiChart = new Chart(roiCanvas.value, {
     type: 'bar',
     data: {

@@ -562,6 +562,7 @@ import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { formatMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
@@ -571,9 +572,9 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-const DEFAULT_AS_OF_DATE = '2026-07-27'
 const customerStore   = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore   = useSnapshotStore()
 
 const loading         = ref(true)
 const activeTab       = ref('overview')
@@ -754,11 +755,11 @@ onMounted(async () => {
     predictionStore.fetchChurnDrivers()
 
     const [bRes, fRes, casesRes, unenrolledRes, actionsRes] = await Promise.all([
-      api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/forecasts/churn',            { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/churn-intel/at-risk-cases',  { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 50 } }),
-      api.get('/api/v1/churn-intel/unenrolled-high-risk', { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 10 } }),
-      api.get('/api/v1/churn-intel/priority-actions', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+      api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: snapshotStore.asOfDate } }),
+      api.get('/api/v1/forecasts/churn',            { params: { as_of_date: snapshotStore.asOfDate } }),
+      api.get('/api/v1/churn-intel/at-risk-cases',  { params: { as_of_date: snapshotStore.asOfDate, limit: 50 } }),
+      api.get('/api/v1/churn-intel/unenrolled-high-risk', { params: { as_of_date: snapshotStore.asOfDate, limit: 10 } }),
+      api.get('/api/v1/churn-intel/priority-actions', { params: { as_of_date: snapshotStore.asOfDate } }),
     ])
 
     branchData.value   = bRes.data.branches || []

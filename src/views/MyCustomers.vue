@@ -10,6 +10,8 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
+import { computeCustomerStates } from '@/services/ingestApi'
 import { MARKET_SEGMENT_OPTIONS } from '@/config/customerSegments'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 import { healthTier, stateTier, tierColor } from '@/composables/useSeverityTier'
@@ -35,6 +37,7 @@ const route = useRoute()
 const router = useRouter()
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore = useSnapshotStore()
 
 // Data loading is limited to the roles the gateway's ingest matrix allows.
 const LOAD_ROLES = ['ADMIN', 'RELATIONSHIP_MANAGER', 'OPERATIONS']
@@ -148,12 +151,45 @@ function churnOf(c) {
   return value == null ? null : Number(value)
 }
 
-function clvLabel(c) {
+/** Absolute CLV in ZMW — this is the CLV column. Never a rank. */
+function clvOf(c) {
   const p = predictionStore.predictions[c.customerId]
-  const pct = p?.clv_percentile ?? null
-  if (pct != null) return `${Math.round(pct * 100)}th`
-  if (c.clv != null) return Number(c.clv).toLocaleString()
-  return '—'
+  const value = p?.clv ?? c.clv
+  return value == null ? null : Number(value)
+}
+
+function clvLabel(c) {
+  const v = clvOf(c)
+  return v == null ? '—' : v.toLocaleString()
+}
+
+/** Rank of that CLV within the snapshot cohort, for percentile-labelled cells. */
+function clvPercentileLabel(c) {
+  const pct = predictionStore.predictions[c.customerId]?.clv_percentile
+  if (pct == null) return '—'
+  const n = Math.round(pct * 100)
+  const mod100 = n % 100
+  const suffix = mod100 >= 11 && mod100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] ?? 'th')
+  return `${n}${suffix}`
+}
+
+// ── Forward stage forecast (14/30/90d) ──────────────────────────
+// Lifecycle severity order: a predicted stage further right is a deterioration.
+const LIFECYCLE_ORDER = ['NEW', 'ACTIVE', 'GROWING', 'AT_RISK', 'DORMANT', 'CHURNED']
+
+/** 14/30/90-day stage forecast for a row, or null when unavailable. */
+function forecastOf(c) {
+  return predictionStore.getLifecycleForecast(c.customerId)
+}
+
+/** +1 deteriorating, -1 improving, 0 stable/unknown — judged on the 30-day horizon. */
+function driftOf(c) {
+  const predicted = forecastOf(c)?.['30']?.stage
+  if (!predicted) return 0
+  const from = LIFECYCLE_ORDER.indexOf(String(c.state || '').toUpperCase())
+  const to = LIFECYCLE_ORDER.indexOf(predicted)
+  if (from < 0 || to < 0 || from === to) return 0
+  return to > from ? 1 : -1
 }
 
 function healthPct(c) {
@@ -220,7 +256,8 @@ function exportList() {
     state: c.state,
     healthScore: c.healthScore,
     churnProbability: churnOf(c),
-    clvPercentile: clvLabel(c),
+    clv: clvOf(c) ?? '',
+    clvPercentile: clvPercentileLabel(c),
     segment: c.segmentLabel,
     branch: c.branch,
     recommendedAction: recommendedAction(c),
@@ -228,13 +265,42 @@ function exportList() {
   downloadCsv(
     reportFilename('my-customers'),
     data,
-    ['customerId', 'fullName', 'state', 'healthScore', 'churnProbability', 'clvPercentile', 'segment', 'branch', 'recommendedAction'],
+    ['customerId', 'fullName', 'state', 'healthScore', 'churnProbability', 'clv', 'clvPercentile', 'segment', 'branch', 'recommendedAction'],
   )
   notify(`Exported ${data.length} customers`, 'success', { autoClose: 2500 })
 }
 
 async function reload() {
   await customerStore.fetchPortfolio()
+}
+
+const computing = ref(false)
+
+/** Recompute lifecycle states for the currently selected snapshot date. */
+async function computeStates() {
+  computing.value = true
+  try {
+    const result = await computeCustomerStates(snapshotStore.asOfDate)
+    if (result?.status === 'NO_DATA') {
+      notify(
+        `No feature data for ${snapshotStore.asOfDate} — load a snapshot for that date first`,
+        'error',
+        { autoClose: 6000 },
+      )
+      return
+    }
+    const n = result?.states_upserted ?? 0
+    notify(
+      `Computed ${n} customer state${n === 1 ? '' : 's'} for ${snapshotStore.asOfDate}`,
+      'success',
+      { autoClose: 4000 },
+    )
+    await onDataLoaded()
+  } catch (e) {
+    notify(e.message || 'Compute failed', 'error', { autoClose: 6000 })
+  } finally {
+    computing.value = false
+  }
 }
 
 // ── Delete / restore ──────────────────────────────────
@@ -465,6 +531,15 @@ onMounted(async () => {
           Load Data
         </button>
         <button
+          v-if="canLoadData"
+          :disabled="computing"
+          class="px-4 py-2 bg-white text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-xs font-semibold disabled:opacity-40"
+          @click="computeStates"
+        >
+          <span class="material-symbols-outlined text-[18px]">calculate</span>
+          {{ computing ? 'Computing…' : 'Compute States' }}
+        </button>
+        <button
           :disabled="!rows.length"
           class="px-4 py-2 bg-white text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-xs font-semibold disabled:opacity-40"
           @click="exportList"
@@ -651,6 +726,14 @@ onMounted(async () => {
               <td class="px-4 py-3 whitespace-nowrap">
                 <CustomerStatePill :state="c.state" />
                 <span v-if="c.isTransition" class="ml-1 text-[10px] text-gray-400" :title="`Moved from ${c.previousState}`">↑</span>
+                <!-- Forward stage per horizon; deterioration flagged only when the
+                     30d prediction moves *later* in the lifecycle order. -->
+                <div v-if="forecastOf(c)" class="mt-1 text-[10px] font-mono"
+                     :class="driftOf(c) > 0 ? 'text-red-900 font-bold' : driftOf(c) < 0 ? 'text-absa-enrich' : 'text-gray-500'">
+                  {{ ['14', '30', '90'].map(h => `${h}d ${forecastOf(c)[h]?.stage || '—'}`).join(' · ') }}
+                  <span v-if="driftOf(c) > 0" title="Predicted to deteriorate within 30 days">▼</span>
+                  <span v-else-if="driftOf(c) < 0" title="Predicted to improve within 30 days">▲</span>
+                </div>
               </td>
               <td class="px-4 py-3">
                 <div class="flex items-center gap-2">
@@ -662,7 +745,7 @@ onMounted(async () => {
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-xs font-mono">
                 <span v-if="churnOf(c) != null" class="font-bold" :style="{ color: churnColor(c) }">
-                  {{ (churnOf(c) * 100).toFixed(0) }}%
+                  {{ (churnOf(c) * 100).toFixed(1) }}%
                 </span>
                 <span v-else class="text-gray-400">—</span>
               </td>

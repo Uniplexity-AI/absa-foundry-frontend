@@ -149,6 +149,19 @@ export async function fetchIngestRuns(limit = 20) {
 }
 
 /**
+ * Distinct snapshot dates that have computed states — the options for the
+ * global "as-of" selector.
+ *
+ * @returns {Promise<{dates: string[]}>}
+ */
+export async function fetchSnapshots() {
+  const res = await fetch(`${API_BASE_URL}/api/v1/customers/snapshots`, {
+    headers: _authHeaders(false),
+  })
+  return _handleRes(res)
+}
+
+/**
  * Recompute the lifecycle state snapshot for one date.
  *
  * The portfolio list, counts and KPIs read `customer_states` — a derived
@@ -159,11 +172,13 @@ export async function fetchIngestRuns(limit = 20) {
  * @returns {Promise<{as_of_date:string, customers_processed:number, states_upserted:number, status:string}>}
  */
 export async function computeCustomerStates(asOfDate) {
-  const res = await fetch(
-    `${API_BASE_URL}/api/v1/customers/compute-states?as_of_date=${encodeURIComponent(asOfDate)}`,
-    { method: 'POST', headers: _authHeaders() },
+  const axios = (await import('axios')).default
+  const { data } = await axios.post(
+    `${API_BASE_URL}/api/v1/customers/compute-states`,
+    null,
+    { params: { as_of_date: asOfDate }, timeout: 120000 }
   )
-  return _handleRes(res)
+  return data
 }
 
 /**

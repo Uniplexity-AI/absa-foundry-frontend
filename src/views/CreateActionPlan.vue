@@ -24,7 +24,7 @@
       <div class="pp-metric"><span class="pp-metric__label">Lifecycle State</span><span class="pp-metric__value">{{ state.replace('_', ' ') }}</span></div>
       <div class="pp-metric"><span class="pp-metric__label">Health Score</span><span class="pp-metric__value">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span></div>
       <div class="pp-metric"><span class="pp-metric__label">Churn Probability</span><span class="pp-metric__value">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span></div>
-      <div class="pp-metric"><span class="pp-metric__label">CLV</span><span class="pp-metric__value">{{ clvPercentile != null ? 'P' + Math.round(clvPercentile * 100) : '—' }}</span></div>
+      <div class="pp-metric"><span class="pp-metric__label">CLV</span><span class="pp-metric__value">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</span></div>
     </div>
 
     <!-- Form -->
@@ -123,6 +123,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
 import { notify } from '@/utils/absaExport'
+import { formatCurrency } from '@/utils/formatting'
 import { saveActionPlan, hydrateActionPlansFromServer } from '@/utils/absaActions'
 
 const route = useRoute()
@@ -149,6 +150,9 @@ const clvPercentile = computed(() => {
   const p = predictionStore.predictions[customerId.value]
   return typeof p === 'object' ? p?.clv_percentile ?? null : null
 })
+
+/** Absolute predicted 12-month CLV (ZMW) — the CLV tile shows money, not a rank. */
+const clvValue = computed(() => predictionStore.getClv(customerId.value))
 
 const form = ref({
   title: '',

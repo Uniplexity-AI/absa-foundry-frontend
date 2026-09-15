@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { API_BASE_URL, authFetch } from '@/services/api'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 
 /**
  * AI narration panel (Ollama).
@@ -12,8 +13,11 @@ import { API_BASE_URL, authFetch } from '@/services/api'
  */
 const props = defineProps({
   customerId: { type: String, required: true },
-  asOfDate: { type: String, default: '2026-07-27' },
+  asOfDate: { type: String, default: '' },
 })
+
+const snapshotStore = useSnapshotStore()
+const effectiveAsOfDate = computed(() => props.asOfDate || snapshotStore.asOfDate)
 
 const loading = ref(false)
 const elapsed = ref(0)
@@ -44,7 +48,7 @@ async function generate() {
 
   try {
     const url = `${API_BASE_URL}/api/v1/insights/llm-explain/${encodeURIComponent(props.customerId)}`
-      + `?as_of_date=${encodeURIComponent(props.asOfDate)}`
+      + `?as_of_date=${encodeURIComponent(effectiveAsOfDate.value)}`
     const res = await authFetch(url, { signal: controller.signal })
     const data = await res.json().catch(() => ({}))
     if (!res.ok) throw new Error(data?.detail || `Request failed (${res.status})`)

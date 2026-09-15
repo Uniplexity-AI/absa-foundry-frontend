@@ -9,8 +9,8 @@ const _configured = (import.meta.env.VITE_API_BASE_URL || '').trim();
 
 const BASE_URL = _configured || (
   window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:8080'
-    : 'https://ub-app-backend-692487163735.europe-west1.run.app'
+    ? 'https://100.82.12.85:8000'
+    : 'https://100.82.12.85:8000'
 );
 
 // Ensure consistent export

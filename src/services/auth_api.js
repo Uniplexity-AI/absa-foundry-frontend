@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ||
   (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:8080'
-    : 'https://ub-app-backend-692487163735.europe-west1.run.app')
+    ? 'https://100.82.12.85:8000'
+    : 'https://100.82.12.85:8000')
 
 const API_URL = `${BASE_URL}/auth`;
 // ✅ Create a reusable Axios instance

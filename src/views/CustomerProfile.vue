@@ -12,6 +12,7 @@ import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { churnTier, healthTier, stateTier, tierColor } from '@/composables/useSeverityTier'
 import { getActionLog, getCustomerState, hydrateLogFromServer, recordAction } from '@/utils/absaActions'
 import { notify } from '@/utils/absaExport'
@@ -24,13 +25,13 @@ import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 
 defineOptions({ name: 'CustomerProfile' })
 
-const DEFAULT_AS_OF_DATE = '2026-07-27'
 const TWELVE_MONTHS_MS = 365 * 24 * 60 * 60 * 1000
 
 const route = useRoute()
 const router = useRouter()
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore = useSnapshotStore()
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 30000 })
 api.interceptors.request.use((config) => {
@@ -212,13 +213,13 @@ const ringDashOffset = computed(() => ringCircumference.value * (1 - ringValue.v
 
 const insightMetrics = computed(() => {
   const c = components.value
-  const churnPct = churnProbability.value != null ? Math.round(churnProbability.value * 100) : null
+  const churnPct = churnProbability.value != null ? (churnProbability.value * 100) : null
   const clvPct = clvPercentile.value != null ? Math.round(clvPercentile.value * 100) : null
   const behaviour = c.behaviour_sub ?? features.value.engagement_score ?? null
   return [
     {
       label: 'Churn Risk',
-      value: churnPct != null ? (churnPct >= 60 ? 'High' : churnPct >= 30 ? 'Medium' : 'Low') + ` (${churnPct}%)` : '—',
+      value: churnPct != null ? (churnPct >= 60 ? 'High' : churnPct >= 30 ? 'Medium' : 'Low') + ` (${churnPct.toFixed(1)}%)` : '—',
       pct: churnPct ?? 0,
       color: tierColor(churnTier(churnProbability.value)),
     },
@@ -538,13 +539,13 @@ onMounted(async () => {
   await Promise.allSettled([
     (async () => {
       try {
-        const { data } = await api.get(`/api/v1/insights/reason-codes/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE } })
+        const { data } = await api.get(`/api/v1/insights/reason-codes/${id}`, { params: { as_of_date: snapshotStore.asOfDate } })
         reasonCodes.value = data.reason_codes || []
       } catch (e) { console.warn('reason-codes failed:', e.message) }
     })(),
     (async () => {
       try {
-        const { data } = await api.get(`/api/v1/recommendations/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE } })
+        const { data } = await api.get(`/api/v1/recommendations/${id}`, { params: { as_of_date: snapshotStore.asOfDate } })
         recommendations.value = data.recommendations || []
       } catch (e) { console.warn('recommendations failed:', e.message) }
     })(),

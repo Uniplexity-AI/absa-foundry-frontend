@@ -19,24 +19,22 @@
 import { computed, ref, watch } from 'vue'
 import { notify } from '@/utils/absaExport'
 import { addCustomer, computeCustomerStates, fetchIngestSchema } from '@/services/ingestApi'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 
 const props = defineProps({
   open: { type: Boolean, default: false },
 })
 const emit = defineEmits(['close', 'added'])
 
+const snapshotStore = useSnapshotStore()
+
 const MASTER = 'customers'
 const SNAPSHOT = 'customer_features'
 
 /**
- * The snapshot date every view in this pilot reads. Each store and view keeps
- * its own copy of this date (customerStore, predictionStore, intelligenceStore,
- * CustomerProfile, BranchManagerDashboard, ...), so a feature snapshot written
- * for a different date will NOT appear in the portfolio until the app is
- * pointed at that date. Defaulting the form to it here is what makes an added
- * customer actually show up.
+ * The snapshot date the portfolio views read. Defaulting the form to it here is
+ * what makes an added customer actually show up in the portfolio.
  */
-const PILOT_AS_OF_DATE = '2026-07-27'
 
 /** Presentation-only grouping for the master tab. Unlisted fields still render. */
 const MASTER_GROUPS = [
@@ -115,7 +113,7 @@ function resetForm() {
   snapshot.value = Object.fromEntries(snapshotInputFields.value.map((f) => [f.name, '']))
   // Prefill the snapshot date the views actually read, so the customer lands in
   // a snapshot the portfolio can see.
-  if ('as_of_date' in snapshot.value) snapshot.value.as_of_date = PILOT_AS_OF_DATE
+  if ('as_of_date' in snapshot.value) snapshot.value.as_of_date = snapshotStore.asOfDate
   touched.value = {}
   attempted.value = false
   serverErrors.value = []
@@ -145,7 +143,7 @@ const withSnapshot = computed(() => filledSnapshotCount.value > 0)
 const snapshotValues = computed(() => ({ customer_id: customerId.value, ...snapshot.value }))
 const snapshotDate = computed(() => String(snapshotValues.value.as_of_date ?? '').trim())
 /** True when the snapshot would not be visible to the app's own views. */
-const offPilotDate = computed(() => !!snapshotDate.value && snapshotDate.value !== PILOT_AS_OF_DATE)
+const offPilotDate = computed(() => !!snapshotDate.value && snapshotDate.value !== snapshotStore.asOfDate)
 
 // ── Validation (mirrors the rules the loader applies) ───────────
 function validateField(field, values) {
@@ -398,7 +396,7 @@ async function submit() {
               v-if="offPilotDate"
               class="text-[11px] text-amber-900 border border-amber-200 bg-amber-50 px-3 py-2 rounded-sm"
             >
-              The portfolio views read the <span class="font-bold">{{ PILOT_AS_OF_DATE }}</span> snapshot.
+              The portfolio views read the <span class="font-bold">{{ snapshotStore.asOfDate }}</span> snapshot.
               A snapshot dated <span class="font-bold">{{ snapshotDate }}</span> will be stored, but the
               customer will only appear on the portfolio once the app is pointed at that date.
             </div>
@@ -407,7 +405,7 @@ async function submit() {
               <input v-model="computeSnapshot" type="checkbox" class="mt-0.5 rounded-sm border-gray-300 text-absa-passion focus:ring-absa-passion" />
               <span>
                 Refresh the lifecycle snapshot for
-                <span class="font-mono font-bold">{{ snapshotDate || PILOT_AS_OF_DATE }}</span>
+                <span class="font-mono font-bold">{{ snapshotDate || snapshotStore.asOfDate }}</span>
                 after saving. The portfolio list and counts read that derived table, so a snapshot that is not
                 recomputed stays invisible even though the data is stored.
               </span>

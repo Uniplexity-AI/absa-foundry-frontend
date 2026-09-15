@@ -78,6 +78,15 @@
         </div>
         
         <div class="flex items-center gap-4">
+          <label class="hidden md:flex items-center gap-2 text-xs text-gray-500">
+            <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+            <input
+              v-model="snapshotStore.selectedDate"
+              type="date"
+              @change="onSnapshotDateChange"
+              class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs font-mono text-absa-enrich bg-white"
+            />
+          </label>
           <div class="hidden md:flex relative w-96">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
             <input
@@ -190,10 +199,12 @@ import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
 import API_BASE_URL from '@/services/api'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 
 const router = useRouter()
 const route = useRoute()
 const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
+const snapshotStore = useSnapshotStore()
 
 const pageTitle = computed(() => {
   return route.meta.title || 'Dashboard'
@@ -226,6 +237,14 @@ function openNotification(n) {
 
 function clearNotifications() {
   notifications.value = []
+}
+
+// ── Snapshot (as-of) date selector ──
+function onSnapshotDateChange() {
+  snapshotStore.setDate(snapshotStore.selectedDate)
+  // The chosen date is read by every store/view on fetch; a full reload is the
+  // simplest way to guarantee the visible page re-queries with the new date.
+  window.location.reload()
 }
 
 function openHelp() {
@@ -279,6 +298,7 @@ async function handleLogout() {
 // Restore saved preference on mount
 onMounted(() => {
   fetchSubscribedModules()
+  snapshotStore.fetchAvailable()
   document.addEventListener('pointerdown', onDocumentPointerDown)
   document.addEventListener('keydown', onDocumentKeydown)
 })

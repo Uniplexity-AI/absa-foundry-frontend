@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
+import { useSnapshotStore } from './snapshotStore'
 import { formatMarketSegment, isFrontendVisibleMarketSegment, resolveMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
@@ -12,8 +13,6 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-const DEFAULT_AS_OF_DATE = '2026-07-27'
-
 // `/api/v1/customers` caps `limit` at 500 (server-side, returns HTTP 422 above
 // that) and responds with a bare array — no total, no headers. So the client can
 // hold at most this many rows, and that number must never be presented as the
@@ -22,6 +21,8 @@ const LEDGER_FETCH_LIMIT = 500
 
 // ── Store ───────────────────────────────────────────────────────
 export const useCustomerStore = defineStore('customer', () => {
+  const snapshotStore = useSnapshotStore()
+
   // ── State ──
   const customers = ref([])
   const selectedCustomer = ref(null)
@@ -110,7 +111,7 @@ export const useCustomerStore = defineStore('customer', () => {
   async function fetchPortfolio(params = {}) {
     loading.value = true
     error.value = null
-    const dateParams = { as_of_date: params.as_of_date || DEFAULT_AS_OF_DATE }
+    const dateParams = { as_of_date: params.as_of_date || snapshotStore.asOfDate }
 
     try {
       const [portfolioRes, countRes, listRes] = await Promise.all([
@@ -145,7 +146,7 @@ export const useCustomerStore = defineStore('customer', () => {
     error.value = null
     try {
       const { data } = await api.get(`/api/v1/customers/${id}`, {
-        params: { as_of_date: DEFAULT_AS_OF_DATE },
+        params: { as_of_date: snapshotStore.asOfDate },
       })
       if (!isFrontendVisibleMarketSegment(data.market_segment ?? data.segment)) {
         selectedCustomer.value = null

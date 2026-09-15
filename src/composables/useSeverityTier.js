@@ -15,6 +15,8 @@ export const TIERS = {
 }
 
 const STATE_TIER = {
+  NEW:     'passion',
+  GROWING: 'passion',
   ACTIVE:  'passion',
   AT_RISK: 'power',
   DORMANT: 'hope',

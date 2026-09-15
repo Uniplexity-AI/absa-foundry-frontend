@@ -13,6 +13,14 @@
         <p class="text-body-md text-gray-500 mt-1">CLV scoring, value segmentation, and churn-adjusted priority analysis</p>
       </div>
       <div class="flex items-center gap-3">
+        <button
+          @click="runClvPredictions"
+          :disabled="runningClv"
+          class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-semibold shadow-none disabled:opacity-50"
+        >
+          <span class="material-symbols-outlined text-[18px]">{{ runningClv ? 'hourglass_top' : 'model_training' }}</span>
+          {{ runningClv ? 'Running…' : 'Run CLV Predictions' }}
+        </button>
         <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[18px]">download</span>
           Export Report
@@ -27,6 +35,18 @@
     <!-- Loading State -->
     <div v-if="loading" class="mt-6">
       <LoadingSkeleton />
+    </div>
+
+    <!-- Empty state: no CLV data, or the CLV model is not loaded -->
+    <div v-else-if="!store.clvData || store.clvData.status === 'CLV_MODEL_UNAVAILABLE'" class="mt-6">
+      <div class="bg-white border border-gray-300 rounded-sm p-10 text-center">
+        <span class="material-symbols-outlined text-[36px] text-gray-300">stacked_line_chart</span>
+        <h2 class="text-sm font-bold text-absa-enrich mt-3">CLV model not available</h2>
+        <p class="text-xs text-gray-500 mt-1">
+          No CLV data for {{ snapshotStore.asOfDate }}. The CLV LightGBM model is not
+          loaded (or the prediction service is unreachable) — no fallback values are shown.
+        </p>
+      </div>
     </div>
 
     <template v-else>
@@ -59,7 +79,7 @@
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Avg Customer CLV</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">K 41,280</p>
+            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatCurrency(store.clvData?.summary?.avg_clv) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Per customer</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
@@ -69,17 +89,17 @@
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CLV at Risk</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 312M</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatCurrency(store.clvData?.summary?.clv_at_risk) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">High-value + high-churn</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Value Protected MTD</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 48.6M</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatCurrency(store.clvData?.summary?.value_protected_mtd) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Interventions this month</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Churn-Adj. CLV</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">K 7.98B</p>
+            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatCurrency(store.clvData?.summary?.churn_adjusted_clv) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Expected realised value</p>
           </div>
         </div>
@@ -138,6 +158,71 @@
 
       <!-- ───────────────────── TAB 2: VALUE SEGMENTS ───────────────────── -->
       <div v-if="activeTab === 'segments'">
+
+        <!-- Band boundaries: absolute ZMW ranges replace the percentile default -->
+        <div class="bg-white border border-gray-300 rounded-sm p-4 mb-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <p class="text-xs font-bold text-absa-enrich">Value band configuration</p>
+              <p class="text-[10px] text-gray-400 mt-0.5">
+                Boundaries are 12-month predicted CLV in ZMW. The four ranges must be contiguous and cover every customer.
+              </p>
+            </div>
+            <div class="flex items-center gap-3">
+              <label class="text-[10px] text-gray-500 flex items-center gap-1">
+                <input type="radio" value="percentile" v-model="bandMode" /> Percentile
+              </label>
+              <label class="text-[10px] text-gray-500 flex items-center gap-1">
+                <input type="radio" value="custom" v-model="bandMode" /> Custom ZMW
+              </label>
+            </div>
+          </div>
+
+          <div v-if="bandsCustom" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div v-for="row in bandRows" :key="row.band" class="flex items-center gap-2">
+              <span :class="['inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold w-20', bandBadgeClass(row.band)]">
+                {{ row.band }}
+              </span>
+              <input
+                v-model="row.min"
+                type="text"
+                inputmode="numeric"
+                placeholder="no minimum"
+                class="w-28 border border-gray-300 rounded-sm px-2 py-1 text-xs font-mono"
+              />
+              <span class="text-xs text-gray-400">to</span>
+              <input
+                v-model="row.max"
+                type="text"
+                inputmode="numeric"
+                placeholder="no maximum"
+                class="w-28 border border-gray-300 rounded-sm px-2 py-1 text-xs font-mono"
+              />
+            </div>
+          </div>
+
+          <p v-if="bandError" class="text-[11px] text-red-600 mt-2">{{ bandError }}</p>
+
+          <div class="flex items-center gap-2 mt-3">
+            <button
+              @click="applyBands"
+              :disabled="store.loading.clv"
+              class="px-3 py-1 rounded-sm bg-absa-enrich text-white text-xs font-bold disabled:opacity-50"
+            >
+              Apply
+            </button>
+            <button
+              @click="resetBands"
+              :disabled="store.loading.clv"
+              class="px-3 py-1 rounded-sm border border-gray-300 text-xs font-bold text-gray-600"
+            >
+              Reset to percentile
+            </button>
+            <span v-if="bandsCustom && bandPreview" class="text-[10px] text-gray-400 font-mono truncate">
+              {{ bandPreview }}
+            </span>
+          </div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div
@@ -264,7 +349,7 @@
                 <p class="text-3xl font-bold font-mono text-absa-passion">{{ protectCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
-              <p class="text-[10px] text-gray-400 mt-1">CLV &gt; K100K &amp; Churn Prob &gt; 50%</p>
+              <p class="text-[10px] text-gray-400 mt-1">CLV top 50% &amp; Churn Prob &gt; 50%</p>
             </div>
           </div>
           <!-- MAINTAIN -->
@@ -281,7 +366,7 @@
                 <p class="text-3xl font-bold font-mono text-absa-passion">{{ maintainCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
-              <p class="text-[10px] text-gray-400 mt-1">CLV &gt; K100K &amp; Churn Prob &le; 50%</p>
+              <p class="text-[10px] text-gray-400 mt-1">CLV top 50% &amp; Churn Prob &le; 50%</p>
             </div>
           </div>
           <!-- MONITOR -->
@@ -298,7 +383,7 @@
                 <p class="text-3xl font-bold font-mono text-amber-700">{{ monitorCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
-              <p class="text-[10px] text-gray-400 mt-1">CLV &le; K100K &amp; Churn Prob &gt; 50%</p>
+              <p class="text-[10px] text-gray-400 mt-1">CLV bottom 50% &amp; Churn Prob &gt; 50%</p>
             </div>
           </div>
           <!-- OBSERVE -->
@@ -315,7 +400,7 @@
                 <p class="text-3xl font-bold font-mono text-gray-600">{{ observeCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
-              <p class="text-[10px] text-gray-400 mt-1">CLV &le; K100K &amp; Churn Prob &le; 50%</p>
+              <p class="text-[10px] text-gray-400 mt-1">CLV bottom 50% &amp; Churn Prob &le; 50%</p>
             </div>
           </div>
         </div>
@@ -368,7 +453,7 @@
                       :score-class="churnProbColor(c.churn_prob)"
                       :confidence="c.churn_confidence ?? '± 0.05'"
                       :drivers="c.churn_drivers ?? []"
-                      score-date="2026-07-27"
+                      :score-date="snapshotStore.asOfDate"
                       :align-right="true"
                     >
                       <span :class="['text-xs font-bold font-mono', churnProbColor(c.churn_prob)]">
@@ -377,23 +462,23 @@
                     </MlExplainPopover>
                   </td>
                   <td class="px-3 py-1.5">
-                    <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', quadrantClass(getQuadrant(c.clv, c.churn_prob))]">
-                      {{ getQuadrant(c.clv, c.churn_prob) }}
+                    <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', quadrantClass(getQuadrant(c.clv_percentile, c.churn_prob))]">
+                      {{ getQuadrant(c.clv_percentile, c.churn_prob) }}
                     </span>
                   </td>
                   <td class="px-3 py-1.5">
                     <button
-                      v-if="getQuadrant(c.clv, c.churn_prob) === 'PROTECT'"
+                      v-if="getQuadrant(c.clv_percentile, c.churn_prob) === 'PROTECT'"
                       @click="assignRmToCustomer(c)"
                       class="px-3 py-1 bg-absa-passion text-absa-serene rounded-sm text-[10px] font-bold hover:bg-absa-power transition-colors shadow-none"
                     >Assign RM</button>
                     <button
-                      v-else-if="getQuadrant(c.clv, c.churn_prob) === 'MAINTAIN'"
+                      v-else-if="getQuadrant(c.clv_percentile, c.churn_prob) === 'MAINTAIN'"
                       @click="contactRmForCustomer(c)"
                       class="px-3 py-1 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm text-[10px] font-bold hover:bg-gray-50 transition-colors shadow-none"
                     >Contact RM</button>
                     <button
-                      v-else-if="getQuadrant(c.clv, c.churn_prob) === 'MONITOR'"
+                      v-else-if="getQuadrant(c.clv_percentile, c.churn_prob) === 'MONITOR'"
                       @click="enrolCampaignForCustomer(c)"
                       class="px-3 py-1 bg-amber-100 text-amber-700 rounded-sm text-[10px] font-bold hover:bg-amber-200 transition-colors shadow-none"
                     >Enrol Campaign</button>
@@ -506,7 +591,7 @@
                       :score-class="churnProbColor(c.churn_prob)"
                       :confidence="c.churn_confidence ?? '± 0.05'"
                       :drivers="c.churn_drivers ?? []"
-                      score-date="2026-07-27"
+                      :score-date="snapshotStore.asOfDate"
                       :align-right="true"
                     >
                       <div class="flex flex-col gap-1">
@@ -560,10 +645,31 @@ import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import MlExplainPopover from '@/components/ui/MlExplainPopover.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 import { assignRm, enrolCustomer, recordAction, getActionState, hydrateStateFromServer } from '@/utils/absaActions'
+import { useClvBands } from '@/composables/useClvBands'
 
 const store = useIntelligenceStore()
+const snapshotStore = useSnapshotStore()
+
+// Value-band boundaries (absolute ZMW). Persisted per browser; the store reads
+// the saved spec when it fetches, so no call site has to thread it through.
+const {
+  mode: bandMode, rows: bandRows, error: bandError,
+  isCustom: bandsCustom, preview: bandPreview,
+  apply: applyBandConfig, reset: resetBandConfig,
+} = useClvBands()
+
+async function applyBands() {
+  if (!applyBandConfig()) return        // invalid configuration; message already shown
+  await store.fetchClv()
+}
+
+async function resetBands() {
+  resetBandConfig()
+  await store.fetchClv()
+}
 const loading = ref(true)
 const activeTab = ref('overview')
 
@@ -585,10 +691,15 @@ function formatCurrency(val) {
   return 'K ' + val.toLocaleString()
 }
 
-function getQuadrant(clv, prob) {
-  if (clv > 100000 && prob > 0.5) return 'PROTECT'
-  if (clv > 100000 && prob <= 0.5) return 'MAINTAIN'
-  if (clv <= 100000 && prob > 0.5) return 'MONITOR'
+function getQuadrant(clvPercentile, prob) {
+  // Option A: the quadrant is decided by CLV *percentile* (>0.5 = high value),
+  // not an absolute money threshold. The trained CLV model returns 12-month net
+  // revenue (ZMW) — a very different scale from the old AUM proxy — so a fixed
+  // K100K cutoff would push every customer into MONITOR/OBSERVE.
+  const highValue = (clvPercentile ?? 0) > 0.5
+  if (highValue && prob > 0.5) return 'PROTECT'
+  if (highValue && prob <= 0.5) return 'MAINTAIN'
+  if (!highValue && prob > 0.5) return 'MONITOR'
   return 'OBSERVE'
 }
 
@@ -646,16 +757,16 @@ const top10ByCLV = computed(() =>
 )
 
 const protectCount = computed(() =>
-  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv, c.churn_prob) === 'PROTECT').length
+  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv_percentile, c.churn_prob) === 'PROTECT').length
 )
 const maintainCount = computed(() =>
-  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv, c.churn_prob) === 'MAINTAIN').length
+  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv_percentile, c.churn_prob) === 'MAINTAIN').length
 )
 const monitorCount = computed(() =>
-  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv, c.churn_prob) === 'MONITOR').length
+  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv_percentile, c.churn_prob) === 'MONITOR').length
 )
 const observeCount = computed(() =>
-  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv, c.churn_prob) === 'OBSERVE').length
+  (store.clvData?.top_customers ?? []).filter(c => getQuadrant(c.clv_percentile, c.churn_prob) === 'OBSERVE').length
 )
 
 // ─── Remediation 6: Collapsible scope note ───────────────────────────────────
@@ -742,6 +853,37 @@ function enrolCampaignForCustomer(c) {
   notify(`${c.name} enrolled in Value Retention Cohort`, 'success')
 }
 
+// ─── Run CLV Predictions (explicit) ───────────────────────────────────────────
+
+const runningClv = ref(false)
+
+async function runClvPredictions() {
+  if (runningClv.value) return
+  runningClv.value = true
+  try {
+    const summary = await store.runClvPredictions()
+    if (summary?.status === 'CLV_MODEL_NOT_LOADED') {
+      notify('CLV model is not loaded — no predictions were produced', 'error', { autoClose: 6000 })
+      return
+    }
+    if (summary?.status === 'NO_DATA') {
+      notify(`No feature data for ${snapshotStore.asOfDate}`, 'error', { autoClose: 6000 })
+      return
+    }
+    notify(
+      `CLV predicted for ${summary?.customers_scored ?? 0} customers (${summary?.clv_model ?? 'model'}) · `
+        + `mean K${(summary?.mean_clv ?? 0).toLocaleString()}`,
+      'success',
+      { autoClose: 5000 },
+    )
+    await store.fetchClv()
+  } catch (e) {
+    notify(e?.message || 'CLV prediction run failed', 'error', { autoClose: 6000 })
+  } finally {
+    runningClv.value = false
+  }
+}
+
 // ─── Export Report ───────────────────────────────────────────────────────────
 
 function exportReport() {
@@ -759,7 +901,7 @@ function exportReport() {
     const rows = top.map(c => ({
       customer_id: c.customer_id, name: c.name, segment: c.segment, band: c.band,
       clv: c.clv, churn_prob: c.churn_prob, aum: c.aum, rm: hasRm(c) || '', days_since_contact: c.days_since_contact,
-      quadrant: getQuadrant(c.clv, c.churn_prob),
+      quadrant: getQuadrant(c.clv_percentile, c.churn_prob),
     }))
     downloadCsv(reportFilename('priority-customers'), rows, ['customer_id', 'name', 'segment', 'band', 'clv', 'churn_prob', 'aum', 'rm', 'days_since_contact', 'quadrant'])
   }

@@ -13,6 +13,10 @@
         <p class="text-body-md text-gray-500 mt-1">Stage distribution, transition analysis, onboarding health, and win-back intelligence</p>
       </div>
       <div class="flex items-center gap-3">
+        <button @click="runForecast" :disabled="forecastRunning" class="px-4 py-2 bg-absa-passion text-white rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-semibold shadow-none disabled:opacity-50">
+          <span class="material-symbols-outlined text-[18px]">{{ forecastRunning ? 'hourglass_top' : 'online_prediction' }}</span>
+          {{ forecastRunning ? 'Running…' : 'Run Lifecycle Forecast' }}
+        </button>
         <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[18px]">download</span>
           Export Report
@@ -133,6 +137,36 @@
 
       <!-- ─────────────── TAB 2: STAGE TRANSITIONS ─────────────── -->
       <div v-if="activeTab === 'transitions'">
+
+        <!-- Compute States button + status banner -->
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-xs text-gray-500">
+            Transitions are written when the State Engine detects a stage change between two snapshot dates.
+            Run <strong class="text-absa-enrich">Compute States</strong> to detect and log all transitions for the selected date.
+          </p>
+          <button
+            @click="runComputeStates"
+            :disabled="computeStatesRunning"
+            class="ml-4 flex-shrink-0 px-4 py-2 bg-absa-enrich text-white rounded-sm flex items-center gap-2 hover:opacity-90 transition-opacity text-sm font-semibold shadow-none disabled:opacity-50"
+          >
+            <span class="material-symbols-outlined text-[18px]">{{ computeStatesRunning ? 'hourglass_top' : 'sync_alt' }}</span>
+            {{ computeStatesRunning ? 'Computing…' : 'Compute States' }}
+          </button>
+        </div>
+
+        <!-- Last run result -->
+        <div v-if="computeStatesResult" :class="['rounded-sm border px-4 py-3 mb-5 text-xs flex items-start gap-3', computeStatesResult.status === 'COMPLETED' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800']">
+          <span class="material-symbols-outlined text-[16px] flex-shrink-0 mt-0.5">{{ computeStatesResult.status === 'COMPLETED' ? 'check_circle' : 'error' }}</span>
+          <div>
+            <p class="font-semibold">{{ computeStatesResult.status }}</p>
+            <p class="mt-0.5 text-[11px] opacity-80">
+              {{ computeStatesResult.customers_processed }} customers processed ·
+              {{ computeStatesResult.states_upserted }} states upserted ·
+              {{ computeStatesResult.transitions_detected }} transitions detected ·
+              {{ computeStatesResult.duration_seconds }}s
+            </p>
+          </div>
+        </div>
 
         <!-- Collapsible scope note (Remediation 6) -->
         <div class="rounded-sm border border-gray-300 overflow-hidden mb-6">
@@ -461,6 +495,96 @@
 
       </div>
 
+      <!-- ───────── Tab 5: STAGE FORECAST (14/30/90d models) ───────── -->
+      <div v-if="activeTab === 'forecast'">
+        <div class="bg-absa-serene border border-gray-300 rounded-sm p-4 mb-6">
+          <p class="text-xs text-gray-600">
+            Model forecasts of the stage at 14, 30 and 90 days — these are
+            <strong class="text-absa-enrich">predictions</strong>. The Stage Distribution tab is what the rule engine
+            says <em>now</em>, so the two are deliberately kept apart. A horizon whose model is unavailable is reported
+            as unavailable rather than estimated.
+          </p>
+        </div>
+
+        <!-- Empty forecast: separates "no model" from "nothing to score" -->
+        <div v-if="predictionStore.lifecycleForecastStatus && !predictionStore.lifecycleForecastCount"
+             class="bg-red-50 border border-red-200 rounded-sm p-4 mb-6">
+          <p class="text-xs text-red-800">
+            The forecast came back <strong>empty</strong> for
+            <strong>{{ predictionStore.lifecycleForecastDate || 'the selected date' }}</strong>
+            (status: <strong>{{ predictionStore.lifecycleForecastStatus }}</strong>, 0 customers).
+            <template v-if="predictionStore.lifecycleForecastStatus === 'NO_DATA'">
+              That date has no rows in <code class="font-mono">customer_features</code> — the models are loaded, but there
+              is nothing to score. Pick a snapshot date that has features using the header selector;
+              <code class="font-mono">/states/snapshots</code> lists the dates that have <em>states</em>, which is not
+              always the same set.
+            </template>
+          </p>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="bg-white border border-gray-300 rounded-sm p-4 mb-6">
+          <div class="flex items-center gap-4 mb-4">
+            <h2 class="text-sm font-bold text-absa-enrich">Predicted Stage Mix</h2>
+            
+            <div class="flex bg-gray-100 rounded-sm p-0.5">
+              <button @click="forecastViewType = 'line'" :class="['px-3 py-1 text-[11px] font-bold rounded-sm transition-colors shadow-none', forecastViewType === 'line' ? 'bg-white shadow-sm text-absa-enrich' : 'text-gray-500 hover:text-gray-700']">Trend</button>
+              <button @click="forecastViewType = 'bar'" :class="['px-3 py-1 text-[11px] font-bold rounded-sm transition-colors shadow-none', forecastViewType === 'bar' ? 'bg-white shadow-sm text-absa-enrich' : 'text-gray-500 hover:text-gray-700']">Distribution</button>
+            </div>
+
+            <div class="flex items-center gap-2 ml-auto">
+              <span v-for="h in FORECAST_HORIZONS" :key="h"
+                    :class="['text-[10px] font-bold px-2 py-0.5 rounded-sm',
+                             horizonLoaded(h) ? 'bg-gray-100 text-gray-600' : 'bg-red-50 text-red-700']"
+                    :title="horizonVersion(h) || ''"
+              >{{ h }}d: {{ horizonLoaded(h) ? (horizonVersion(h) || 'model') : 'UNAVAILABLE' }}</span>
+            </div>
+          </div>
+          <div class="h-[400px]">
+            <Line v-if="forecastViewType === 'line'" :data="forecastLineChartData" :options="forecastLineChartOptions" />
+            <Bar v-else :data="forecastChartData" :options="forecastChartOptions" />
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-300 rounded-sm">
+          <div class="px-4 py-3 border-b border-gray-300 flex items-center justify-between">
+            <h2 class="text-sm font-bold text-absa-enrich">Predicted to deteriorate within 30 days</h2>
+            <span class="text-[10px] text-gray-400">30-day prediction later in the lifecycle than the current stage</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-100">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider">Customer</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider">Current</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider">Predicted (30d)</th>
+                  <th class="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider">14d / 90d</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr v-if="!deteriorating.length">
+                  <td colspan="4" class="p-8 text-center text-xs text-gray-500">
+                    No customer is predicted to move to a later stage within 30 days.
+                  </td>
+                </tr>
+                <tr v-for="row in deteriorating" :key="row.customer_id">
+                  <td class="px-3 py-1.5 text-xs font-mono text-gray-500">{{ row.customer_id }}</td>
+                  <td class="px-3 py-1.5"><CustomerStatePill :state="row.current" /></td>
+                  <td class="px-3 py-1.5">
+                    <CustomerStatePill :state="row.predicted" />
+                    <span class="text-[10px] text-gray-500 ml-1">{{ Math.round(row.confidence * 100) }}%</span>
+                  </td>
+                  <td class="px-3 py-1.5 text-[10px] font-mono text-gray-500">
+                    {{ row.h14 || '—' }} / {{ row.h90 || '—' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </template>
     
     <AiCampaignModal
@@ -477,7 +601,15 @@ import { ref, computed, onMounted } from 'vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
+import { usePredictionStore } from '@/stores/predictionStore'
+import { useCustomerStore } from '@/stores/customerStore'
+import CustomerStatePill from '@/components/CustomerStatePill.vue'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
+import { computeCustomerStates } from '@/services/ingestApi'
+import { Bar, Line } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, CategoryScale, LinearScale)
 
 const store = useIntelligenceStore()
 const loading = ref(true)
@@ -489,7 +621,286 @@ const tabs = [
   { id: 'transitions',  label: 'Stage Transitions',  icon: 'compare_arrows'  },
   { id: 'onboarding',   label: 'Onboarding Health',  icon: 'new_releases'    },
   { id: 'winback',      label: 'Win-Back Pipeline',  icon: 'redo'            },
+  { id: 'forecast',     label: 'Stage Forecast',     icon: 'online_prediction' },
 ]
+
+// ─── Compute States ──────────────────────────────────────────────────────────
+const computeStatesRunning = ref(false)
+const computeStatesResult = ref(null)
+
+async function runComputeStates() {
+  computeStatesRunning.value = true
+  computeStatesResult.value = null
+  try {
+    const snapshotStore = (await import('@/stores/snapshotStore')).useSnapshotStore()
+    const result = await computeCustomerStates(snapshotStore.asOfDate)
+    computeStatesResult.value = result
+    if (result.transitions_detected > 0) {
+      notify(
+        `Compute States complete: ${result.transitions_detected} transition${result.transitions_detected !== 1 ? 's' : ''} detected · ${result.states_upserted} states upserted`,
+        'success', { autoClose: 6000 }
+      )
+      // Refresh the lifecycle data so the heatmap updates
+      await store.fetchLifecycle()
+    } else {
+      notify(
+        `Compute States complete: ${result.customers_processed} customers processed · 0 transitions detected (no stage changes since last run)`,
+        'info', { autoClose: 7000 }
+      )
+    }
+  } catch (e) {
+    computeStatesResult.value = { status: 'ERROR', customers_processed: 0, states_upserted: 0, transitions_detected: 0, duration_seconds: 0 }
+    notify(e?.message || 'Compute States failed', 'error', { autoClose: 6000 })
+  } finally {
+    computeStatesRunning.value = false
+  }
+}
+
+// ─── Forward stage forecast (14/30/90d models) ──────────────────────────
+// The four tabs above are all *observed*; this one is the model's forward view.
+// StateEngine still owns the current stage, so nothing here is labelled "now".
+const predictionStore = usePredictionStore()
+const customerStore = useCustomerStore()
+
+const FORECAST_HORIZONS = ['14', '30', '90']
+const forecastRunning = ref(false)
+const forecastViewType = ref('line')
+
+// Lifecycle severity order: a stage further right is a later (worse) stage.
+const STAGE_SEQUENCE = ['NEW', 'ACTIVE', 'GROWING', 'AT_RISK', 'DORMANT', 'CHURNED']
+const STAGE_LABEL = {
+  NEW: 'Onboarding', ACTIVE: 'Active', GROWING: 'Growing',
+  AT_RISK: 'At Risk', DORMANT: 'Dormant', CHURNED: 'Churned',
+}
+
+function horizonLoaded(horizon) {
+  return predictionStore.lifecycleHorizons?.[horizon]?.loaded === true
+}
+
+function horizonVersion(horizon) {
+  const version = predictionStore.lifecycleHorizons?.[horizon]?.version
+  return version && version !== 'not_loaded' ? version : null
+}
+
+/** Predicted stage mix for one horizon — counts plus share, in lifecycle order. */
+function predictedDistribution(horizon) {
+  const counts = {}
+  for (const entry of Object.values(predictionStore.lifecycleForecast ?? {})) {
+    const stage = entry?.[horizon]?.stage
+    if (stage) counts[stage] = (counts[stage] || 0) + 1
+  }
+  const total = Object.values(counts).reduce((a, b) => a + b, 0)
+  return Object.entries(counts)
+    .sort((a, b) => STAGE_SEQUENCE.indexOf(a[0]) - STAGE_SEQUENCE.indexOf(b[0]))
+    .map(([stage, count]) => ({
+      stage,
+      label: STAGE_LABEL[stage] ?? stage,
+      count,
+      pct: total ? Math.round((count / total) * 1000) / 10 : 0,
+    }))
+}
+
+const forecastChartData = computed(() => {
+  const d14 = predictedDistribution('14')
+  const d30 = predictedDistribution('30')
+  const d90 = predictedDistribution('90')
+
+  const labels = STAGE_SEQUENCE.map(s => STAGE_LABEL[s] ?? s)
+  
+  const getData = (dist) => {
+    return STAGE_SEQUENCE.map(stage => {
+      const found = dist.find(item => item.stage === stage)
+      return found ? found.count : 0
+    })
+  }
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: '14-Day',
+        data: getData(d14),
+        backgroundColor: '#f1f5f9', // slate-100 to show short term
+        borderColor: '#94a3b8',
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      {
+        label: '30-Day',
+        data: getData(d30),
+        backgroundColor: '#e11d48', // absa-passion
+        borderRadius: 2,
+      },
+      {
+        label: '90-Day',
+        data: getData(d90),
+        backgroundColor: '#0f172a', // absa-enrich
+        borderRadius: 2,
+      }
+    ]
+  }
+})
+
+const forecastChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+      align: 'end',
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8,
+        font: { family: 'Inter', size: 11 }
+      }
+    },
+    tooltip: {
+      mode: 'index',
+      intersect: false,
+      titleFont: { family: 'Inter' },
+      bodyFont: { family: 'Inter' }
+    }
+  },
+  scales: {
+    x: {
+      grid: { display: false },
+      ticks: { font: { family: 'Inter', size: 11 } }
+    },
+    y: {
+      beginAtZero: true,
+      grid: { color: '#f3f4f6' },
+      ticks: { font: { family: 'Inter', size: 11 } }
+    }
+  }
+}
+
+const forecastLineChartData = computed(() => {
+  const currentDist = store.lifecycleData?.distribution ?? []
+  const d14 = predictedDistribution('14')
+  const d30 = predictedDistribution('30')
+  const d90 = predictedDistribution('90')
+
+  const labels = ['Current', '14-Day', '30-Day', '90-Day']
+  
+  const colors = [
+    '#94a3b8', // Onboarding (slate-400)
+    '#1e293b', // Active (slate-800)
+    '#e11d48', // Growing (absa-passion/red-600)
+    '#ea580c', // At Risk (orange-600)
+    '#b91c1c', // Dormant (red-700)
+    '#7f1d1d', // Churned (red-900)
+  ]
+
+  const datasets = STAGE_SEQUENCE.map((stage, idx) => {
+    const cVal = currentDist.find(s => s.stage === stage)?.count || 0
+    const val14 = d14.find(s => s.stage === stage)?.count || 0
+    const val30 = d30.find(s => s.stage === stage)?.count || 0
+    const val90 = d90.find(s => s.stage === stage)?.count || 0
+
+    return {
+      label: STAGE_LABEL[stage] ?? stage,
+      data: [cVal, val14, val30, val90],
+      borderColor: colors[idx % colors.length],
+      backgroundColor: colors[idx % colors.length],
+      tension: 0.3,
+      borderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 5
+    }
+  })
+
+  return { labels, datasets }
+})
+
+const forecastLineChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'right',
+      labels: {
+        usePointStyle: true,
+        boxWidth: 8,
+        font: { family: 'Inter', size: 11 }
+      }
+    },
+    tooltip: {
+      mode: 'index',
+      intersect: false,
+      titleFont: { family: 'Inter' },
+      bodyFont: { family: 'Inter' }
+    }
+  },
+  scales: {
+    x: {
+      grid: { display: false },
+      ticks: { font: { family: 'Inter', size: 11 } }
+    },
+    y: {
+      beginAtZero: true,
+      grid: { color: '#f3f4f6' },
+      ticks: { font: { family: 'Inter', size: 11 } }
+    }
+  }
+}
+
+/** Customers whose 30-day forecast sits later in the lifecycle than they are now. */
+const deteriorating = computed(() => {
+  const forecast = predictionStore.lifecycleForecast ?? {}
+  const out = []
+  for (const customer of customerStore.customers ?? []) {
+    const entry = forecast[customer.customerId]
+    const predicted = entry?.['30']?.stage
+    if (!predicted) continue
+    const from = STAGE_SEQUENCE.indexOf(String(customer.state || '').toUpperCase())
+    const to = STAGE_SEQUENCE.indexOf(predicted)
+    if (from < 0 || to <= from) continue
+    out.push({
+      customer_id: customer.customerId,
+      current: customer.state,
+      predicted,
+      confidence: entry['30'].confidence ?? 0,
+      h14: entry['14']?.stage ?? null,
+      h90: entry['90']?.stage ?? null,
+    })
+  }
+  return out.sort((a, b) => b.confidence - a.confidence).slice(0, 25)
+})
+
+async function runForecast() {
+  forecastRunning.value = true
+  try {
+    await predictionStore.fetchLifecycleForecast()
+    // Current stages come from the ledger, for the deterioration comparison.
+    if (!customerStore.customers?.length) await customerStore.fetchPortfolio()
+    const loaded = FORECAST_HORIZONS.filter(horizonLoaded)
+    const missing = FORECAST_HORIZONS.filter((h) => !horizonLoaded(h))
+    if (!loaded.length) {
+      notify('No lifecycle horizon model is available — check the prediction service logs', 'error', { autoClose: 6000 })
+    } else if (!predictionStore.lifecycleForecastCount) {
+      // Loaded but empty: a missing feature snapshot, not a model problem.
+      notify(
+        `No customers to forecast — status ${predictionStore.lifecycleForecastStatus ?? 'unknown'} for `
+          + `${predictionStore.lifecycleForecastDate ?? 'the selected date'}. Pick a snapshot date that has features.`,
+        'error',
+        { autoClose: 8000 },
+      )
+    } else {
+      notify(
+        `Lifecycle forecast complete: ${loaded.map((h) => `${h}d`).join(', ')} · `
+          + `${predictionStore.lifecycleForecastCount} customers`
+          + (missing.length ? ` · unavailable: ${missing.map((h) => `${h}d`).join(', ')}` : ''),
+        missing.length ? 'info' : 'success',
+        { autoClose: 6000 },
+      )
+    }
+    activeTab.value = 'forecast'
+  } catch (e) {
+    notify(e?.message || 'Lifecycle forecast failed', 'error', { autoClose: 6000 })
+  } finally {
+    forecastRunning.value = false
+  }
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -655,6 +1066,9 @@ function viewCampaign(row) {
 
 onMounted(async () => {
   await store.fetchLifecycle()
+  // Pre-load the forecast so the Stage Forecast tab is not empty on first open;
+  // the header button re-runs it for the selected snapshot date.
+  predictionStore.fetchLifecycleForecast()
   loading.value = false
 })
 </script>

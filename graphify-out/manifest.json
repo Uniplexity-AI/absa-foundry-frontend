@@ -474,10 +474,10 @@
     "semantic_hash": ""
   },
   "src/services/api.js": {
-    "mtime": 1787211475.2575414,
-    "seen": 1787736273.645472,
-    "ast_hash": "c0e78d89ecd36cfbd29e6048b62dd107",
-    "semantic_hash": "c0e78d89ecd36cfbd29e6048b62dd107"
+    "mtime": 1789483834.0632832,
+    "seen": 1789565469.7903562,
+    "ast_hash": "28818a98a7239060fcbbf5556b3f40cf",
+    "semantic_hash": ""
   },
   "src/services/audit_log.js": {
     "mtime": 1784664927.8126044,
@@ -486,10 +486,10 @@
     "semantic_hash": "983860e9c94bd8affce1c20d7ef87663"
   },
   "src/services/auth_api.js": {
-    "mtime": 1786409300.2128296,
-    "seen": 1787736273.645472,
-    "ast_hash": "d45ccef9f2a98f6fdd68d1ef6ea89ee3",
-    "semantic_hash": "d45ccef9f2a98f6fdd68d1ef6ea89ee3"
+    "mtime": 1789483809.2658103,
+    "seen": 1789565469.7903562,
+    "ast_hash": "0221bc50fd044248ead670921a669bb6",
+    "semantic_hash": ""
   },
   "src/services/crm_api.js": {
     "mtime": 1784671739.151917,
@@ -624,8 +624,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1789322156.4641912,
-    "seen": 1789322341.3318138,
+    "mtime": 1789564501.2265687,
+    "seen": 1789565469.7903562,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },

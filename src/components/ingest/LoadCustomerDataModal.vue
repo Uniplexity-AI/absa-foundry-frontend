@@ -46,22 +46,32 @@ const datasetKey = ref('')
 const activeDataset = computed(
   () => datasets.value.find((d) => d.key === datasetKey.value) || datasets.value[0] || null
 )
-const fields = computed(() => activeDataset.value?.fields || schema.value?.fields || [])
+const fields = computed(() => {
+  if (activeDataset.value?.fields?.length) return activeDataset.value.fields
+  if (schema.value?.fields?.length) return schema.value.fields
+  if (preview.value?.field_formats) {
+    return Object.values(preview.value.field_formats)
+  }
+  return []
+})
 const fieldByName = computed(() =>
   Object.fromEntries(fields.value.map((f) => [f.name, f]))
 )
 const coreDatasets = computed(() => schema.value?.core_datasets || [])
 const targetTable = computed(
-  () => activeDataset.value?.table || schema.value?.target_table || 'public.customers_clean'
+  () => activeDataset.value?.table || preview.value?.target_table || schema.value?.target_table || 'public.customers_clean'
 )
 const targetRowCount = computed(() => {
   const counts = schema.value?.target_row_counts
   if (counts && datasetKey.value in counts) return counts[datasetKey.value]
   return schema.value?.target_row_count
 })
-const keyColumns = computed(() => activeDataset.value?.key_columns || ['customer_id'])
+const keyColumns = computed(() => activeDataset.value?.key_columns || preview.value?.key_columns || ['customer_id'])
 const keyColumnText = computed(() => keyColumns.value.join(' + '))
-const requiredFields = computed(() => fields.value.filter((f) => f.required))
+const requiredFields = computed(() => {
+  if (preview.value?.required_fields?.length) return preview.value.required_fields
+  return fields.value.filter((f) => f.required)
+})
 
 async function ensureSchema() {
   if (schema.value || schemaLoading.value) return
@@ -101,9 +111,10 @@ const liveMappingErrors = computed(() => {
   if (duplicates.length) {
     errors.push(`More than one column maps to: ${duplicates.join(', ')}`)
   }
-  for (const f of fields.value) {
-    if (f.required && !targets.includes(f.name)) {
-      errors.push(`${f.label} (${f.name}) is required but no column is mapped to it`)
+  const reqs = preview.value?.required_fields || fields.value.filter((f) => f.required)
+  for (const f of reqs) {
+    if (!targets.includes(f.name)) {
+      errors.push(`${f.label || f.name} (${f.name}) is required but no column is mapped to it`)
     }
   }
   return errors
@@ -141,9 +152,22 @@ async function stageFile(picked) {
   loadResult.value = null
   try {
     const data = await previewCsv(picked, datasetKey.value)
-    if (!datasetKey.value) datasetKey.value = data.dataset || ''
-    preview.value = data
-    mapping.value = { ...data.mapping }
+    const cols = data.columns || []
+    // Auto-detect feature store extract if currently on 'customers'
+    if (
+      (!datasetKey.value || datasetKey.value === 'customers') &&
+      cols.includes('as_of_date') &&
+      (cols.includes('days_since_last_txn') || cols.includes('days_since_first_txn') || cols.includes('txn_count_30d'))
+    ) {
+      datasetKey.value = 'customer_features'
+      const remapped = await remapCsv(data.upload_id, 'customer_features')
+      preview.value = remapped
+      mapping.value = { ...remapped.mapping }
+    } else {
+      if (!datasetKey.value) datasetKey.value = data.dataset || ''
+      preview.value = data
+      mapping.value = { ...data.mapping }
+    }
     step.value = 2
   } catch (e) {
     csvError.value = e.message || 'Could not read that file'
@@ -184,7 +208,7 @@ async function runLoad(dryRun) {
     loadResult.value = await loadCsv({
       upload_id: preview.value.upload_id,
       mapping: mapping.value,
-      dataset: preview.value.dataset || datasetKey.value,
+      dataset: datasetKey.value || preview.value.dataset || 'customers',
       filename: preview.value.filename,
       dry_run: dryRun,
     })

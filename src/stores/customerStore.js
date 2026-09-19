@@ -85,12 +85,23 @@ export const useCustomerStore = defineStore('customer', () => {
   })
 
   // ── Helpers ──
-  function _mapCustomer(raw) {
+  /**
+   * Map one `customer_states` row to a ledger row.
+   *
+   * `raw` is a Customer State Service snapshot — it carries customer_id, state,
+   * health_score and component_scores, and **no** identity columns. A real name
+   * has to be joined in from the master record (see `fetchCustomerNames`), so
+   * `name` is passed in rather than invented here.
+   */
+  function _mapCustomer(raw, name = null) {
     const id = raw.customer_id
     const marketSegment = resolveMarketSegment(raw.market_segment ?? raw.segment)
     return {
       customerId: id,
-      fullName: `Customer ${id.replace('CUST', '')}`,
+      // The placeholder is a last resort for an id we have no name for, not the
+      // default: showing "Customer 000877" for a named customer made saved
+      // edits to the name look as if they had been ignored.
+      fullName: name || `Customer ${String(id).replace('CUST', '')}`,
       state: raw.state,
       healthScore: raw.health_score,
       churnProbability: raw.churn_probability ?? null,
@@ -108,6 +119,28 @@ export const useCustomerStore = defineStore('customer', () => {
   }
 
   // ── Actions ──
+  /**
+   * Customer id → full_name for the rows about to be rendered.
+   *
+   * Names exist only on ``public.customers_clean``; the portfolio payload is a
+   * ``customer_states`` projection with no name column, and fetching a profile
+   * per row would be N requests. One batched lookup fills the whole ledger.
+   * A failure degrades to the placeholder — the list must still render.
+   */
+  async function fetchCustomerNames(ids) {
+    const wanted = [...new Set((ids || []).filter(Boolean))].slice(0, LEDGER_FETCH_LIMIT)
+    if (!wanted.length) return {}
+    try {
+      const { data } = await api.get('/api/v1/customers/names', {
+        params: { ids: wanted.join(',') },
+      })
+      return data?.names || {}
+    } catch (e) {
+      console.warn('fetchCustomerNames failed:', e.message)
+      return {}
+    }
+  }
+
   async function fetchPortfolio(params = {}) {
     loading.value = true
     error.value = null
@@ -121,9 +154,13 @@ export const useCustomerStore = defineStore('customer', () => {
       ])
 
       _portfolioSummary.value = portfolioRes.data
-      customers.value = (listRes.data || [])
+
+      const rawRows = (listRes.data || [])
         .filter((customer) => isFrontendVisibleMarketSegment(customer.market_segment ?? customer.segment))
-        .map(_mapCustomer)
+
+      // Join in the identity names the snapshot cannot carry.
+      const names = await fetchCustomerNames(rawRows.map((c) => c.customer_id))
+      customers.value = rawRows.map((customer) => _mapCustomer(customer, names[customer.customer_id] ?? null))
 
       // The authoritative portfolio size. Deriving this from
       // `customers.value.length` is what made the ledger read "of 500 customers"
@@ -211,6 +248,7 @@ export const useCustomerStore = defineStore('customer', () => {
     portfolio,
     filteredCustomers,
     fetchPortfolio,
+    fetchCustomerNames,
     fetchCustomerDetail,
     fetchCustomerTimeline,
     fetchCustomerFeatures,

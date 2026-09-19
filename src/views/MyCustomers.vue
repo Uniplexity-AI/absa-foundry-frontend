@@ -28,6 +28,7 @@ import CustomerStatePill from '@/components/CustomerStatePill.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import LoadCustomerDataModal from '@/components/ingest/LoadCustomerDataModal.vue'
 import AddCustomerModal from '@/components/ingest/AddCustomerModal.vue'
+import EditCustomerModal from '@/components/ingest/EditCustomerModal.vue'
 
 defineOptions({ name: 'MyCustomers' })
 
@@ -43,6 +44,8 @@ const snapshotStore = useSnapshotStore()
 const LOAD_ROLES = ['ADMIN', 'RELATIONSHIP_MANAGER', 'OPERATIONS']
 const showLoadData = ref(false)
 const showAddCustomer = ref(false)
+const showEditCustomer = ref(false)
+const editingCustomer = ref(null)
 const canLoadData = computed(() => {
   try {
     const jwt = decodeJWT()
@@ -88,14 +91,24 @@ const segment = ref('')
 const branch = ref('')
 const sortKey = ref('health-asc')
 const page = ref(1)
+const crmView = ref('all')
 
 const rows = computed(() => customerStore.customers)
 
 const stateChips = computed(() => {
   const counts = {}
-  for (const c of rows.value) counts[c.state] = (counts[c.state] || 0) + 1
+  for (const c of rows.value) {
+    if (crmView.value === 'risk' && !['DORMANT', 'AT_RISK'].includes(c.state)) continue
+    counts[c.state] = (counts[c.state] || 0) + 1
+  }
+  
+  // Calculate total count respecting crmView
+  const totalCount = rows.value.filter(c => 
+    crmView.value === 'risk' ? ['DORMANT', 'AT_RISK'].includes(c.state) : true
+  ).length
+
   return [
-    { value: '', label: 'All', count: rows.value.length },
+    { value: '', label: 'All', count: totalCount },
     { value: 'ACTIVE', label: 'Active', count: counts.ACTIVE || 0 },
     { value: 'AT_RISK', label: 'At Risk', count: counts.AT_RISK || 0 },
     { value: 'DORMANT', label: 'Dormant', count: counts.DORMANT || 0 },
@@ -108,12 +121,13 @@ const branchOptions = computed(() =>
 )
 
 const activeFilterCount = computed(() =>
-  [search.value, state.value, segment.value, branch.value].filter(Boolean).length
+  [search.value, state.value, segment.value, branch.value, crmView.value === 'risk' ? 'risk' : ''].filter(Boolean).length
 )
 
 const filteredRows = computed(() => {
   const q = search.value.trim().toLowerCase()
   let list = rows.value.filter((c) => {
+    if (crmView.value === 'risk' && !['DORMANT', 'AT_RISK'].includes(c.state)) return false
     if (state.value && c.state !== state.value) return false
     if (segment.value && String(c.marketSegment) !== String(segment.value)) return false
     if (branch.value && c.branch !== branch.value) return false
@@ -233,6 +247,11 @@ function recommendedAction(c) {
 }
 
 // ── Actions ────────────────────────────────────────────────────
+function openEditCustomer(c) {
+  editingCustomer.value = c
+  showEditCustomer.value = true
+}
+
 function openProfile(c) {
   router.push({
     name: 'CustomerProfile',
@@ -470,7 +489,7 @@ async function onDataLoaded() {
 }
 
 // ── Effects ────────────────────────────────────────────────────
-watch([search, state, segment, branch, sortKey], () => { page.value = 1 })
+watch([search, state, segment, branch, sortKey, crmView], () => { page.value = 1 })
 watch(totalPages, (max) => { if (page.value > max) page.value = max })
 
 // Header search targets this route by name, so react to query changes too.
@@ -564,6 +583,20 @@ onMounted(async () => {
     >
       <span>{{ customerStore.error }}</span>
       <button class="font-bold underline" @click="reload">Retry</button>
+    </div>
+
+    <!-- CRM View Tabs -->
+    <div class="flex items-center gap-6 border-b border-gray-300 mb-6">
+      <button
+        class="pb-2 text-sm font-bold uppercase tracking-wider transition-colors"
+        :class="crmView === 'all' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+        @click="crmView = 'all'"
+      >All Customers</button>
+      <button
+        class="pb-2 text-sm font-bold uppercase tracking-wider transition-colors"
+        :class="crmView === 'risk' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+        @click="crmView = 'risk'"
+      >Dormant / At Risk</button>
     </div>
 
     <!-- Filters -->
@@ -760,6 +793,14 @@ onMounted(async () => {
               <td class="px-4 py-3 whitespace-nowrap text-right">
                 <div class="flex items-center justify-end gap-3">
                   <button
+                    class="text-gray-400 hover:text-absa-enrich"
+                    :title="`Edit ${c.customerId}`"
+                    :aria-label="`Edit ${c.customerId}`"
+                    @click.stop="openEditCustomer(c)"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                  </button>
+                  <button
                     v-if="canDelete"
                     class="text-gray-400 hover:text-absa-passion"
                     :title="`Delete ${c.customerId}`"
@@ -803,6 +844,7 @@ onMounted(async () => {
     <!-- Data ingest: CSV mapping + core-banking sync -->
     <LoadCustomerDataModal :open="showLoadData" @close="showLoadData = false" @loaded="onDataLoaded" />
     <AddCustomerModal :open="showAddCustomer" @close="showAddCustomer = false" @added="onDataLoaded" />
+    <EditCustomerModal :open="showEditCustomer" :customer="editingCustomer" @close="showEditCustomer = false" @added="onDataLoaded" />
 
     <!-- Destructive-action confirmation. Deleting is soft and reversible, so the
          copy says so plainly instead of claiming permanence. -->

@@ -161,11 +161,15 @@ onMounted(async () => {
     console.warn('Failed to initialize currency service:', error);
   }
 
-  // Initialize Global Preferences and RBAC
-  await Promise.all([
-    fetchPreferences(),
-    initializeRBAC()
-  ]);
+  // Initialize Global Preferences and RBAC (Legacy API endpoints, disabled to prevent 401/403 network errors)
+  // try {
+  //   await Promise.all([
+  //     fetchPreferences().catch(() => {}),
+  //     initializeRBAC().catch(() => {})
+  //   ]);
+  // } catch (e) {
+  //   // Ignore legacy endpoint errors
+  // }
 
   // PWA setup
   pwaManager.onPromptReady(() => {

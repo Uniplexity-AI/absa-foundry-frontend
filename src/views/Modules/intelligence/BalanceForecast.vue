@@ -30,7 +30,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="mt-6">
-      <LoadingSkeleton />
+      <LoadingSkeleton type="stats" />
     </div>
 
     <!-- Unavailable State -->

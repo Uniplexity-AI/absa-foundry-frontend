@@ -24,25 +24,25 @@
                 <span class="material-symbols-outlined text-[20px]">group</span>
                 <span class="text-body-md font-medium">My Customers</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">store</span>
                 <span class="text-body-md font-medium">Branch Manager</span>
               </router-link>
 
-              <div v-if="canAnalytics" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <div v-if="canPredict" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">star</span>
                 <span class="text-body-md font-medium">Customer Value</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">waterfall_chart</span>
                 <span class="text-body-md font-medium">Lifecycle Prediction</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">show_chart</span>
                 <span class="text-body-md font-medium">Balance Forecast</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monetization_on</span>
                 <span class="text-body-md font-medium">Business Outcomes</span>
               </router-link>
@@ -60,9 +60,15 @@
                 <span class="material-symbols-outlined text-[20px]">settings</span>
                 <span class="text-body-md font-medium">ETL Config Manager</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/ai/codebase-insights" active-class="!bg-[#a40022] !text-white !font-semibold">
-                <span class="material-symbols-outlined text-[20px]">insights</span>
-                <span class="text-body-md font-medium">Codebase Insights</span>
+
+              <div v-if="canAdmin" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">ADMIN</div>
+              <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                <span class="text-body-md font-medium">Settings</span>
+              </router-link>
+              <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings/users" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">group_add</span>
+                <span class="text-body-md font-medium">User Management</span>
               </router-link>
             </nav>
           </div>
@@ -200,11 +206,13 @@ import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
 import API_BASE_URL from '@/services/api'
 import { useSnapshotStore } from '@/stores/snapshotStore'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const route = useRoute()
-const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
+const { hasPermission, initializeRBAC, isAdmin: _legacyIsAdmin, isSuperAdmin } = useRBAC()
 const snapshotStore = useSnapshotStore()
+const authStore = useAuthStore()
 
 const pageTitle = computed(() => {
   return route.meta.title || 'Dashboard'
@@ -316,27 +324,23 @@ const ROLE_LABELS = {
   OPERATIONS: 'Operations Analyst'
 }
 
-const userEmail = computed(() => {
-  try { return decodeJWT().getUserEmail?.() || 'User' }
-  catch { return 'User' }
-})
 
-const currentRole = computed(() => {
-  try { return String(decodeJWT().getUserRole?.() || '').toUpperCase() }
-  catch { return '' }
-})
+const userEmail = computed(() => authStore.email || 'User')
 
-const canAnalytics = computed(() => ['ADMIN', 'RELATIONSHIP_MANAGER'].includes(currentRole.value))
-const canModels = computed(() => ['ADMIN', 'DATA_SCIENTIST'].includes(currentRole.value))
-const canEtl = computed(() => ['ADMIN', 'OPERATIONS'].includes(currentRole.value))
+// Use authStore (roles array) for all access decisions
+const canAnalytics = computed(() => authStore.isAdmin || authStore.isRM)
+const canPredict   = computed(() => authStore.isAdmin || authStore.isRM || authStore.isDS)
+const canModels    = computed(() => authStore.isAdmin || authStore.isDS)
+const canEtl       = computed(() => authStore.isAdmin || authStore.isOps)
+const canAdmin     = computed(() => authStore.isAdmin)
+
+// Keep currentRole for display labels (uses first role)
+const currentRole = computed(() => authStore.primaryRole || '')
 
 const userName = computed(() => {
-  try {
-    const n = decodeJWT().getUserName?.()
-    if (n) return n
-  } catch (e) {}
-  const email = userEmail.value
-  return email !== 'User' ? email.split('@')[0].replace(/[._]/g, ' ') : 'Absa User'
+  if (authStore.displayName) return authStore.displayName
+  const email = authStore.email || ''
+  return email ? email.split('@')[0].replace(/[._]/g, ' ') : 'Absa User'
 })
 
 const userRole = computed(() => ROLE_LABELS[currentRole.value] || 'Relationship Manager')
@@ -347,7 +351,7 @@ const userInitials = computed(() => {
   return (initials || 'AU').toUpperCase()
 })
 
-const canAccessSettings = computed(() => isAdmin.value || isSuperAdmin.value || hasPermission('settings', 'read'))
+const canAccessSettings = computed(() => authStore.isAdmin)
 
 // ── Dynamic Modules ──
 const allModuleCards = getModuleCards()

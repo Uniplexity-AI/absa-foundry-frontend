@@ -213,3 +213,53 @@ export async function addCustomer(row, opts = {}) {
   })
   return _handleRes(res)
 }
+
+/**
+ * The raw master row for one customer — the Edit Customer form's pre-fill.
+ *
+ * Reads the same columns `patchCustomer` writes, keyed by the dataset's field
+ * names, so the form loads, diffs and submits against one contract. Do not
+ * pre-fill an edit form from the portfolio/list payload: that is a
+ * `customer_states` snapshot and carries none of the identity columns, which is
+ * why the form used to open blank.
+ *
+ * Returns `{ customer_id, row, columns_missing, target_table }`.
+ * `columns_missing` lists dataset fields the database has no column for — those
+ * cannot be stored, so the form must not offer them as editable.
+ *
+ * @param {string} customerId
+ * @returns {Promise<object>}
+ */
+export async function getCustomerMaster(customerId) {
+  const res = await fetch(
+    `${API_BASE_URL}/api/v1/ingest/customer/${encodeURIComponent(customerId)}`,
+    // Never serve a pre-fill from the HTTP cache — it must reflect the last save.
+    { headers: _authHeaders(false), cache: 'no-store' },
+  )
+  return _handleRes(res)
+}
+
+/**
+ * Partially update one customer — only the supplied fields are written.
+ *
+ * This is the safe edit path. `addCustomer` with `allowUpdate` upserts EVERY
+ * column of the dataset, so a form that only carries the fields the operator
+ * touched would null all the others (and silently drop any column the database
+ * does not have). Send only what changed.
+ *
+ * Rejects with the backend detail when a supplied field has no column on the
+ * target table, so callers can surface "apply the migration" rather than
+ * reporting a successful save that wrote nothing.
+ *
+ * @param {string} customerId
+ * @param {Record<string, string>} fields field name → new value (changed only)
+ * @returns {Promise<{customer_id: string, rows_updated: number, columns_missing: string[]}>}
+ */
+export async function patchCustomer(customerId, fields) {
+  const res = await fetch(`${API_BASE_URL}/api/v1/ingest/customer`, {
+    method: 'PATCH',
+    headers: _authHeaders(),
+    body: JSON.stringify({ customer_id: customerId, fields }),
+  })
+  return _handleRes(res)
+}

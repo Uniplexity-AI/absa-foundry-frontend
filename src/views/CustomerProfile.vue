@@ -6,7 +6,7 @@
  * the 12-month lifecycle journey, the AI next-best-action card, and the
  * per-customer action history below.
  */
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
@@ -22,6 +22,8 @@ import { decodeJWT } from '@/services/decodeJWT'
 import CustomerStatePill from '@/components/CustomerStatePill.vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+import EngagementModal from '@/components/crm/EngagementModal.vue'
+import PostEngagementPerformance from '@/components/crm/PostEngagementPerformance.vue'
 
 defineOptions({ name: 'CustomerProfile' })
 
@@ -50,6 +52,17 @@ const localState = ref(null)
 // Identity facts composed server-side from the clean layer (account number,
 // national ID, tenure, assigned RM, health score).
 const profile = ref(null)
+// Set when the master record could not be read, so the page can say why the
+// identity panel is running on snapshot data instead of failing silently.
+const profileError = ref('')
+
+const showEngagementModal = ref(false)
+const nextOfKin = computed(() => profile.value?.next_of_kin_name ? {
+  name: profile.value.next_of_kin_name,
+  relation: profile.value.next_of_kin_relationship,
+  phone: profile.value.next_of_kin_phone
+} : null)
+const activeTab = ref('interactions') // 'interactions' or 'nok'
 
 const customerId = computed(() => String(route.params.id || ''))
 const customer = computed(() => customerStore.selectedCustomer || {})
@@ -177,16 +190,47 @@ const lastActivityText = computed(() => {
 
 const healthTileLabel = computed(() => (hasHealth.value ? ringTierLabel.value : 'Not available'))
 
+const bozRemainingDays = computed(() => {
+  const days = features.value.days_since_last_txn
+  // 1 year (365) to become dormant + 10 years (3650) dormant period = 4015 days
+  if ((state.value === 'DORMANT' || state.value === 'CHURNED') && days != null) {
+    return 4015 - days
+  }
+  return null
+})
+
+const bozRemainingText = computed(() => {
+  const remaining = bozRemainingDays.value
+  if (remaining == null) return null
+  if (remaining < 0) return `Overdue by ${Math.abs(remaining)} days`
+  const years = Math.floor(remaining / 365)
+  const days = remaining % 365
+  if (years > 0) return `${years} years, ${days} days`
+  return `${remaining} days`
+})
+
+const bozAlert = computed(() => {
+  const remaining = bozRemainingDays.value
+  // Show alert if < 1 year remaining (365 days) or overdue
+  return remaining != null && remaining <= 365
+})
+
 const detailFields = computed(() => {
   const f = features.value
-  return [
+  const fields = [
+    { label: 'Mobile', value: profile.value?.mobile_number || customer.value._raw?.mobile_number || '—' },
     { label: 'Branch', value: profile.value?.branch_code || customer.value.branch || '—' },
     { label: 'Segment', value: profile.value?.market_segment || customer.value.segmentLabel || '—' },
     { label: 'KYC Tier', value: profile.value?.kyc_tier || '—' },
     { label: 'Nationality', value: profile.value?.nationality || '—' },
+    { label: 'Gender', value: profile.value?.gender || '—' },
     { label: 'Last Activity', value: lastActivityText.value },
     { label: 'Lifecycle State', value: String(state.value).replace(/_/g, ' ') },
   ]
+  if (bozRemainingText.value) {
+    fields.push({ label: 'BOZ Transfer In', value: bozRemainingText.value })
+  }
+  return fields
 })
 
 // ── Health-score ring (inline SVG) ──────────────────────────────
@@ -376,6 +420,7 @@ const historyEntries = computed(() => {
       at: a.at,
       detail: a.detail || a.meta?.reason || 'Logged by the relationship manager.',
       actor: a.actor,
+      meta: a.meta,
     }))
 })
 
@@ -512,10 +557,23 @@ function dismissAction() {
 }
 
 // ── Effects ────────────────────────────────────────────────────
-onMounted(async () => {
+/**
+ * Load everything the page shows for one customer.
+ *
+ * Called on mount AND on a change of `route.params.id`, so bouncing between two
+ * profiles (or back into a cached history entry) cannot leave stale identity
+ * facts on screen. Before this, only `onMounted` ran — the header kept the
+ * previous customer's data whenever the component was reused.
+ */
+async function loadProfilePage() {
   loading.value = true
+  profileError.value = ''
+
   const id = customerId.value
-  if (!id) { loading.value = false; return }
+  if (!id) {
+    loading.value = false
+    return
+  }
 
   actionLog.value = getActionLog()
 
@@ -529,8 +587,23 @@ onMounted(async () => {
     // Identity header (account number, NRC, tenure, assigned RM, health).
     // A 404 resolves to null rather than failing the whole page.
     fetchCustomerProfile(id)
-      .then((data) => { profile.value = data })
-      .catch((e) => { console.warn('customer profile header failed:', e.message) }),
+      .then((data) => {
+        profile.value = data
+        if (data == null) {
+          profileError.value =
+            'No identity record was found for this customer, so the details below '
+            + 'come from the last snapshot instead of the customer master record.'
+        }
+      })
+      .catch((e) => {
+        // Swallowing this left the page silently rendering snapshot fallbacks
+        // ("Customer 00123", "Not on file") whenever the master read broke —
+        // which is exactly what made saved edits look like they were ignored.
+        console.warn('customer profile header failed:', e.message)
+        profile.value = null
+        profileError.value = e.message
+          || 'The customer master record could not be read.'
+      })
   ])
 
   localState.value = getCustomerState(id)
@@ -550,11 +623,45 @@ onMounted(async () => {
       } catch (e) { console.warn('recommendations failed:', e.message) }
     })(),
   ])
+}
+
+onMounted(loadProfilePage)
+
+// A different id in the same route (profile → profile) must re-read the header.
+watch(() => route.params.id, (id, previous) => {
+  if (!id || id === previous) return
+  loadProfilePage()
 })
+
+// Coming back via browser Back/Forward can restore the page from the bfcache
+// without re-running onMounted; refetch when it becomes visible again.
+function onPageShow(event) {
+  if (event?.persisted) loadProfilePage()
+}
+onMounted(() => window.addEventListener('pageshow', onPageShow))
+onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 </script>
 
 <template>
   <div class="w-full pt-6 px-6 pb-8">
+    <!-- The master record could not be read. Without this the identity panel
+         silently falls back to snapshot data and a saved edit looks ignored. -->
+    <div
+      v-if="!loading && profileError"
+      class="mb-4 px-4 py-3 bg-amber-50 border border-amber-300 rounded-sm flex items-start gap-2"
+    >
+      <span class="material-symbols-outlined text-[18px] text-amber-700">warning</span>
+      <div class="text-xs text-amber-900">
+        <p class="font-bold">Identity details are unavailable — showing snapshot data only.</p>
+        <p class="mt-0.5">{{ profileError }}</p>
+        <p class="mt-0.5 text-amber-800">
+          Account number, ID number, mobile, next of kin and the other master fields will
+          read as "Not on file" until this is fixed, even if they were saved successfully.
+        </p>
+        <button class="mt-1.5 font-bold underline" @click="loadProfilePage">Try again</button>
+      </div>
+    </div>
+
     <!-- Loading -->
     <template v-if="loading">
       <div class="mb-6 h-5 bg-white rounded-sm w-1/3 animate-pulse"></div>
@@ -582,6 +689,14 @@ onMounted(async () => {
     <!-- Profile -->
     <template v-else>
       <!-- Breadcrumb + actions -->
+      <div v-if="bozAlert" class="mb-5 bg-absa-inspire/10 border border-absa-inspire rounded-sm p-4 flex items-start gap-3">
+        <span class="material-symbols-outlined text-absa-inspire mt-0.5">warning</span>
+        <div>
+          <h3 class="text-sm font-bold text-absa-inspire">URGENT: Account approaching 10-year dormancy (BOZ Transfer Rule)</h3>
+          <p class="text-xs text-absa-enrich mt-1">This account has been inactive for {{ features?.days_since_last_txn }} days. Funds are at risk of being transferred to BOZ in <span class="font-bold">{{ bozRemainingText }}</span>. Immediate client contact is required to prevent deposit loss.</p>
+          <button @click="showEngagementModal = true" class="mt-2 bg-absa-inspire text-white px-3 py-1.5 text-[11px] font-bold rounded-sm hover:bg-red-800 transition-colors uppercase tracking-wider">Log Outreach</button>
+        </div>
+      </div>
       <div class="mb-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
         <div>
           <div class="flex items-center gap-2 text-[11px] text-gray-500 mb-1 flex-wrap">
@@ -886,32 +1001,91 @@ onMounted(async () => {
           </div>
         </section>
 
-        <!-- Action history -->
-        <section class="col-span-12 lg:col-span-8 bg-white border border-gray-300 rounded-sm p-5">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Action History</h2>
-            <select v-model="historyFilter" class="border border-gray-300 rounded-sm px-2 py-1 text-[11px] font-semibold text-absa-enrich outline-none">
-              <option value="">All</option>
-              <option v-for="t in historyTypes" :key="t" :value="t">{{ t }}</option>
-            </select>
-          </div>
-          <div v-if="filteredHistory.length" class="space-y-4 max-h-[320px] overflow-y-auto pr-1">
-            <div v-for="h in filteredHistory" :key="h.id" class="flex gap-3">
-              <div class="flex flex-col items-center pt-1">
-                <div class="w-2.5 h-2.5 rounded-full" :style="{ background: tierColor('power') }"></div>
-                <div class="w-[1px] flex-1 bg-gray-200 mt-1"></div>
-              </div>
-              <div class="pb-1 min-w-0">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="text-xs font-bold text-absa-enrich">{{ h.title }}</span>
-                  <span class="text-[10px] text-gray-400">{{ fmtDate(h.at) }}</span>
-                </div>
-                <p class="text-[11px] text-gray-500 mt-0.5">{{ h.detail }}</p>
-                <span v-if="h.actor" class="text-[10px] text-gray-400">Logged by {{ h.actor }}</span>
-              </div>
+        <!-- Interaction History / Next of Kin Tabs -->
+        <section class="col-span-12 lg:col-span-8 bg-white border border-gray-300 rounded-sm p-5 flex flex-col">
+          <!-- Tabs Header -->
+          <div class="flex items-center gap-4 border-b border-gray-200 mb-4 pb-2">
+            <button
+              class="text-[11px] font-bold uppercase tracking-wider px-2 py-1 transition-colors"
+              :class="activeTab === 'interactions' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+              @click="activeTab = 'interactions'"
+            >
+              Interaction History
+            </button>
+            <button
+              class="text-[11px] font-bold uppercase tracking-wider px-2 py-1 transition-colors"
+              :class="activeTab === 'nok' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+              @click="activeTab = 'nok'"
+            >
+              Next of Kin
+            </button>
+            <div class="ml-auto flex items-center gap-2">
+              <button class="bg-absa-passion text-white text-[10px] font-bold px-3 py-1.5 rounded-sm hover:bg-absa-power transition-colors flex items-center gap-1" @click="showEngagementModal = true">
+                <span class="material-symbols-outlined text-[14px]">add</span>
+                Log Engagement
+              </button>
             </div>
           </div>
-          <p v-else class="text-xs text-gray-500">No actions logged for this customer yet.</p>
+
+          <!-- Interaction History Tab -->
+          <div v-if="activeTab === 'interactions'" class="flex-1">
+            <div class="flex items-center justify-between mb-4">
+              <select v-model="historyFilter" class="border border-gray-300 rounded-sm px-2 py-1 text-[11px] font-semibold text-absa-enrich outline-none ml-auto">
+                <option value="">All</option>
+                <option v-for="t in historyTypes" :key="t" :value="t">{{ t }}</option>
+              </select>
+            </div>
+            <div v-if="filteredHistory.length" class="space-y-4 max-h-[280px] overflow-y-auto pr-1">
+              <div v-for="h in filteredHistory" :key="h.id" class="flex gap-3">
+                <div class="flex flex-col items-center pt-1">
+                  <div class="w-2.5 h-2.5 rounded-full" :style="{ background: tierColor('power') }"></div>
+                  <div class="w-[1px] flex-1 bg-gray-200 mt-1"></div>
+                </div>
+                <div class="pb-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-bold text-absa-enrich">{{ h.title }}</span>
+                    <span class="text-[10px] text-gray-400">{{ fmtDate(h.at) }}</span>
+                  </div>
+                  <p class="text-[11px] text-gray-500 mt-0.5">{{ h.detail }}</p>
+                  <span v-if="h.actor" class="text-[10px] text-gray-400 block uppercase tracking-wide mt-1">RM: {{ h.actor }}</span>
+                  <div v-if="h.meta && (h.meta.outcome || h.meta.dormancy_reason || h.meta.cross_sell_details || h.meta.branch_to_visit)" class="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] border-t border-gray-100 pt-2">
+                    <div v-if="h.meta.outcome"><span class="font-bold text-gray-500">Outcome:</span> {{ h.meta.outcome }}</div>
+                    <div v-if="h.meta.dormancy_reason"><span class="font-bold text-gray-500">Reason:</span> {{ h.meta.dormancy_reason }}</div>
+                    <div v-if="h.meta.cross_sell_details"><span class="font-bold text-gray-500">Cross Sell:</span> {{ h.meta.cross_sell_details }}</div>
+                    <div v-if="h.meta.recommendation"><span class="font-bold text-gray-500">Recommendation:</span> {{ h.meta.recommendation }}</div>
+                    <div v-if="h.meta.customer_experience"><span class="font-bold text-gray-500">Experience:</span> {{ h.meta.customer_experience }}</div>
+                    <div v-if="h.meta.branch_to_visit"><span class="font-bold text-gray-500">Branch:</span> {{ h.meta.branch_to_visit }}</div>
+                    <div v-if="h.meta.customer_feedback" class="col-span-2"><span class="font-bold text-gray-500">Feedback:</span> {{ h.meta.customer_feedback }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p v-else class="text-xs text-gray-500">No actions logged for this customer yet.</p>
+            <PostEngagementPerformance 
+              v-if="filteredHistory.length" 
+              :customerId="customerId" 
+              :engagementDate="filteredHistory[0].at" 
+            />
+          </div>
+
+          <!-- Next of Kin Tab -->
+          <div v-if="activeTab === 'nok'" class="flex-1 pt-2">
+            <div v-if="nextOfKin" class="grid grid-cols-2 gap-6 bg-gray-50 p-4 border border-gray-200 rounded-sm">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Name</p>
+                <p class="mt-1 text-sm font-bold text-absa-enrich">{{ nextOfKin.name }}</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Relationship</p>
+                <p class="mt-1 text-sm font-bold text-absa-enrich">{{ nextOfKin.relation }}</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Phone</p>
+                <p class="mt-1 text-sm font-bold font-mono text-absa-enrich">{{ nextOfKin.phone }}</p>
+              </div>
+            </div>
+            <p v-else class="text-xs text-gray-500">No Next of Kin data available.</p>
+          </div>
         </section>
       </div>
     </template>
@@ -947,5 +1121,23 @@ onMounted(async () => {
         </div>
       </template>
     </ConfirmDialog>
+    
+    <EngagementModal
+      :open="showEngagementModal"
+      :customerId="customerId"
+      :customerName="displayName"
+      @close="showEngagementModal = false"
+      @logged="(payload) => {
+        // Record locally so it shows on the UI immediately
+        const entry = recordAction({
+          type: payload.type || 'Engagement',
+          customerId: customerId,
+          customerName: displayName,
+          detail: payload.notes || 'Engagement logged by RM.',
+          meta: payload
+        })
+        actionLog = [entry, ...actionLog]
+      }"
+    />
   </div>
 </template>

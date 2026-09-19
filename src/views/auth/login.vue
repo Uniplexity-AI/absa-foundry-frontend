@@ -97,10 +97,12 @@ import { computed, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/services/api'
 import { AbsaButton, AbsaCard } from '@/components/ui'
+import { useAuthStore } from '@/stores/auth'
 
 defineOptions({ name: 'LoginView' })
 
 const router = useRouter()
+const authStore = useAuthStore()
 const loading = ref(false)
 const showPassword = ref(false)
 const capsLockOn = ref(false)
@@ -119,9 +121,6 @@ const errors = reactive({
 })
 
 // ── Caps Lock Detection ──
-// Autofill helpers and password-manager extensions dispatch a plain Event
-// rather than a KeyboardEvent, and plain events have no getModifierState().
-// Guard the call so typing can never throw from this handler.
 const checkCapsLock = (e) => {
   if (typeof e?.getModifierState !== 'function') return
   capsLockOn.value = e.getModifierState('CapsLock')
@@ -156,36 +155,11 @@ const handleSubmit = async () => {
 
   try {
     const response = await login(formData.email, formData.password)
-    const token = response.access_token || localStorage.getItem('token')
-    if (!token) throw new Error('No token received')
+    if (!response.access_token) throw new Error('No token received')
 
-    let claims
-    try {
-      claims = JSON.parse(atob(token.split('.')[1]))
-    } catch {
-      throw new Error('Invalid token format')
-    }
+    // Populate the Pinia auth store — this also persists to localStorage
+    authStore.setSession(response)
 
-    if (!claims.sub && !claims.user_id && !claims.username) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('refresh_token')
-      throw new Error('Invalid credentials')
-    }
-
-    // ABSA backend JWT claims: sub, username, display_name, email, roles[]
-    const roles = (Array.isArray(claims.roles) && claims.roles.length)
-      ? claims.roles
-      : (claims.role ? [claims.role] : [])
-    const role = roles[0] || ''
-    const userId = claims.sub || claims.user_id || ''
-    const email = claims.email || ''
-    const displayName = claims.display_name || claims.username || email.split('@')[0] || ''
-
-    localStorage.setItem('user_id', userId)
-    localStorage.setItem('email', email)
-    localStorage.setItem('role', role)
-    localStorage.setItem('roles', JSON.stringify(roles))
-    if (displayName) localStorage.setItem('userName', displayName)
     // Drop legacy fork keys that this ABSA backend never issues
     localStorage.removeItem('company_name')
     localStorage.removeItem('tenant_id')
@@ -200,7 +174,8 @@ const handleSubmit = async () => {
       DATA_SCIENTIST: '/dashboard/models',
       OPERATIONS: '/dashboard/etl-run-history'
     }
-    const defaultLanding = landingByRole[role] || '/dashboard/portfolio'
+    const primaryRole = authStore.primaryRole || ''
+    const defaultLanding = landingByRole[primaryRole] || '/dashboard/portfolio'
 
     setTimeout(() => {
       const intended = localStorage.getItem('intended_route')

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="w-full pt-6 px-6 pb-6">
 
     <!-- Loading -->
@@ -12,7 +12,7 @@
 
     <template v-else>
 
-      <!-- ── Page Header ── -->
+      <!-- â”€â”€ Page Header â”€â”€ -->
       <div class="mb-0 pb-4 border-b border-gray-300 flex justify-between items-end">
         <div>
           <div class="flex items-center gap-2 text-label-sm text-gray-500 mb-1">
@@ -21,7 +21,7 @@
           </div>
           <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">Branch Manager Dashboard</h1>
           <p class="text-body-md text-gray-500 mt-1">
-            {{ kpis.totalBranches }} branches · {{ customerStore.portfolio.total.toLocaleString() }} total customers · {{ currentMonth }}
+            {{ kpis.totalBranches }} branches Â· {{ customerStore.portfolio.total.toLocaleString() }} total customers Â· {{ currentMonth }}
           </p>
         </div>
         <div class="flex items-center gap-3">
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <!-- ── Tab Navigation ── -->
+      <!-- â”€â”€ Tab Navigation â”€â”€ -->
       <div class="flex border-b border-gray-300 mb-6">
         <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
           :class="['px-5 py-3 text-sm flex items-center gap-2 transition-colors font-semibold',
@@ -47,9 +47,9 @@
         </button>
       </div>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: OVERVIEW                                       -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-if="activeTab === 'overview'">
 
         <!-- KPI Strip -->
@@ -69,7 +69,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">RM-Managed Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">CIB, Enterprise, Prestige & Premier · Dedicated RM per customer</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">CIB, Enterprise, Prestige & Premier Â· Dedicated RM per customer</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ rmTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -84,7 +84,7 @@
                     <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value }}</p>
                     <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full rounded-full" :class="stage.barClass"
-                        :style="{ width: (stage.value / rmPipeline[0].value * 100) + '%' }"></div>
+                        :style="{ width: (rmPipeline[0].value ? (stage.value / rmPipeline[0].value * 100) : 0) + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -97,7 +97,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">Branch Campaign Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Mass, Personal, SME & BB · No dedicated RM · Campaign-based retention</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Mass, Personal, SME & BB Â· No dedicated RM Â· Campaign-based retention</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ branchTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -112,7 +112,7 @@
                     <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value.toLocaleString() }}</p>
                     <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full rounded-full" :class="stage.barClass"
-                        :style="{ width: (stage.value / branchPipeline[0].value * 100) + '%' }"></div>
+                        :style="{ width: (branchPipeline[0].value ? (stage.value / branchPipeline[0].value * 100) : 0) + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -125,8 +125,8 @@
         <div class="rounded-sm border border-gray-300 overflow-hidden">
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
-              <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast — Projected Exits by Segment</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits · Powered by LightGBM v1.4.2</p>
+              <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast â€” Projected Exits by Segment</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits Â· Powered by LightGBM v1.4.2</p>
             </div>
             <div class="flex text-[11px] font-bold border border-gray-300 rounded-sm overflow-hidden">
               <button v-for="d in [30, 60, 90]" :key="d" @click="forecastHorizon = d"
@@ -175,9 +175,9 @@
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: RM PORTFOLIO                                   -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-else-if="activeTab === 'rm_portfolio'">
 
         <!-- Scope note -->
@@ -202,7 +202,7 @@
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 class="text-sm font-bold text-absa-enrich">Relationship Manager Workload</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics · RM-managed segments · Sourced from Nightly Inference Batch</p>
+              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics Â· RM-managed segments Â· Sourced from Nightly Inference Batch</p>
             </div>
             <div class="flex gap-2">
               <button class="px-3 py-1.5 text-xs font-semibold border border-gray-300 rounded-sm hover:bg-gray-50 flex items-center gap-1.5 shadow-none">
@@ -274,24 +274,24 @@
             </table>
           </div>
           <div class="px-5 py-3 border-t border-gray-100 bg-gray-50 text-[11px] text-gray-400">
-            <span class="font-bold text-absa-passion">ON TRACK</span> = actioned &gt;80% of target &amp; retention ≥65% ·
-            <span class="font-bold text-absa-inspire">AT RISK</span> = idle &gt;3 days or retention &lt;50% ·
+            <span class="font-bold text-absa-passion">ON TRACK</span> = actioned &gt;80% of target &amp; retention â‰¥65% Â·
+            <span class="font-bold text-absa-inspire">AT RISK</span> = idle &gt;3 days or retention &lt;50% Â·
             {{ currentMonth }}
           </div>
         </div>
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: BRANCH CAMPAIGNS                               -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-else-if="activeTab === 'campaigns'">
 
         <!-- Scope note -->
         <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
           <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
           <p class="text-xs text-gray-600">
-            <span class="font-bold text-absa-enrich">Scope:</span> Branch-managed customers — <span class="font-semibold">Mass, Personal, SME and BB</span> — have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
+            <span class="font-bold text-absa-enrich">Scope:</span> Branch-managed customers â€” <span class="font-semibold">Mass, Personal, SME and BB</span> â€” have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
           </p>
         </div>
 
@@ -367,8 +367,8 @@
         <div class="rounded-sm border border-gray-300 overflow-hidden">
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
-              <h2 class="text-sm font-bold text-absa-enrich">At-Risk · Not Enrolled in Any Campaign</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">Flagged high-risk with no outreach · Immediate action recommended</p>
+              <h2 class="text-sm font-bold text-absa-enrich">At-Risk Â· Not Enrolled in Any Campaign</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Flagged high-risk with no outreach Â· Immediate action recommended</p>
             </div>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-absa-passion border border-absa-passion/30 rounded-sm text-xs font-bold">
               <span class="w-1.5 h-1.5 rounded-full bg-absa-passion animate-pulse"></span>
@@ -413,9 +413,9 @@
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: ALL CASES                                      -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-else-if="activeTab === 'cases'">
 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -425,7 +425,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">All High-Risk Cases</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Ranked by churn probability · Action differs by retention track</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Ranked by churn probability Â· Action differs by retention track</p>
               </div>
               <div class="flex gap-1.5">
                 <button v-for="f in caseFilters" :key="f.id" @click="caseFilter = f.id"
@@ -513,7 +513,7 @@
                   <p class="text-[11px] text-gray-600 leading-relaxed mb-2">{{ action.detail }}</p>
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] text-gray-400 font-mono">{{ action.meta }}</span>
-                    <button class="text-[11px] font-bold text-absa-passion hover:underline">Act →</button>
+                    <button class="text-[11px] font-bold text-absa-passion hover:underline">Act â†’</button>
                   </div>
                 </div>
               </div>
@@ -604,15 +604,32 @@ const backendSegments = computed(() => {
     .sort((a, b) => b.atRisk - a.atRisk)
 })
 
-// ── Portfolio tracks ──
-const rmTrack = computed(() => ({ total: 20630, atRisk: 186, openCases: 42 }))
+// â”€â”€ Portfolio tracks â”€â”€
+const rmSegments = [30, 50, 60, 85]
+const rmTrack = computed(() => {
+  let total = 0
+  let atRisk = 0
+  for (const seg of backendSegments.value) {
+    if (rmSegments.includes(seg.marketSegment)) {
+      total += seg.total
+      atRisk += seg.atRisk
+    }
+  }
+  return { total, atRisk, openCases: Math.round(atRisk * 0.4) }
+})
 const branchTrack = computed(() => {
-  const total  = (customerStore.portfolio.total || 204050) - rmTrack.value.total
-  const atRisk = Math.round(total * 0.078)
+  let total = 0
+  let atRisk = 0
+  for (const seg of backendSegments.value) {
+    if (!rmSegments.includes(seg.marketSegment)) {
+      total += seg.total
+      atRisk += seg.atRisk
+    }
+  }
   return { total, atRisk, inCampaign: Math.round(atRisk * 0.58) }
 })
 
-// ── Tabs ──
+// â”€â”€ Tabs â”€â”€
 const tabs = computed(() => [
   { id: 'overview',     label: 'Overview',        icon: 'gauge'            },
   { id: 'rm_portfolio', label: 'RM Portfolio',    icon: 'manage_accounts'  },
@@ -620,13 +637,13 @@ const tabs = computed(() => [
   { id: 'cases',        label: 'All Cases',        icon: 'assignment_late', badge: kpis.value.newFlagsToday || null },
 ])
 
-// ── KPIs ──
+// â”€â”€ KPIs â”€â”€
 const kpis = computed(() => {
   const avgChurn      = forecastData.value?.churn_rate_pct || customerStore.portfolio.churnedPct || 5.8
-  const totalBranches = branchData.value.length || 13
+  const totalBranches = branchData.value.length || 0
   return {
     totalBranches,
-    newFlagsToday:       49,
+    newFlagsToday: customerStore.customers.filter(c => c.state === 'AT_RISK').length || 0,
     retentionRate:       72,
     churnTarget:         6.0,
     monthlyChurnValue:   avgChurn,
@@ -636,14 +653,14 @@ const kpis = computed(() => {
 
 const overviewKpis = computed(() => [
   { label: 'New High-Risk (Today)', value: kpis.value.newFlagsToday,          valueClass: 'text-absa-passion', note: 'Flagged since yesterday' },
-  { label: 'RM Pending AI Interventions',        value: rmTrack.value.openCases,            valueClass: 'text-absa-enrich',  note: 'Premium · uncontacted' },
-  { label: 'Not in Campaign',      value: (branchTrack.value.atRisk - branchTrack.value.inCampaign).toLocaleString(), valueClass: 'text-absa-passion', note: 'Mass-market · no outreach' },
+  { label: 'RM Pending AI Interventions',        value: rmTrack.value.openCases,            valueClass: 'text-absa-enrich',  note: 'Premium Â· uncontacted' },
+  { label: 'Not in Campaign',      value: (branchTrack.value.atRisk - branchTrack.value.inCampaign).toLocaleString(), valueClass: 'text-absa-passion', note: 'Mass-market Â· no outreach' },
   { label: 'Campaign Enrolled',    value: branchTrack.value.inCampaign.toLocaleString(), valueClass: 'text-absa-enrich', note: `of ${branchTrack.value.atRisk.toLocaleString()} at-risk` },
   { label: 'Retention Rate MTD',   value: kpis.value.retentionRate + '%',     valueClass: 'text-absa-passion',    note: 'All channels combined' },
   { label: 'Churn vs Target',      value: kpis.value.monthlyChurnValue + '%', valueClass: kpis.value.churnRateAboveTarget ? 'text-absa-inspire' : 'text-absa-passion', note: `Target: ${kpis.value.churnTarget}%` },
 ])
 
-// ── RM Pipeline ──
+// â”€â”€ RM Pipeline â”€â”€
 const rmPipeline = computed(() => {
   const f = rmTrack.value.atRisk
   const a = Math.round(f * 0.77), c = Math.round(f * 0.61), r = Math.round(c * 0.82)
@@ -655,7 +672,7 @@ const rmPipeline = computed(() => {
   ]
 })
 
-// ── Branch Pipeline ──
+// â”€â”€ Branch Pipeline â”€â”€
 const branchPipeline = computed(() => {
   const f = branchTrack.value.atRisk, e = branchTrack.value.inCampaign
   const res = Math.round(e * 0.34), r = Math.round(res * 0.68)
@@ -667,7 +684,7 @@ const branchPipeline = computed(() => {
   ]
 })
 
-// ── Forecast ──
+// â”€â”€ Forecast â”€â”€
 const forecastWeeks = computed(() => {
   const segs = backendSegments.value.map((segment) => ({
     label: segment.label,
@@ -683,7 +700,7 @@ const estimatedAUM  = computed(() => {
   return v >= 1e6 ? 'K' + (v / 1e6).toFixed(1) + 'M' : 'K' + v.toLocaleString()
 })
 
-// ── RM Table ──
+// â”€â”€ RM Table â”€â”€
 const relationshipManagers = computed(() => [
   { name: 'Naledi Khumalo', segment: formatMarketSegment(30), portfolio: 84,  avgRiskScore: 38, openCases: 8,  actioned: 19, target: 20, retentionRate: 88, daysSinceActivity: 0 },
   { name: 'Ayanda Nkosi',   segment: formatMarketSegment(85), portfolio: 127, avgRiskScore: 48, openCases: 18, actioned: 24, target: 28, retentionRate: 71, daysSinceActivity: 2 },
@@ -708,12 +725,12 @@ const rmSummaryKpis = computed(() => [
   { label: 'Needs Attention', value: rmStatusCounts.value['AT RISK']  || 0, valueClass: 'text-absa-passion', note: 'Idle or low retention' },
 ])
 
-// ── Campaigns ──
+// â”€â”€ Campaigns â”€â”€
 const activeCampaigns = ref([
-  { name: 'SMS Retention Offer — Personal', channel: 'SMS',         channelIcon: 'sms',           segment: formatMarketSegment(65), expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'SMS Retention Offer â€” Personal', channel: 'SMS',         channelIcon: 'sms',           segment: formatMarketSegment(65), expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
   { name: 'Mass Re-engagement Drive',       channel: 'Digital',     channelIcon: 'phone_iphone',  segment: formatMarketSegment(75), expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Call Centre — SME Win-Back',     channel: 'Call Centre', channelIcon: 'support_agent', segment: formatMarketSegment(45), expires: '2026-08-28', enrolled: 88, responded: 41, retained: 33, conversionPct: 38, status: 'ACTIVE', statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Email — Personal Savings',       channel: 'Email',       channelIcon: 'mail',          segment: formatMarketSegment(65), expires: '2026-07-31', enrolled: 204, responded: 55, retained: 38, conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500', dotClass: 'bg-gray-400' },
+  { name: 'Call Centre â€” SME Win-Back',     channel: 'Call Centre', channelIcon: 'support_agent', segment: formatMarketSegment(45), expires: '2026-08-28', enrolled: 88, responded: 41, retained: 33, conversionPct: 38, status: 'ACTIVE', statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
+  { name: 'Email â€” Personal Savings',       channel: 'Email',       channelIcon: 'mail',          segment: formatMarketSegment(65), expires: '2026-07-31', enrolled: 204, responded: 55, retained: 38, conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500', dotClass: 'bg-gray-400' },
 ])
 
 const campaignKpis = computed(() => [
@@ -723,10 +740,10 @@ const campaignKpis = computed(() => [
   { label: 'Retained via Campaign', value: Math.round(branchTrack.value.inCampaign * 0.34 * 0.68).toLocaleString(), valueClass: 'text-green-600', note: 'Confirmed no churn MTD' },
 ])
 
-// ── Unenrolled high-risk (populated from API) ──
+// â”€â”€ Unenrolled high-risk (populated from API) â”€â”€
 const unenrolledCustomers = ref([])
 
-// ── Cases (populated from API) ──
+// â”€â”€ Cases (populated from API) â”€â”€
 const caseFilters = [
   { id: 'all',    label: 'All'     },
   { id: 'rm',     label: 'RM'      },
@@ -745,10 +762,10 @@ const churnSegments = computed(() => backendSegments.value.map((segment) => ({
   track: [30, 50, 60, 85].includes(segment.marketSegment) ? 'rm' : 'branch',
 })))
 
-// ── AI Priority Actions (populated from API) ──
+// â”€â”€ AI Priority Actions (populated from API) â”€â”€
 const aiPriorityActions = ref([])
 
-// ── Fetch ──
+// â”€â”€ Fetch â”€â”€
 onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
@@ -793,6 +810,10 @@ onMounted(async () => {
   }
 })
 </script>
+
+
+
+
 
 
 

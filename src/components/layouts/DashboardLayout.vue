@@ -20,25 +20,29 @@
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                 <span class="text-body-md font-medium">Dashboard</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customers" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">group</span>
+                <span class="text-body-md font-medium">My Customers</span>
+              </router-link>
+              <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">store</span>
                 <span class="text-body-md font-medium">Branch Manager</span>
               </router-link>
 
-              <div v-if="canAnalytics" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <div v-if="canPredict" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">INTELLIGENCE</div>
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customer-value" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">star</span>
                 <span class="text-body-md font-medium">Customer Value</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/lifecycle" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">waterfall_chart</span>
                 <span class="text-body-md font-medium">Lifecycle Prediction</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/balance-forecast" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">show_chart</span>
                 <span class="text-body-md font-medium">Balance Forecast</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canPredict" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/business-outcomes" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monetization_on</span>
                 <span class="text-body-md font-medium">Business Outcomes</span>
               </router-link>
@@ -56,9 +60,15 @@
                 <span class="material-symbols-outlined text-[20px]">settings</span>
                 <span class="text-body-md font-medium">ETL Config Manager</span>
               </router-link>
-              <router-link class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/ai/codebase-insights" active-class="!bg-[#a40022] !text-white !font-semibold">
-                <span class="material-symbols-outlined text-[20px]">insights</span>
-                <span class="text-body-md font-medium">Codebase Insights</span>
+
+              <div v-if="canAdmin" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">ADMIN</div>
+              <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                <span class="text-body-md font-medium">Settings</span>
+              </router-link>
+              <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings/users" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]">group_add</span>
+                <span class="text-body-md font-medium">User Management</span>
               </router-link>
             </nav>
           </div>
@@ -74,6 +84,15 @@
         </div>
         
         <div class="flex items-center gap-4">
+          <label class="hidden md:flex items-center gap-2 text-xs text-gray-500">
+            <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+            <input
+              v-model="snapshotStore.selectedDate"
+              type="date"
+              @change="onSnapshotDateChange"
+              class="border border-gray-300 rounded-sm px-2 py-1.5 text-xs font-mono text-absa-enrich bg-white"
+            />
+          </label>
           <div class="hidden md:flex relative w-96">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
             <input
@@ -92,11 +111,45 @@
           <button @click="openHelp" class="text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors hidden md:block">
             <span class="material-symbols-outlined">help</span>
           </button>
-          <div class="flex items-center gap-2">
-            <div class="absa-topbar__avatar">{{ userInitials }}</div>
-            <div class="hidden md:block">
-              <p class="text-body-md font-body-md font-semibold">{{ userName }}</p>
-              <p class="text-label-sm font-label-sm text-secondary">{{ userRole }}</p>
+          <div ref="userMenuRef" class="relative">
+            <button
+              type="button"
+              class="flex items-center gap-2 rounded-full pl-0.5 pr-1.5 py-1 hover:bg-surface-container-low transition-colors"
+              aria-haspopup="menu"
+              :aria-expanded="showUserMenu ? 'true' : 'false'"
+              aria-label="Account menu"
+              @click="toggleUserMenu"
+            >
+              <div class="absa-topbar__avatar">{{ userInitials }}</div>
+              <div class="hidden md:block text-left">
+                <p class="text-body-md font-body-md font-semibold">{{ userName }}</p>
+                <p class="text-label-sm font-label-sm text-secondary">{{ userRole }}</p>
+              </div>
+              <span class="material-symbols-outlined text-secondary text-[18px] hidden md:inline">expand_more</span>
+            </button>
+
+            <!-- Account menu -->
+            <div
+              v-if="showUserMenu"
+              role="menu"
+              class="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-200 shadow-xl z-50"
+            >
+              <div class="px-4 py-3 border-b border-gray-200">
+                <p class="text-xs font-bold text-absa-enrich truncate">{{ userName }}</p>
+                <p class="text-[11px] text-gray-500 truncate mt-0.5">{{ userEmail }}</p>
+                <span class="inline-block mt-2 text-[10px] font-bold uppercase tracking-wider text-absa-passion border border-gray-200 rounded-sm px-2 py-0.5">
+                  {{ userRole }}
+                </span>
+              </div>
+              <button
+                type="button"
+                role="menuitem"
+                class="w-full text-left px-4 py-2.5 text-xs font-bold text-absa-passion hover:bg-red-50 transition-colors flex items-center gap-2"
+                @click="handleLogout"
+              >
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                Sign out
+              </button>
             </div>
           </div>
         </div>
@@ -146,25 +199,31 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { decodeJWT } from '@/services/decodeJWT'
 import { getModuleCards } from '@/config/moduleCards.js'
 import { useRBAC } from '@/composables/useRBAC'
 import API_BASE_URL from '@/services/api'
+import { useSnapshotStore } from '@/stores/snapshotStore'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const route = useRoute()
-const { hasPermission, initializeRBAC, isAdmin, isSuperAdmin } = useRBAC()
+const { hasPermission, initializeRBAC, isAdmin: _legacyIsAdmin, isSuperAdmin } = useRBAC()
+const snapshotStore = useSnapshotStore()
+const authStore = useAuthStore()
 
 const pageTitle = computed(() => {
   return route.meta.title || 'Dashboard'
 })
 
-// ── Header: search / notifications / help ──
+// ── Header: search / notifications / help / account menu ──
 const searchQuery = ref('')
 const showNotifications = ref(false)
 const showHelp = ref(false)
+const showUserMenu = ref(false)
+const userMenuRef = ref(null)
 
 const notifications = ref([
   { title: 'High churn risk flagged', body: 'Customer CUST00421 has a 91% churn probability.', icon: 'warning', to: '/dashboard/customer/CUST00421' },
@@ -176,6 +235,7 @@ const notificationCount = computed(() => notifications.value.length)
 function toggleNotifications() {
   showNotifications.value = !showNotifications.value
   showHelp.value = false
+  showUserMenu.value = false
 }
 
 function openNotification(n) {
@@ -187,20 +247,49 @@ function clearNotifications() {
   notifications.value = []
 }
 
+// ── Snapshot (as-of) date selector ──
+function onSnapshotDateChange() {
+  snapshotStore.setDate(snapshotStore.selectedDate)
+  // The chosen date is read by every store/view on fetch; a full reload is the
+  // simplest way to guarantee the visible page re-queries with the new date.
+  window.location.reload()
+}
+
 function openHelp() {
   showHelp.value = !showHelp.value
   showNotifications.value = false
+  showUserMenu.value = false
+}
+
+// ── Account menu (corner avatar) ──
+function toggleUserMenu() {
+  showUserMenu.value = !showUserMenu.value
+  if (showUserMenu.value) {
+    showNotifications.value = false
+    showHelp.value = false
+  }
+}
+
+function onDocumentPointerDown(event) {
+  if (!showUserMenu.value) return
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
+    showUserMenu.value = false
+  }
+}
+
+function onDocumentKeydown(event) {
+  if (event.key === 'Escape') showUserMenu.value = false
 }
 
 async function submitSearch() {
   const q = (searchQuery.value || '').trim()
   if (!q) return
-  const normalized = q.toUpperCase().replace(/\s+/g, '')
   // Customer ID patterns seen in the synthetic portfolio: CUST####, CU-####, CU####
   if (/^CUST?\d{2,}/i.test(q) || /^CU-?\d{2,}/i.test(q)) {
-    router.push(`/dashboard/customer/${encodeURIComponent(q)}`)
+    router.push({ name: 'CustomerProfile', params: { id: q } })
   } else {
-    router.push({ path: '/dashboard/portfolio', query: { q } })
+    // Free-text queries land on the My Customers list with the query pre-applied.
+    router.push({ name: 'MyCustomers', query: { q } })
   }
   searchQuery.value = ''
 }
@@ -208,29 +297,23 @@ async function submitSearch() {
 // ── State ──
 
 async function handleLogout() {
-  try {
-    const token = localStorage.getItem('token')
-    if (token) {
-      await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      })
-    }
-  } catch (e) {
-    console.warn('Backend logout failed, clearing locally', e)
-  }
-  // Clear all auth data
-  ;['token','refresh_token','user_id','email','role','roles','userName','display_name','company_name','tenant_id','branches','selected_branch']
-    .forEach(k => localStorage.removeItem(k))
-  router.push('/login')
+  showUserMenu.value = false
+  // Single canonical sign-out path (clears the session, revokes the token and
+  // redirects) — see services/decodeJWT.js.
+  await decodeJWT().logout()
 }
 
 // Restore saved preference on mount
 onMounted(() => {
   fetchSubscribedModules()
+  snapshotStore.fetchAvailable()
+  document.addEventListener('pointerdown', onDocumentPointerDown)
+  document.addEventListener('keydown', onDocumentKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('pointerdown', onDocumentPointerDown)
+  document.removeEventListener('keydown', onDocumentKeydown)
 })
 
 // ── User Info (ABSA roles: ADMIN / RELATIONSHIP_MANAGER / DATA_SCIENTIST / OPERATIONS) ──
@@ -241,27 +324,23 @@ const ROLE_LABELS = {
   OPERATIONS: 'Operations Analyst'
 }
 
-const userEmail = computed(() => {
-  try { return decodeJWT().getUserEmail?.() || 'User' }
-  catch { return 'User' }
-})
 
-const currentRole = computed(() => {
-  try { return String(decodeJWT().getUserRole?.() || '').toUpperCase() }
-  catch { return '' }
-})
+const userEmail = computed(() => authStore.email || 'User')
 
-const canAnalytics = computed(() => ['ADMIN', 'RELATIONSHIP_MANAGER'].includes(currentRole.value))
-const canModels = computed(() => ['ADMIN', 'DATA_SCIENTIST'].includes(currentRole.value))
-const canEtl = computed(() => ['ADMIN', 'OPERATIONS'].includes(currentRole.value))
+// Use authStore (roles array) for all access decisions
+const canAnalytics = computed(() => authStore.isAdmin || authStore.isRM)
+const canPredict   = computed(() => authStore.isAdmin || authStore.isRM || authStore.isDS)
+const canModels    = computed(() => authStore.isAdmin || authStore.isDS)
+const canEtl       = computed(() => authStore.isAdmin || authStore.isOps)
+const canAdmin     = computed(() => authStore.isAdmin)
+
+// Keep currentRole for display labels (uses first role)
+const currentRole = computed(() => authStore.primaryRole || '')
 
 const userName = computed(() => {
-  try {
-    const n = decodeJWT().getUserName?.()
-    if (n) return n
-  } catch (e) {}
-  const email = userEmail.value
-  return email !== 'User' ? email.split('@')[0].replace(/[._]/g, ' ') : 'Absa User'
+  if (authStore.displayName) return authStore.displayName
+  const email = authStore.email || ''
+  return email ? email.split('@')[0].replace(/[._]/g, ' ') : 'Absa User'
 })
 
 const userRole = computed(() => ROLE_LABELS[currentRole.value] || 'Relationship Manager')
@@ -272,7 +351,7 @@ const userInitials = computed(() => {
   return (initials || 'AU').toUpperCase()
 })
 
-const canAccessSettings = computed(() => isAdmin.value || isSuperAdmin.value || hasPermission('settings', 'read'))
+const canAccessSettings = computed(() => authStore.isAdmin)
 
 // ── Dynamic Modules ──
 const allModuleCards = getModuleCards()

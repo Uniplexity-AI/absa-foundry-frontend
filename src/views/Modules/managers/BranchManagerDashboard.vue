@@ -12,7 +12,7 @@
 
     <template v-else>
 
-      <!-- ── Page Header ── -->
+      <!-- â”€â”€ Page Header â”€â”€ -->
       <div class="mb-0 pb-4 border-b border-gray-300 flex justify-between items-end">
         <div>
           <div class="flex items-center gap-2 text-label-sm text-gray-500 mb-1">
@@ -21,7 +21,7 @@
           </div>
           <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">Branch Manager Dashboard</h1>
           <p class="text-body-md text-gray-500 mt-1">
-            {{ kpis.totalBranches }} branches · {{ customerStore.portfolio.total.toLocaleString() }} total customers · {{ currentMonth }}
+            {{ kpis.totalBranches }} branches Â· {{ customerStore.portfolio.total.toLocaleString() }} total customers Â· {{ currentMonth }}
           </p>
         </div>
         <div class="flex items-center gap-3">
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <!-- ── Tab Navigation ── -->
+      <!-- â”€â”€ Tab Navigation â”€â”€ -->
       <div class="flex border-b border-gray-300 mb-6">
         <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
           :class="['px-5 py-3 text-sm flex items-center gap-2 transition-colors font-semibold',
@@ -47,9 +47,9 @@
         </button>
       </div>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: OVERVIEW                                       -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-if="activeTab === 'overview'">
 
         <!-- KPI Strip -->
@@ -69,7 +69,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">RM-Managed Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">CIB, Enterprise, Prestige & Premier · Dedicated RM per customer</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">CIB, Enterprise, Prestige & Premier Â· Dedicated RM per customer</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ rmTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -84,7 +84,7 @@
                     <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value }}</p>
                     <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full rounded-full" :class="stage.barClass"
-                        :style="{ width: (stage.value / rmPipeline[0].value * 100) + '%' }"></div>
+                        :style="{ width: (rmPipeline[0].value ? (stage.value / rmPipeline[0].value * 100) : 0) + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -97,7 +97,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">Branch Campaign Pipeline</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Mass, Personal, SME & BB · No dedicated RM · Campaign-based retention</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Mass, Personal, SME & BB Â· No dedicated RM Â· Campaign-based retention</p>
               </div>
               <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold bg-gray-100 text-gray-600 rounded-sm uppercase tracking-wider">{{ branchTrack.total.toLocaleString() }} customers</span>
             </div>
@@ -112,7 +112,7 @@
                     <p class="text-xl font-bold font-mono mb-2" :class="stage.valueClass">{{ stage.value.toLocaleString() }}</p>
                     <div class="w-full h-0.5 bg-gray-200 rounded-full overflow-hidden">
                       <div class="h-full rounded-full" :class="stage.barClass"
-                        :style="{ width: (stage.value / branchPipeline[0].value * 100) + '%' }"></div>
+                        :style="{ width: (branchPipeline[0].value ? (stage.value / branchPipeline[0].value * 100) : 0) + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -126,7 +126,7 @@
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast — Projected Exits by Segment</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits · Powered by LightGBM v1.4.2</p>
+              <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits Â· Powered by LightGBM v1.4.2</p>
             </div>
             <div class="flex text-[11px] font-bold border border-gray-300 rounded-sm overflow-hidden">
               <button v-for="d in [30, 60, 90]" :key="d" @click="forecastHorizon = d"
@@ -175,9 +175,9 @@
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: RM PORTFOLIO                                   -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-else-if="activeTab === 'rm_portfolio'">
 
         <!-- Scope note -->
@@ -202,7 +202,7 @@
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
               <h2 class="text-sm font-bold text-absa-enrich">Relationship Manager Workload</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics · RM-managed segments · Sourced from Nightly Inference Batch</p>
+              <p class="text-[11px] text-gray-500 mt-0.5">Individual RM operational metrics Â· RM-managed segments Â· Sourced from Nightly Inference Batch</p>
             </div>
             <div class="flex gap-2">
               <button class="px-3 py-1.5 text-xs font-semibold border border-gray-300 rounded-sm hover:bg-gray-50 flex items-center gap-1.5 shadow-none">
@@ -274,17 +274,17 @@
             </table>
           </div>
           <div class="px-5 py-3 border-t border-gray-100 bg-gray-50 text-[11px] text-gray-400">
-            <span class="font-bold text-absa-passion">ON TRACK</span> = actioned &gt;80% of target &amp; retention ≥65% ·
-            <span class="font-bold text-absa-inspire">AT RISK</span> = idle &gt;3 days or retention &lt;50% ·
+            <span class="font-bold text-absa-passion">ON TRACK</span> = actioned &gt;80% of target &amp; retention â‰¥65% Â·
+            <span class="font-bold text-absa-inspire">AT RISK</span> = idle &gt;3 days or retention &lt;50% Â·
             {{ currentMonth }}
           </div>
         </div>
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: BRANCH CAMPAIGNS                               -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <template v-else-if="activeTab === 'campaigns'">
 
         <!-- Scope note -->
@@ -311,7 +311,7 @@
               <h2 class="text-sm font-bold text-absa-enrich">Active Retention Campaigns</h2>
               <p class="text-[11px] text-gray-500 mt-0.5">Branch-level outreach targeting mass-market at-risk customers</p>
             </div>
-            <button class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
+            <button @click="showUploadModal = true; uploadType = 'campaign'" class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
               <span class="material-symbols-outlined text-[16px]">add</span>New Campaign
             </button>
           </div>
@@ -327,6 +327,7 @@
                   <th class="px-4 py-3 text-right">Retained</th>
                   <th class="px-4 py-3">Conversion</th>
                   <th class="px-4 py-3 text-center">Status</th>
+                  <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 text-sm">
@@ -357,6 +358,19 @@
                       <span class="w-1 h-1 rounded-full" :class="c.dotClass"></span>{{ c.status }}
                     </span>
                   </td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button @click="campaignToView = c" class="p-1 text-gray-400 hover:text-absa-energy transition-colors" title="View">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                      </button>
+                      <button @click="campaignToEdit = c; uploadType = 'campaign'; showUploadModal = true" class="p-1 text-gray-400 hover:text-absa-enrich transition-colors" title="Edit">
+                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                      </button>
+                      <button @click="deleteCampaign(c.id)" class="p-1 text-gray-400 hover:text-absa-passion transition-colors" title="Delete">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -367,8 +381,8 @@
         <div class="rounded-sm border border-gray-300 overflow-hidden">
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
-              <h2 class="text-sm font-bold text-absa-enrich">At-Risk · Not Enrolled in Any Campaign</h2>
-              <p class="text-[11px] text-gray-500 mt-0.5">Flagged high-risk with no outreach · Immediate action recommended</p>
+              <h2 class="text-sm font-bold text-absa-enrich">At-Risk Â· Not Enrolled in Any Campaign</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Flagged high-risk with no outreach Â· Immediate action recommended</p>
             </div>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 text-absa-passion border border-absa-passion/30 rounded-sm text-xs font-bold">
               <span class="w-1.5 h-1.5 rounded-full bg-absa-passion animate-pulse"></span>
@@ -413,9 +427,75 @@
 
       </template>
 
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: ALL CASES                                      -->
-      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+      <template v-else-if="activeTab === 'products'">
+        <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
+          <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
+          <p class="text-xs text-gray-600">
+            Upload and manage the bank's product catalog. These products are referenced by the Decision Intelligence engine during NBA (Next Best Action) evaluation.
+          </p>
+        </div>
+        
+        <div class="rounded-sm border border-gray-300 overflow-hidden mb-6">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">Products Catalog</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Active retail products available for cross-sell recommendations</p>
+            </div>
+            <button @click="uploadType = 'product'; showUploadModal = true" class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
+              <span class="material-symbols-outlined text-[16px]">add</span>New Product
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th class="px-5 py-3 w-1/4">Product Name</th>
+                  <th class="px-4 py-3 w-1/2">Description</th>
+                  <th class="px-4 py-3 text-center">Target Segment</th>
+                  <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-sm">
+                <tr v-for="p in activeProducts" :key="p.id" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-3">
+                    <p class="font-semibold text-absa-enrich text-xs">{{ p.name }}</p>
+                  </td>
+                  <td class="px-4 py-3">
+                    <p class="text-xs text-gray-600 line-clamp-2" :title="p.description">{{ p.description }}</p>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600">
+                      {{ p.segment }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button @click="campaignToView = p" class="p-1 text-gray-400 hover:text-absa-energy transition-colors" title="View">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                      </button>
+                      <button @click="campaignToEdit = p; uploadType = 'product'; showUploadModal = true" class="p-1 text-gray-400 hover:text-absa-enrich transition-colors" title="Edit">
+                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                      </button>
+                      <button @click="deleteProduct(p.id)" class="p-1 text-gray-400 hover:text-absa-passion transition-colors" title="Delete">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="activeProducts.length === 0">
+                  <td colspan="4" class="px-5 py-8 text-center text-gray-500 text-sm font-semibold">
+                    No products found. Click "New Product" to upload your catalog.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </template>
+
       <template v-else-if="activeTab === 'cases'">
 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -425,7 +505,7 @@
             <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h2 class="text-sm font-bold text-absa-enrich">All High-Risk Cases</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">Ranked by churn probability · Action differs by retention track</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Ranked by churn probability Â· Action differs by retention track</p>
               </div>
               <div class="flex gap-1.5">
                 <button v-for="f in caseFilters" :key="f.id" @click="caseFilter = f.id"
@@ -513,7 +593,7 @@
                   <p class="text-[11px] text-gray-600 leading-relaxed mb-2">{{ action.detail }}</p>
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] text-gray-400 font-mono">{{ action.meta }}</span>
-                    <button class="text-[11px] font-bold text-absa-passion hover:underline">Act →</button>
+                    <button class="text-[11px] font-bold text-absa-passion hover:underline">Act â†’</button>
                   </div>
                 </div>
               </div>
@@ -546,6 +626,61 @@
 
     </template>
     
+    
+    <CatalogUploadModal 
+      :show="showUploadModal" 
+      :type="uploadType"
+      :editItem="campaignToEdit"
+      @close="showUploadModal = false; campaignToEdit = null" 
+      @uploaded="fetchCampaigns"
+    />
+
+    <!-- View Modal -->
+    <div v-if="campaignToView" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+          <h2 class="text-lg font-bold text-gray-800 font-headline">{{ campaignToView.channel ? 'Campaign Details' : 'Product Details' }}</h2>
+          <button @click="campaignToView = null" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Title</h3>
+            <p class="text-sm font-semibold text-gray-800">{{ campaignToView.name }}</p>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Description</h3>
+            <p class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{{ campaignToView.description || 'No description provided.' }}</p>
+          </div>
+          <div class="grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            <div>
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Target Segment</h3>
+              <p class="text-sm text-gray-700">{{ campaignToView.segment }}</p>
+            </div>
+            <div v-if="campaignToView.channel">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Channel</h3>
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">{{ campaignToView.channelIcon }}</span>
+                {{ campaignToView.channel }}
+              </p>
+            </div>
+            <div v-if="campaignToView.expires">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Expires</h3>
+              <p class="text-sm text-gray-700">{{ campaignToView.expires }}</p>
+            </div>
+            <div v-if="campaignToView.status">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status</h3>
+              <p class="text-sm text-gray-700 font-bold" :class="campaignToView.statusClass">{{ campaignToView.status }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+          <button @click="campaignToView = null" class="px-4 py-2 bg-absa-enrich text-white rounded font-bold text-sm hover:bg-opacity-90">Close</button>
+        </div>
+      </div>
+    </div>
+    
     <AiCampaignModal
       v-model="showCampaignModal"
       :customers="unenrolledCustomers"
@@ -560,8 +695,18 @@ import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
+import CatalogUploadModal from '@/components/managers/CatalogUploadModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
+
+
+
+const showCampaignModal = ref(false)
+const showUploadModal = ref(false)
+const uploadType = ref('campaign')
+const campaignToEdit = ref(null)
+const campaignToView = ref(null)
 import { formatMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
@@ -571,9 +716,9 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-const DEFAULT_AS_OF_DATE = '2026-07-27'
 const customerStore   = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore   = useSnapshotStore()
 
 const loading         = ref(true)
 const activeTab       = ref('overview')
@@ -603,29 +748,47 @@ const backendSegments = computed(() => {
     .sort((a, b) => b.atRisk - a.atRisk)
 })
 
-// ── Portfolio tracks ──
-const rmTrack = computed(() => ({ total: 20630, atRisk: 186, openCases: 42 }))
+// â”€â”€ Portfolio tracks â”€â”€
+const rmSegments = [30, 50, 60, 85]
+const rmTrack = computed(() => {
+  let total = 0
+  let atRisk = 0
+  for (const seg of backendSegments.value) {
+    if (rmSegments.includes(seg.marketSegment)) {
+      total += seg.total
+      atRisk += seg.atRisk
+    }
+  }
+  return { total, atRisk, openCases: Math.round(atRisk * 0.4) }
+})
 const branchTrack = computed(() => {
-  const total  = (customerStore.portfolio.total || 204050) - rmTrack.value.total
-  const atRisk = Math.round(total * 0.078)
+  let total = 0
+  let atRisk = 0
+  for (const seg of backendSegments.value) {
+    if (!rmSegments.includes(seg.marketSegment)) {
+      total += seg.total
+      atRisk += seg.atRisk
+    }
+  }
   return { total, atRisk, inCampaign: Math.round(atRisk * 0.58) }
 })
 
-// ── Tabs ──
+// â”€â”€ Tabs â”€â”€
 const tabs = computed(() => [
   { id: 'overview',     label: 'Overview',        icon: 'gauge'            },
   { id: 'rm_portfolio', label: 'RM Portfolio',    icon: 'manage_accounts'  },
   { id: 'campaigns',    label: 'Branch Campaigns',icon: 'campaign'         },
+  { id: 'products',     label: 'Products Catalog', icon: 'inventory' },
   { id: 'cases',        label: 'All Cases',        icon: 'assignment_late', badge: kpis.value.newFlagsToday || null },
 ])
 
-// ── KPIs ──
+// â”€â”€ KPIs â”€â”€
 const kpis = computed(() => {
   const avgChurn      = forecastData.value?.churn_rate_pct || customerStore.portfolio.churnedPct || 5.8
-  const totalBranches = branchData.value.length || 13
+  const totalBranches = branchData.value.length || 0
   return {
     totalBranches,
-    newFlagsToday:       49,
+    newFlagsToday: customerStore.customers.filter(c => c.state === 'AT_RISK').length || 0,
     retentionRate:       72,
     churnTarget:         6.0,
     monthlyChurnValue:   avgChurn,
@@ -635,14 +798,14 @@ const kpis = computed(() => {
 
 const overviewKpis = computed(() => [
   { label: 'New High-Risk (Today)', value: kpis.value.newFlagsToday,          valueClass: 'text-absa-passion', note: 'Flagged since yesterday' },
-  { label: 'RM Pending AI Interventions',        value: rmTrack.value.openCases,            valueClass: 'text-absa-enrich',  note: 'Premium · uncontacted' },
-  { label: 'Not in Campaign',      value: (branchTrack.value.atRisk - branchTrack.value.inCampaign).toLocaleString(), valueClass: 'text-absa-passion', note: 'Mass-market · no outreach' },
+  { label: 'RM Pending AI Interventions',        value: rmTrack.value.openCases,            valueClass: 'text-absa-enrich',  note: 'Premium Â· uncontacted' },
+  { label: 'Not in Campaign',      value: (branchTrack.value.atRisk - branchTrack.value.inCampaign).toLocaleString(), valueClass: 'text-absa-passion', note: 'Mass-market Â· no outreach' },
   { label: 'Campaign Enrolled',    value: branchTrack.value.inCampaign.toLocaleString(), valueClass: 'text-absa-enrich', note: `of ${branchTrack.value.atRisk.toLocaleString()} at-risk` },
   { label: 'Retention Rate MTD',   value: kpis.value.retentionRate + '%',     valueClass: 'text-absa-passion',    note: 'All channels combined' },
   { label: 'Churn vs Target',      value: kpis.value.monthlyChurnValue + '%', valueClass: kpis.value.churnRateAboveTarget ? 'text-absa-inspire' : 'text-absa-passion', note: `Target: ${kpis.value.churnTarget}%` },
 ])
 
-// ── RM Pipeline ──
+// â”€â”€ RM Pipeline â”€â”€
 const rmPipeline = computed(() => {
   const f = rmTrack.value.atRisk
   const a = Math.round(f * 0.77), c = Math.round(f * 0.61), r = Math.round(c * 0.82)
@@ -654,7 +817,7 @@ const rmPipeline = computed(() => {
   ]
 })
 
-// ── Branch Pipeline ──
+// â”€â”€ Branch Pipeline â”€â”€
 const branchPipeline = computed(() => {
   const f = branchTrack.value.atRisk, e = branchTrack.value.inCampaign
   const res = Math.round(e * 0.34), r = Math.round(res * 0.68)
@@ -666,7 +829,7 @@ const branchPipeline = computed(() => {
   ]
 })
 
-// ── Forecast ──
+// â”€â”€ Forecast â”€â”€
 const forecastWeeks = computed(() => {
   const segs = backendSegments.value.map((segment) => ({
     label: segment.label,
@@ -682,7 +845,7 @@ const estimatedAUM  = computed(() => {
   return v >= 1e6 ? 'K' + (v / 1e6).toFixed(1) + 'M' : 'K' + v.toLocaleString()
 })
 
-// ── RM Table ──
+// â”€â”€ RM Table â”€â”€
 const relationshipManagers = computed(() => [
   { name: 'Naledi Khumalo', segment: formatMarketSegment(30), portfolio: 84,  avgRiskScore: 38, openCases: 8,  actioned: 19, target: 20, retentionRate: 88, daysSinceActivity: 0 },
   { name: 'Ayanda Nkosi',   segment: formatMarketSegment(85), portfolio: 127, avgRiskScore: 48, openCases: 18, actioned: 24, target: 28, retentionRate: 71, daysSinceActivity: 2 },
@@ -707,13 +870,74 @@ const rmSummaryKpis = computed(() => [
   { label: 'Needs Attention', value: rmStatusCounts.value['AT RISK']  || 0, valueClass: 'text-absa-passion', note: 'Idle or low retention' },
 ])
 
-// ── Campaigns ──
-const activeCampaigns = ref([
-  { name: 'SMS Retention Offer — Personal', channel: 'SMS',         channelIcon: 'sms',           segment: formatMarketSegment(65), expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Mass Re-engagement Drive',       channel: 'Digital',     channelIcon: 'phone_iphone',  segment: formatMarketSegment(75), expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Call Centre — SME Win-Back',     channel: 'Call Centre', channelIcon: 'support_agent', segment: formatMarketSegment(45), expires: '2026-08-28', enrolled: 88, responded: 41, retained: 33, conversionPct: 38, status: 'ACTIVE', statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Email — Personal Savings',       channel: 'Email',       channelIcon: 'mail',          segment: formatMarketSegment(65), expires: '2026-07-31', enrolled: 204, responded: 55, retained: 38, conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500', dotClass: 'bg-gray-400' },
-])
+// â”€â”€ Campaigns â”€â”€
+const activeProducts = ref([])
+
+const fetchProducts = async () => {
+  try {
+    const res = await api.get('/api/v1/decisions/catalog/products')
+    if (res.data && res.data.length > 0) {
+      activeProducts.value = res.data.map(p => ({
+        id: p.id,
+        name: p.title,
+        description: p.description,
+        segment: p.target_segment || 'All'
+      }))
+    }
+  } catch (err) {
+    console.error("Failed to fetch products:", err)
+  }
+}
+
+const deleteProduct = async (id) => {
+  if (!confirm("Are you sure you want to delete this product?")) return
+  try {
+    await api.delete(`/api/v1/decisions/catalog/products/${id}`)
+    await fetchProducts()
+  } catch (err) {
+    console.error("Failed to delete product:", err)
+  }
+}
+
+const activeCampaigns = ref([])
+
+const fetchCampaigns = async () => {
+  try {
+    const res = await api.get('/api/v1/decisions/catalog/campaigns')
+    if (res.data && res.data.length > 0) {
+      activeCampaigns.value = res.data.map(c => ({
+        id: c.id,
+        name: c.title,
+        description: c.description,
+        channel: c.channel || 'Digital',
+        channelIcon: c.channel?.toLowerCase().includes('email') ? 'mail' : (c.channel?.toLowerCase().includes('sms') ? 'sms' : 'phone_iphone'),
+        segment: c.target_segment || 'All',
+        expires: c.expires || '2026-12-31',
+        enrolled: 0,
+        responded: 0,
+        retained: 0,
+        conversionPct: 0,
+        status: 'ACTIVE',
+        statusClass: 'bg-red-50 text-absa-passion',
+        dotClass: 'bg-absa-passion'
+      }))
+    }
+  } catch (err) {
+    console.error("Failed to fetch campaigns:", err)
+  }
+}
+
+const deleteCampaign = async (id) => {
+  if (!confirm("Are you sure you want to delete this campaign?")) return
+  try {
+    await api.delete(`/api/v1/decisions/catalog/campaigns/${id}`)
+    await fetchCampaigns()
+    fetchProducts()
+  } catch (err) {
+    console.error("Failed to delete campaign:", err)
+    alert("Failed to delete campaign.")
+  }
+}
 
 const campaignKpis = computed(() => [
   { label: 'Active Campaigns',    value: activeCampaigns.value.filter(c => c.status === 'ACTIVE').length, note: 'Running this month' },
@@ -722,10 +946,10 @@ const campaignKpis = computed(() => [
   { label: 'Retained via Campaign', value: Math.round(branchTrack.value.inCampaign * 0.34 * 0.68).toLocaleString(), valueClass: 'text-green-600', note: 'Confirmed no churn MTD' },
 ])
 
-// ── Unenrolled high-risk (populated from API) ──
+// â”€â”€ Unenrolled high-risk (populated from API) â”€â”€
 const unenrolledCustomers = ref([])
 
-// ── Cases (populated from API) ──
+// â”€â”€ Cases (populated from API) â”€â”€
 const caseFilters = [
   { id: 'all',    label: 'All'     },
   { id: 'rm',     label: 'RM'      },
@@ -744,21 +968,23 @@ const churnSegments = computed(() => backendSegments.value.map((segment) => ({
   track: [30, 50, 60, 85].includes(segment.marketSegment) ? 'rm' : 'branch',
 })))
 
-// ── AI Priority Actions (populated from API) ──
+// â”€â”€ AI Priority Actions (populated from API) â”€â”€
 const aiPriorityActions = ref([])
 
-// ── Fetch ──
+// â”€â”€ Fetch â”€â”€
 onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
     predictionStore.fetchChurnDrivers()
+    fetchCampaigns()
+    fetchProducts()
 
     const [bRes, fRes, casesRes, unenrolledRes, actionsRes] = await Promise.all([
-      api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/forecasts/churn',            { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
-      api.get('/api/v1/churn-intel/at-risk-cases',  { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 50 } }),
-      api.get('/api/v1/churn-intel/unenrolled-high-risk', { params: { as_of_date: DEFAULT_AS_OF_DATE, limit: 10 } }),
-      api.get('/api/v1/churn-intel/priority-actions', { params: { as_of_date: DEFAULT_AS_OF_DATE } }),
+      api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: snapshotStore.asOfDate } }),
+      api.get('/api/v1/forecasts/churn',            { params: { as_of_date: snapshotStore.asOfDate } }),
+      api.get('/api/v1/churn-intel/at-risk-cases',  { params: { as_of_date: snapshotStore.asOfDate, limit: 50 } }),
+      api.get('/api/v1/churn-intel/unenrolled-high-risk', { params: { as_of_date: snapshotStore.asOfDate, limit: 10 } }),
+      api.get('/api/v1/churn-intel/priority-actions', { params: { as_of_date: snapshotStore.asOfDate } }),
     ])
 
     branchData.value   = bRes.data.branches || []
@@ -792,6 +1018,10 @@ onMounted(async () => {
   }
 })
 </script>
+
+
+
+
 
 
 

@@ -1,0 +1,2534 @@
+{
+  ".qoder/repowiki/en/meta/repowiki-metadata.json": {
+    "mtime": 1787507239.4734137,
+    "seen": 1787736273.6444213,
+    "ast_hash": "8fcb68d5115a8ceb99a6a48e3b9d786b",
+    "semantic_hash": "8fcb68d5115a8ceb99a6a48e3b9d786b"
+  },
+  ".vscode/extensions.json": {
+    "mtime": 1784664927.4511945,
+    "seen": 1787736273.645472,
+    "ast_hash": "42f3854edd48c8cd22c8bef246810290",
+    "semantic_hash": "42f3854edd48c8cd22c8bef246810290"
+  },
+  "jsconfig.json": {
+    "mtime": 1784664927.626598,
+    "seen": 1787736273.645472,
+    "ast_hash": "c49d747aa9aeb6c40f57f884638328a4",
+    "semantic_hash": "c49d747aa9aeb6c40f57f884638328a4"
+  },
+  "package.json": {
+    "mtime": 1788341868.6213477,
+    "seen": 1788342128.353766,
+    "ast_hash": "84e59c1ab94823610696c7a5340955ae",
+    "semantic_hash": ""
+  },
+  "postcss.config.js": {
+    "mtime": 1784664927.634712,
+    "seen": 1787736273.645472,
+    "ast_hash": "5b84f4567208c7c747079c0477373231",
+    "semantic_hash": "5b84f4567208c7c747079c0477373231"
+  },
+  "public/manifest.json": {
+    "mtime": 1784664927.6430788,
+    "seen": 1787736273.645472,
+    "ast_hash": "c9a98f231f1ee2d974a40c49f9faa469",
+    "semantic_hash": "c9a98f231f1ee2d974a40c49f9faa469"
+  },
+  "public/version.json": {
+    "mtime": 1784664927.6441066,
+    "seen": 1787736273.645472,
+    "ast_hash": "0458c1cc19167a4c905fcb091245ab9b",
+    "semantic_hash": "0458c1cc19167a4c905fcb091245ab9b"
+  },
+  "scripts/update-sw-cache.js": {
+    "mtime": 1784664927.6462789,
+    "seen": 1787736273.645472,
+    "ast_hash": "65c9512bdd1f8fcc35e92d8022b03c1d",
+    "semantic_hash": "65c9512bdd1f8fcc35e92d8022b03c1d"
+  },
+  "server.js": {
+    "mtime": 1784664927.647273,
+    "seen": 1787736273.645472,
+    "ast_hash": "9bc63cf001591412b8db99b11282713f",
+    "semantic_hash": "9bc63cf001591412b8db99b11282713f"
+  },
+  "src/App.vue": {
+    "mtime": 1787219873.515256,
+    "seen": 1787736273.645472,
+    "ast_hash": "dce916166c372e9424adf22dd4acede2",
+    "semantic_hash": "dce916166c372e9424adf22dd4acede2"
+  },
+  "src/components/AIEnhanceButton.vue": {
+    "mtime": 1787219870.0271132,
+    "seen": 1787736273.645472,
+    "ast_hash": "74d3fc7d560429a70805cb9228ecb60d",
+    "semantic_hash": "74d3fc7d560429a70805cb9228ecb60d"
+  },
+  "src/components/BranchSelector.vue": {
+    "mtime": 1787219870.037577,
+    "seen": 1787736273.645472,
+    "ast_hash": "1d8e3e050bcff30a963ba2acf239622f",
+    "semantic_hash": "1d8e3e050bcff30a963ba2acf239622f"
+  },
+  "src/components/InstallAppButton.vue": {
+    "mtime": 1787219870.0516822,
+    "seen": 1787736273.645472,
+    "ast_hash": "4dc60438e7b72941cebb41f7322a4d43",
+    "semantic_hash": "4dc60438e7b72941cebb41f7322a4d43"
+  },
+  "src/components/LoadingSkeleton.vue": {
+    "mtime": 1787219870.0597403,
+    "seen": 1787736273.645472,
+    "ast_hash": "0ad221d3a9810e6f776ff3dc10e588fe",
+    "semantic_hash": "0ad221d3a9810e6f776ff3dc10e588fe"
+  },
+  "src/components/NotificationBell.vue": {
+    "mtime": 1787219870.0763273,
+    "seen": 1787736273.645472,
+    "ast_hash": "65ad6b1041e6cc9da5b742a4765609da",
+    "semantic_hash": "65ad6b1041e6cc9da5b742a4765609da"
+  },
+  "src/components/ThemeManager.vue": {
+    "mtime": 1787219870.083665,
+    "seen": 1787736273.645472,
+    "ast_hash": "e88b24e77cc58476dcaa8b2856a05f62",
+    "semantic_hash": "e88b24e77cc58476dcaa8b2856a05f62"
+  },
+  "src/components/__tests__/BackButton.spec.js": {
+    "mtime": 1784664927.6746979,
+    "seen": 1787736273.645472,
+    "ast_hash": "9f3d6c8dbffa7152e11a4eb9ac8294e4",
+    "semantic_hash": "9f3d6c8dbffa7152e11a4eb9ac8294e4"
+  },
+  "src/components/__tests__/BulkActionsBar.spec.js": {
+    "mtime": 1784664927.6767008,
+    "seen": 1787736273.645472,
+    "ast_hash": "8b47cfb7f23c60bfb7f71ae083663d68",
+    "semantic_hash": "8b47cfb7f23c60bfb7f71ae083663d68"
+  },
+  "src/components/__tests__/LoadingSkeleton.spec.js": {
+    "mtime": 1784664927.6777105,
+    "seen": 1787736273.645472,
+    "ast_hash": "53e418f329eb78f7b01c4434329e6382",
+    "semantic_hash": "53e418f329eb78f7b01c4434329e6382"
+  },
+  "src/components/__tests__/SelectAllCheckbox.spec.js": {
+    "mtime": 1784664927.679225,
+    "seen": 1787736273.645472,
+    "ast_hash": "5575bab52dfe52bdb3ed89e455b953eb",
+    "semantic_hash": "5575bab52dfe52bdb3ed89e455b953eb"
+  },
+  "src/components/layouts/DashboardLayout.vue": {
+    "mtime": 1789299113.673375,
+    "seen": 1789322341.3318138,
+    "ast_hash": "6c24cdb8775421b0325ecfcc3551b272",
+    "semantic_hash": ""
+  },
+  "src/components/layouts/SuperAdminLayout.vue": {
+    "mtime": 1787219869.866266,
+    "seen": 1787736273.645472,
+    "ast_hash": "8807084b0a37961c1ba3f9612e926bf3",
+    "semantic_hash": "8807084b0a37961c1ba3f9612e926bf3"
+  },
+  "src/components/ui/AbsaBadge.vue": {
+    "mtime": 1787522058.606403,
+    "seen": 1787736273.645472,
+    "ast_hash": "f256eaa80b0255f2ddb5c6efc1ff043a",
+    "semantic_hash": "f256eaa80b0255f2ddb5c6efc1ff043a"
+  },
+  "src/components/ui/AbsaButton.vue": {
+    "mtime": 1787219869.882967,
+    "seen": 1787736273.645472,
+    "ast_hash": "53ad88ee4b475be2d03f142f0512c42d",
+    "semantic_hash": "53ad88ee4b475be2d03f142f0512c42d"
+  },
+  "src/components/ui/AbsaCard.vue": {
+    "mtime": 1788358910.6261892,
+    "seen": 1788359062.2884502,
+    "ast_hash": "b894e1d037ce0f8a9c503778d8857f40",
+    "semantic_hash": ""
+  },
+  "src/components/ui/AbsaGradientBg.vue": {
+    "mtime": 1787219869.8979616,
+    "seen": 1787736273.645472,
+    "ast_hash": "b64f7f1707fba0fbc0883c8c0745e1a7",
+    "semantic_hash": "b64f7f1707fba0fbc0883c8c0745e1a7"
+  },
+  "src/components/ui/AbsaSectionHeader.vue": {
+    "mtime": 1787219869.905238,
+    "seen": 1787736273.645472,
+    "ast_hash": "0ee42bcb13d04b9278b2533d3e8b2385",
+    "semantic_hash": "0ee42bcb13d04b9278b2533d3e8b2385"
+  },
+  "src/components/ui/AbsaStatCard.vue": {
+    "mtime": 1787219869.9122906,
+    "seen": 1787736273.645472,
+    "ast_hash": "1fe434bf1c848a03c6ee71fd4af08b92",
+    "semantic_hash": "1fe434bf1c848a03c6ee71fd4af08b92"
+  },
+  "src/components/ui/ArchiveBrowser.vue": {
+    "mtime": 1787219869.9198506,
+    "seen": 1787736273.645472,
+    "ast_hash": "254dca9ad40f245ef9f4efb8d57c14b9",
+    "semantic_hash": "254dca9ad40f245ef9f4efb8d57c14b9"
+  },
+  "src/components/ui/BackButton.vue": {
+    "mtime": 1787219869.9253569,
+    "seen": 1787736273.645472,
+    "ast_hash": "f51b048031401ad5266252599a0a3cf7",
+    "semantic_hash": "f51b048031401ad5266252599a0a3cf7"
+  },
+  "src/components/ui/BulkActionsBar.vue": {
+    "mtime": 1787219869.9328113,
+    "seen": 1787736273.645472,
+    "ast_hash": "5be353110f953d38303355c65b6a9bac",
+    "semantic_hash": "5be353110f953d38303355c65b6a9bac"
+  },
+  "src/components/ui/ConfirmDialog.vue": {
+    "mtime": 1787219869.942967,
+    "seen": 1787736273.645472,
+    "ast_hash": "943f851dd7150bbcb85f2b8a72e5b73e",
+    "semantic_hash": "943f851dd7150bbcb85f2b8a72e5b73e"
+  },
+  "src/components/ui/DashboardWidgets.vue": {
+    "mtime": 1787219869.953039,
+    "seen": 1787736273.645472,
+    "ast_hash": "7032ed49f6571ec39161d1b7eb3bd7b1",
+    "semantic_hash": "7032ed49f6571ec39161d1b7eb3bd7b1"
+  },
+  "src/components/ui/EmptyState.vue": {
+    "mtime": 1787219869.9584355,
+    "seen": 1787736273.645472,
+    "ast_hash": "2c5fb71fc7e83d4f39b21ad7dd71c36f",
+    "semantic_hash": "2c5fb71fc7e83d4f39b21ad7dd71c36f"
+  },
+  "src/components/ui/ExportPreviewModal.vue": {
+    "mtime": 1787219869.9669585,
+    "seen": 1787736273.645472,
+    "ast_hash": "8d67223a288d9b69f9677a8f6cbe4fa8",
+    "semantic_hash": "8d67223a288d9b69f9677a8f6cbe4fa8"
+  },
+  "src/components/ui/FullscreenToggle.vue": {
+    "mtime": 1787219869.9721303,
+    "seen": 1787736273.645472,
+    "ast_hash": "241f5261a88cec6023c4050a1f026601",
+    "semantic_hash": "241f5261a88cec6023c4050a1f026601"
+  },
+  "src/components/ui/KpiCard.vue": {
+    "mtime": 1787219869.9808476,
+    "seen": 1787736273.645472,
+    "ast_hash": "84a10cb4c98effea10ed0a8d7eb9758d",
+    "semantic_hash": "84a10cb4c98effea10ed0a8d7eb9758d"
+  },
+  "src/components/ui/KpiSection.vue": {
+    "mtime": 1787219869.9896677,
+    "seen": 1787736273.645472,
+    "ast_hash": "b44248a8a9898a47285b0af527c95bc6",
+    "semantic_hash": "b44248a8a9898a47285b0af527c95bc6"
+  },
+  "src/components/ui/MlExplainPopover.vue": {
+    "mtime": 1787522058.396568,
+    "seen": 1787736273.645472,
+    "ast_hash": "4d65dfec2f09a21bf9b12c471e88ae35",
+    "semantic_hash": "4d65dfec2f09a21bf9b12c471e88ae35"
+  },
+  "src/components/ui/Modal.vue": {
+    "mtime": 1787219870.0039918,
+    "seen": 1787736273.645472,
+    "ast_hash": "396e7e6f4aa525f368b891984b8fb858",
+    "semantic_hash": "396e7e6f4aa525f368b891984b8fb858"
+  },
+  "src/components/ui/PageHeader.vue": {
+    "mtime": 1787219870.0120282,
+    "seen": 1787736273.645472,
+    "ast_hash": "cdd795af0b3f2e2dc171846cb5d0f933",
+    "semantic_hash": "cdd795af0b3f2e2dc171846cb5d0f933"
+  },
+  "src/components/ui/SelectAllCheckbox.vue": {
+    "mtime": 1787219870.0189583,
+    "seen": 1787736273.645472,
+    "ast_hash": "f6296854533e7399270072d012a8babd",
+    "semantic_hash": "f6296854533e7399270072d012a8babd"
+  },
+  "src/components/ui/index.js": {
+    "mtime": 1786090958.9837267,
+    "seen": 1787736273.645472,
+    "ast_hash": "bda5298a2acc6734d3a831ac1c7ef338",
+    "semantic_hash": "bda5298a2acc6734d3a831ac1c7ef338"
+  },
+  "src/composables/__tests__/useBulkSelect.spec.js": {
+    "mtime": 1784664927.715609,
+    "seen": 1787736273.645472,
+    "ast_hash": "99606067ebd363deb03584456ae09ad2",
+    "semantic_hash": "99606067ebd363deb03584456ae09ad2"
+  },
+  "src/composables/settings/index.js": {
+    "mtime": 1784664927.7185833,
+    "seen": 1787736273.645472,
+    "ast_hash": "1b7a31764763b5d6c20486aa55bd8628",
+    "semantic_hash": "1b7a31764763b5d6c20486aa55bd8628"
+  },
+  "src/composables/settings/useSettingsAiAgents.js": {
+    "mtime": 1784664927.7198172,
+    "seen": 1787736273.645472,
+    "ast_hash": "d3437bbaf737d35c2ae37bd4c48d021e",
+    "semantic_hash": "d3437bbaf737d35c2ae37bd4c48d021e"
+  },
+  "src/composables/settings/useSettingsApprovals.js": {
+    "mtime": 1784664927.7218149,
+    "seen": 1787736273.645472,
+    "ast_hash": "ca6cc4695cfbdf4581f034235a36d154",
+    "semantic_hash": "ca6cc4695cfbdf4581f034235a36d154"
+  },
+  "src/composables/settings/useSettingsAudit.js": {
+    "mtime": 1784664927.7233412,
+    "seen": 1787736273.645472,
+    "ast_hash": "0b80294d52237ccde557c33f02b8ce6d",
+    "semantic_hash": "0b80294d52237ccde557c33f02b8ce6d"
+  },
+  "src/composables/settings/useSettingsBase.js": {
+    "mtime": 1789318703.9732718,
+    "seen": 1789322341.3318138,
+    "ast_hash": "4ed736155b6a49fdf259a61ac22f56c1",
+    "semantic_hash": ""
+  },
+  "src/composables/settings/useSettingsBranding.js": {
+    "mtime": 1784664927.7261126,
+    "seen": 1787736273.645472,
+    "ast_hash": "e03b03bc7c25db7a2ba5cc0bb4004216",
+    "semantic_hash": "e03b03bc7c25db7a2ba5cc0bb4004216"
+  },
+  "src/composables/settings/useSettingsCurrency.js": {
+    "mtime": 1784664927.7273993,
+    "seen": 1787736273.645472,
+    "ast_hash": "fba66ee1e8f35a636b93e508f6195f8c",
+    "semantic_hash": "fba66ee1e8f35a636b93e508f6195f8c"
+  },
+  "src/composables/settings/useSettingsEmail.js": {
+    "mtime": 1784664927.7297466,
+    "seen": 1787736273.645472,
+    "ast_hash": "f4b7168caefa9d7c89b5ae3060ad03ac",
+    "semantic_hash": "f4b7168caefa9d7c89b5ae3060ad03ac"
+  },
+  "src/composables/settings/useSettingsGoals.js": {
+    "mtime": 1784664927.7307453,
+    "seen": 1787736273.645472,
+    "ast_hash": "52437d39c4d3143439f5088a2cfba510",
+    "semantic_hash": "52437d39c4d3143439f5088a2cfba510"
+  },
+  "src/composables/settings/useSettingsIntegrations.js": {
+    "mtime": 1784664927.7322574,
+    "seen": 1787736273.645472,
+    "ast_hash": "aa512535680406884e64cb094eaca8ab",
+    "semantic_hash": "aa512535680406884e64cb094eaca8ab"
+  },
+  "src/composables/settings/useSettingsModules.js": {
+    "mtime": 1784664927.7342732,
+    "seen": 1787736273.645472,
+    "ast_hash": "d7e5ec8c5d6bc3b56d54651a9b255aac",
+    "semantic_hash": "d7e5ec8c5d6bc3b56d54651a9b255aac"
+  },
+  "src/composables/settings/useSettingsNotifications.js": {
+    "mtime": 1784664927.7362733,
+    "seen": 1787736273.645472,
+    "ast_hash": "24b99d16991a61d81084c7b5dc107834",
+    "semantic_hash": "24b99d16991a61d81084c7b5dc107834"
+  },
+  "src/composables/settings/useSettingsProfile.js": {
+    "mtime": 1784664927.738546,
+    "seen": 1787736273.645472,
+    "ast_hash": "da1d8f6efcfdc69812660d3228c83107",
+    "semantic_hash": "da1d8f6efcfdc69812660d3228c83107"
+  },
+  "src/composables/settings/useSettingsRoles.js": {
+    "mtime": 1784664927.7395494,
+    "seen": 1787736273.645472,
+    "ast_hash": "36a7488fe4e940931f4e9a886c4e0d1e",
+    "semantic_hash": "36a7488fe4e940931f4e9a886c4e0d1e"
+  },
+  "src/composables/useBulkSelect.js": {
+    "mtime": 1784664927.7410455,
+    "seen": 1787736273.645472,
+    "ast_hash": "b2bfad58eb02ff950a57c5b0d1a23b56",
+    "semantic_hash": "b2bfad58eb02ff950a57c5b0d1a23b56"
+  },
+  "src/composables/useConfirmDialog.js": {
+    "mtime": 1784664927.7438605,
+    "seen": 1787736273.645472,
+    "ast_hash": "478bc5d3b03b37b627e04dee2fe17d69",
+    "semantic_hash": "478bc5d3b03b37b627e04dee2fe17d69"
+  },
+  "src/composables/useCurrency.js": {
+    "mtime": 1784671739.1279144,
+    "seen": 1787736273.645472,
+    "ast_hash": "23e6d093b2f94b87956c71ee6fd4bcfa",
+    "semantic_hash": "23e6d093b2f94b87956c71ee6fd4bcfa"
+  },
+  "src/composables/useDashboardWidgets.js": {
+    "mtime": 1784664927.7468529,
+    "seen": 1787736273.645472,
+    "ast_hash": "ca18d4584d0118e49cb11e877dd23aef",
+    "semantic_hash": "ca18d4584d0118e49cb11e877dd23aef"
+  },
+  "src/composables/useDataArchive.js": {
+    "mtime": 1784664927.7488492,
+    "seen": 1787736273.645472,
+    "ast_hash": "5df011f409501a0a747e07fa9330bd50",
+    "semantic_hash": "5df011f409501a0a747e07fa9330bd50"
+  },
+  "src/composables/useExport.js": {
+    "mtime": 1784664927.7498505,
+    "seen": 1787736273.645472,
+    "ast_hash": "745857d1d8cec4f60e20acac0c3318bf",
+    "semantic_hash": "745857d1d8cec4f60e20acac0c3318bf"
+  },
+  "src/composables/useFullscreenMode.js": {
+    "mtime": 1784664927.7513547,
+    "seen": 1787736273.645472,
+    "ast_hash": "74c5444069bd765243bf010ee5bf45f3",
+    "semantic_hash": "74c5444069bd765243bf010ee5bf45f3"
+  },
+  "src/composables/usePwaInstall.js": {
+    "mtime": 1784664927.756692,
+    "seen": 1787736273.645472,
+    "ast_hash": "ac4bfd7d361a09f5bd98a3accf5bd024",
+    "semantic_hash": "ac4bfd7d361a09f5bd98a3accf5bd024"
+  },
+  "src/composables/useRBAC.js": {
+    "mtime": 1789318689.3863325,
+    "seen": 1789322341.3318138,
+    "ast_hash": "193a6ead5a67ce5318fc8b2bf2c97647",
+    "semantic_hash": ""
+  },
+  "src/composables/useTelemetryComparison.js": {
+    "mtime": 1784664927.762875,
+    "seen": 1787736273.645472,
+    "ast_hash": "a137353073fbe8169680b4b64fed6d64",
+    "semantic_hash": "a137353073fbe8169680b4b64fed6d64"
+  },
+  "src/config/currency.js": {
+    "mtime": 1784664927.7728832,
+    "seen": 1787736273.645472,
+    "ast_hash": "9e73307c0860f01df9ab8e4d745ee75c",
+    "semantic_hash": "9e73307c0860f01df9ab8e4d745ee75c"
+  },
+  "src/config/devFlags.js": {
+    "mtime": 1788361418.642448,
+    "seen": 1788533387.3755553,
+    "ast_hash": "a2dcc88d04c80cfba398d7ec5a1c21f4",
+    "semantic_hash": ""
+  },
+  "src/config/moduleCards.js": {
+    "mtime": 1788337363.0562854,
+    "seen": 1788337434.7962894,
+    "ast_hash": "9d0fbaed4ee3414c1f3402b23d7dcbb9",
+    "semantic_hash": ""
+  },
+  "src/config/moduleIdMap.js": {
+    "mtime": 1788336916.9096143,
+    "seen": 1788337050.2121687,
+    "ast_hash": "d2f549c48486cc1e38fbf3ac7a029063",
+    "semantic_hash": ""
+  },
+  "src/config/rbac.js": {
+    "mtime": 1789318681.138029,
+    "seen": 1789322341.3318138,
+    "ast_hash": "c2060c8ec0bd22d0f5c2c647e627c364",
+    "semantic_hash": ""
+  },
+  "src/config/useActivityTracker.js": {
+    "mtime": 1784671739.1401463,
+    "seen": 1787736273.645472,
+    "ast_hash": "0fcdfc7ebf4f9e8c5cf2eb7f8dd8b57d",
+    "semantic_hash": "0fcdfc7ebf4f9e8c5cf2eb7f8dd8b57d"
+  },
+  "src/config/useAudit.js": {
+    "mtime": 1788337157.770921,
+    "seen": 1788337434.7962894,
+    "ast_hash": "3eec06b9777cff4d8818d302b4afdddc",
+    "semantic_hash": ""
+  },
+  "src/config/usePreferences.js": {
+    "mtime": 1784671739.1444342,
+    "seen": 1787736273.645472,
+    "ast_hash": "f000402212a9da01c421defbee478ece",
+    "semantic_hash": "f000402212a9da01c421defbee478ece"
+  },
+  "src/events/crmEvents.js": {
+    "mtime": 1787232464.2893715,
+    "seen": 1787736273.645472,
+    "ast_hash": "da0b0e538584785f1fe5369a00a02292",
+    "semantic_hash": "da0b0e538584785f1fe5369a00a02292"
+  },
+  "src/main.js": {
+    "mtime": 1788341912.32374,
+    "seen": 1788342128.3547664,
+    "ast_hash": "bca4e3f827706528bea2843e60b2b31d",
+    "semantic_hash": ""
+  },
+  "src/router/index.js": {
+    "mtime": 1789299113.6793714,
+    "seen": 1789322341.3318138,
+    "ast_hash": "061e438c531e50facd1d708f0cea48e4",
+    "semantic_hash": ""
+  },
+  "src/services/api.js": {
+    "mtime": 1787211475.2575414,
+    "seen": 1787736273.645472,
+    "ast_hash": "c0e78d89ecd36cfbd29e6048b62dd107",
+    "semantic_hash": "c0e78d89ecd36cfbd29e6048b62dd107"
+  },
+  "src/services/audit_log.js": {
+    "mtime": 1784664927.8126044,
+    "seen": 1787736273.645472,
+    "ast_hash": "983860e9c94bd8affce1c20d7ef87663",
+    "semantic_hash": "983860e9c94bd8affce1c20d7ef87663"
+  },
+  "src/services/auth_api.js": {
+    "mtime": 1786409300.2128296,
+    "seen": 1787736273.645472,
+    "ast_hash": "d45ccef9f2a98f6fdd68d1ef6ea89ee3",
+    "semantic_hash": "d45ccef9f2a98f6fdd68d1ef6ea89ee3"
+  },
+  "src/services/crm_api.js": {
+    "mtime": 1784671739.151917,
+    "seen": 1787736273.645472,
+    "ast_hash": "f0437166a9a6544d9a5b085c28016f7d",
+    "semantic_hash": "f0437166a9a6544d9a5b085c28016f7d"
+  },
+  "src/services/crm_email_api.js": {
+    "mtime": 1784671739.1543744,
+    "seen": 1787736273.645472,
+    "ast_hash": "077cc81690d61707ddbd38863229caa3",
+    "semantic_hash": "077cc81690d61707ddbd38863229caa3"
+  },
+  "src/services/crm_meetings_api.js": {
+    "mtime": 1784664927.8231342,
+    "seen": 1787736273.645472,
+    "ast_hash": "ec527d9206e7ea380375977f7beec2d2",
+    "semantic_hash": "ec527d9206e7ea380375977f7beec2d2"
+  },
+  "src/services/crm_performance_api.js": {
+    "mtime": 1784664927.8255236,
+    "seen": 1787736273.645472,
+    "ast_hash": "3d08b9f37a4b569584cd2b6856d15361",
+    "semantic_hash": "3d08b9f37a4b569584cd2b6856d15361"
+  },
+  "src/services/currencyService.js": {
+    "mtime": 1784671739.1558754,
+    "seen": 1787736273.645472,
+    "ast_hash": "1db3743564238e47a2ef4049381c487c",
+    "semantic_hash": "1db3743564238e47a2ef4049381c487c"
+  },
+  "src/services/decodeJWT.js": {
+    "mtime": 1789299113.6533706,
+    "seen": 1789322341.3318138,
+    "ast_hash": "0e2bf557a37393484da2832f1ef0b7cc",
+    "semantic_hash": ""
+  },
+  "src/services/documents_api.js": {
+    "mtime": 1784664927.830522,
+    "seen": 1787736273.645472,
+    "ast_hash": "36010f7fd9f4643b6eae6189c0264991",
+    "semantic_hash": "36010f7fd9f4643b6eae6189c0264991"
+  },
+  "src/services/etlApi.js": {
+    "mtime": 1788352641.9959204,
+    "seen": 1788354906.6466427,
+    "ast_hash": "bf80dd1e8ddb60cf4c9401b310f5f49a",
+    "semantic_hash": ""
+  },
+  "src/services/modules_api.js": {
+    "mtime": 1784664927.8330116,
+    "seen": 1787736273.645472,
+    "ast_hash": "576ed7e8e8bedefde80acca43e40be74",
+    "semantic_hash": "576ed7e8e8bedefde80acca43e40be74"
+  },
+  "src/services/notification_api.js": {
+    "mtime": 1784664927.83446,
+    "seen": 1787736273.645472,
+    "ast_hash": "537b21578703151ea0e243e81954a775",
+    "semantic_hash": "537b21578703151ea0e243e81954a775"
+  },
+  "src/services/system_traces_api.js": {
+    "mtime": 1784664927.8366878,
+    "seen": 1787736273.645472,
+    "ast_hash": "ee6a1334e2138bab2733f25039e7632d",
+    "semantic_hash": "ee6a1334e2138bab2733f25039e7632d"
+  },
+  "src/services/telemetry_comparison_api.js": {
+    "mtime": 1784664927.8386874,
+    "seen": 1787736273.645472,
+    "ast_hash": "8a5bfd27708c06896a63140d9acc32aa",
+    "semantic_hash": "8a5bfd27708c06896a63140d9acc32aa"
+  },
+  "src/stores/auth.js": {
+    "mtime": 1784671739.1606753,
+    "seen": 1787736273.645472,
+    "ast_hash": "e3fb1f628c836c8ceca7c614b4466645",
+    "semantic_hash": "e3fb1f628c836c8ceca7c614b4466645"
+  },
+  "src/stores/customerStore.js": {
+    "mtime": 1789302872.9205794,
+    "seen": 1789322341.3318138,
+    "ast_hash": "113821b278df1ebd6997fc5dd70fcbd2",
+    "semantic_hash": ""
+  },
+  "src/stores/dashboard.js": {
+    "mtime": 1784664927.8423455,
+    "seen": 1787736273.645472,
+    "ast_hash": "2f343f7ecce12445970fdb7b886f9901",
+    "semantic_hash": "2f343f7ecce12445970fdb7b886f9901"
+  },
+  "src/stores/etlStore.js": {
+    "mtime": 1784863899.361056,
+    "seen": 1787736273.645472,
+    "ast_hash": "1557434d1b1e452bf4589abe25291ddb",
+    "semantic_hash": "1557434d1b1e452bf4589abe25291ddb"
+  },
+  "src/stores/intelligenceStore.js": {
+    "mtime": 1787522058.16662,
+    "seen": 1787736273.645472,
+    "ast_hash": "c8505f03f583cfd342c9e5366a329daf",
+    "semantic_hash": "c8505f03f583cfd342c9e5366a329daf"
+  },
+  "src/stores/modelsStore.js": {
+    "mtime": 1789141153.6681356,
+    "seen": 1789288792.550265,
+    "ast_hash": "ccd1d69c3d5b3a9468f107820498aa11",
+    "semantic_hash": ""
+  },
+  "src/stores/predictionStore.js": {
+    "mtime": 1787214636.7020512,
+    "seen": 1787736273.645472,
+    "ast_hash": "57de6f7664feb752f98ccbaa26dc874b",
+    "semantic_hash": "57de6f7664feb752f98ccbaa26dc874b"
+  },
+  "src/stores/ui.js": {
+    "mtime": 1784664927.843766,
+    "seen": 1787736273.645472,
+    "ast_hash": "20d9e71d19ce6e42b88788033c392190",
+    "semantic_hash": "20d9e71d19ce6e42b88788033c392190"
+  },
+  "src/stores/useCRMQuickAccessStore.js": {
+    "mtime": 1784664927.8457649,
+    "seen": 1787736273.645472,
+    "ast_hash": "8fe96913f63dbee09f6024484f379685",
+    "semantic_hash": "8fe96913f63dbee09f6024484f379685"
+  },
+  "src/stores/useNavigationStore.js": {
+    "mtime": 1784664927.8487668,
+    "seen": 1787736273.645472,
+    "ast_hash": "ddec0c68141922069d44fc944d8fbf2f",
+    "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
+  },
+  "src/sw.js": {
+    "mtime": 1789322156.4641912,
+    "seen": 1789322341.3318138,
+    "ast_hash": "02efc6e4b14331ffc38674636b0353db",
+    "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
+  },
+  "src/utils/excel.js": {
+    "mtime": 1784664927.855512,
+    "seen": 1787736273.645472,
+    "ast_hash": "c7a81031e64a2f488a5805bc22bb1e09",
+    "semantic_hash": "c7a81031e64a2f488a5805bc22bb1e09"
+  },
+  "src/utils/formatting.js": {
+    "mtime": 1784664927.8569112,
+    "seen": 1787736273.645472,
+    "ast_hash": "f695005e8ff215930164861353b520eb",
+    "semantic_hash": "f695005e8ff215930164861353b520eb"
+  },
+  "src/utils/pwaManager.js": {
+    "mtime": 1784664927.8616123,
+    "seen": 1787736273.645472,
+    "ast_hash": "bcafde53a16ffbf378dac0b3329111f7",
+    "semantic_hash": "bcafde53a16ffbf378dac0b3329111f7"
+  },
+  "src/utils/reportExport.js": {
+    "mtime": 1784664927.8641014,
+    "seen": 1787736273.645472,
+    "ast_hash": "168b4cb46ebb6226cec7fe024ad0be99",
+    "semantic_hash": "168b4cb46ebb6226cec7fe024ad0be99"
+  },
+  "src/utils/requestLogger.js": {
+    "mtime": 1784664927.8666396,
+    "seen": 1787736273.645472,
+    "ast_hash": "b208122abb63bd0d8427ead9b997af53",
+    "semantic_hash": "b208122abb63bd0d8427ead9b997af53"
+  },
+  "src/utils/v-role.js": {
+    "mtime": 1784664927.867788,
+    "seen": 1787736273.645472,
+    "ast_hash": "be15de54169214659c7d2911f605d092",
+    "semantic_hash": "be15de54169214659c7d2911f605d092"
+  },
+  "src/views/403.vue": {
+    "mtime": 1787219932.821671,
+    "seen": 1787736273.645472,
+    "ast_hash": "b6edf60418caf890583b621ea57b1c8f",
+    "semantic_hash": "b6edf60418caf890583b621ea57b1c8f"
+  },
+  "src/views/CreateActionPlan.vue": {
+    "mtime": 1788350018.1258886,
+    "seen": 1788354906.6466427,
+    "ast_hash": "2973c93dcc79f5489bd7db8807efd98f",
+    "semantic_hash": ""
+  },
+  "src/views/CustomerDetail.vue": {
+    "mtime": 1789140269.470904,
+    "seen": 1789288792.550265,
+    "ast_hash": "7b535fa87116c7f5c3afad5bddad4828",
+    "semantic_hash": ""
+  },
+  "src/views/Home.vue": {
+    "mtime": 1787219933.0512736,
+    "seen": 1787736273.645472,
+    "ast_hash": "3737f9e5f8bf76520dc4a7323cea6507",
+    "semantic_hash": "3737f9e5f8bf76520dc4a7323cea6507"
+  },
+  "src/views/InitialisationScreen.vue": {
+    "mtime": 1787219933.0984612,
+    "seen": 1787736273.645472,
+    "ast_hash": "86e0d6ca8b643d67ffa27c16b3549608",
+    "semantic_hash": "86e0d6ca8b643d67ffa27c16b3549608"
+  },
+  "src/views/Modules/aiagents/AiModule.vue": {
+    "mtime": 1788337157.7674427,
+    "seen": 1788337434.7962894,
+    "ast_hash": "bad78152dd5cf291617da1146a1ccf65",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/aiagents/Models.vue": {
+    "mtime": 1789141153.6681356,
+    "seen": 1789288792.550265,
+    "ast_hash": "1ea8369fcf9f64af5966d4ee6faf143c",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/aiagents/components/ChatSidebar.vue": {
+    "mtime": 1787219929.8645923,
+    "seen": 1787736273.645472,
+    "ast_hash": "160293eef621c3bde69b2f6b72a3a903",
+    "semantic_hash": "160293eef621c3bde69b2f6b72a3a903"
+  },
+  "src/views/Modules/crm/CRMAccountsPage.vue": {
+    "mtime": 1787219930.9402642,
+    "seen": 1787736273.645472,
+    "ast_hash": "318f0a9f1abbe2094b83c1f5a3a43cff",
+    "semantic_hash": "318f0a9f1abbe2094b83c1f5a3a43cff"
+  },
+  "src/views/Modules/crm/CRMAcquisitionPage.vue": {
+    "mtime": 1787219930.9608157,
+    "seen": 1787736273.645472,
+    "ast_hash": "e03dda3ca44ee6d442b4e241f1a5a262",
+    "semantic_hash": "e03dda3ca44ee6d442b4e241f1a5a262"
+  },
+  "src/views/Modules/crm/CRMCallsPage.vue": {
+    "mtime": 1787219930.9753876,
+    "seen": 1787736273.645472,
+    "ast_hash": "a4d73163914862fc3203f44e5dd795a1",
+    "semantic_hash": "a4d73163914862fc3203f44e5dd795a1"
+  },
+  "src/views/Modules/crm/CRMContactsPage.vue": {
+    "mtime": 1787219930.9809322,
+    "seen": 1787736273.645472,
+    "ast_hash": "0bcdab350270cd42460de815299739fb",
+    "semantic_hash": "0bcdab350270cd42460de815299739fb"
+  },
+  "src/views/Modules/crm/CRMDealsPage.vue": {
+    "mtime": 1787219930.987077,
+    "seen": 1787736273.645472,
+    "ast_hash": "39a6dc5ac1ef20eba13ff97aa1698fd3",
+    "semantic_hash": "39a6dc5ac1ef20eba13ff97aa1698fd3"
+  },
+  "src/views/Modules/crm/CRMDocumentsPage.vue": {
+    "mtime": 1787219930.994092,
+    "seen": 1787736273.645472,
+    "ast_hash": "4d110314d1ea3b8bbeda2a10fa8de495",
+    "semantic_hash": "4d110314d1ea3b8bbeda2a10fa8de495"
+  },
+  "src/views/Modules/crm/CRMEmailsPage.vue": {
+    "mtime": 1787219931.004641,
+    "seen": 1787736273.645472,
+    "ast_hash": "158f129d5c5a200874004f85d69e862f",
+    "semantic_hash": "158f129d5c5a200874004f85d69e862f"
+  },
+  "src/views/Modules/crm/CRMLeadsPage.vue": {
+    "mtime": 1787219931.0416472,
+    "seen": 1787736273.645472,
+    "ast_hash": "ab20ab8c8e0f1e2bcae272574014ab5a",
+    "semantic_hash": "ab20ab8c8e0f1e2bcae272574014ab5a"
+  },
+  "src/views/Modules/crm/CRMMeetingsPage.vue": {
+    "mtime": 1787219931.070226,
+    "seen": 1787736273.645472,
+    "ast_hash": "edbca872b234a00e23431362918e2f49",
+    "semantic_hash": "edbca872b234a00e23431362918e2f49"
+  },
+  "src/views/Modules/crm/CRMModule.vue": {
+    "mtime": 1787219931.0865085,
+    "seen": 1787736273.645472,
+    "ast_hash": "099e7b40366d41bb91d651aa7722bbee",
+    "semantic_hash": "099e7b40366d41bb91d651aa7722bbee"
+  },
+  "src/views/Modules/crm/CRMPipelinePage.vue": {
+    "mtime": 1787219931.133856,
+    "seen": 1787736273.645472,
+    "ast_hash": "3e53335df405be7a1ee7346cf04d0f03",
+    "semantic_hash": "3e53335df405be7a1ee7346cf04d0f03"
+  },
+  "src/views/Modules/crm/CRMVisitsPage.vue": {
+    "mtime": 1787219931.1556387,
+    "seen": 1787736273.645472,
+    "ast_hash": "97e2091742ce4d844effdb8820f5d6ed",
+    "semantic_hash": "97e2091742ce4d844effdb8820f5d6ed"
+  },
+  "src/views/Modules/crm/CRMWhatsAppPage.vue": {
+    "mtime": 1787219931.1866183,
+    "seen": 1787736273.645472,
+    "ast_hash": "778d15f9fe28436131f118a52cc630bf",
+    "semantic_hash": "778d15f9fe28436131f118a52cc630bf"
+  },
+  "src/views/Modules/crm/Portfolio.vue": {
+    "mtime": 1787219931.2539065,
+    "seen": 1787736273.645472,
+    "ast_hash": "85ae0a7202aff8f715be5380afeded8c",
+    "semantic_hash": "85ae0a7202aff8f715be5380afeded8c"
+  },
+  "src/views/Modules/crm/components/AccountDetailModal.vue": {
+    "mtime": 1787219930.0493813,
+    "seen": 1787736273.645472,
+    "ast_hash": "bb16fe910d72b33a722784e9be3f73c2",
+    "semantic_hash": "bb16fe910d72b33a722784e9be3f73c2"
+  },
+  "src/views/Modules/crm/components/AccountFormModal.vue": {
+    "mtime": 1787219930.0775712,
+    "seen": 1787736273.645472,
+    "ast_hash": "bb8c85bac7b9cb79e4933bd1f23e1649",
+    "semantic_hash": "bb8c85bac7b9cb79e4933bd1f23e1649"
+  },
+  "src/views/Modules/crm/components/AccountsView.vue": {
+    "mtime": 1787219930.1206071,
+    "seen": 1787736273.645472,
+    "ast_hash": "cc64e1da5bc469500665b1bb7747be45",
+    "semantic_hash": "cc64e1da5bc469500665b1bb7747be45"
+  },
+  "src/views/Modules/crm/components/BulkUploadAccountsModal.vue": {
+    "mtime": 1787219930.138046,
+    "seen": 1787736273.645472,
+    "ast_hash": "9ea03ef3135f88f4115d795ea7a2cbb3",
+    "semantic_hash": "9ea03ef3135f88f4115d795ea7a2cbb3"
+  },
+  "src/views/Modules/crm/components/BulkUploadLeadsModal.vue": {
+    "mtime": 1787219930.2143316,
+    "seen": 1787736273.645472,
+    "ast_hash": "cc46ffbc8fc45b817c2232b3d4cf5051",
+    "semantic_hash": "cc46ffbc8fc45b817c2232b3d4cf5051"
+  },
+  "src/views/Modules/crm/components/CRMAnalyticsModal.vue": {
+    "mtime": 1787219930.392076,
+    "seen": 1787736273.645472,
+    "ast_hash": "0797c575d46166702425aec701d556a3",
+    "semantic_hash": "0797c575d46166702425aec701d556a3"
+  },
+  "src/views/Modules/crm/components/CRMEmailModal.vue": {
+    "mtime": 1787219930.4215004,
+    "seen": 1787736273.645472,
+    "ast_hash": "1e6930d3ea608c0abc65fab00399ee11",
+    "semantic_hash": "1e6930d3ea608c0abc65fab00399ee11"
+  },
+  "src/views/Modules/crm/components/CRMMeetingModal.vue": {
+    "mtime": 1787219930.4430606,
+    "seen": 1787736273.645472,
+    "ast_hash": "2231a5a259c6c801904d764daafbfcf5",
+    "semantic_hash": "2231a5a259c6c801904d764daafbfcf5"
+  },
+  "src/views/Modules/crm/components/CRMNotificationPanel.vue": {
+    "mtime": 1787219930.4563103,
+    "seen": 1787736273.645472,
+    "ast_hash": "1bf23eb3fdc93bc0db9758c466f3f74c",
+    "semantic_hash": "1bf23eb3fdc93bc0db9758c466f3f74c"
+  },
+  "src/views/Modules/crm/components/CommunicationModal.vue": {
+    "mtime": 1787219930.2233825,
+    "seen": 1787736273.645472,
+    "ast_hash": "96ffb06f6eceaef2da8633be4c013db6",
+    "semantic_hash": "96ffb06f6eceaef2da8633be4c013db6"
+  },
+  "src/views/Modules/crm/components/ContactDetailModal.vue": {
+    "mtime": 1787219930.2564325,
+    "seen": 1787736273.645472,
+    "ast_hash": "47da73a97d23fec767b18af376578d01",
+    "semantic_hash": "47da73a97d23fec767b18af376578d01"
+  },
+  "src/views/Modules/crm/components/ContactFormModal.vue": {
+    "mtime": 1787219930.2978594,
+    "seen": 1787736273.645472,
+    "ast_hash": "351e770af9db07d514449cce652e88df",
+    "semantic_hash": "351e770af9db07d514449cce652e88df"
+  },
+  "src/views/Modules/crm/components/ContactsView.vue": {
+    "mtime": 1787219930.3403594,
+    "seen": 1787736273.645472,
+    "ast_hash": "559adc03f5a14b4f7231f382d1d0a013",
+    "semantic_hash": "559adc03f5a14b4f7231f382d1d0a013"
+  },
+  "src/views/Modules/crm/components/DealDetailModal.vue": {
+    "mtime": 1787219930.4770453,
+    "seen": 1787736273.645472,
+    "ast_hash": "d1f9d441bf542d9ec1e56f76a97e3b9b",
+    "semantic_hash": "d1f9d441bf542d9ec1e56f76a97e3b9b"
+  },
+  "src/views/Modules/crm/components/DealFormModal.vue": {
+    "mtime": 1787219930.4934413,
+    "seen": 1787736273.645472,
+    "ast_hash": "8c37a8f8a582dfa83d5ecfa1a6946327",
+    "semantic_hash": "8c37a8f8a582dfa83d5ecfa1a6946327"
+  },
+  "src/views/Modules/crm/components/DealsView.vue": {
+    "mtime": 1787219930.5145705,
+    "seen": 1787736273.645472,
+    "ast_hash": "35cfdcf050c9e929ea6412e8d2290143",
+    "semantic_hash": "35cfdcf050c9e929ea6412e8d2290143"
+  },
+  "src/views/Modules/crm/components/DocumentAttachModal.vue": {
+    "mtime": 1787219930.5342982,
+    "seen": 1787736273.645472,
+    "ast_hash": "c1f16502996db698cb2d616f9b7295b4",
+    "semantic_hash": "c1f16502996db698cb2d616f9b7295b4"
+  },
+  "src/views/Modules/crm/components/DocumentDetailModal.vue": {
+    "mtime": 1787219930.5449693,
+    "seen": 1787736273.645472,
+    "ast_hash": "ca586b421bf4ca843f90f93b84fb6757",
+    "semantic_hash": "ca586b421bf4ca843f90f93b84fb6757"
+  },
+  "src/views/Modules/crm/components/DocumentEditModal.vue": {
+    "mtime": 1787219930.5540104,
+    "seen": 1787736273.645472,
+    "ast_hash": "218e56070357afd1ec03e0dbe1977c6a",
+    "semantic_hash": "218e56070357afd1ec03e0dbe1977c6a"
+  },
+  "src/views/Modules/crm/components/DocumentQuickViewModal.vue": {
+    "mtime": 1787219930.5624921,
+    "seen": 1787736273.645472,
+    "ast_hash": "e7b17fbcaffb29af9010d194f6f38432",
+    "semantic_hash": "e7b17fbcaffb29af9010d194f6f38432"
+  },
+  "src/views/Modules/crm/components/DocumentShareModal.vue": {
+    "mtime": 1787219930.572468,
+    "seen": 1787736273.645472,
+    "ast_hash": "d8dc3dc849f9ffe64d6257427d19fbf3",
+    "semantic_hash": "d8dc3dc849f9ffe64d6257427d19fbf3"
+  },
+  "src/views/Modules/crm/components/DocumentUploadModal.vue": {
+    "mtime": 1787219930.6120439,
+    "seen": 1787736273.645472,
+    "ast_hash": "6e0f03d4c5ef2a10a3e23da5296ff74a",
+    "semantic_hash": "6e0f03d4c5ef2a10a3e23da5296ff74a"
+  },
+  "src/views/Modules/crm/components/DocumentsView.vue": {
+    "mtime": 1787219930.5990782,
+    "seen": 1787736273.645472,
+    "ast_hash": "156a47d0a388135629e8c9c4af275bc2",
+    "semantic_hash": "156a47d0a388135629e8c9c4af275bc2"
+  },
+  "src/views/Modules/crm/components/ImportLeadsModal.vue": {
+    "mtime": 1787219930.6188343,
+    "seen": 1787736273.645472,
+    "ast_hash": "0ccdd025632e35292a665acd20f1ed80",
+    "semantic_hash": "0ccdd025632e35292a665acd20f1ed80"
+  },
+  "src/views/Modules/crm/components/InvoiceCreationModal.vue": {
+    "mtime": 1787219930.6312656,
+    "seen": 1787736273.645472,
+    "ast_hash": "c2340153b8196d410beb4ed4f5a90b5c",
+    "semantic_hash": "c2340153b8196d410beb4ed4f5a90b5c"
+  },
+  "src/views/Modules/crm/components/LeadConversionModal.vue": {
+    "mtime": 1787219930.6621766,
+    "seen": 1787736273.645472,
+    "ast_hash": "983d0869ac34b25ad21cb33d0fe14c17",
+    "semantic_hash": "983d0869ac34b25ad21cb33d0fe14c17"
+  },
+  "src/views/Modules/crm/components/LeadDetailModal.vue": {
+    "mtime": 1788342038.2919974,
+    "seen": 1788342128.3547664,
+    "ast_hash": "ac4897f12f2d5992b4552c1e618f475f",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/crm/components/LeadsView.vue": {
+    "mtime": 1787219930.8506136,
+    "seen": 1787736273.645472,
+    "ast_hash": "2d79e6154c1cc1214fc5a9f9ddfbe80e",
+    "semantic_hash": "2d79e6154c1cc1214fc5a9f9ddfbe80e"
+  },
+  "src/views/Modules/crm/components/LinkedDocumentsWidget.vue": {
+    "mtime": 1787219930.8768222,
+    "seen": 1787736273.645472,
+    "ast_hash": "ac5f0767df38a10e3cf864abd05065e3",
+    "semantic_hash": "ac5f0767df38a10e3cf864abd05065e3"
+  },
+  "src/views/Modules/crm/components/PipelineView.vue": {
+    "mtime": 1787219930.8970733,
+    "seen": 1787736273.645472,
+    "ast_hash": "612b051f8acefe53f9fb0b275330adba",
+    "semantic_hash": "612b051f8acefe53f9fb0b275330adba"
+  },
+  "src/views/Modules/crm/components/SearchableSelect.vue": {
+    "mtime": 1787219930.9080913,
+    "seen": 1787736273.645472,
+    "ast_hash": "5f7eb157ecdef61b13b4304e5811c5bb",
+    "semantic_hash": "5f7eb157ecdef61b13b4304e5811c5bb"
+  },
+  "src/views/Modules/crm/components/SubscriptionRequiredModal.vue": {
+    "mtime": 1787219930.9231114,
+    "seen": 1787736273.645472,
+    "ast_hash": "116e331912569a4bd231d656a3b3d909",
+    "semantic_hash": "116e331912569a4bd231d656a3b3d909"
+  },
+  "src/views/Modules/crm/components/UserSearchSelect.vue": {
+    "mtime": 1787219930.9327042,
+    "seen": 1787736273.645472,
+    "ast_hash": "65aa854f2a86425733215af3e59339be",
+    "semantic_hash": "65aa854f2a86425733215af3e59339be"
+  },
+  "src/views/Modules/crm/composables/CRMModule.js": {
+    "mtime": 1784664927.9943924,
+    "seen": 1787736273.645472,
+    "ast_hash": "9b65f21e81b150f74a37bb7cb16f0465",
+    "semantic_hash": "9b65f21e81b150f74a37bb7cb16f0465"
+  },
+  "src/views/Modules/datapipeline/BatchExecutionDetail.vue": {
+    "mtime": 1787219931.2829795,
+    "seen": 1787736273.645472,
+    "ast_hash": "bb6fef7ddf06b5eaf70187e60339c4bd",
+    "semantic_hash": "bb6fef7ddf06b5eaf70187e60339c4bd"
+  },
+  "src/views/Modules/datapipeline/ETLRunHistory.vue": {
+    "mtime": 1787522997.8719058,
+    "seen": 1787736273.645472,
+    "ast_hash": "c4c39c204a285daf7b65d03e1d930d84",
+    "semantic_hash": "c4c39c204a285daf7b65d03e1d930d84"
+  },
+  "src/views/Modules/datapipeline/EtlConfigManager.vue": {
+    "mtime": 1788352791.9567323,
+    "seen": 1788354906.6466427,
+    "ast_hash": "ba8efb8e24744f52d0a8aec0d43b3392",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/datapipeline/EtlPipeline.vue": {
+    "mtime": 1787219931.3310707,
+    "seen": 1787736273.645472,
+    "ast_hash": "8e11dd47c3dd4b7eb48866014128c581",
+    "semantic_hash": "8e11dd47c3dd4b7eb48866014128c581"
+  },
+  "src/views/Modules/intelligence/BalanceForecast.vue": {
+    "mtime": 1788344969.9542608,
+    "seen": 1788354906.6466427,
+    "ast_hash": "64a90427bed1fe4cd90d037bfa56853f",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/intelligence/BusinessOutcomes.vue": {
+    "mtime": 1788344954.399944,
+    "seen": 1788354906.6466427,
+    "ast_hash": "135f2464fa0e8440b76fdfe1f6491546",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/intelligence/CustomerValueIntelligence.vue": {
+    "mtime": 1788347414.020738,
+    "seen": 1788354906.6466427,
+    "ast_hash": "f651b204cb3ebde268d90acba858cb6f",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/intelligence/LifecyclePrediction.vue": {
+    "mtime": 1788344954.399944,
+    "seen": 1788354906.6466427,
+    "ast_hash": "13179f68476783dfa2a33a2b5c3d7b8e",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/managers/BranchManagerDashboard.vue": {
+    "mtime": 1788840388.6516178,
+    "seen": 1789288792.550265,
+    "ast_hash": "b6c001e8ece323cf001760c4e4a62bfe",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/settings/ProfileModule.vue": {
+    "mtime": 1787219931.5033154,
+    "seen": 1787736273.645472,
+    "ast_hash": "f9a9cb0d3e54d877aaeb8585c02a0605",
+    "semantic_hash": "f9a9cb0d3e54d877aaeb8585c02a0605"
+  },
+  "src/views/Modules/settings/SettingsModule.vue": {
+    "mtime": 1787219931.5481842,
+    "seen": 1787736273.645472,
+    "ast_hash": "b2648354bbb42bd03faf52b1edbabacb",
+    "semantic_hash": "b2648354bbb42bd03faf52b1edbabacb"
+  },
+  "src/views/Modules/settings/SubAccountModule.vue": {
+    "mtime": 1788341912.3379266,
+    "seen": 1788342128.3547664,
+    "ast_hash": "5b49f4afa3f047c87c9eebe4083a8f34",
+    "semantic_hash": ""
+  },
+  "src/views/Modules/settings/UserManagement.vue": {
+    "mtime": 1787219931.704544,
+    "seen": 1787736273.645472,
+    "ast_hash": "f1a1a05d056f423ab09fd73e39a4c044",
+    "semantic_hash": "f1a1a05d056f423ab09fd73e39a4c044"
+  },
+  "src/views/Modules/settings/components/SettingsAiAgents.vue": {
+    "mtime": 1787219931.388777,
+    "seen": 1787736273.645472,
+    "ast_hash": "5412631986f7fcfd73337e4e04a37d45",
+    "semantic_hash": "5412631986f7fcfd73337e4e04a37d45"
+  },
+  "src/views/Modules/settings/components/SettingsAudit.vue": {
+    "mtime": 1787219931.397258,
+    "seen": 1787736273.645472,
+    "ast_hash": "658f1d02a606bc8faf37f33b1698f7e0",
+    "semantic_hash": "658f1d02a606bc8faf37f33b1698f7e0"
+  },
+  "src/views/Modules/settings/components/SettingsBranding.vue": {
+    "mtime": 1787219931.4049695,
+    "seen": 1787736273.645472,
+    "ast_hash": "f83218f766ad3f810a9872e17d0068dd",
+    "semantic_hash": "f83218f766ad3f810a9872e17d0068dd"
+  },
+  "src/views/Modules/settings/components/SettingsCurrency.vue": {
+    "mtime": 1787219931.4100924,
+    "seen": 1787736273.645472,
+    "ast_hash": "b61392910ae5746e36a33bb786080bec",
+    "semantic_hash": "b61392910ae5746e36a33bb786080bec"
+  },
+  "src/views/Modules/settings/components/SettingsEmail.vue": {
+    "mtime": 1787219931.417208,
+    "seen": 1787736273.645472,
+    "ast_hash": "abd4cfc08be67f57bcdf0fc110c7fa67",
+    "semantic_hash": "abd4cfc08be67f57bcdf0fc110c7fa67"
+  },
+  "src/views/Modules/settings/components/SettingsIntegrations.vue": {
+    "mtime": 1787219931.4218826,
+    "seen": 1787736273.645472,
+    "ast_hash": "266441ae364b8bcb0565de07084470e7",
+    "semantic_hash": "266441ae364b8bcb0565de07084470e7"
+  },
+  "src/views/Modules/settings/components/SettingsModules.vue": {
+    "mtime": 1787219931.431229,
+    "seen": 1787736273.645472,
+    "ast_hash": "9f48ac76b25b35b9cb7d84fe68184c24",
+    "semantic_hash": "9f48ac76b25b35b9cb7d84fe68184c24"
+  },
+  "src/views/Modules/settings/components/SettingsNotifications.vue": {
+    "mtime": 1787219931.4388194,
+    "seen": 1787736273.645472,
+    "ast_hash": "60d561f64605674c4a8fdf3944a86abd",
+    "semantic_hash": "60d561f64605674c4a8fdf3944a86abd"
+  },
+  "src/views/Modules/settings/components/SettingsProfile.vue": {
+    "mtime": 1787219931.4448168,
+    "seen": 1787736273.645472,
+    "ast_hash": "0e0ebf44c0e1fbf8202a95e998d182a6",
+    "semantic_hash": "0e0ebf44c0e1fbf8202a95e998d182a6"
+  },
+  "src/views/Modules/settings/components/SettingsRoles.vue": {
+    "mtime": 1787219931.4510474,
+    "seen": 1787736273.645472,
+    "ast_hash": "381405a794adb79e41dcfa0461de0dd7",
+    "semantic_hash": "381405a794adb79e41dcfa0461de0dd7"
+  },
+  "src/views/PWATestPage.vue": {
+    "mtime": 1787219933.1612828,
+    "seen": 1787736273.645472,
+    "ast_hash": "293b7dfa59bd100bcd9d62090560f8b0",
+    "semantic_hash": "293b7dfa59bd100bcd9d62090560f8b0"
+  },
+  "src/views/PortfolioOverview.vue": {
+    "mtime": 1789302894.7912674,
+    "seen": 1789322341.3330517,
+    "ast_hash": "b57e4135fecaf73e3da3a7fbbd89f598",
+    "semantic_hash": ""
+  },
+  "src/views/TakeAction.vue": {
+    "mtime": 1788350018.1313424,
+    "seen": 1788354906.6466427,
+    "ast_hash": "b60305200b506895c5c179310ea01722",
+    "semantic_hash": ""
+  },
+  "src/views/auth/ForgotPassword.vue": {
+    "mtime": 1787219929.8053048,
+    "seen": 1787736273.6464763,
+    "ast_hash": "69ad1b60593a5288b758682112358c40",
+    "semantic_hash": "69ad1b60593a5288b758682112358c40"
+  },
+  "src/views/auth/Logout.vue": {
+    "mtime": 1787219929.8378375,
+    "seen": 1787736273.6464763,
+    "ast_hash": "b8c841b51bfb6c41817afdd67152de74",
+    "semantic_hash": "b8c841b51bfb6c41817afdd67152de74"
+  },
+  "src/views/auth/ResetPassword.vue": {
+    "mtime": 1787219929.8547916,
+    "seen": 1787736273.6464763,
+    "ast_hash": "0652c2115e4e7e40168a100830993128",
+    "semantic_hash": "0652c2115e4e7e40168a100830993128"
+  },
+  "src/views/auth/login.vue": {
+    "mtime": 1789299632.6390276,
+    "seen": 1789322341.3330517,
+    "ast_hash": "5622740433c719bd5384c9bd2fcabb59",
+    "semantic_hash": ""
+  },
+  "tailwind.config.js": {
+    "mtime": 1787221336.1360772,
+    "seen": 1787736273.6464763,
+    "ast_hash": "d122ed13c9da03a4df684eabeeb36d6d",
+    "semantic_hash": "d122ed13c9da03a4df684eabeeb36d6d"
+  },
+  "vite-env.d.ts": {
+    "mtime": 1784664928.071289,
+    "seen": 1787736273.6464763,
+    "ast_hash": "8f68c27c3fc38817b2726b20e2d4f1ee",
+    "semantic_hash": "8f68c27c3fc38817b2726b20e2d4f1ee"
+  },
+  "vite.config.js": {
+    "mtime": 1784664928.0732675,
+    "seen": 1787736273.6464763,
+    "ast_hash": "b88c0c894021ce12d53a777c4b255079",
+    "semantic_hash": "b88c0c894021ce12d53a777c4b255079"
+  },
+  "vitest.config.js": {
+    "mtime": 1784664928.0742674,
+    "seen": 1787736273.6464763,
+    "ast_hash": "d928ab386cc3fe9caf0baccc31ea6d18",
+    "semantic_hash": "d928ab386cc3fe9caf0baccc31ea6d18"
+  },
+  ".ai/MEMORIES.md": {
+    "mtime": 1787558928.6118703,
+    "seen": 1788337050.2131686,
+    "ast_hash": "dfdbd1eeb5de290acbe2827c46f9f9e8",
+    "semantic_hash": ""
+  },
+  ".ai/README.md": {
+    "mtime": 1787558914.7048495,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e1cd598813ca03081cc133018b0811b3",
+    "semantic_hash": ""
+  },
+  ".ai/architecture.md": {
+    "mtime": 1787560583.8459976,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7ec39df150b16021a37c947d0a19a6dc",
+    "semantic_hash": ""
+  },
+  ".ai/coding-standards.md": {
+    "mtime": 1787513293.782963,
+    "seen": 1788337050.2131686,
+    "ast_hash": "99f3f253971bbe435a3b82cc64444a14",
+    "semantic_hash": ""
+  },
+  ".ai/current-sprint.md": {
+    "mtime": 1786119389.0634787,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f5ab5c494635027fc32a779e65f1516e",
+    "semantic_hash": ""
+  },
+  ".ai/design-patterns.md": {
+    "mtime": 1787520919.0919738,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a7bbfbd3c04d4628190c161bd0fd258f",
+    "semantic_hash": ""
+  },
+  ".ai/project-context.md": {
+    "mtime": 1787558851.3021328,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1dcebc1662e6d0fc89a96085a36fd1f1",
+    "semantic_hash": ""
+  },
+  ".ai/skills/absa-brand-colour.md": {
+    "mtime": 1787520919.0942996,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3b93f286ff6db27ad187e57139668d69",
+    "semantic_hash": ""
+  },
+  ".ai/skills/rm-dashboard-colour-mapping.md": {
+    "mtime": 1787520919.0896475,
+    "seen": 1788337050.2131686,
+    "ast_hash": "dc0f1f02594efd544672eb033ab69fa7",
+    "semantic_hash": ""
+  },
+  ".github/workflows/docker-image.yml": {
+    "mtime": 1784664927.4486637,
+    "seen": 1788337050.2131686,
+    "ast_hash": "fb98e2cdb468fa4f3c09530672238dab",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/AI Agents Module.md": {
+    "mtime": 1787507239.0150588,
+    "seen": 1788337050.2131686,
+    "ast_hash": "c7508342aea511eaf7ea677a9a027370",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/AI Performance Monitoring & Analytics.md": {
+    "mtime": 1787507239.111489,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4ac22d942c26671f5c3a14ca7525dfa5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Chat Interface & Conversational AI/Chat Interface & Conversational AI.md": {
+    "mtime": 1787507239.0493073,
+    "seen": 1788337050.2131686,
+    "ast_hash": "92c0a5045077397da291ee3bfbddb23a",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Chat Interface & Conversational AI/Conversation Management & History.md": {
+    "mtime": 1787507239.157634,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4c74a0752dfde0673cd30c1c2efc5833",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Chat Interface & Conversational AI/Demo Mode & Automated Interactions.md": {
+    "mtime": 1787507239.2076929,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f77761b33eb061d261b69555c30dc918",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Chat Interface & Conversational AI/Message Rendering & Content Display.md": {
+    "mtime": 1787507239.2281685,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e73cde91a8ca2aad68f858dc5ee6f028",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Chat Interface & Conversational AI/Offline AI Mode & Local Processing.md": {
+    "mtime": 1787507239.181864,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7bf2f3984728732179a609ffb101a6fc",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Alert Management & Notifications.md": {
+    "mtime": 1787507239.246484,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1b74c591b8a2298770212e97d2adb519",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Drift Detection & Stability Monitoring.md": {
+    "mtime": 1787507239.20887,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8da838a6c25a3bab4c39b3cf338e1f96",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Governance & Compliance/Approval Lifecycle Management.md": {
+    "mtime": 1787507239.2643483,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1b0f4158d2dbcffcd3f27c50af5b83dc",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Governance & Compliance/Audit Trail & Change Logging.md": {
+    "mtime": 1787507239.2799659,
+    "seen": 1788337050.2131686,
+    "ast_hash": "63a047063fd3b7a7ef546547c4d85cbe",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Governance & Compliance/Model Card System.md": {
+    "mtime": 1787507239.2528067,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b4f9edd02e388331a1712733c242bd8d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Governance & Compliance/Model Governance & Compliance.md": {
+    "mtime": 1787507239.2318106,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3e68e308daebc4c22f939793c6913268",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Governance & Compliance/Risk Classification & Materiality Assessment.md": {
+    "mtime": 1787507239.2724016,
+    "seen": 1788337050.2131686,
+    "ast_hash": "af0312345369277809dca7a1da5cedbb",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Registry & Management.md": {
+    "mtime": 1787507239.080571,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e2f2d9c4c7435a08957cd1b1b8452466",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Model Registry & Version Control.md": {
+    "mtime": 1787507239.1587415,
+    "seen": 1788337050.2131686,
+    "ast_hash": "79a574926a9f5ba06bca5fd956a44fa8",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Performance Monitoring & Metrics/Confusion Matrix & Threshold Analysis.md": {
+    "mtime": 1787507239.262569,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2299a692ee4d07c156c32d5fe02ba017",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Performance Monitoring & Metrics/Metrics Calculation & KPIs.md": {
+    "mtime": 1787507239.251012,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2e463d0913d0f2e5da426a57f35c39fb",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Performance Monitoring & Metrics/Performance Monitoring & Metrics.md": {
+    "mtime": 1787507239.188589,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b28242b8e740d5a19ea7ef4fea41025d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/Model Registry & Management/Prediction Logs & Inference Tracking.md": {
+    "mtime": 1787507239.24417,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5e66f57cf0f918d3bd07c759a4aca3ae",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/AI Agents Module/RAG Pipelines & Context Integration.md": {
+    "mtime": 1787507239.0970805,
+    "seen": 1788337050.2131686,
+    "ast_hash": "405838ecf18c52d1b6e8f1b10b58e4eb",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/API Integration.md": {
+    "mtime": 1787507239.0293448,
+    "seen": 1788337050.2131686,
+    "ast_hash": "02d6fa501beebc68785ae75cbcad6f95",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/Authentication APIs.md": {
+    "mtime": 1787507239.0873609,
+    "seen": 1788337050.2131686,
+    "ast_hash": "682aa7ebb2f88d0a2dae745659b04701",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/CRM Service Layer.md": {
+    "mtime": 1787507239.1005797,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e4813b4455318cb2adc1d98851f902f4",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/Centralized API Client.md": {
+    "mtime": 1787507239.059744,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b4e01574bce1aa2b75d4b9b596ba4c6c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/Data Pipeline APIs.md": {
+    "mtime": 1787507239.1183302,
+    "seen": 1788337050.2131686,
+    "ast_hash": "93121a2c6d0b5f276481e29288664ecd",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/Error Handling Strategies.md": {
+    "mtime": 1787507239.1420858,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1fd950146e04e049e7373e5a80ceffb6",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/API Integration/Notification Service.md": {
+    "mtime": 1787507239.1302557,
+    "seen": 1788337050.2131686,
+    "ast_hash": "dc17c21495938c22feb6254bc411e2b1",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Architecture & Design.md": {
+    "mtime": 1787507239.0048592,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3ff0dc9a8e0835bf06f70a2f90d0ffca",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Component Architecture/Component Architecture.md": {
+    "mtime": 1787507239.0684025,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2568c5a92d236c716de1744452c54155",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Component Architecture/Component Hierarchy & Structure.md": {
+    "mtime": 1787507239.1484509,
+    "seen": 1788337050.2131686,
+    "ast_hash": "579e9928590a80a1cd25f4d32341cca1",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Component Architecture/Composition Patterns & Communication.md": {
+    "mtime": 1787507239.1683092,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a56b4baaceaa48771753e873009bceda",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Component Architecture/Design System & UI Components.md": {
+    "mtime": 1787507239.219644,
+    "seen": 1788337050.2131686,
+    "ast_hash": "ae4fedff2073056e20a6462bbbbcbfd5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Component Architecture/Layout System & Navigation.md": {
+    "mtime": 1787507239.19948,
+    "seen": 1788337050.2131686,
+    "ast_hash": "48b1825348b733716fc0db1d556004b0",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Routing & Navigation.md": {
+    "mtime": 1787507239.1073964,
+    "seen": 1788337050.2131686,
+    "ast_hash": "161658f7c27299ea9094852d2f47b8a5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Audit Logging.md": {
+    "mtime": 1787507239.2354004,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5a10af0f836e6bac3e9e787f7d05e6b0",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Authentication Flow.md": {
+    "mtime": 1787507239.1524203,
+    "seen": 1788337050.2131686,
+    "ast_hash": "71c2dec94a6d8d7fbc85b659137b2b15",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Authorization & RBAC.md": {
+    "mtime": 1787507239.175022,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7c3e4bda4d1d4e39e24ee971ba98114d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Input Validation & Security.md": {
+    "mtime": 1787507239.2041488,
+    "seen": 1788337050.2131686,
+    "ast_hash": "277ab54b0c241b26ff745198cdf18dea",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/PWA Security.md": {
+    "mtime": 1787507239.2407904,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5174d7874c1ca8627460fbc8ca7b9151",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Secure API Communication.md": {
+    "mtime": 1787507239.2230122,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1d980717a8cda103b2219ff500a4d7ed",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/Security Architecture/Security Architecture.md": {
+    "mtime": 1787507239.1256812,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8b421edb86874bea85e2df3a69de0150",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/Composable Patterns.md": {
+    "mtime": 1787507239.1722674,
+    "seen": 1788337050.2131686,
+    "ast_hash": "121bedb5d53585a793f3a463f88c4768",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/Core Composables.md": {
+    "mtime": 1787507239.2498672,
+    "seen": 1788337050.2131686,
+    "ast_hash": "658ddf0d605fbfbd27e5519a261e1c0d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/Data Management Composables.md": {
+    "mtime": 1787507239.2712781,
+    "seen": 1788337050.2131686,
+    "ast_hash": "bb92ddef3a37182e0d0c5f1ee967303c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/Settings Composables.md": {
+    "mtime": 1787507239.2865736,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2e9dd0a8c9e365b367e797e8650a7af7",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/UI Enhancement Composables.md": {
+    "mtime": 1787507239.2607725,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9730e8fde5f333e3e0d07ad5da95b24d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Composable Patterns/Workflow Composables.md": {
+    "mtime": 1787507239.2781303,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f21dbc3c0b0fdcff17576d8f330058a2",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Authentication Store (auth.js).md": {
+    "mtime": 1787507239.248669,
+    "seen": 1788337050.2131686,
+    "ast_hash": "c2aabc3a176789e8b2afa7e19de21270",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Customer Store (customerStore.js).md": {
+    "mtime": 1787507239.2701623,
+    "seen": 1788337050.2131686,
+    "ast_hash": "6ee6d459531ff8879e372dcc50730d52",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Dashboard Store (dashboard.js).md": {
+    "mtime": 1787507239.2562082,
+    "seen": 1788337050.2131686,
+    "ast_hash": "da15247cf04f84cbd959c152c05aca63",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/ETL Pipeline Store (etlStore.js).md": {
+    "mtime": 1787507239.275823,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0a5516d1d4752ec2119024690dbea4cb",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Intelligence Store (intelligenceStore.js).md": {
+    "mtime": 1787507239.2826922,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a0aa79014bfe2e435163c80163506e4c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Navigation Store (useNavigationStore.js).md": {
+    "mtime": 1787507239.2888072,
+    "seen": 1788337050.2131686,
+    "ast_hash": "c37051cda68e8b2a8d532f229fc89a53",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/Pinia Store Architecture.md": {
+    "mtime": 1787507239.1506689,
+    "seen": 1788337050.2131686,
+    "ast_hash": "214fba0e862770c4fdf96dfc17f398f8",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Pinia Store Architecture/UI State Store (ui.js).md": {
+    "mtime": 1787507239.2855663,
+    "seen": 1788337050.2131686,
+    "ast_hash": "07891adbffdf91737f47e6eb037589ce",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/Role-Based Access Control Implementation.md": {
+    "mtime": 1787507239.2011294,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1fa9c5c0b5711494de355fb28254a0a5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/State Management Design.md": {
+    "mtime": 1787507239.092421,
+    "seen": 1788337050.2131686,
+    "ast_hash": "1a025428b27bfcda3ca061a622e65bcf",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/State Management Design/State Persistence and Caching.md": {
+    "mtime": 1787507239.2213218,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0a40e479805f32673b7a32002cbdd25d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Architecture & Design/System Architecture.md": {
+    "mtime": 1787507239.0472724,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9fa3a21a1bafad24a9b7ff35674a4b7a",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/Authentication & Authorization.md": {
+    "mtime": 1787507239.0082657,
+    "seen": 1788337050.2131686,
+    "ast_hash": "061e93f6de5b31d702cf0305696485d3",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/Google OAuth Integration.md": {
+    "mtime": 1787507239.1050532,
+    "seen": 1788337050.2131686,
+    "ast_hash": "71b41e47b65147308c788494ba87e66f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/JWT Authentication Flow.md": {
+    "mtime": 1787507239.0434604,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a4aa5708beacdb4b3a70cb6d9d2cba2d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/Role-Based Access Control (RBAC).md": {
+    "mtime": 1787507239.063746,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3f2bdd062ba6139e5ac3d200c9c2f8d8",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/Security Best Practices.md": {
+    "mtime": 1787507239.1223662,
+    "seen": 1788337050.2131686,
+    "ast_hash": "75f18ca08c8e7ee91d43ce028d486d47",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Authentication & Authorization/Session Management & Persistence.md": {
+    "mtime": 1787507239.0901918,
+    "seen": 1788337050.2131686,
+    "ast_hash": "6f561608bcde44ab57b6f64e32c266b4",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Account Management.md": {
+    "mtime": 1787507239.1103537,
+    "seen": 1788337050.2131686,
+    "ast_hash": "6f48a54fb73ad3fe15979b2ccd4f327f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Analytics & Reporting.md": {
+    "mtime": 1787507239.1466863,
+    "seen": 1788337050.2131686,
+    "ast_hash": "cfa8ec8040910d225cb021664ad31d39",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/CRM Module.md": {
+    "mtime": 1787507239.0100095,
+    "seen": 1788337050.2131686,
+    "ast_hash": "975afa92b29f2b4dcbefb9835601887f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/CRM Overview & Dashboard.md": {
+    "mtime": 1787507239.051312,
+    "seen": 1788337050.2131686,
+    "ast_hash": "151262b4a7db1553e200e2968b4493fd",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/Call Logging.md": {
+    "mtime": 1787507239.1854906,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9862bcf3b327f270c9b1c52faf5a042b",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/Communication Tools.md": {
+    "mtime": 1787507239.1444082,
+    "seen": 1788337050.2131686,
+    "ast_hash": "05b9d7b8f30a8fb156646dd5b6b29a7f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/Email Integration.md": {
+    "mtime": 1787507239.161546,
+    "seen": 1788337050.2131686,
+    "ast_hash": "36867f70f4e204cc9065f74bfb938958",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/Meeting Scheduling.md": {
+    "mtime": 1787507239.2105832,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3f0c96b083f40e2f1c2c29410fc44979",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/Visit Tracking.md": {
+    "mtime": 1787507239.2424493,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f9e6c35df9ba1ef32e9aa4ebb5a99ea5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Communication Tools/WhatsApp Messaging.md": {
+    "mtime": 1787507239.233716,
+    "seen": 1788337050.2131686,
+    "ast_hash": "715206b43c709ac04b66a39424c2250f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Contact Management.md": {
+    "mtime": 1787507239.0953856,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4154edf0a290b40d1fd7d90567b90d2c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Deal Pipeline Management.md": {
+    "mtime": 1787507239.1327534,
+    "seen": 1788337050.2131686,
+    "ast_hash": "952f4428640bac8714c5f42b895e3512",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Document Management.md": {
+    "mtime": 1787507239.1390285,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e4fe5333e08f63718663dedb85046258",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Lead Management/Bulk Lead Operations.md": {
+    "mtime": 1787507239.2058966,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3f2ef4a6f788cdde8c765ebba88e0898",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Lead Management/Lead Conversion Process.md": {
+    "mtime": 1787507239.2263377,
+    "seen": 1788337050.2131686,
+    "ast_hash": "19e90cffe1563ddf37fd3baf9aca549b",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Lead Management/Lead Creation Workflow.md": {
+    "mtime": 1787507239.1553743,
+    "seen": 1788337050.2131686,
+    "ast_hash": "49bc17e451ee46d369c7e2919a4f4480",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Lead Management/Lead Detail Management.md": {
+    "mtime": 1787507239.1808608,
+    "seen": 1788337050.2131686,
+    "ast_hash": "042b6d03d1549a1f6c1e68ea2e38fb38",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/CRM Module/Lead Management/Lead Management.md": {
+    "mtime": 1787507239.075243,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4b08731b7d8c93d55813dda54d6a1278",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Component Library.md": {
+    "mtime": 1787507239.0235298,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7d47dd397111b63b7671ac73a9660331",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Batch Execution & Orchestration/Batch Execution & Orchestration.md": {
+    "mtime": 1787507239.0839553,
+    "seen": 1788337050.2131686,
+    "ast_hash": "92af9a97bef9953af89cc655c0ff4c35",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Batch Execution & Orchestration/Execution Monitoring & Dashboard.md": {
+    "mtime": 1787507239.1908176,
+    "seen": 1788337050.2131686,
+    "ast_hash": "caeca8c5c95fe24a2507e70f6837be3a",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Batch Execution & Orchestration/Failure Recovery & Retry Logic.md": {
+    "mtime": 1787507239.2122731,
+    "seen": 1788337050.2131686,
+    "ast_hash": "66a6f2dbe4b156d9757ead5a37c038c7",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Batch Execution & Orchestration/Job Lifecycle Management.md": {
+    "mtime": 1787507239.1604383,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4758efad3285a52ff417d03c1c2c2f8c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Data Pipeline Module.md": {
+    "mtime": 1787507239.017687,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e1db27dffd011fb2b7bd329335fde3ab",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Data Quality Monitoring/Alerting System.md": {
+    "mtime": 1787507239.2141287,
+    "seen": 1788337050.2131686,
+    "ast_hash": "775597c49e795ec6b2411f3280ffd86f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Data Quality Monitoring/Data Quality Monitoring.md": {
+    "mtime": 1787507239.1154757,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b9e8d95ec3ff1daa6babb444094c9d76",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Data Quality Monitoring/Health Scoring Algorithm.md": {
+    "mtime": 1787507239.1976676,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d4ea644ff200ee078850222ca136480a",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Data Quality Monitoring/Quality Scorecard.md": {
+    "mtime": 1787507239.1667984,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4cbce85b1b30ffc239b6ea96f1dde63d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Backfill & Reprocessing Workflows.md": {
+    "mtime": 1787507239.2164347,
+    "seen": 1788337050.2131686,
+    "ast_hash": "21f521d8f96bad44833d1050502cbe92",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Configuration Validation & Version Control.md": {
+    "mtime": 1787507239.2390506,
+    "seen": 1788337050.2131686,
+    "ast_hash": "879eb013d41452d64793e406ca5a4edc",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/ETL Configuration Management.md": {
+    "mtime": 1787507239.0577202,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5296c0ad4c40927621059395af0c7225",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Job Definitions & Configuration/Inline YAML Editor.md": {
+    "mtime": 1787507239.2816753,
+    "seen": 1788337050.2131686,
+    "ast_hash": "61bb151e9f96f6877773ff7365f6c70e",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Job Definitions & Configuration/Job Definitions & Configuration.md": {
+    "mtime": 1787507239.1657996,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0d09315fddc21a5af34141c630608321",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Job Definitions & Configuration/Output Destination Configuration.md": {
+    "mtime": 1787507239.2736094,
+    "seen": 1788337050.2131686,
+    "ast_hash": "ad8616015cd17b70f7f9b70c53e8a656",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Job Definitions & Configuration/Source Data Configuration.md": {
+    "mtime": 1787507239.2684739,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d8213280ff895a4fdb49469f738ec7d5",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Job Definitions & Configuration/YAML Configuration Schema.md": {
+    "mtime": 1787507239.2544808,
+    "seen": 1788337050.2131686,
+    "ast_hash": "69b998755a65a59e48d9dd9240f359ec",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/ETL Configuration Management/Scheduling & Execution Management.md": {
+    "mtime": 1787507239.1954012,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3a8fa47668422b6d5f5a473673df4c41",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Run History & Analytics/Analytics Dashboard & Metrics.md": {
+    "mtime": 1787507239.1929736,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a9e3e5572ad5c74017e2bfab203842c9",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Run History & Analytics/Execution Timeline & History.md": {
+    "mtime": 1787507239.1621027,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0f69d33ea9c7b35b53073f4143b16d72",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Run History & Analytics/Log Analysis & Export.md": {
+    "mtime": 1787507239.2179701,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8f15ddc9964aa2e4872be480a4ea25c7",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Data Pipeline Module/Run History & Analytics/Run History & Analytics.md": {
+    "mtime": 1787507239.1022577,
+    "seen": 1788337050.2131686,
+    "ast_hash": "bc8015729819e30480a6e01c1b435807",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Deployment & DevOps.md": {
+    "mtime": 1787507239.0271218,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8dc7a7980d6dbdbf473b445aeb9c97ec",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Getting Started.md": {
+    "mtime": 1787507238.9992385,
+    "seen": 1788337050.2131686,
+    "ast_hash": "77306d354e4dcbb331cff099284dceb3",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Performance Optimization.md": {
+    "mtime": 1787507239.0336335,
+    "seen": 1788337050.2131686,
+    "ast_hash": "429ab71bf6e5167854c00cf4467f8064",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Architecture Overview.md": {
+    "mtime": 1787507239.0718696,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8dba4b9212f5791f1bf90cda892997c3",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Component Architecture/Component Architecture.md": {
+    "mtime": 1787507239.1778624,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9e6cb286d4082f11bfd69d24d6a6a852",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Component Architecture/Component Lifecycle & Performance.md": {
+    "mtime": 1787507239.276932,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e2a978998415670718ecd39cb4d4d886",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Component Architecture/Composition Patterns & State Management.md": {
+    "mtime": 1787507239.2662573,
+    "seen": 1788337050.2131686,
+    "ast_hash": "136d4dbdb7bc980dcbee4ec582df6ce4",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Component Architecture/Layout Components.md": {
+    "mtime": 1787507239.245275,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f3c00f2305db12ba82d35b82da1b7e8f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Component Architecture/UI Primitives & Design System.md": {
+    "mtime": 1787507239.2585115,
+    "seen": 1788337050.2131686,
+    "ast_hash": "bc906352d3cd9557b681c2519d552ef7",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Data Flow Patterns.md": {
+    "mtime": 1787507239.2248924,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5bd8c701af0824cd2284f29a66b30a57",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/Deployment Architecture.md": {
+    "mtime": 1787507239.237502,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3e4d0cc55a4cb599caa765a62615dd94",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/State Management.md": {
+    "mtime": 1787507239.202366,
+    "seen": 1788337050.2131686,
+    "ast_hash": "37a98a0da99fa884f315f7ed11a0be4a",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Architecture Overview/System Architecture.md": {
+    "mtime": 1787507239.1541533,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d0e5c476137de2de463bd73b3b290521",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Getting Started.md": {
+    "mtime": 1787507239.135653,
+    "seen": 1788337050.2131686,
+    "ast_hash": "696365fecefa8ff6db5e37f2318b497e",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Introduction & Purpose.md": {
+    "mtime": 1787507239.0451715,
+    "seen": 1788337050.2131686,
+    "ast_hash": "ba8892192255b096bfbceae3c977ea59",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Project Overview.md": {
+    "mtime": 1787507239.0024185,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9929bc26451b386b1467904557385451",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Route Mapping & Navigation.md": {
+    "mtime": 1787507239.1287353,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e9339db63b74bf60245f07cfce67b58f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/Technology Stack.md": {
+    "mtime": 1787507239.0942411,
+    "seen": 1788337050.2131686,
+    "ast_hash": "97715e894cea3474949e307954826966",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Project Overview/User Roles & Permissions.md": {
+    "mtime": 1787507239.1086347,
+    "seen": 1788337050.2131686,
+    "ast_hash": "ebdf986953abf6aa224544118f99b4f4",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Authentication Security.md": {
+    "mtime": 1787507239.0607426,
+    "seen": 1788337050.2131686,
+    "ast_hash": "53029fbeffb0b3e3992c83595fde5286",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Input Validation & Sanitization.md": {
+    "mtime": 1787507239.0890384,
+    "seen": 1788337050.2131686,
+    "ast_hash": "98745af7df613b85a431fc288feb2c64",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Role-Based Access Control (RBAC).md": {
+    "mtime": 1787507239.106183,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d7a5ca8d10a6c40b33da10d5ccdbc8e9",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Secure API Communication.md": {
+    "mtime": 1787507239.1199884,
+    "seen": 1788337050.2131686,
+    "ast_hash": "efe8c996bafe2e9e5c62d537eba6e8e7",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Security Considerations.md": {
+    "mtime": 1787507239.0405145,
+    "seen": 1788337050.2131686,
+    "ast_hash": "44535a8ac94fbd3affaf322a8d7e91f8",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Security Considerations/Security Monitoring & Audit.md": {
+    "mtime": 1787507239.1373277,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5fdf4f4801a8c325d538726aed4834c9",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Settings & Administration/Profile & Settings.md": {
+    "mtime": 1787507239.1171584,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d8702237da06973d475e90fe2123e83b",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Settings & Administration/Role & Permission System.md": {
+    "mtime": 1787507239.0856473,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a68a543c042c05ffcd70423097a86d45",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Settings & Administration/Settings & Administration.md": {
+    "mtime": 1787507239.020602,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3e22282d8ef628001cb983d9f69e5938",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Settings & Administration/Sub-Account Management.md": {
+    "mtime": 1787507239.1033447,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0d1c20f9672f5958999eb3f34551aaec",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Settings & Administration/User Management.md": {
+    "mtime": 1787507239.0534697,
+    "seen": 1788337050.2131686,
+    "ast_hash": "dcfd9aef93e935a6005cf91d5577ffbd",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/State Management.md": {
+    "mtime": 1787507239.0224025,
+    "seen": 1788337050.2131686,
+    "ast_hash": "06cbbbfe9747e01ee00e0a43ff4c7bec",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Action Planning & Execution.md": {
+    "mtime": 1787507239.0768871,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5c8e1f381cd09b6e0379786723eaf783",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Brand Strategy & Positioning.md": {
+    "mtime": 1787507239.1344998,
+    "seen": 1788337050.2131686,
+    "ast_hash": "12e642cdc26af4243f03ed3683685e85",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Environmental Analysis.md": {
+    "mtime": 1787507239.1131425,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2dc61b1acd5aa52305ab816825169d4f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Goals & Objectives Management.md": {
+    "mtime": 1787507239.0534697,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e7e698968e15ba5abbf4153f31d7e129",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Predictions & Analytics.md": {
+    "mtime": 1787507239.0982091,
+    "seen": 1788337050.2131686,
+    "ast_hash": "4f61642288c6451bbeedd5c19495ab32",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Strategic Management Module/Strategic Management Module.md": {
+    "mtime": 1787507239.0122886,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9a7acc6fda5771a7b10a59efb0e4cb4d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Testing Strategy.md": {
+    "mtime": 1787507239.0254385,
+    "seen": 1788337050.2131686,
+    "ast_hash": "5905a5b7e6562ab316f496650e0ca71f",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/en/content/Troubleshooting & Maintenance.md": {
+    "mtime": 1787507239.03673,
+    "seen": 1788337050.2131686,
+    "ast_hash": "df6b0da701142c5244160ce332636d98",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/_module.yaml": {
+    "mtime": 1787507239.518939,
+    "seen": 1788337050.2131686,
+    "ast_hash": "441618c30510bbe7b14848aa49db64b0",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/architecture_design.md": {
+    "mtime": 1787507239.5160842,
+    "seen": 1788337050.2131686,
+    "ast_hash": "87aa0592974669f00ba93ce81d6f984c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/coding_conventions.md": {
+    "mtime": 1787507239.5172193,
+    "seen": 1788337050.2131686,
+    "ast_hash": "26ec1808847a2c37821fab84a0f08028",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/overview.md": {
+    "mtime": 1787507239.5121245,
+    "seen": 1788337050.2131686,
+    "ast_hash": "0436b2793423d2ac04ce90591f8d4546",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/tech_stack.md": {
+    "mtime": 1787507239.5149362,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7d74e1bbfa473d851f58dc8cfb635844",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/ABSA Customer Lifecycle Prediction \u2014 Public Landing & Dashboard Views/unique_setup_and_commands.md": {
+    "mtime": 1787507239.5138547,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b4f6c0a2787d8a35af84413d3b81f139",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/_module.yaml": {
+    "mtime": 1787507239.5090814,
+    "seen": 1788337050.2131686,
+    "ast_hash": "a3ad3ba5b2ce04ec034ab6e384f775f1",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/architecture_design.md": {
+    "mtime": 1787507239.5070786,
+    "seen": 1788337050.2131686,
+    "ast_hash": "d49d92666462890a93f5988543e9745e",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/coding_conventions.md": {
+    "mtime": 1787507239.5080783,
+    "seen": 1788337050.2131686,
+    "ast_hash": "caefe140ad35e617bf7466c1fb89b43c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/overview.md": {
+    "mtime": 1787507239.5050802,
+    "seen": 1788337050.2131686,
+    "ast_hash": "190488d3a06bd3b56354fd48aa34279c",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/tech_stack.md": {
+    "mtime": 1787507239.5060797,
+    "seen": 1788337050.2131686,
+    "ast_hash": "59a09c562b6e445631482d7d80e55577",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/ABSA Foundry Frontend \u2014 Vue 3 SPA with PWA and Express Server/unique_setup_and_commands.md": {
+    "mtime": 1787507239.5080783,
+    "seen": 1788337050.2131686,
+    "ast_hash": "8dce720854ec7b84a7313523a8e3f56d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/Console-Based Logging with a Single HTTP Request Logger Utility/Console-Based Logging with a Single HTTP Request Logger Utility.md": {
+    "mtime": 1787507239.521168,
+    "seen": 1788337050.2131686,
+    "ast_hash": "b449315bad5fb413616d188cedf3ae6d",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/Error Handling in ABSA Foundry Frontend \u2014 Axios Interceptors, Store-Level try_ca/Error Handling in ABSA Foundry Frontend \u2014 Axios Interceptors, Store-Level try_ca.md": {
+    "mtime": 1787507239.5239415,
+    "seen": 1788337050.2131686,
+    "ast_hash": "24a48d0cdb590ceb7cfd29d1a0b385b0",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/Tailwind CSS Design System with ABSA Brand Tokens and Multi-Theme Support/Tailwind CSS Design System with ABSA Brand Tokens and Multi-Theme Support.md": {
+    "mtime": 1787507239.5262895,
+    "seen": 1788337050.2131686,
+    "ast_hash": "6a6d580eed8d212bb85caeb037110b3b",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/Vite + Express Build, Docker Packaging & Google Cloud Deployment Pipeline/Vite + Express Build, Docker Packaging & Google Cloud Deployment Pipeline.md": {
+    "mtime": 1787507239.529333,
+    "seen": 1788337050.2131686,
+    "ast_hash": "6853dbfc8db14c47279e58e3548607cb",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/Vite Environment Variables, Static Config Modules, and Runtime Preferences/Vite Environment Variables, Static Config Modules, and Runtime Preferences.md": {
+    "mtime": 1787507239.5329041,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e42f16d9e2cc9c7012767e79d3adb8be",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/_index.yaml": {
+    "mtime": 1787507239.536843,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7d026dba5b7cae595bc9a824227a01c6",
+    "semantic_hash": ""
+  },
+  ".qoder/repowiki/knowledge/en/npm-based Dependency Management with Mirror Registry and Local File Package/npm-based Dependency Management with Mirror Registry and Local File Package.md": {
+    "mtime": 1787507239.535172,
+    "seen": 1788337050.2131686,
+    "ast_hash": "fc8176d1a743a5c56d7446362183f9bc",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1784664927.619681,
+    "seen": 1788337050.2131686,
+    "ast_hash": "82537de4300ad37b630ee346589de26f",
+    "semantic_hash": ""
+  },
+  "REMOTE-DEV-GUIDE.md": {
+    "mtime": 1787211506.6369255,
+    "seen": 1788337050.2131686,
+    "ast_hash": "c46ab328daadce96354a675b66128e36",
+    "semantic_hash": ""
+  },
+  "TASKS.md": {
+    "mtime": 1784705832.198866,
+    "seen": 1788337050.2131686,
+    "ast_hash": "f555216e15afa724a46b474b6568dd53",
+    "semantic_hash": ""
+  },
+  "app.yaml": {
+    "mtime": 1784664927.6231086,
+    "seen": 1788337050.2131686,
+    "ast_hash": "7c906be46840d806d6a8885b9adc4788",
+    "semantic_hash": ""
+  },
+  "cloudbuild.yaml": {
+    "mtime": 1784664927.6241057,
+    "seen": 1788337050.2131686,
+    "ast_hash": "27b5a9f4d82ae57cd5ebbfe91669d355",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1788341781.5685136,
+    "seen": 1788342128.3557632,
+    "ast_hash": "e46a7a257a3a72ab8ec731bf1d0e96fa",
+    "semantic_hash": ""
+  },
+  ".agents/custom/code-editor.yaml": {
+    "mtime": 1787511433.4775198,
+    "seen": 1788337050.2131686,
+    "ast_hash": "3b6dc7ffc9fe34084dcaeef1deaf89f3",
+    "semantic_hash": ""
+  },
+  ".agents/rules/vibe-coding-rules.md": {
+    "mtime": 1787512146.0749266,
+    "seen": 1788337050.2131686,
+    "ast_hash": "9026432eb2781dad41c99b322883f2db",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/graphify-update.yaml": {
+    "mtime": 1787511888.4288802,
+    "seen": 1788337050.2131686,
+    "ast_hash": "2819341a467af6015bf8a3b6faf86029",
+    "semantic_hash": ""
+  },
+  "src/components/intelligence/AiCampaignModal.vue": {
+    "mtime": 1788344954.399944,
+    "seen": 1788354906.6466427,
+    "ast_hash": "ce2df7c747fe75eccb6068b82a698936",
+    "semantic_hash": ""
+  },
+  "src/components/intelligence/AiConfidenceBadge.vue": {
+    "mtime": 1787526784.784002,
+    "seen": 1787736273.645472,
+    "ast_hash": "409df5171def99a5c3fa888063e20efc",
+    "semantic_hash": "409df5171def99a5c3fa888063e20efc"
+  },
+  "src/components/intelligence/AiNbaPanel.vue": {
+    "mtime": 1787526827.9557588,
+    "seen": 1787736273.645472,
+    "ast_hash": "bb2645adf69609ddd89673fde634265c",
+    "semantic_hash": "bb2645adf69609ddd89673fde634265c"
+  },
+  "src/components/intelligence/AiShapDriverBar.vue": {
+    "mtime": 1787526770.9035087,
+    "seen": 1787736273.645472,
+    "ast_hash": "6081dfafa96e87889d76c3d971bc4e6b",
+    "semantic_hash": "6081dfafa96e87889d76c3d971bc4e6b"
+  },
+  "src/components/telemetry/ChurnProbabilityBar.vue": {
+    "mtime": 1787521328.8400617,
+    "seen": 1787736273.645472,
+    "ast_hash": "2590dab08eee6c93572725ec47b34a54",
+    "semantic_hash": "2590dab08eee6c93572725ec47b34a54"
+  },
+  "src/components/telemetry/HealthScoreGauge.vue": {
+    "mtime": 1787522059.135919,
+    "seen": 1787736273.645472,
+    "ast_hash": "1cd06e2b08254f5277c2dc9608bee6bc",
+    "semantic_hash": "1cd06e2b08254f5277c2dc9608bee6bc"
+  },
+  "src/components/telemetry/MarkovMatrix.vue": {
+    "mtime": 1787521328.6015193,
+    "seen": 1787736273.645472,
+    "ast_hash": "896d7cb7128b6c7818e80a1ac5bca608",
+    "semantic_hash": "896d7cb7128b6c7818e80a1ac5bca608"
+  },
+  "src/components/telemetry/StateBadge.vue": {
+    "mtime": 1787521328.0930328,
+    "seen": 1787736273.645472,
+    "ast_hash": "845dab0fc3dbecdede6bd663f16331ae",
+    "semantic_hash": "845dab0fc3dbecdede6bd663f16331ae"
+  },
+  "src/components/telemetry/StateTimeline.vue": {
+    "mtime": 1787521327.3107617,
+    "seen": 1787736273.645472,
+    "ast_hash": "deb59d4c01b602e7cf949cc3fa0af167",
+    "semantic_hash": "deb59d4c01b602e7cf949cc3fa0af167"
+  },
+  "src/composables/useSeverityTier.js": {
+    "mtime": 1787521327.880435,
+    "seen": 1787736273.645472,
+    "ast_hash": "780812fb3cda8e0edc8050505891d43b",
+    "semantic_hash": "780812fb3cda8e0edc8050505891d43b"
+  },
+  "serve-production.cjs": {
+    "mtime": 1787580169.5780644,
+    "seen": 1787736273.645472,
+    "ast_hash": "630cdc7d77766c80d02d8505d60cebf0",
+    "semantic_hash": "630cdc7d77766c80d02d8505d60cebf0"
+  },
+  "src/views/Modules/aiagents/CodebaseInsights.vue": {
+    "mtime": 1787735976.5700345,
+    "seen": 1787736273.645472,
+    "ast_hash": "6d1070114f07efb145f65d5dbbfd1734",
+    "semantic_hash": "6d1070114f07efb145f65d5dbbfd1734"
+  },
+  ".agents/rules/token-optimization.md": {
+    "mtime": 1787514731.8269129,
+    "seen": 1788337050.2131686,
+    "ast_hash": "cbb1259cd743761699916a05d4416643",
+    "semantic_hash": ""
+  },
+  ".qoder/rules/token-optimization.md": {
+    "mtime": 1787514702.4078276,
+    "seen": 1788337050.2131686,
+    "ast_hash": "e7392ed744d13043c73557c6c95aa82d",
+    "semantic_hash": ""
+  },
+  "src/config/customerSegments.js": {
+    "mtime": 1788355023.0535357,
+    "seen": 1788355202.6123497,
+    "ast_hash": "079a8bb28ec4e1c06be9ace3a9779933",
+    "semantic_hash": ""
+  },
+  "src/utils/absaActions.js": {
+    "mtime": 1788349948.8202934,
+    "seen": 1788354906.6466427,
+    "ast_hash": "a80e19cde26ed7939f7cad780c4d946b",
+    "semantic_hash": ""
+  },
+  "src/utils/absaExport.js": {
+    "mtime": 1788344860.0107334,
+    "seen": 1788354906.6466427,
+    "ast_hash": "b164fd6aeeec0a8be129fdafaf90ff60",
+    "semantic_hash": ""
+  },
+  "scripts/add_simulate_calibration_api.py": {
+    "mtime": 1788844831.3697894,
+    "seen": 1789288792.549726,
+    "ast_hash": "85c61598f421f072afca2247aac1fd93",
+    "semantic_hash": ""
+  },
+  "scripts/fix_calibration_vue.py": {
+    "mtime": 1788844847.0608406,
+    "seen": 1789288792.549726,
+    "ast_hash": "aea9442939406a12fe0ed793418ab9db",
+    "semantic_hash": ""
+  },
+  "scripts/fix_duplicate_fetch.py": {
+    "mtime": 1788844900.508961,
+    "seen": 1789288792.549726,
+    "ast_hash": "ce13e29a6d181da3a6f6a326a0e11769",
+    "semantic_hash": ""
+  },
+  "scripts/fix_header_retrain.py": {
+    "mtime": 1788846620.5737345,
+    "seen": 1789288792.549726,
+    "ast_hash": "694a9b1e13ed7a04d493b199bc8493e0",
+    "semantic_hash": ""
+  },
+  "scripts/fix_tabs.py": {
+    "mtime": 1788843736.1338828,
+    "seen": 1789288792.549726,
+    "ast_hash": "c7f32d5e7111bf9bf61dfebfd1a8c73f",
+    "semantic_hash": ""
+  },
+  "scripts/inject_champion.py": {
+    "mtime": 1788844533.3274136,
+    "seen": 1789288792.549726,
+    "ast_hash": "5f5fe3de0670c5c51c7f3fa8ee837dd2",
+    "semantic_hash": ""
+  },
+  "scripts/inject_champion_refs.py": {
+    "mtime": 1788844563.2219977,
+    "seen": 1789288792.549726,
+    "ast_hash": "c5b0aeb24d706bc90ed5f15724cf6b5b",
+    "semantic_hash": ""
+  },
+  "scripts/inject_tabs.py": {
+    "mtime": 1788844320.896375,
+    "seen": 1789288792.549726,
+    "ast_hash": "ce07d438863f0f0c7e76fcdca133ce80",
+    "semantic_hash": ""
+  },
+  "scripts/update_colors.py": {
+    "mtime": 1788843426.3706954,
+    "seen": 1789288792.549726,
+    "ast_hash": "7603dda7824777b83711685bd40d7ebe",
+    "semantic_hash": ""
+  },
+  "src/components/intelligence/AiNarrationPanel.vue": {
+    "mtime": 1789140269.470904,
+    "seen": 1789288792.549726,
+    "ast_hash": "e0e5a3788d75443402f7f5a2b0534085",
+    "semantic_hash": ""
+  },
+  "src/services/modelManagementApi.js": {
+    "mtime": 1788844907.8247993,
+    "seen": 1789288792.550265,
+    "ast_hash": "d18b379ff48fb4f57ebda073f116c20f",
+    "semantic_hash": ""
+  },
+  "scripts/_check_exports.mjs": {
+    "mtime": 1789318932.944315,
+    "seen": 1789322341.3318138,
+    "ast_hash": "1cb22ad6d6f6e076026d42b3336c641a",
+    "semantic_hash": ""
+  },
+  "src/components/CustomerStatePill.vue": {
+    "mtime": 1789292165.2549758,
+    "seen": 1789322341.3318138,
+    "ast_hash": "a3c974011243a27c1168b6d4b62d2a76",
+    "semantic_hash": ""
+  },
+  "src/components/ingest/AddCustomerModal.vue": {
+    "mtime": 1789320909.7274718,
+    "seen": 1789322341.3318138,
+    "ast_hash": "942094bc331ca23311b39a2484603113",
+    "semantic_hash": ""
+  },
+  "src/components/ingest/LoadCustomerDataModal.vue": {
+    "mtime": 1789301546.0698955,
+    "seen": 1789322341.3318138,
+    "ast_hash": "25e6af3b743a3224a9169f0e2dbf4f5b",
+    "semantic_hash": ""
+  },
+  "src/services/customerAdminApi.js": {
+    "mtime": 1789303931.6698103,
+    "seen": 1789322341.3318138,
+    "ast_hash": "83c407a2b85aa41675294b181f2efbd6",
+    "semantic_hash": ""
+  },
+  "src/services/customerProfileApi.js": {
+    "mtime": 1789298073.696279,
+    "seen": 1789322341.3318138,
+    "ast_hash": "37f87f3829b31e05eb76af0c2021d07d",
+    "semantic_hash": ""
+  },
+  "src/services/ingestApi.js": {
+    "mtime": 1789320892.292178,
+    "seen": 1789322341.3318138,
+    "ast_hash": "dd2a01d12b2987958747ad601000c5e8",
+    "semantic_hash": ""
+  },
+  "src/views/CustomerProfile.vue": {
+    "mtime": 1789304733.5831783,
+    "seen": 1789322341.3318138,
+    "ast_hash": "75b84e1bcc0c03213977a97901c21c35",
+    "semantic_hash": ""
+  },
+  "src/views/MyCustomers.vue": {
+    "mtime": 1789319691.2934537,
+    "seen": 1789322341.3330517,
+    "ast_hash": "2f38e7789f921c551b84b9f146cae259",
+    "semantic_hash": ""
+  }
+}

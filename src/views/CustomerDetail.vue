@@ -49,6 +49,7 @@
         <button @click="resetOverride" class="ml-auto text-[11px] font-bold underline hover:text-absa-energy">Undo override</button>
       </div>
       <AiNbaPanel
+        :nba-override="customerStore.currentNba"
         :churn-prob="churnProb"
         :customer-id="customerId"
         @execute="showCampaignModal = true"
@@ -172,11 +173,13 @@
         <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Customer Lifetime Value</h3>
-            <InfoDot :label="'CLV percentile rank among the portfolio — an estimate, not guaranteed future revenue.'" />
+            <InfoDot :label="'Predicted 12-month net revenue in ZMW, from the CLV LightGBM model — an estimate, not guaranteed future revenue.'" />
           </div>
-          <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ clvPercentile != null ? 'P' + Math.round(clvPercentile * 100) : '—' }}</span>
-          <span class="text-xs text-gray-500"> ZMW</span>
-          <p class="text-xs text-gray-500 mt-2">Predicted CLV (percentile rank)</p>
+          <span class="text-2xl font-bold font-mono text-absa-enrich">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</span>
+          <p class="text-xs text-gray-500 mt-2">
+            Predicted 12-month net revenue
+            <span v-if="clvPercentileOrdinal"> · {{ clvPercentileOrdinal }} percentile</span>
+          </p>
         </div>
 
         <!-- Lifecycle State -->
@@ -231,8 +234,10 @@
         <div class="mt-6 pt-5 border-t border-gray-300">
           <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-2">How was Customer Lifetime Value estimated?</h3>
           <p class="text-xs text-gray-500 max-w-3xl">
-            Predicted CLV is the customer's <strong class="text-absa-enrich">percentile rank</strong> ({{ clvPercentile != null ? 'P' + Math.round(clvPercentile * 100) : '—' }})
-            within the portfolio, derived from historical revenue (total amount over the last 90 days), customer value, and retention probability.
+            Predicted CLV is an <strong class="text-absa-enrich">absolute</strong> figure —
+            <strong class="text-absa-enrich">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</strong>
+            of 12-month net revenue in ZMW, from the CLV LightGBM model.
+            <span v-if="clvPercentileOrdinal">That ranks at the {{ clvPercentileOrdinal }} percentile of the portfolio.</span>
             It is a <strong class="text-absa-enrich">prediction / estimate</strong>, not a guaranteed future revenue figure.
           </p>
           <p class="text-[11px] text-gray-500 mt-3">{{ clvEvidence.length ? clvEvidence.join(' · ') : 'No historical revenue data available for this customer.' }}</p>
@@ -259,9 +264,31 @@
           <div class="pp-metric"><span class="pp-metric__label">Previous state</span><span class="pp-metric__value">{{ previousState || '—' }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">State transitions</span><span class="pp-metric__value">{{ transitions.length || (timelineEntries.length ? timelineEntries.length - 1 : 0) }}</span></div>
           <div class="pp-metric">
-            <span class="pp-metric__label">Predicted next state</span>
+            <span class="pp-metric__label">Next state (Markov)</span>
             <span class="pp-metric__value">{{ predictedNextState ? predictedNextState.state.replace('_', ' ') : '—' }}</span>
-            <span v-if="predictedNextState" class="text-[11px] text-gray-500">{{ Math.round(predictedNextState.probability * 100) }}% probability</span>
+            <span v-if="predictedNextState" class="text-[11px] text-gray-500">{{ Math.round(predictedNextState.probability * 100) }}% from observed transitions</span>
+          </div>
+        </div>
+
+        <!-- Forward stage forecast: all three horizons at once -->
+        <div v-if="horizonForecast" class="mt-6 pt-5 border-t border-gray-300">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Stage forecast by horizon</h3>
+            <span class="text-[10px] text-gray-400">Lifecycle models · predictions, not the current state</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div v-for="h in HORIZONS" :key="h" class="border border-gray-300 rounded-sm p-4">
+              <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ h }}-day</p>
+              <template v-if="horizonForecast[h]?.stage">
+                <StatePill :state="horizonForecast[h].stage" />
+                <p class="text-2xl font-bold font-mono text-absa-enrich mt-2">{{ Math.round(horizonForecast[h].confidence * 100) }}%</p>
+                <p class="text-[11px] text-gray-500">confidence</p>
+                <p v-if="runnerUp(h)" class="text-[11px] text-gray-500 mt-1">
+                  vs {{ runnerUp(h).stage }} {{ Math.round(runnerUp(h).prob * 100) }}%
+                </p>
+              </template>
+              <p v-else class="text-xs text-gray-400">Not available for this horizon</p>
+            </div>
           </div>
         </div>
       </div>
@@ -432,7 +459,7 @@
       <!-- Modals -->
       <AiCampaignModal
         v-model="showCampaignModal"
-        :customers="[{ id: customerId, name: customer.fullName || 'Customer', churnProb, segment: customer.segment }]"
+        :customers="[{ id: customerId, name: customer.fullName || 'Customer', churnProb, segment: customer.segment, clv: clvValue, healthScore: healthScore }]"
         source-context="portfolio"
       />
 
@@ -442,6 +469,7 @@
 
 <script setup>
 import { ref, computed, onMounted, defineComponent, h } from 'vue'
+import { formatCurrency } from '@/utils/formatting'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
@@ -451,6 +479,7 @@ import AiNarrationPanel from '@/components/intelligence/AiNarrationPanel.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { notify } from '@/utils/absaExport'
 import { overrideRecommendation, getOverride, hydrateStateFromServer } from '@/utils/absaActions'
 
@@ -458,6 +487,7 @@ const route = useRoute()
 const router = useRouter()
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore = useSnapshotStore()
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 20000 })
 api.interceptors.request.use((config) => {
@@ -465,8 +495,6 @@ api.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
-
-const DEFAULT_AS_OF_DATE = '2026-07-27'
 
 const STATE_COLORS = {
   NEW: '#16a34a',
@@ -544,6 +572,33 @@ const clvPercentile = computed(() => {
   const p = predictionStore.predictions[customerId.value]
   return typeof p === 'object' ? p?.clv_percentile ?? null : null
 })
+
+/** Absolute predicted 12-month CLV (ZMW) — the money value. */
+const clvValue = computed(() => predictionStore.getClv(customerId.value))
+
+/** Its rank within the cohort, shown as a secondary hint only. */
+const clvPercentileOrdinal = computed(() => {
+  const pct = clvPercentile.value
+  if (pct == null) return null
+  const n = Math.round(pct * 100)
+  const mod100 = n % 100
+  const suffix = mod100 >= 11 && mod100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] ?? 'th')
+  return `${n}${suffix}`
+})
+
+// ── Forward lifecycle-stage forecast (14/30/90d models) ──────────
+// Model-only and forward-looking: the state shown above the fold is the rule
+// engine's *current* stage, these are predictions of where it goes next.
+const HORIZONS = ['14', '30', '90']
+const horizonForecast = computed(() => predictionStore.getLifecycleForecast(customerId.value))
+
+/** Second-most-likely stage for a horizon, so a 51% call doesn't read as certain. */
+function runnerUp(horizon) {
+  const probs = horizonForecast.value?.[horizon]?.probabilities
+  if (!probs) return null
+  const ranked = Object.entries(probs).sort((a, b) => b[1] - a[1])
+  return ranked.length > 1 ? { stage: ranked[1][0], prob: ranked[1][1] } : null
+}
 
 const featureSnapshot = computed(() => customerStore.features)
 
@@ -879,6 +934,9 @@ onMounted(async () => {
   await hydrateStateFromServer(id)
   activeOverride.value = getOverride(id)
 
+  // Fire and forget the NBA generation so it doesn't block page load
+  customerStore.fetchNextBestAction(id)
+
   await Promise.allSettled([
     customerStore.fetchCustomerDetail(id),
     customerStore.fetchCustomerTimeline(id),
@@ -896,13 +954,13 @@ onMounted(async () => {
   await Promise.allSettled([
     (async () => {
       try {
-        const { data } = await api.get(`/api/v1/insights/reason-codes/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE }, timeout: 30000 })
+        const { data } = await api.get(`/api/v1/insights/reason-codes/${id}`, { params: { as_of_date: snapshotStore.asOfDate }, timeout: 30000 })
         reasonCodes.value = data.reason_codes || []
       } catch (e) { console.warn('reason-codes failed:', e.message); reasonCodes.value = [] }
     })(),
     (async () => {
       try {
-        const { data } = await api.get(`/api/v1/recommendations/${id}`, { params: { as_of_date: DEFAULT_AS_OF_DATE }, timeout: 30000 })
+        const { data } = await api.get(`/api/v1/recommendations/${id}`, { params: { as_of_date: snapshotStore.asOfDate }, timeout: 30000 })
         recommendations.value = data.recommendations || []
       } catch (e) { console.warn('recommendations failed:', e.message); recommendations.value = [] }
     })(),

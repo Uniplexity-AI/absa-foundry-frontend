@@ -70,31 +70,35 @@ export function decodeJWT() {
   
 
   const logout = async () => {
-    // Revoke token on backend before clearing locally
+    // Capture the token, then clear the local session FIRST. Signing out must
+    // always succeed, even when the gateway is unreachable — and clearing first
+    // stops other watchers (route guards, 401 handlers) from racing this call.
     const token = localStorage.getItem('token')
-    if (token) {
-      try {
-        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'}/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-      } catch (e) {
-        console.warn('Backend logout failed, clearing locally', e)
-      }
-    }
     ;['token','refresh_token','user_id','email','role','roles','userName','display_name',
       'company_name','tenant_id','branches','selected_branch','active_subaccount_id',
       'active_subaccount_email','active_subaccount_name']
       .forEach(k => localStorage.removeItem(k))
 
-    // Use router instance if set, otherwise fallback
+    // Revoke server-side. `keepalive` lets the request outlive the redirect; we
+    // deliberately do not await it, so a slow or dead gateway cannot block the
+    // user from leaving.
+    if (token) {
+      fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        keepalive: true
+      }).catch((e) => {
+        console.warn('Backend logout failed, session cleared locally', e)
+      })
+    }
+
+    // Soft redirect when the router instance has been registered, hard fallback otherwise.
     if (routerInstance) {
       routerInstance.push('/login')
     } else {
-      // Fallback to direct navigation
       window.location.href = '/login'
     }
   }

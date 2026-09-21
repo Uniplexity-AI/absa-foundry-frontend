@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
+import { useSnapshotStore } from './snapshotStore'
 import { formatMarketSegment, isFrontendVisibleMarketSegment, resolveMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
@@ -12,19 +13,30 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-const DEFAULT_AS_OF_DATE = '2026-07-27'
+// `/api/v1/customers` caps `limit` at 500 (server-side, returns HTTP 422 above
+// that) and responds with a bare array — no total, no headers. So the client can
+// hold at most this many rows, and that number must never be presented as the
+// portfolio size.
+const LEDGER_FETCH_LIMIT = 500
 
 // ── Store ───────────────────────────────────────────────────────
 export const useCustomerStore = defineStore('customer', () => {
+  const snapshotStore = useSnapshotStore()
+
   // ── State ──
   const customers = ref([])
   const selectedCustomer = ref(null)
   const filters = ref({ state: null, search: '', branch: null, marketSegment: null })
   const pagination = ref({ page: 1, limit: 25, total: 0 })
+  // True portfolio size for the current snapshot (authoritative, from the server).
+  // `customers.length` is only how many rows the client managed to fetch.
+  const loadedCount = computed(() => customers.value.length)
   const loading = ref(false)
   const error = ref(null)
   const timeline = ref([])
   const features = ref(null)
+  const currentNba = ref(null)
+  const loadingNba = ref(false)
 
   // Raw portfolio summary from API (aggregate counts)
   const _portfolioSummary = ref({ total_customers: 0, by_state: {} })
@@ -67,18 +79,31 @@ export const useCustomerStore = defineStore('customer', () => {
           c.fullName?.toLowerCase().includes(q),
       )
     }
-    pagination.value.total = list.length
+    // NOTE: deliberately does not write pagination.total. Filtering narrows the
+    // rows we already hold; it must not overwrite the authoritative portfolio
+    // size (use `filteredCustomers.length` for the filtered count).
     const start = (pagination.value.page - 1) * pagination.value.limit
     return list.slice(start, start + pagination.value.limit)
   })
 
   // ── Helpers ──
-  function _mapCustomer(raw) {
+  /**
+   * Map one `customer_states` row to a ledger row.
+   *
+   * `raw` is a Customer State Service snapshot — it carries customer_id, state,
+   * health_score and component_scores, and **no** identity columns. A real name
+   * has to be joined in from the master record (see `fetchCustomerNames`), so
+   * `name` is passed in rather than invented here.
+   */
+  function _mapCustomer(raw, name = null) {
     const id = raw.customer_id
     const marketSegment = resolveMarketSegment(raw.market_segment ?? raw.segment)
     return {
       customerId: id,
-      fullName: `Customer ${id.replace('CUST', '')}`,
+      // The placeholder is a last resort for an id we have no name for, not the
+      // default: showing "Customer 000877" for a named customer made saved
+      // edits to the name look as if they had been ignored.
+      fullName: name || `Customer ${String(id).replace('CUST', '')}`,
       state: raw.state,
       healthScore: raw.health_score,
       churnProbability: raw.churn_probability ?? null,
@@ -96,22 +121,54 @@ export const useCustomerStore = defineStore('customer', () => {
   }
 
   // ── Actions ──
+  /**
+   * Customer id → full_name for the rows about to be rendered.
+   *
+   * Names exist only on ``public.customers_clean``; the portfolio payload is a
+   * ``customer_states`` projection with no name column, and fetching a profile
+   * per row would be N requests. One batched lookup fills the whole ledger.
+   * A failure degrades to the placeholder — the list must still render.
+   */
+  async function fetchCustomerNames(ids) {
+    const wanted = [...new Set((ids || []).filter(Boolean))].slice(0, LEDGER_FETCH_LIMIT)
+    if (!wanted.length) return {}
+    try {
+      const { data } = await api.get('/api/v1/customers/names', {
+        params: { ids: wanted.join(',') },
+      })
+      return data?.names || {}
+    } catch (e) {
+      console.warn('fetchCustomerNames failed:', e.message)
+      return {}
+    }
+  }
+
   async function fetchPortfolio(params = {}) {
     loading.value = true
     error.value = null
-    const dateParams = { as_of_date: params.as_of_date || DEFAULT_AS_OF_DATE }
+    const dateParams = { as_of_date: params.as_of_date || snapshotStore.asOfDate }
 
     try {
-      const [portfolioRes, listRes] = await Promise.all([
+      const [portfolioRes, countRes, listRes] = await Promise.all([
         api.get('/api/v1/customers/portfolio', { params: dateParams }),
-        api.get('/api/v1/customers', { params: { ...dateParams, limit: 500, offset: 0 } }),
+        api.get('/api/v1/customers/count', { params: dateParams }),
+        api.get('/api/v1/customers', { params: { ...dateParams, limit: LEDGER_FETCH_LIMIT, offset: 0 } }),
       ])
 
       _portfolioSummary.value = portfolioRes.data
-      customers.value = (listRes.data || [])
+
+      const rawRows = (listRes.data || [])
         .filter((customer) => isFrontendVisibleMarketSegment(customer.market_segment ?? customer.segment))
-        .map(_mapCustomer)
-      pagination.value.total = customers.value.length
+
+      // Join in the identity names the snapshot cannot carry.
+      const names = await fetchCustomerNames(rawRows.map((c) => c.customer_id))
+      customers.value = rawRows.map((customer) => _mapCustomer(customer, names[customer.customer_id] ?? null))
+
+      // The authoritative portfolio size. Deriving this from
+      // `customers.value.length` is what made the ledger read "of 500 customers"
+      // for a 5,000-customer portfolio — it was reporting the fetch page size.
+      pagination.value.total =
+        countRes.data?.total ?? portfolioRes.data?.total_customers ?? customers.value.length
     } catch (e) {
       console.warn('fetchPortfolio failed:', e.message)
       error.value = e.response?.data?.detail || e.message || 'Failed to load portfolio data'
@@ -128,7 +185,7 @@ export const useCustomerStore = defineStore('customer', () => {
     error.value = null
     try {
       const { data } = await api.get(`/api/v1/customers/${id}`, {
-        params: { as_of_date: DEFAULT_AS_OF_DATE },
+        params: { as_of_date: snapshotStore.asOfDate },
       })
       if (!isFrontendVisibleMarketSegment(data.market_segment ?? data.segment)) {
         selectedCustomer.value = null
@@ -170,6 +227,22 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  async function fetchNextBestAction(id) {
+    loadingNba.value = true
+    currentNba.value = null
+    try {
+      // NOTE: Using the gateway/proxy base or full URL depending on how api.get resolves.
+      // Assuming decisions route is proxied like customers.
+      const { data } = await api.get(`/api/v1/decisions/${id}/nba`, { timeout: 180000 })
+      currentNba.value = data || null
+    } catch (e) {
+      console.warn('fetchNextBestAction failed:', e.message)
+      currentNba.value = null
+    } finally {
+      loadingNba.value = false
+    }
+  }
+
   function setFilter(key, value) {
     filters.value[key] = value
     pagination.value.page = 1
@@ -185,16 +258,21 @@ export const useCustomerStore = defineStore('customer', () => {
     selectedCustomer,
     filters,
     pagination,
+    loadedCount,
     loading,
     error,
     timeline,
     features,
+    currentNba,
+    loadingNba,
     portfolio,
     filteredCustomers,
     fetchPortfolio,
+    fetchCustomerNames,
     fetchCustomerDetail,
     fetchCustomerTimeline,
     fetchCustomerFeatures,
+    fetchNextBestAction,
     setFilter,
     clearFilters,
   }

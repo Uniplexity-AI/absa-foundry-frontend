@@ -325,8 +325,10 @@ import { UserPlus, Building, UserCircle, ChevronDown, GitBranch, ArrowRight, Tre
 import { useActivityTracker } from '@/config/useActivityTracker.js';
 import CRMNotificationPanel from './components/CRMNotificationPanel.vue';
 import CRMAnalyticsModal from './components/CRMAnalyticsModal.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const {
   formatCurrency, branches, selectedBranch, onBranchChange,
@@ -339,10 +341,8 @@ const {
   canAssignCrm,
 } = useCRMModule();
 
-const isAdminUser = computed(() => {
-  const role = currentUserRole.value?.id || '';
-  return ['owner', 'admin', 'super_admin'].includes(role);
-});
+// Use ABSA RBAC roles — ADMIN and RELATIONSHIP_MANAGER are the privileged roles in CRM
+const isAdminUser = computed(() => authStore.isAdmin || authStore.isRM);
 
 useActivityTracker({
   userId: getUserEmail(),

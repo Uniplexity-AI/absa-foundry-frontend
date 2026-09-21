@@ -606,10 +606,10 @@
     "semantic_hash": "c8505f03f583cfd342c9e5366a329daf"
   },
   "src/stores/modelsStore.js": {
-    "mtime": 1786092629.4307468,
-    "seen": 1787736273.645472,
-    "ast_hash": "aaa7031b40c61f3452a8cbf7929102fb",
-    "semantic_hash": "aaa7031b40c61f3452a8cbf7929102fb"
+    "mtime": 1789141153.6681356,
+    "seen": 1789288792.550265,
+    "ast_hash": "ccd1d69c3d5b3a9468f107820498aa11",
+    "semantic_hash": ""
   },
   "src/stores/predictionStore.js": {
     "mtime": 1787214636.7020512,
@@ -636,8 +636,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1788533221.9764626,
-    "seen": 1788533387.3755553,
+    "mtime": 1789141152.5319052,
+    "seen": 1789288792.550265,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },
@@ -690,9 +690,9 @@
     "semantic_hash": ""
   },
   "src/views/CustomerDetail.vue": {
-    "mtime": 1788354757.5046017,
-    "seen": 1788354906.6466427,
-    "ast_hash": "3fabba08b7ffb141a07b3a254fe1e370",
+    "mtime": 1789140269.470904,
+    "seen": 1789288792.550265,
+    "ast_hash": "7b535fa87116c7f5c3afad5bddad4828",
     "semantic_hash": ""
   },
   "src/views/DashboardHome.vue": {
@@ -720,9 +720,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/aiagents/Models.vue": {
-    "mtime": 1788361418.5216155,
-    "seen": 1788533387.3755553,
-    "ast_hash": "388375775436f5927c832cc9db023b6f",
+    "mtime": 1789141153.6681356,
+    "seen": 1789288792.550265,
+    "ast_hash": "1ea8369fcf9f64af5966d4ee6faf143c",
     "semantic_hash": ""
   },
   "src/views/Modules/aiagents/components/ChatSidebar.vue": {
@@ -1068,9 +1068,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/managers/BranchManagerDashboard.vue": {
-    "mtime": 1788355574.7132993,
-    "seen": 1788355754.371912,
-    "ast_hash": "8397e9898c4f33284b7e1a4b7705b36b",
+    "mtime": 1788840388.6516178,
+    "seen": 1789288792.550265,
+    "ast_hash": "b6c001e8ece323cf001760c4e4a62bfe",
     "semantic_hash": ""
   },
   "src/views/Modules/settings/ProfileModule.vue": {
@@ -2427,6 +2427,72 @@
     "mtime": 1788344860.0107334,
     "seen": 1788354906.6466427,
     "ast_hash": "b164fd6aeeec0a8be129fdafaf90ff60",
+    "semantic_hash": ""
+  },
+  "scripts/add_simulate_calibration_api.py": {
+    "mtime": 1788844831.3697894,
+    "seen": 1789288792.549726,
+    "ast_hash": "85c61598f421f072afca2247aac1fd93",
+    "semantic_hash": ""
+  },
+  "scripts/fix_calibration_vue.py": {
+    "mtime": 1788844847.0608406,
+    "seen": 1789288792.549726,
+    "ast_hash": "aea9442939406a12fe0ed793418ab9db",
+    "semantic_hash": ""
+  },
+  "scripts/fix_duplicate_fetch.py": {
+    "mtime": 1788844900.508961,
+    "seen": 1789288792.549726,
+    "ast_hash": "ce13e29a6d181da3a6f6a326a0e11769",
+    "semantic_hash": ""
+  },
+  "scripts/fix_header_retrain.py": {
+    "mtime": 1788846620.5737345,
+    "seen": 1789288792.549726,
+    "ast_hash": "694a9b1e13ed7a04d493b199bc8493e0",
+    "semantic_hash": ""
+  },
+  "scripts/fix_tabs.py": {
+    "mtime": 1788843736.1338828,
+    "seen": 1789288792.549726,
+    "ast_hash": "c7f32d5e7111bf9bf61dfebfd1a8c73f",
+    "semantic_hash": ""
+  },
+  "scripts/inject_champion.py": {
+    "mtime": 1788844533.3274136,
+    "seen": 1789288792.549726,
+    "ast_hash": "5f5fe3de0670c5c51c7f3fa8ee837dd2",
+    "semantic_hash": ""
+  },
+  "scripts/inject_champion_refs.py": {
+    "mtime": 1788844563.2219977,
+    "seen": 1789288792.549726,
+    "ast_hash": "c5b0aeb24d706bc90ed5f15724cf6b5b",
+    "semantic_hash": ""
+  },
+  "scripts/inject_tabs.py": {
+    "mtime": 1788844320.896375,
+    "seen": 1789288792.549726,
+    "ast_hash": "ce07d438863f0f0c7e76fcdca133ce80",
+    "semantic_hash": ""
+  },
+  "scripts/update_colors.py": {
+    "mtime": 1788843426.3706954,
+    "seen": 1789288792.549726,
+    "ast_hash": "7603dda7824777b83711685bd40d7ebe",
+    "semantic_hash": ""
+  },
+  "src/components/intelligence/AiNarrationPanel.vue": {
+    "mtime": 1789140269.470904,
+    "seen": 1789288792.549726,
+    "ast_hash": "e0e5a3788d75443402f7f5a2b0534085",
+    "semantic_hash": ""
+  },
+  "src/services/modelManagementApi.js": {
+    "mtime": 1788844907.8247993,
+    "seen": 1789288792.550265,
+    "ast_hash": "d18b379ff48fb4f57ebda073f116c20f",
     "semantic_hash": ""
   }
 }

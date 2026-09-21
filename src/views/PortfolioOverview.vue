@@ -34,11 +34,12 @@
         </div>
         <div class="flex items-center gap-3">
           <span class="text-sm font-bold text-gray-600">Data Snapshot:</span>
-          <select v-model="selectedSnapshot" @change="onSnapshotChange" class="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-absa-passion focus:border-absa-passion sm:text-sm rounded-sm bg-white font-mono text-absa-enrich border">
-            <option v-for="option in snapshotOptions" :key="option" :value="option">
-              {{ option }}
-            </option>
-          </select>
+          <input
+            v-model="snapshotStore.selectedDate"
+            type="date"
+            @change="onSnapshotChange"
+            class="block w-48 pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-absa-passion focus:border-absa-passion sm:text-sm rounded-sm bg-white font-mono text-absa-enrich border"
+          />
         </div>
       </div>
 
@@ -215,7 +216,7 @@
                       <td class="px-3 py-1.5 whitespace-nowrap text-xs font-bold">
                         {{ predictionStore.getChurnProbability(customer.customerId) != null ? Math.round(predictionStore.getChurnProbability(customer.customerId) * 100) + '%' : '--' }}
                       </td>
-                      <td class="px-3 py-1.5 whitespace-nowrap text-xs">{{ predictionStore.predictions[customer.customerId]?.clv_percentile != null ? 'P' + (predictionStore.predictions[customer.customerId].clv_percentile * 100).toFixed(0) : '--' }}</td>
+                      <td class="px-3 py-1.5 whitespace-nowrap text-xs font-mono">{{ clvCell(customer.customerId) }}</td>
                       <td class="px-3 py-1.5 whitespace-nowrap">
                         <router-link :to="`/dashboard/customer/${encodeURIComponent(customer.customerId)}?from=ledger&page=${ledgerPage}`" class="text-xs font-bold py-1.5 px-3 rounded-sm shadow-none transition-colors w-full bg-absa-passion text-white hover:bg-red-900 inline-block text-center">
                           REVIEW
@@ -227,7 +228,11 @@
               </div>
               <!-- Pagination -->
               <div class="p-4 border-t border-gray-200 bg-white flex items-center justify-between mt-auto">
-                <span class="text-xs text-gray-500">Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ ledgerTotal }} customers</span>
+                <span class="text-xs text-gray-500">
+                  Showing {{ ledgerStart }}-{{ ledgerEnd }} of {{ ledgerTotal.toLocaleString() }} customers
+                  <span v-if="ledgerWindowed" class="text-gray-400">· paging the first {{ ledgerHeld.toLocaleString() }} loaded</span>
+                  <span v-else-if="ledgerHasFilter" class="text-gray-400">matching</span>
+                </span>
                 <div class="flex gap-2">
                   <button @click="ledgerPage--" :disabled="ledgerPage <= 1" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage <= 1 ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50']">Previous</button>
                   <button @click="ledgerPage++" :disabled="ledgerPage >= ledgerTotalPages" :class="['px-3 py-1 border border-gray-300 rounded-sm text-xs', ledgerPage >= ledgerTotalPages ? 'text-gray-300 bg-gray-50 cursor-not-allowed' : 'text-absa-enrich hover:bg-gray-50']">Next</button>
@@ -344,6 +349,7 @@ import { Doughnut, Bar } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 import { acknowledgeAlert as persistAck, isAlertAcked, hydrateLogFromServer, getActionLog } from '@/utils/absaActions'
 import { MARKET_SEGMENT_OPTIONS } from '@/config/customerSegments'
@@ -352,6 +358,7 @@ ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Le
 
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
+const snapshotStore = useSnapshotStore()
 const route = useRoute()
 
 onMounted(async () => {
@@ -364,30 +371,21 @@ onMounted(async () => {
   }
   // Batch-fetch predictions for visible customers
   const ids = customerStore.customers.slice(0, 50).map(c => c.customerId)
-  predictionStore.fetchBatchPredictions(ids, selectedSnapshot.value)
+  predictionStore.fetchBatchPredictions(ids, snapshotStore.asOfDate)
   // Fetch churn drivers for AI engine
   predictionStore.fetchChurnDrivers()
+  snapshotStore.fetchAvailable()
 })
 
-const selectedSnapshot = ref('2026-07-27')
-const snapshotOptions = ref([])
-
-// Generate last 30 days of snapshots centered on the default data date
-function generateSnapshots() {
-  const dates = []
-  const base = new Date('2026-07-27')
-  for (let i = 14; i >= -15; i--) {
-    const d = new Date(base)
-    d.setDate(d.getDate() + i)
-    dates.push(d.toISOString().slice(0, 10))
-  }
-  snapshotOptions.value = dates
-  selectedSnapshot.value = '2026-07-27'
+/** Absolute CLV (ZMW) for the "CLV (ZMW)" column — never the percentile. */
+function clvCell(customerId) {
+  const v = predictionStore.predictions[customerId]?.clv
+  return v == null ? '--' : Number(v).toLocaleString()
 }
-generateSnapshots()
 
 async function onSnapshotChange() {
-  await customerStore.fetchPortfolio({ as_of_date: selectedSnapshot.value })
+  snapshotStore.setDate(snapshotStore.selectedDate)
+  await customerStore.fetchPortfolio({ as_of_date: snapshotStore.asOfDate })
   ledgerPage.value = 1
 }
 
@@ -486,11 +484,25 @@ const ledgerFiltered = computed(() => {
   return rows
 })
 
-const ledgerTotal = computed(() => ledgerFiltered.value.length)
-const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(ledgerFiltered.value.length / ledgerPageSize)))
+// A ledger filter (risk / segment / search) narrows the rows we hold, so once one
+// is active the honest denominator is the filtered count. With no filter the
+// denominator is the real portfolio size from the server — never the size of the
+// fetched page, which is capped at 500 rows and previously masqueraded as the
+// portfolio total.
+const ledgerHasFilter = computed(() =>
+  ledgerAtRiskOnly.value || !!ledgerMarketSegment.value || !!(searchText.value || '').trim()
+)
+const ledgerHeld = computed(() => ledgerFiltered.value.length)
+const ledgerTotal = computed(() =>
+  ledgerHasFilter.value ? ledgerHeld.value : (customerStore.pagination.total || ledgerHeld.value)
+)
+// Paging is over the rows we actually hold, so "Next" can never land on an empty page.
+const ledgerTotalPages = computed(() => Math.max(1, Math.ceil(ledgerHeld.value / ledgerPageSize)))
 const ledgerRows = computed(() => ledgerFiltered.value.slice((ledgerPage.value - 1) * ledgerPageSize, ledgerPage.value * ledgerPageSize))
-const ledgerStart = computed(() => ledgerFiltered.value.length === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
-const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, ledgerFiltered.value.length))
+const ledgerStart = computed(() => ledgerHeld.value === 0 ? 0 : (ledgerPage.value - 1) * ledgerPageSize + 1)
+const ledgerEnd = computed(() => Math.min(ledgerPage.value * ledgerPageSize, ledgerHeld.value))
+// True when the portfolio is larger than what this session loaded.
+const ledgerWindowed = computed(() => !ledgerHasFilter.value && ledgerHeld.value < ledgerTotal.value)
 
 function toggleLedgerFilter() {
   ledgerAtRiskOnly.value = !ledgerAtRiskOnly.value
@@ -510,15 +522,16 @@ function exportLedgerCsv() {
     churnProbabilityPct: predictionStore.getChurnProbability(c.customerId) != null
       ? Math.round(predictionStore.getChurnProbability(c.customerId) * 100) + '%'
       : '',
+    clv: predictionStore.predictions[c.customerId]?.clv ?? '',
     clvPercentile: predictionStore.predictions[c.customerId]?.clv_percentile != null
-      ? 'P' + (predictionStore.predictions[c.customerId].clv_percentile * 100).toFixed(0)
+      ? Math.round(predictionStore.predictions[c.customerId].clv_percentile * 100)
       : '',
   }))
   if (!rows.length) {
     notify('Nothing to export — no customers in the ledger', 'error', { autoClose: 3000 })
     return
   }
-  downloadCsv(reportFilename(`portfolio-ledger${ledgerAtRiskOnly.value ? '-at-risk' : ''}`), rows, ['customerId', 'fullName', 'state', 'marketSegment', 'segmentCode', 'segmentLabel', 'healthScore', 'churnProbabilityPct', 'clvPercentile'])
+  downloadCsv(reportFilename(`portfolio-ledger${ledgerAtRiskOnly.value ? '-at-risk' : ''}`), rows, ['customerId', 'fullName', 'state', 'marketSegment', 'segmentCode', 'segmentLabel', 'healthScore', 'churnProbabilityPct', 'clv', 'clvPercentile'])
   notify(`Exported ${rows.length} customers to CSV`, 'success', { autoClose: 2500 })
 }
 

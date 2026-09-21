@@ -46,35 +46,21 @@ export function getPermissionsForEntity(entityId) {
 export const PERMISSION_ENTITIES = [
   { id: 'pos', name: 'POS Operations', icon: 'fas fa-cash-register' },
   { id: 'inventory', name: 'Inventory Management', icon: 'fas fa-boxes' },
-  { id: 'healthcare_admin', name: 'Healthcare', icon: 'fas fa-hospital' },
   { id: 'supplier', name: 'Supplier Management', icon: 'fas fa-truck' },
   { id: 'invoicing', name: 'Invoicing', icon: 'fas fa-file-invoice' },
   { id: 'reports', name: 'Reports & Analytics', icon: 'fas fa-chart-pie' },
   { id: 'settings', name: 'Settings', icon: 'fas fa-cogs' },
   { id: 'expenses', name: 'Expenses', icon: 'fas fa-file-invoice' },
-  { id: 'loans', name: 'Loans', icon: 'fas fa-hand-holding-usd' },
-  { id: 'payroll', name: 'Payroll', icon: 'fas fa-money-check-alt' },
-  { id: 'hrmodule', name: 'HR Module', icon: 'fas fa-user-tie' },
-  { id: 'ub_recruiter', name: 'UB Recruiter', icon: 'fas fa-user-tie' },
-  { id: 'crm', name: 'CRM', icon: 'fas fa-address-book' },
-  { id: 'mining-image', name: 'Mining/Image Capture', icon: 'fas fa-mountain' },
-  { id: 'taxes', name: 'ZRA Tax', icon: 'fas fa-file-invoice-dollar' },
+ 
   { id: 'ai', name: 'AI Agent', icon: 'fas fa-robot' },
   { id: 'allshops', name: 'Users', icon: 'fas fa-users-cog' },
   { id: 'delivery-tickets', name: 'Delivery Tickets', icon: 'fas fa-truck-loading' },
   { id: 'strategic-management', name: 'Executive Module', icon: 'fas fa-chess' },
-  { id: 'finance', name: 'Finance Dashboard', icon: 'fas fa-wallet' },
-  { id: 'hr-dashboard', name: 'HR Dashboard', icon: 'fas fa-users' },
-  { id: 'image-capture-standalone', name: 'Image Capture - Text Scanner', icon: 'fas fa-camera' },
+  
   { id: 'profile', name: 'Profile', icon: 'fas fa-user-circle' },
   { id: 'assets-manager', name: 'Unified Assets', icon: 'fas fa-hard-hat' },
   { id: 'project-management', name: 'Project Management', icon: 'fas fa-project-diagram' },
-  { id: 'hotel-manager', name: 'Hotel Management', icon: 'fas fa-hotel' },
-  { id: 'minetech-hub', name: 'MineTech Hub', icon: 'fas fa-mountain' },
-  { id: 'tender-management', name: 'Tender Management', icon: 'fas fa-file-contract' },
-  { id: 'hr-staff', name: 'Staff Portal', icon: 'fas fa-user-circle' },
-  { id: 'compliance', name: 'Compliance Center', icon: 'fas fa-shield-alt' }
-];
+]
 
 // ==================== DEFAULT ROLES ====================
 
@@ -235,33 +221,7 @@ export const DEFAULT_ROLES = [
     }
   },
 
-  {
-    id: 'hotel_attendant',
-    name: 'Hotel Attendant',
-    description: 'Hotel Managers access',
-    isSystem: true,
-    permissions: {
-      pos: ['read', 'write'],
-      // hotelmanager:['read', 'write'],
-      inventory: ['read'],
-      invoicing: [],
-      reports: [],
-      // users: [],
-      // settings: [],
-      // expenses: [],
-      // loans: [],
-      // payroll: [],
-      // hrmodule: [],
-      crm: [],
-      // mining: [],
-      // zra: [],
-      ai: [],
-      // allshops: [],
-      'hotel-manager': ["read", "write"],
-
-    }
-  },
-
+  
   // ==================== ASSET MANAGER ROLES (Module 9.1 Access Control) ====================
   // Each asset role declares explicit permissions on the `assets-manager` entity
   // across Create (write) / Read / Update (edit) / Delete / Approve / Export.
@@ -336,36 +296,6 @@ export const DEFAULT_ROLES = [
   }
 ];
 
-/**
- * Healthcare-specific role IDs that should only be visible/assignable when
- * the tenant has subscribed to the "healthcare" module.
- * Mirrors the HEALTHCARE_ROLE_IDS set in the backend DEFAULT_ROLES filter.
- */
-export const HEALTHCARE_ROLE_IDS = new Set([
-  'healthcare_admin', 'medical_director', 'consultant', 'medical_officer',
-  'resident', 'nurse_manager', 'registered_nurse', 'enrolled_nurse',
-  'lab_manager', 'lab_scientist', 'lab_technician', 'phlebotomist',
-  'radiology_manager', 'radiologist', 'radiographer',
-  'pharmacy_manager', 'pharmacist', 'pharmacy_technician',
-  'receptionist', 'billing_clerk', 'insurance_officer',
-  'health_records_officer', 'quality_officer', 'patient'
-]);
-
-// ==================== ASSOCIATED ORGANIZATIONS ====================
-
-/**
- * Pre-defined organization types for association
- */
-export const ORGANIZATION_TYPES = [
-  { id: 'investor', name: 'Investor', icon: 'fas fa-chart-line' },
-  { id: 'bank', name: 'Bank', icon: 'fas fa-university' },
-  { id: 'cdf', name: 'CDF (Constituency Development Fund)', icon: 'fas fa-landmark' },
-  { id: 'undp', name: 'UNDP', icon: 'fas fa-globe' },
-  { id: 'ngo', name: 'NGO', icon: 'fas fa-hands-helping' },
-  { id: 'government', name: 'Government Agency', icon: 'fas fa-building-columns' },
-  { id: 'cooperative', name: 'Cooperative', icon: 'fas fa-people-group' },
-  { id: 'other', name: 'Other', icon: 'fas fa-ellipsis-h' }
-];
 
 /**
  * Access scope levels for organization associations

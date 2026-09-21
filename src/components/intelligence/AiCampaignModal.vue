@@ -24,6 +24,17 @@
 
       <!-- Scrollable content -->
       <div class="flex-1 overflow-y-auto p-6 space-y-8">
+      
+        <!-- Loading State -->
+        <div v-if="loading" class="flex flex-col items-center justify-center py-20 text-center h-full">
+          <span class="material-symbols-outlined text-[48px] text-absa-passion animate-spin mb-4">sync</span>
+          <h3 class="text-lg font-bold text-absa-enrich mb-2">Analyzing Cohort...</h3>
+          <p class="text-sm text-gray-500 max-w-sm">
+            The AI decision engine is currently analyzing the selected customers and generating tailored campaign strategies to maximize retention and CLV.
+          </p>
+        </div>
+
+        <template v-else>
         
         <!-- Section 1: Cohort Intelligence -->
         <section>
@@ -156,8 +167,8 @@
           </div>
         </section>
 
+        </template>
       </div>
-
       <!-- Launch Panel Footer -->
       <div class="border-t border-gray-200 bg-gray-50 px-6 py-4 flex justify-between items-center mt-auto">
         <div v-if="!selectedCampaign" class="text-xs text-gray-500 italic">
@@ -200,41 +211,58 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'campaign-launched'])
 
+import axios from 'axios'
+import { API_BASE_URL } from '@/services/api'
+import { watch } from 'vue'
+
 const selectedCampaign = ref(null)
+const cohortDrivers = ref([])
+const aiCampaigns = ref([])
+const loading = ref(true)
 
-const cohortDrivers = [
-  { icon: 'signal_cellular_nodata', label: 'Digital Inactivity', contribution: 38, desc: '0 app/web logins in 45+ days � strongest predictor of 90-day churn' },
-  { icon: 'account_balance_wallet', label: 'Balance Decline', contribution: 27, desc: 'AUM dropped >25% in the last 60 days across this cohort' },
-  { icon: 'cancel_schedule_send', label: 'Direct Debit Failure', contribution: 19, desc: '1+ failed recurring payment detected in the last 30 days' },
-]
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 300000 })
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 
-const aiCampaigns = [
-  {
-    id: 'digital-reactivation', rank: 1,
-    tag: 'RECOMMENDED', tagClass: 'bg-green-100 text-green-700',
-    title: 'Digital Reactivation Campaign',
-    channel: 'SMS + Push Notification', channelIcon: 'smartphone',
-    description: 'Re-engage customers showing digital inactivity. Drive app login within 7 days via personalised incentive.',
-    upliftScore: 64, successRate: '61%', aumProtected: 'K 18.5M', confidence: 87, duration: '14 days', cost: 'Low',
-  },
-  {
-    id: 'relationship-retention', rank: 2,
-    tag: 'HIGH VALUE', tagClass: 'bg-amber-100 text-amber-700',
-    title: 'Relationship Retention � RM Outreach',
-    channel: 'Phone Call (RM-initiated)', channelIcon: 'call',
-    description: 'Assign a senior RM for a personalised check-in call. Offer a fee-waiver or rate review based on customer tenure.',
-    upliftScore: 51, successRate: '74%', aumProtected: 'K 31.2M', confidence: 79, duration: '7 days', cost: 'Medium',
-  },
-  {
-    id: 'balance-protection', rank: 3,
-    tag: 'EXPERIMENTAL', tagClass: 'bg-gray-100 text-gray-600',
-    title: 'Balance Protection Alert',
-    channel: 'Email + In-App Banner', channelIcon: 'mark_email_unread',
-    description: 'Proactively notify customers of their balance trend and offer a product switch to a higher-interest savings tier.',
-    upliftScore: 43, successRate: '48%', aumProtected: 'K 12.8M', confidence: 63, duration: '21 days', cost: 'Low',
-  },
-]
+async function fetchCohortInsights() {
+  if (!props.modelValue || props.customers.length === 0) return;
+  
+  loading.value = true;
+  cohortDrivers.value = [];
+  aiCampaigns.value = [];
+  selectedCampaign.value = null;
 
+  try {
+      const payload = {
+        customers: props.customers.map(c => ({
+          customer_id: c.customerId || c.customer_id || c.id || "UNKNOWN",
+          churn_probability: c.churnProbability || c.churn_probability || c.churnProb || 0,
+          clv: c.clv || c.value_180d || 0,
+          health_score: c.healthScore || c.health_score || 0,
+          segment: c.segmentCode || c.segment || 'MASS_MARKET'
+        }))
+      };
+    
+    // Call the new cohort-campaigns proxy route
+    const { data } = await api.post('/api/v1/decisions/cohort-campaigns', payload);
+    
+    cohortDrivers.value = data.cohort_drivers || [];
+    aiCampaigns.value = data.campaigns || [];
+  } catch (error) {
+    console.error("Failed to fetch AI Cohort Campaigns", error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+watch(() => props.modelValue, (newVal) => {
+  if (newVal) {
+    fetchCohortInsights();
+  }
+});
 function close() {
   emit('update:modelValue', false)
   setTimeout(() => { selectedCampaign.value = null }, 300)

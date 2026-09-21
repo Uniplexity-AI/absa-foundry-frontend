@@ -13,6 +13,14 @@
         <p class="text-body-md text-gray-500 mt-1">Projected portfolio value under optimistic, base, and pessimistic churn scenarios</p>
       </div>
       <div class="flex items-center gap-3">
+        <button
+          @click="runForecastModel"
+          :disabled="runningForecast"
+          class="px-4 py-2 bg-absa-passion text-absa-serene rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-sm font-semibold shadow-none disabled:opacity-50"
+        >
+          <span class="material-symbols-outlined text-[18px]">{{ runningForecast ? 'hourglass_top' : 'model_training' }}</span>
+          {{ runningForecast ? 'Running…' : 'Run Forecast Model' }}
+        </button>
         <button @click="exportReport" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-sm font-semibold shadow-none">
           <span class="material-symbols-outlined text-[16px]">download</span>
           Export Report
@@ -22,7 +30,16 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="mt-6">
-      <LoadingSkeleton />
+      <LoadingSkeleton type="stats" />
+    </div>
+
+    <!-- Unavailable State -->
+    <div v-else-if="forecastUnavailable" class="mt-6 rounded-sm border border-gray-300 bg-white p-8 text-center">
+      <span class="material-symbols-outlined text-[32px] text-gray-400">cloud_off</span>
+      <p class="text-sm font-bold text-absa-enrich mt-2">Balance forecast unavailable</p>
+      <p class="text-[12px] text-gray-500 mt-1">
+        {{ store.error?.forecast || 'No feature snapshot exists for the selected as-of date.' }}
+      </p>
     </div>
 
     <template v-else>
@@ -49,23 +66,25 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CURRENT AUM</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">K 4.57B</p>
-            <p class="text-[11px] text-gray-500 mt-1">As of 27 Jul 2026</p>
+            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatAum(forecast?.current_aum) }}</p>
+            <p class="text-[11px] text-gray-500 mt-1">
+              {{ forecast?.as_of_date ? `As of ${formatDate(forecast.as_of_date)}` : 'No snapshot' }}
+            </p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">BASE SCENARIO (90D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 4.30B</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.base_scenario_aum_90d) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Projected end of period</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">AUM AT RISK</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 274M</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.aum_at_risk) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Base vs current delta</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">BEST CASE (90D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">K 4.78B</p>
-            <p class="text-[11px] text-gray-500 mt-1">If churn ↓ 2pp</p>
+            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.best_case_aum_90d) }}</p>
+            <p class="text-[11px] text-gray-500 mt-1">If churn improves 2pp</p>
           </div>
         </div>
 
@@ -125,7 +144,7 @@
           <div v-if="ciExpanded">
             <div class="px-4 py-2.5 bg-white border-b border-gray-100 flex items-start gap-2">
               <span class="material-symbols-outlined text-[14px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
-              <p class="text-[11px] text-gray-500 leading-relaxed">The <strong class="text-absa-enrich">80% confidence interval (P10-P90)</strong> around the base projection. Generated via Monte Carlo simulation (10,000 trajectories). A wider spread indicates higher uncertainty.</p>
+              <p class="text-[11px] text-gray-500 leading-relaxed">The <strong class="text-absa-enrich">80% confidence interval (P10-P90)</strong> around the base projection. Computed analytically from the sum of independent per-customer churn outcomes (normal approximation, z = 1.2816) — not a simulation. A wider spread indicates higher uncertainty.</p>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
@@ -141,10 +160,10 @@
                 <tbody class="divide-y divide-gray-100">
                   <tr v-for="(cp, i) in (store.forecastData?.ci_checkpoints ?? [])" :key="i" :class="i === 0 ? 'bg-gray-50' : 'hover:bg-gray-50 transition-colors'">
                     <td class="px-3 py-1.5"><span class="text-xs font-semibold text-absa-enrich">{{ cp.label }}</span><span v-if="i === 0" class="ml-2 text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded-sm font-bold">NOW</span></td>
-                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-absa-passion font-bold">K {{ cp.p10 }}B</span></td>
-                    <td class="px-3 py-1.5"><span class="text-xs font-mono font-bold text-absa-enrich">K {{ cp.base }}B</span></td>
-                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-absa-passion font-bold">K {{ cp.p90 }}B</span></td>
-                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-gray-500">K {{ (cp.p90 - cp.p10).toFixed(0) }}B</span></td>
+                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-absa-passion font-bold">{{ formatAum(cp.p10) }}</span></td>
+                    <td class="px-3 py-1.5"><span class="text-xs font-mono font-bold text-absa-enrich">{{ formatAum(cp.base) }}</span></td>
+                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-absa-passion font-bold">{{ formatAum(cp.p90) }}</span></td>
+                    <td class="px-3 py-1.5"><span class="text-xs font-mono text-gray-500">{{ formatAum(cp.p90 - cp.p10) }}</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -163,7 +182,7 @@
           </div>
           <div class="p-5">
             <div
-              v-for="seg in (store.forecastData?.by_segment ?? fallbackSegments)"
+              v-for="seg in (store.forecastData?.by_segment ?? [])"
               :key="seg.segment"
               class="mb-5 last:mb-0"
             >
@@ -214,7 +233,7 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr
-                  v-for="seg in (store.forecastData?.by_segment ?? fallbackSegments)"
+                  v-for="seg in (store.forecastData?.by_segment ?? [])"
                   :key="seg.segment"
                   class="hover:bg-gray-50 transition-colors"
                 >
@@ -268,7 +287,7 @@
               </thead>
               <tbody class="divide-y divide-gray-100">
                 <tr
-                  v-for="row in (store.forecastData?.sensitivity ?? fallbackSensitivity)"
+                  v-for="row in (store.forecastData?.sensitivity ?? [])"
                   :key="row.scenario"
                   :class="['hover:bg-gray-50 transition-colors', row.is_base ? 'bg-gray-50 font-bold' : '']"
                 >
@@ -303,13 +322,17 @@ import HealthScoreGauge from '@/components/telemetry/HealthScoreGauge.vue'
 import StateBadge from '@/components/telemetry/StateBadge.vue'
 import StateTimeline from '@/components/telemetry/StateTimeline.vue'
 import MarkovMatrix from '@/components/telemetry/MarkovMatrix.vue'
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import Chart from 'chart.js/auto'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
+import { formatDate } from '@/utils/formatting'
+
+import { useSnapshotStore } from '@/stores/snapshotStore'
 
 const store = useIntelligenceStore()
+const snapshotStore = useSnapshotStore()
 const loading = ref(true)
 const activeTab = ref('forecast')
 const forecastHorizon = ref(90)
@@ -318,26 +341,18 @@ const sensitivityExpanded = ref(true)
 const forecastCanvas = ref(null)
 let chartInstance = null
 
+const forecast = computed(() => store.forecastData ?? null)
+
+// No dummy values: every figure on this page comes from the forecast endpoint,
+// so an absent/empty payload must read as "unavailable", not as a stand-in.
+const forecastUnavailable = computed(
+  () => !store.forecastData || store.forecastData.status === 'NO_DATA' || !!store.error?.forecast
+)
+
 const tabs = [
   { id: 'forecast',    label: 'Forecast',    icon: 'show_chart' },
   { id: 'by_segment', label: 'By Segment',   icon: 'bar_chart'  },
   { id: 'sensitivity', label: 'Sensitivity', icon: 'tune'       },
-]
-
-const fallbackSegments = [
-  { segment: 'Prestige',      current_aum: 1820000000, projected_remaining: 1720000000, aum_at_risk: 100000000, projected_exits: 412, pct_change: -5.5 },
-  { segment: 'Private',       current_aum: 1240000000, projected_remaining: 1160000000, aum_at_risk:  80000000, projected_exits: 218, pct_change: -6.5 },
-  { segment: 'Gold',          current_aum:  890000000, projected_remaining:  844000000, aum_at_risk:  46000000, projected_exits: 361, pct_change: -5.2 },
-  { segment: 'Transactional', current_aum:  620000000, projected_remaining:  572000000, aum_at_risk:  48000000, projected_exits: 529, pct_change: -7.7 },
-]
-
-const fallbackSensitivity = [
-  { scenario: 'Very Low Churn',  churn_assumption: '3.0% / mo', projected_aum: 4780000000, delta:  210000000, pct_change:  4.6, is_base: false },
-  { scenario: 'Low Churn',       churn_assumption: '4.5% / mo', projected_aum: 4550000000, delta:  -20000000, pct_change: -0.4, is_base: false },
-  { scenario: 'Base Case',       churn_assumption: '6.0% / mo', projected_aum: 4296000000, delta:          0, pct_change:  0.0, is_base: true  },
-  { scenario: 'Elevated Churn',  churn_assumption: '7.5% / mo', projected_aum: 4080000000, delta: -216000000, pct_change: -5.0, is_base: false },
-  { scenario: 'High Churn',      churn_assumption: '9.0% / mo', projected_aum: 3820000000, delta: -476000000, pct_change:-11.1, is_base: false },
-  { scenario: 'Stress',          churn_assumption:'12.0% / mo', projected_aum: 3340000000, delta: -956000000, pct_change:-22.2, is_base: false },
 ]
 
 function formatAum(val) {
@@ -350,6 +365,41 @@ function formatAum(val) {
 function segBarWidth(value, seg) {
   const max = seg.current_aum || 1
   return Math.max(2, Math.min(100, (value / max) * 100))
+}
+
+// ─── Run Forecast Model ───────────────────────────────────────────────────────
+
+const runningForecast = ref(false)
+
+async function runForecastModel() {
+  if (runningForecast.value) return
+  runningForecast.value = true
+  try {
+    const summary = await store.runForecastModel()
+    if (summary?.status === 'MODEL_NOT_LOADED') {
+      notify('Balance Growth model is not loaded — no predictions were produced', 'error', { autoClose: 6000 })
+      return
+    }
+    if (summary?.status === 'NO_DATA') {
+      notify(`No feature data for ${snapshotStore.asOfDate}`, 'error', { autoClose: 6000 })
+      return
+    }
+    const n = summary?.customers_scored ?? 0
+    const meanGrowth = summary?.mean_balance_growth_pct ?? 0
+    notify(
+      `Balance Growth model ran for ${n} customers · mean growth ${meanGrowth > 0 ? '+' : ''}${(meanGrowth).toFixed(2)}%`,
+      'success',
+      { autoClose: 5000 },
+    )
+    // Re-fetch the forecast so the chart updates immediately with the new ML scores
+    await store.fetchForecast()
+    await nextTick()
+    renderChart()
+  } catch (e) {
+    notify(e?.message || 'Forecast model run failed', 'error', { autoClose: 6000 })
+  } finally {
+    runningForecast.value = false
+  }
 }
 
 // ─── Export ───────────────────────────────────────────────────────────────────
@@ -369,9 +419,9 @@ function exportReport() {
         }))
     downloadCsv(reportFilename('aum-forecast'), rows)
   } else if (which === 'by_segment') {
-    downloadCsv(reportFilename('forecast-by-segment'), f.by_segment ?? fallbackSegments, ['segment', 'current_aum', 'projected_remaining', 'aum_at_risk', 'projected_exits', 'pct_change'])
+    downloadCsv(reportFilename('forecast-by-segment'), f.by_segment ?? [], ['segment', 'current_aum', 'projected_remaining', 'aum_at_risk', 'projected_exits', 'pct_change'])
   } else {
-    downloadCsv(reportFilename('forecast-sensitivity'), f.sensitivity ?? fallbackSensitivity, ['scenario', 'churn_assumption', 'projected_aum', 'delta', 'pct_change', 'is_base'])
+    downloadCsv(reportFilename('forecast-sensitivity'), f.sensitivity ?? [], ['scenario', 'churn_assumption', 'projected_aum', 'delta', 'pct_change', 'is_base'])
   }
   notify('Report exported as CSV', 'success', { autoClose: 2500 })
 }
@@ -379,10 +429,10 @@ function exportReport() {
 function renderChart() {
   if (!forecastCanvas.value) return
   const f = store.forecastData
-  const labels      = f?.labels            ?? ['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5','Wk 6','Wk 7','Wk 8','Wk 9','Wk 10','Wk 11','Wk 12','Wk 13']
-  const optimistic  = f?.scenarios?.optimistic  ?? [4.57,4.60,4.63,4.65,4.68,4.70,4.72,4.74,4.75,4.76,4.77,4.78,4.78]
-  const base        = f?.scenarios?.base        ?? [4.57,4.54,4.51,4.49,4.47,4.45,4.43,4.40,4.38,4.36,4.34,4.31,4.30]
-  const pessimistic = f?.scenarios?.pessimistic ?? [4.57,4.51,4.45,4.39,4.33,4.27,4.21,4.15,4.10,4.05,4.01,3.97,3.94]
+  const labels      = f?.labels            ?? []
+  const optimistic  = f?.scenarios?.optimistic  ?? []
+  const base        = f?.scenarios?.base        ?? []
+  const pessimistic = f?.scenarios?.pessimistic ?? []
   if (chartInstance) chartInstance.destroy()
   chartInstance = new Chart(forecastCanvas.value, {
     type: 'line',
@@ -403,7 +453,7 @@ function renderChart() {
       },
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#9ca3af' } },
-        y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, color: '#9ca3af', callback: (v) => 'K' + Number(v).toFixed(2) + 'B' } },
+        y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, color: '#9ca3af', callback: (v) => formatAum(Number(v)) } },
       },
     },
   })

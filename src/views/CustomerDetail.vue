@@ -49,6 +49,7 @@
         <button @click="resetOverride" class="ml-auto text-[11px] font-bold underline hover:text-absa-energy">Undo override</button>
       </div>
       <AiNbaPanel
+        :nba-override="customerStore.currentNba"
         :churn-prob="churnProb"
         :customer-id="customerId"
         @execute="showCampaignModal = true"
@@ -458,7 +459,7 @@
       <!-- Modals -->
       <AiCampaignModal
         v-model="showCampaignModal"
-        :customers="[{ id: customerId, name: customer.fullName || 'Customer', churnProb, segment: customer.segment }]"
+        :customers="[{ id: customerId, name: customer.fullName || 'Customer', churnProb, segment: customer.segment, clv: clvValue, healthScore: healthScore }]"
         source-context="portfolio"
       />
 
@@ -932,6 +933,9 @@ onMounted(async () => {
   // then rehydrate a prior override for this customer, if any.
   await hydrateStateFromServer(id)
   activeOverride.value = getOverride(id)
+
+  // Fire and forget the NBA generation so it doesn't block page load
+  customerStore.fetchNextBestAction(id)
 
   await Promise.allSettled([
     customerStore.fetchCustomerDetail(id),

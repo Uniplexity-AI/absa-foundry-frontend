@@ -35,6 +35,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const error = ref(null)
   const timeline = ref([])
   const features = ref(null)
+  const currentNba = ref(null)
+  const loadingNba = ref(false)
 
   // Raw portfolio summary from API (aggregate counts)
   const _portfolioSummary = ref({ total_customers: 0, by_state: {} })
@@ -225,6 +227,22 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  async function fetchNextBestAction(id) {
+    loadingNba.value = true
+    currentNba.value = null
+    try {
+      // NOTE: Using the gateway/proxy base or full URL depending on how api.get resolves.
+      // Assuming decisions route is proxied like customers.
+      const { data } = await api.get(`/api/v1/decisions/${id}/nba`, { timeout: 180000 })
+      currentNba.value = data || null
+    } catch (e) {
+      console.warn('fetchNextBestAction failed:', e.message)
+      currentNba.value = null
+    } finally {
+      loadingNba.value = false
+    }
+  }
+
   function setFilter(key, value) {
     filters.value[key] = value
     pagination.value.page = 1
@@ -245,6 +263,8 @@ export const useCustomerStore = defineStore('customer', () => {
     error,
     timeline,
     features,
+    currentNba,
+    loadingNba,
     portfolio,
     filteredCustomers,
     fetchPortfolio,
@@ -252,6 +272,7 @@ export const useCustomerStore = defineStore('customer', () => {
     fetchCustomerDetail,
     fetchCustomerTimeline,
     fetchCustomerFeatures,
+    fetchNextBestAction,
     setFilter,
     clearFilters,
   }

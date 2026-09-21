@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="w-full pt-6 px-6 pb-6">
 
     <!-- Loading -->
@@ -125,7 +125,7 @@
         <div class="rounded-sm border border-gray-300 overflow-hidden">
           <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
             <div>
-              <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast â€” Projected Exits by Segment</h2>
+              <h2 class="text-sm font-bold text-absa-enrich">Churn Forecast — Projected Exits by Segment</h2>
               <p class="text-[11px] text-gray-500 mt-0.5">AI-projected customer exits Â· Powered by LightGBM v1.4.2</p>
             </div>
             <div class="flex text-[11px] font-bold border border-gray-300 rounded-sm overflow-hidden">
@@ -291,7 +291,7 @@
         <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
           <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
           <p class="text-xs text-gray-600">
-            <span class="font-bold text-absa-enrich">Scope:</span> Branch-managed customers â€” <span class="font-semibold">Mass, Personal, SME and BB</span> â€” have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
+            <span class="font-bold text-absa-enrich">Scope:</span> Branch-managed customers — <span class="font-semibold">Mass, Personal, SME and BB</span> — have no dedicated RM. Retention is managed through outreach campaigns and call centre referrals.
           </p>
         </div>
 
@@ -311,7 +311,7 @@
               <h2 class="text-sm font-bold text-absa-enrich">Active Retention Campaigns</h2>
               <p class="text-[11px] text-gray-500 mt-0.5">Branch-level outreach targeting mass-market at-risk customers</p>
             </div>
-            <button class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
+            <button @click="showUploadModal = true; uploadType = 'campaign'" class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
               <span class="material-symbols-outlined text-[16px]">add</span>New Campaign
             </button>
           </div>
@@ -327,6 +327,7 @@
                   <th class="px-4 py-3 text-right">Retained</th>
                   <th class="px-4 py-3">Conversion</th>
                   <th class="px-4 py-3 text-center">Status</th>
+                  <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 text-sm">
@@ -356,6 +357,19 @@
                     <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[10px] font-bold', c.statusClass]">
                       <span class="w-1 h-1 rounded-full" :class="c.dotClass"></span>{{ c.status }}
                     </span>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button @click="campaignToView = c" class="p-1 text-gray-400 hover:text-absa-energy transition-colors" title="View">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                      </button>
+                      <button @click="campaignToEdit = c; uploadType = 'campaign'; showUploadModal = true" class="p-1 text-gray-400 hover:text-absa-enrich transition-colors" title="Edit">
+                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                      </button>
+                      <button @click="deleteCampaign(c.id)" class="p-1 text-gray-400 hover:text-absa-passion transition-colors" title="Delete">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -416,6 +430,72 @@
       <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <!-- TAB: ALL CASES                                      -->
       <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+      <template v-else-if="activeTab === 'products'">
+        <div class="mb-6 px-4 py-3 bg-white border border-gray-300 rounded-sm flex items-start gap-3">
+          <span class="material-symbols-outlined text-[16px] text-gray-400 mt-0.5 flex-shrink-0">info</span>
+          <p class="text-xs text-gray-600">
+            Upload and manage the bank's product catalog. These products are referenced by the Decision Intelligence engine during NBA (Next Best Action) evaluation.
+          </p>
+        </div>
+        
+        <div class="rounded-sm border border-gray-300 overflow-hidden mb-6">
+          <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-sm font-bold text-absa-enrich">Products Catalog</h2>
+              <p class="text-[11px] text-gray-500 mt-0.5">Active retail products available for cross-sell recommendations</p>
+            </div>
+            <button @click="uploadType = 'product'; showUploadModal = true" class="px-4 py-2 bg-absa-passion text-white rounded-sm text-sm font-semibold hover:bg-absa-power flex items-center gap-2 shadow-none">
+              <span class="material-symbols-outlined text-[16px]">add</span>New Product
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-gray-200 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th class="px-5 py-3 w-1/4">Product Name</th>
+                  <th class="px-4 py-3 w-1/2">Description</th>
+                  <th class="px-4 py-3 text-center">Target Segment</th>
+                  <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-sm">
+                <tr v-for="p in activeProducts" :key="p.id" class="hover:bg-gray-50 transition-colors">
+                  <td class="px-5 py-3">
+                    <p class="font-semibold text-absa-enrich text-xs">{{ p.name }}</p>
+                  </td>
+                  <td class="px-4 py-3">
+                    <p class="text-xs text-gray-600 line-clamp-2" :title="p.description">{{ p.description }}</p>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600">
+                      {{ p.segment }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button @click="campaignToView = p" class="p-1 text-gray-400 hover:text-absa-energy transition-colors" title="View">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                      </button>
+                      <button @click="campaignToEdit = p; uploadType = 'product'; showUploadModal = true" class="p-1 text-gray-400 hover:text-absa-enrich transition-colors" title="Edit">
+                        <span class="material-symbols-outlined text-[16px]">edit</span>
+                      </button>
+                      <button @click="deleteProduct(p.id)" class="p-1 text-gray-400 hover:text-absa-passion transition-colors" title="Delete">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="activeProducts.length === 0">
+                  <td colspan="4" class="px-5 py-8 text-center text-gray-500 text-sm font-semibold">
+                    No products found. Click "New Product" to upload your catalog.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </template>
+
       <template v-else-if="activeTab === 'cases'">
 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -546,6 +626,61 @@
 
     </template>
     
+    
+    <CatalogUploadModal 
+      :show="showUploadModal" 
+      :type="uploadType"
+      :editItem="campaignToEdit"
+      @close="showUploadModal = false; campaignToEdit = null" 
+      @uploaded="fetchCampaigns"
+    />
+
+    <!-- View Modal -->
+    <div v-if="campaignToView" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+          <h2 class="text-lg font-bold text-gray-800 font-headline">{{ campaignToView.channel ? 'Campaign Details' : 'Product Details' }}</h2>
+          <button @click="campaignToView = null" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Title</h3>
+            <p class="text-sm font-semibold text-gray-800">{{ campaignToView.name }}</p>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Description</h3>
+            <p class="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{{ campaignToView.description || 'No description provided.' }}</p>
+          </div>
+          <div class="grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            <div>
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Target Segment</h3>
+              <p class="text-sm text-gray-700">{{ campaignToView.segment }}</p>
+            </div>
+            <div v-if="campaignToView.channel">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Channel</h3>
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">{{ campaignToView.channelIcon }}</span>
+                {{ campaignToView.channel }}
+              </p>
+            </div>
+            <div v-if="campaignToView.expires">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Expires</h3>
+              <p class="text-sm text-gray-700">{{ campaignToView.expires }}</p>
+            </div>
+            <div v-if="campaignToView.status">
+              <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status</h3>
+              <p class="text-sm text-gray-700 font-bold" :class="campaignToView.statusClass">{{ campaignToView.status }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
+          <button @click="campaignToView = null" class="px-4 py-2 bg-absa-enrich text-white rounded font-bold text-sm hover:bg-opacity-90">Close</button>
+        </div>
+      </div>
+    </div>
+    
     <AiCampaignModal
       v-model="showCampaignModal"
       :customers="unenrolledCustomers"
@@ -560,9 +695,18 @@ import axios from 'axios'
 import { API_BASE_URL } from '@/services/api'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import AiCampaignModal from '@/components/intelligence/AiCampaignModal.vue'
+import CatalogUploadModal from '@/components/managers/CatalogUploadModal.vue'
 import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
 import { useSnapshotStore } from '@/stores/snapshotStore'
+
+
+
+const showCampaignModal = ref(false)
+const showUploadModal = ref(false)
+const uploadType = ref('campaign')
+const campaignToEdit = ref(null)
+const campaignToView = ref(null)
 import { formatMarketSegment } from '@/config/customerSegments'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
@@ -634,6 +778,7 @@ const tabs = computed(() => [
   { id: 'overview',     label: 'Overview',        icon: 'gauge'            },
   { id: 'rm_portfolio', label: 'RM Portfolio',    icon: 'manage_accounts'  },
   { id: 'campaigns',    label: 'Branch Campaigns',icon: 'campaign'         },
+  { id: 'products',     label: 'Products Catalog', icon: 'inventory' },
   { id: 'cases',        label: 'All Cases',        icon: 'assignment_late', badge: kpis.value.newFlagsToday || null },
 ])
 
@@ -726,12 +871,73 @@ const rmSummaryKpis = computed(() => [
 ])
 
 // â”€â”€ Campaigns â”€â”€
-const activeCampaigns = ref([
-  { name: 'SMS Retention Offer â€” Personal', channel: 'SMS',         channelIcon: 'sms',           segment: formatMarketSegment(65), expires: '2026-08-31', enrolled: 412, responded: 148, retained: 101, conversionPct: 25, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Mass Re-engagement Drive',       channel: 'Digital',     channelIcon: 'phone_iphone',  segment: formatMarketSegment(75), expires: '2026-09-15', enrolled: 319, responded: 87,  retained: 54,  conversionPct: 17, status: 'ACTIVE',  statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Call Centre â€” SME Win-Back',     channel: 'Call Centre', channelIcon: 'support_agent', segment: formatMarketSegment(45), expires: '2026-08-28', enrolled: 88, responded: 41, retained: 33, conversionPct: 38, status: 'ACTIVE', statusClass: 'bg-red-50 text-absa-passion', dotClass: 'bg-absa-passion' },
-  { name: 'Email â€” Personal Savings',       channel: 'Email',       channelIcon: 'mail',          segment: formatMarketSegment(65), expires: '2026-07-31', enrolled: 204, responded: 55, retained: 38, conversionPct: 19, status: 'EXPIRED', statusClass: 'bg-gray-100 text-gray-500', dotClass: 'bg-gray-400' },
-])
+const activeProducts = ref([])
+
+const fetchProducts = async () => {
+  try {
+    const res = await api.get('/api/v1/decisions/catalog/products')
+    if (res.data && res.data.length > 0) {
+      activeProducts.value = res.data.map(p => ({
+        id: p.id,
+        name: p.title,
+        description: p.description,
+        segment: p.target_segment || 'All'
+      }))
+    }
+  } catch (err) {
+    console.error("Failed to fetch products:", err)
+  }
+}
+
+const deleteProduct = async (id) => {
+  if (!confirm("Are you sure you want to delete this product?")) return
+  try {
+    await api.delete(`/api/v1/decisions/catalog/products/${id}`)
+    await fetchProducts()
+  } catch (err) {
+    console.error("Failed to delete product:", err)
+  }
+}
+
+const activeCampaigns = ref([])
+
+const fetchCampaigns = async () => {
+  try {
+    const res = await api.get('/api/v1/decisions/catalog/campaigns')
+    if (res.data && res.data.length > 0) {
+      activeCampaigns.value = res.data.map(c => ({
+        id: c.id,
+        name: c.title,
+        description: c.description,
+        channel: c.channel || 'Digital',
+        channelIcon: c.channel?.toLowerCase().includes('email') ? 'mail' : (c.channel?.toLowerCase().includes('sms') ? 'sms' : 'phone_iphone'),
+        segment: c.target_segment || 'All',
+        expires: c.expires || '2026-12-31',
+        enrolled: 0,
+        responded: 0,
+        retained: 0,
+        conversionPct: 0,
+        status: 'ACTIVE',
+        statusClass: 'bg-red-50 text-absa-passion',
+        dotClass: 'bg-absa-passion'
+      }))
+    }
+  } catch (err) {
+    console.error("Failed to fetch campaigns:", err)
+  }
+}
+
+const deleteCampaign = async (id) => {
+  if (!confirm("Are you sure you want to delete this campaign?")) return
+  try {
+    await api.delete(`/api/v1/decisions/catalog/campaigns/${id}`)
+    await fetchCampaigns()
+    fetchProducts()
+  } catch (err) {
+    console.error("Failed to delete campaign:", err)
+    alert("Failed to delete campaign.")
+  }
+}
 
 const campaignKpis = computed(() => [
   { label: 'Active Campaigns',    value: activeCampaigns.value.filter(c => c.status === 'ACTIVE').length, note: 'Running this month' },
@@ -770,6 +976,8 @@ onMounted(async () => {
   try {
     await customerStore.fetchPortfolio()
     predictionStore.fetchChurnDrivers()
+    fetchCampaigns()
+    fetchProducts()
 
     const [bRes, fRes, casesRes, unenrolledRes, actionsRes] = await Promise.all([
       api.get('/api/v1/churn-intel/branches',       { params: { as_of_date: snapshotStore.asOfDate } }),

@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
+import { marked } from 'marked'
 import { API_BASE_URL, authFetch } from '@/services/api'
 import { useSnapshotStore } from '@/stores/snapshotStore'
 
@@ -36,7 +37,13 @@ const elapsedLabel = computed(() =>
     : `${Math.floor(elapsed.value / 60)}m ${elapsed.value % 60}s`,
 )
 
+const parsedNarration = computed(() => {
+  if (!narration.value) return ''
+  return marked(narration.value)
+})
+
 async function generate() {
+
   if (loading.value) return
   loading.value = true
   error.value = ''
@@ -127,7 +134,33 @@ onBeforeUnmount(() => {
           Rule-engine action: {{ topAction }}
         </span>
       </div>
-      <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{{ narration }}</p>
+      <div class="text-sm text-gray-700 leading-relaxed markdown-content" v-html="parsedNarration"></div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.markdown-content :deep(p) {
+  margin-bottom: 1em;
+}
+.markdown-content :deep(p:last-child) {
+  margin-bottom: 0;
+}
+.markdown-content :deep(strong) {
+  font-weight: 700;
+  color: #111827; /* gray-900 */
+}
+.markdown-content :deep(ul) {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.markdown-content :deep(ol) {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.markdown-content :deep(li) {
+  margin-bottom: 0.5em;
+}
+</style>

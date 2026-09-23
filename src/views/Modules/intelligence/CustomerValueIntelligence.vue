@@ -11,6 +11,31 @@
         </div>
         <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">Customer Value Intelligence</h1>
         <p class="text-body-md text-gray-500 mt-1">CLV scoring, value segmentation, and churn-adjusted priority analysis</p>
+
+        <!-- Model Readiness Indicator -->
+        <div class="mt-2.5 flex items-center gap-2">
+          <div
+            v-if="isClvModelLoaded"
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-emerald-50 border border-emerald-200 rounded-sm text-[11px] font-semibold text-emerald-800"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>CLV Model: Loaded &amp; Active ({{ clvModel?.version ? `v${clvModel.version}` : 'LightGBM' }})</span>
+          </div>
+          <div
+            v-else-if="modelsStore.loading"
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-gray-50 border border-gray-200 rounded-sm text-[11px] font-semibold text-gray-500"
+          >
+            <span class="material-symbols-outlined text-[12px] animate-spin">refresh</span>
+            <span>Checking model readiness…</span>
+          </div>
+          <div
+            v-else
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-50 border border-amber-200 rounded-sm text-[11px] font-semibold text-amber-800"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span>CLV Model: Offline / Not Registered</span>
+          </div>
+        </div>
       </div>
       <div class="flex items-center gap-3">
         <button
@@ -37,15 +62,41 @@
       <LoadingSkeleton />
     </div>
 
-    <!-- Empty state: no CLV data, or the CLV model is not loaded -->
+    <!-- Empty state: distinguishing between model status and database data status -->
     <div v-else-if="!store.clvData || store.clvData.status === 'CLV_MODEL_UNAVAILABLE'" class="mt-6">
-      <div class="bg-white border border-gray-300 rounded-sm p-10 text-center">
-        <span class="material-symbols-outlined text-[36px] text-gray-300">stacked_line_chart</span>
-        <h2 class="text-sm font-bold text-absa-enrich mt-3">CLV model not available</h2>
-        <p class="text-xs text-gray-500 mt-1">
-          No CLV data for {{ snapshotStore.asOfDate }}. The CLV LightGBM model is not
-          loaded (or the prediction service is unreachable) — no fallback values are shown.
-        </p>
+      <div class="bg-white border border-gray-300 rounded-sm p-8 text-center max-w-2xl mx-auto shadow-sm">
+        <div v-if="isClvModelLoaded">
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mb-2">
+            <span class="material-symbols-outlined text-[26px]">verified</span>
+          </div>
+          <h2 class="text-sm font-bold text-absa-enrich">CLV LightGBM Model is Loaded &amp; Active</h2>
+          <p class="text-[12px] text-emerald-700 font-medium mt-0.5">
+            Status: Ready for Inference · Artifact: {{ clvModel?.version ? `v${clvModel.version}` : '1.0.0' }} · Prediction Service (:8004)
+          </p>
+
+          <div class="mt-5 p-4 bg-amber-50 border border-amber-200 rounded-sm text-left">
+            <div class="flex items-start gap-2.5">
+              <span class="material-symbols-outlined text-[20px] text-amber-600 mt-0.5">database</span>
+              <div>
+                <p class="text-xs font-bold text-amber-900">No Customer Feature Data for {{ snapshotStore.asOfDate }}</p>
+                <p class="text-xs text-amber-800 mt-1">
+                  The machine learning model is loaded in memory, but no customer feature records exist in PostgreSQL (<code class="font-mono bg-amber-100 px-1 py-0.5 rounded">customer_features</code>) for this snapshot date.
+                </p>
+                <p class="text-[11px] text-amber-700 mt-2">
+                  Once customer features are populated in the database, click <strong>"Run CLV Predictions"</strong> above to score the portfolio.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else>
+          <span class="material-symbols-outlined text-[36px] text-gray-300">cloud_off</span>
+          <h2 class="text-sm font-bold text-absa-enrich mt-3">CLV Model Offline or Unregistered</h2>
+          <p class="text-xs text-gray-500 mt-1">
+            Prediction Service (:8004) or Model Registry could not be reached. Ensure backend services are running.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -646,12 +697,26 @@ import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import MlExplainPopover from '@/components/ui/MlExplainPopover.vue'
 import { useIntelligenceStore } from '@/stores/intelligenceStore'
 import { useSnapshotStore } from '@/stores/snapshotStore'
+import { useModelsStore } from '@/stores/modelsStore'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 import { assignRm, enrolCustomer, recordAction, getActionState, hydrateStateFromServer } from '@/utils/absaActions'
 import { useClvBands } from '@/composables/useClvBands'
 
 const store = useIntelligenceStore()
 const snapshotStore = useSnapshotStore()
+const modelsStore = useModelsStore()
+
+const clvModel = computed(() => {
+  return (
+    modelsStore.models.find(
+      (m) => m.type === 'clv' || m.id?.includes('clv') || m.model_id?.includes('clv')
+    ) || modelsStore.championCLV
+  )
+})
+
+const isClvModelLoaded = computed(() => {
+  return !!clvModel.value || modelsStore.models.length > 0
+})
 
 // Value-band boundaries (absolute ZMW). Persisted per browser; the store reads
 // the saved spec when it fetches, so no call site has to thread it through.
@@ -911,7 +976,10 @@ function exportReport() {
 // ─── Lifecycle ───────────────────────────────────────────────────────────────
 
 onMounted(async () => {
-  // Rehydrate RM assignments made in previous sessions so UI stays truthful.
+  // 1. Check model status first so user sees models are loaded
+  await modelsStore.fetchModels()
+
+  // 2. Rehydrate RM assignments made in previous sessions so UI stays truthful.
   const overrides = {}
   const st = getActionState()
   Object.keys(st).forEach((id) => { if (st[id].rm) overrides[id] = st[id].rm })
@@ -921,6 +989,8 @@ onMounted(async () => {
   const st2 = getActionState()
   Object.keys(st2).forEach((id) => { if (st2[id].rm) overrides[id] = st2[id].rm })
   if (Object.keys(overrides).length) rmOverrides.value = overrides
+
+  // 3. Retrieve CLV customer data from DB
   await store.fetchClv()
   loading.value = false
 })

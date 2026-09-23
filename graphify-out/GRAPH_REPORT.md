@@ -1,16 +1,16 @@
-# Graph Report - absa-foundry-frontend  (2026-09-21)
+# Graph Report - absa-foundry-frontend  (2026-09-22)
 
 ## Corpus Check
-- 462 files · ~583,569 words
+- 462 files · ~583,872 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 7317 nodes · 9310 edges · 492 communities (403 shown, 89 thin omitted)
+- 7320 nodes · 9315 edges · 468 communities (389 shown, 79 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 470 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `19e95925`
+- Built from commit: `5c5f60d5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,15 +32,15 @@
 - BulkUploadLeadsModal.vue
 - CRMAnalyticsModal.vue
 - CRMPipelinePage.vue
-- BalanceForecast.vue
+- AbsaBadge.vue
 - CustomerProfile.vue
 - CRMMeetingsPage.vue
 - DocumentsView.vue
 - AiModule.vue
-- UserManagement.vue
+- auth_api.js
 - AddCustomerModal.vue
 - CRMAcquisitionPage.vue
-- notify
+- absaActions.js
 - ABSA Intelligence Unit — Frontend
 - ContactsView.vue
 - AccountFormModal.vue
@@ -59,8 +59,8 @@
 - LinkedDocumentsWidget.vue
 - Alerting System
 - showToast
-- calcPerPeriod
-- auth_api.js
+- moduleCards.js
+- AbsaButton.vue
 - CRMLeadsPage.vue
 - KpiCard.vue
 - Detailed Component Analysis
@@ -83,7 +83,7 @@
 - DocumentAttachModal.vue
 - CustomerValueIntelligence.vue
 - LifecyclePrediction.vue
-- ui.js
+- scrollToBottom
 - Security Considerations
 - Bulk Lead Operations
 - Quality Scorecard
@@ -92,9 +92,7 @@
 - Security Monitoring & Audit
 - BulkUploadAccountsModal.vue
 - CRMNotificationPanel.vue
-- analytics
-- buildStageColorMap
-- closeAddDealForm
+- docx
 - State Management
 - Message Rendering & Content Display
 - PWA Security
@@ -121,7 +119,6 @@
 - Analytics Dashboard & Metrics
 - User Roles & Permissions
 - BatchExecutionDetail.vue
-- emit
 - Detailed Component Analysis
 - Strategic Management Module
 - Model Registry & Management
@@ -143,7 +140,7 @@
 - Deployment & DevOps
 - Layout Components
 - Getting Started
-- useCurrency.js
+- CurrencyService
 - Secure API Communication
 - Action Planning & Execution
 - Testing Strategy
@@ -191,7 +188,7 @@
 - tierColor
 - AbsaCard.vue
 - loadLeads
-- PortfolioOverview.vue
+- notify
 - Settings & Administration
 - Brand Strategy & Positioning
 - Environmental Analysis
@@ -212,7 +209,7 @@
 - Data Pipeline Module
 - System Architecture
 - EtlPipeline.vue
-- CreateActionPlan.vue
+- BalanceForecast.vue
 - addPendingLeadDocument
 - Sub-Account Management
 - Approval Lifecycle Management
@@ -259,7 +256,7 @@
 - TakeAction.vue
 - ui/index.js
 - ContactDetailModal.vue
-- handleDrop
+- bulkChangeStage
 - _check_exports.mjs
 - dependencies
 - Skill: RM Dashboard — Colour Mapping Spec
@@ -272,7 +269,6 @@
 - ConfirmDialog.vue
 - useBulkSelect
 - crm_meetings_api.js
-- validateData
 - initLeadMap
 - jspdf
 - EngagementModal.vue
@@ -283,9 +279,6 @@
 - CRMModule.vue
 - etlApi.js
 - DocumentEditModal.vue
-- useClvBands.js
-- customerAdminApi.js
-- KpiSection.vue
 - ResetPassword.vue
 - cors
 - express
@@ -302,7 +295,6 @@
 - @fontsource/hanken-grotesk
 - Project Context — ABSA Foundry Frontend
 - Remote Dev Connection Guide — Frontend
-- PostEngagementPerformance.vue
 - BackButton.vue
 - AbsaGradientBg.vue
 - useFullscreenMode
@@ -312,8 +304,6 @@
 - Architecture — ABSA Foundry Frontend
 - .ai/README.md
 - @fontsource/outfit
-- AiNbaPanel.vue
-- HealthScoreGauge.vue
 - @fontsource/space-mono
 - Skill: ABSA Brand Colour System
 - CRMVisitsPage.vue
@@ -343,7 +333,6 @@
 - server.js
 - ThemeManager.vue
 - npm-based Dependency Management with Mirror Registry and Local File Package.md
-- useCRMQuickAccessStore
 - crmEvents.js
 - CommunicationModal.vue
 - saveCallOutcome
@@ -352,16 +341,13 @@
 - handleFileUpload
 - sw.js
 - Tailwind CSS Design System with ABSA Brand Tokens and Multi-Theme Support.md
-- barcode-detector
 - ImportLeadsModal.vue
-- saveExcelChanges
 - CRMAccountsPage.vue
 - @fontsource/roboto
 - autoprefixer
 - requestRetrain
 - chart.js
 - compression
-- modelsStore.js
 - loadActivities
 - @fontsource/inter
 - exceljs
@@ -420,21 +406,11 @@
 - sendMessage
 - ForgotPassword.vue
 - logActivity
-- MarkovMatrix.vue
-- saveCac
 - exportReport
-- exportList
-- auth.js
-- calcMeetingDistance
 - sendOfflineMessage
-- AIEnhanceButton.vue
-- executeDemoActions
 - update_modal.js
 - axios
 - handleNewLine
-- calcMeetingDistanceStatic
-- cancelMeetingForm
-- editMeeting
 
 ## God Nodes (most connected - your core abstractions)
 1. `useCRMModule()` - 243 edges
@@ -457,17 +433,17 @@
   script.vue → src/utils/absaExport.js
 - `generate()` --calls--> `authFetch()`  [EXTRACTED]
   src/components/intelligence/AiNarrationPanel.vue → src/services/api.js
-- `color` --calls--> `tierColor()`  [EXTRACTED]
-  src/components/telemetry/HealthScoreGauge.vue → src/composables/useSeverityTier.js
+- `useSettingsBase()` --indirect_call--> `getPermissionsForEntity()`  [INFERRED]
+  src/composables/settings/useSettingsBase.js → src/config/rbac.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (492 total, 89 thin omitted)
+## Communities (468 total, 79 thin omitted)
 
 ### Community 0 - "useCRMModule"
 Cohesion: 0.02
-Nodes (6): useCRMModule(), closeCommunicationModal(), onSendCommunication(), openVisitModal(), sendCommunication(), _toDateTimeInput()
+Nodes (11): useCRMModule(), closeCommunicationModal(), isValidEmail(), isValidURL(), onSendCommunication(), openVisitModal(), processFile(), readFileData() (+3 more)
 
 ### Community 1 - "AccountDetailModal.vue"
 Cohesion: 0.02
@@ -475,7 +451,7 @@ Nodes (83): accountNotes, activeTab, activities, assigneeSearch, cacSaved, cacVa
 
 ### Community 2 - "LeadDetailModal.vue"
 Cohesion: 0.03
-Nodes (56): activeTab, activities, cacAdjustAmount, cacSaved, cameraInputRef, { canAssign, initializeRBAC }, canAssignCrm, confirmDanger (+48 more)
+Nodes (68): activeTab, activities, applyManualLocation(), cacAdjustAmount, cacSaved, calcMeetingDistance(), calcMeetingDistanceStatic(), cameraInputRef (+60 more)
 
 ### Community 3 - "AccountsView.vue"
 Cohesion: 0.03
@@ -495,11 +471,11 @@ Nodes (13): login(), authStore, capsLockOn, errorMessage, errors, formData, hand
 
 ### Community 7 - "LeadsView.vue"
 Cohesion: 0.03
-Nodes (50): activeFiltersCount, assigneeFilter, autoAssignLoading, availableStages, dateFromFilter, dateToFilter, excelChanges, extractRowCount (+42 more)
+Nodes (51): useUIStore, activeFiltersCount, assigneeFilter, autoAssignLoading, availableStages, dateFromFilter, dateToFilter, excelChanges (+43 more)
 
 ### Community 8 - "CustomerDetail.vue"
 Cohesion: 0.03
-Nodes (62): actionPlan, activeOverride, alertCodes, api, behaviourFactors, churnColor, churnLabel, churnProb (+54 more)
+Nodes (66): churnProbPct, nba, props, urgencyBadgeClass, actionPlan, activeOverride, alertCodes, api (+58 more)
 
 ### Community 9 - "EtlConfigManager.vue"
 Cohesion: 0.11
@@ -507,7 +483,7 @@ Nodes (19): activeTab, closeEditor(), configs, configsError, configsLoading, del
 
 ### Community 10 - "MyCustomers.vue"
 Cohesion: 0.04
-Nodes (46): ACTION_BY_STATE, activeFilterCount, allPageSelected, branch, branchOptions, COLUMNS, computeStates(), computing (+38 more)
+Nodes (67): _authHeaders(), bulkDeleteCustomers(), deleteCustomer(), fetchDeletedCount(), fetchDeletedCustomers(), _handleRes(), MAX_BULK_DELETE, restoreCustomers() (+59 more)
 
 ### Community 11 - "CRMCallsPage.vue"
 Cohesion: 0.20
@@ -540,7 +516,7 @@ Nodes (35): downloadLeadTemplate(), canProceed, checkingDuplicates, close(), col
 
 ### Community 15 - "CRMAnalyticsModal.vue"
 Cohesion: 0.04
-Nodes (28): accountDealForms, activeAnalyticsTab, activitySourceFilter, activityTypeFilter, activityUserFilter, allAccountsSelected, commConfig, commissionCalculatedAt (+20 more)
+Nodes (39): accountDealForms, activeAnalyticsTab, activitySourceFilter, activityTypeFilter, activityUserFilter, allAccountRows, allAccountsSelected, analytics (+31 more)
 
 ### Community 16 - "CRMPipelinePage.vue"
 Cohesion: 0.05
@@ -568,13 +544,13 @@ Nodes (30): addStageInputRef, {
   pipelineConfirm
 }, callContext, callDurationMin, callError, callNote, callOutcome, cameraInputRef (+22 more)
 
-### Community 17 - "BalanceForecast.vue"
-Cohesion: 0.06
-Nodes (43): badgeClasses, dotColorClass, props, sizeClasses, stateStyle, downloadCsv(), downloadJson(), downloadMarkdown() (+35 more)
+### Community 17 - "AbsaBadge.vue"
+Cohesion: 0.33
+Nodes (5): badgeClasses, dotColorClass, props, sizeClasses, stateStyle
 
 ### Community 18 - "CustomerProfile.vue"
 Cohesion: 0.03
-Nodes (71): fetchCustomerProfile(), _headers(), getCustomerState(), accountNumber, accountSub, actionLog, activeTab, ageText (+63 more)
+Nodes (69): accountNumber, accountSub, actionLog, activeTab, ageText, api, assignedRm, assignedRmSub (+61 more)
 
 ### Community 19 - "CRMMeetingsPage.vue"
 Cohesion: 0.04
@@ -588,21 +564,21 @@ Nodes (40): deleteDocument(), getDocumentStats(), getFolders(), applyQuickFilter
 Cohesion: 0.05
 Nodes (32): activePanel, chatContainer, chatHistory, chatMessages, conversationsList, currentConversationId, currentConversationTitle, currentFormat (+24 more)
 
-### Community 22 - "UserManagement.vue"
-Cohesion: 0.13
-Nodes (17): createUser(), listUsers(), updateUser(), createForm, deleteUser(), editForm, fetchUsers(), filteredUsers (+9 more)
+### Community 22 - "auth_api.js"
+Cohesion: 0.09
+Nodes (21): apiClient, createUser(), listRoles(), listUsers(), NOTE: All session side-effects (localStorage, Pinia store) are handled, updateUser(), createForm, deleteUser() (+13 more)
 
 ### Community 23 - "AddCustomerModal.vue"
 Cohesion: 0.05
-Nodes (40): attempted, byKey, computeSnapshot, customerId, emit, filledSnapshotCount, hasErrors, master (+32 more)
+Nodes (38): attempted, byKey, computeSnapshot, customerId, emit, filledSnapshotCount, hasErrors, master (+30 more)
 
 ### Community 24 - "CRMAcquisitionPage.vue"
 Cohesion: 0.06
 Nodes (35): deleteAcquisitionCost(), getAcquisitionCosts(), saveAcquisitionCost(), updateAcquisitionCost(), avgAcquisitionCost, calculatedCOA, closeLeadDropdown(), coaForm (+27 more)
 
-### Community 25 - "notify"
-Cohesion: 0.09
-Nodes (49): aiCampaigns, api, close(), cohortDrivers, emit, launch(), loading, props (+41 more)
+### Community 25 - "absaActions.js"
+Cohesion: 0.11
+Nodes (41): aiCampaigns, api, close(), cohortDrivers, emit, launch(), loading, props (+33 more)
 
 ### Community 26 - "ABSA Intelligence Unit — Frontend"
 Cohesion: 0.05
@@ -630,7 +606,7 @@ Nodes (34): Activity Tracking and Audit Logging, Activity Tracking and Audit Log
 
 ### Community 32 - "DashboardLayout.vue"
 Cohesion: 0.05
-Nodes (28): allModuleCards, authStore, canAccessSettings, canAdmin, canAnalytics, canEtl, canModels, canPredict (+20 more)
+Nodes (30): allModuleCards, authStore, canAccessSettings, canAdmin, canAnalytics, canEtl, canModels, canPredict (+22 more)
 
 ### Community 33 - "Models.vue"
 Cohesion: 0.04
@@ -645,24 +621,24 @@ Cohesion: 0.06
 Nodes (32): API Versioning Strategies, Appendices, Architecture Overview, Auth Service (auth_api.js), Authentication Flow Reference, Build and Server Configuration, Centralized Axios Client (api.js), Conclusion (+24 more)
 
 ### Community 36 - "DealFormModal.vue"
-Cohesion: 0.10
-Nodes (17): accounts, { canAssign, initializeRBAC }, canAssignCrm, close(), contacts, currentUserEmail, emit, filteredContacts (+9 more)
+Cohesion: 0.11
+Nodes (16): accounts, { canAssign, initializeRBAC }, canAssignCrm, close(), contacts, currentUserEmail, emit, filteredContacts (+8 more)
 
 ### Community 37 - "useSettingsNotifications"
 Cohesion: 0.07
 Nodes (12): useSettingsNotifications(), detectCategory(), dismissNotification(), fetchInventoryForSettings(), isNotifExpanded(), loadNotifications(), notifKey(), openItemSettingsPanel() (+4 more)
 
 ### Community 38 - "api.js"
-Cohesion: 0.07
-Nodes (25): available, effectiveAsOfDate, elapsed, elapsedLabel, error, generate(), loading, model (+17 more)
+Cohesion: 0.05
+Nodes (37): emit, handleEnhance(), isEnhancing, props, after, before, chartData, chartOptions (+29 more)
 
 ### Community 39 - "BranchManagerDashboard.vue"
-Cohesion: 0.05
-Nodes (42): activeCampaigns, activeProducts, activeTab, aiPriorityActions, allCases, api, branchData, branchPipeline (+34 more)
+Cohesion: 0.04
+Nodes (56): EXCLUDED_MARKET_SEGMENTS, formatMarketSegment(), isFrontendVisibleMarketSegment(), MARKET_SEGMENT_OPTIONS, MARKET_SEGMENTS, OTHER_MARKET_SEGMENT, resolveMarketSegment(), api (+48 more)
 
 ### Community 40 - "useSettingsModules"
-Cohesion: 0.06
-Nodes (36): fetchSubscribedModules(), useSettingsModules(), cancelPendingRequest(), fetchOwnerRequests(), fetchSubscribedModules(), getModuleDueDate(), handleSubscribeModule(), handleUnsubscribeModule() (+28 more)
+Cohesion: 0.10
+Nodes (19): useSettingsModules(), cancelPendingRequest(), fetchOwnerRequests(), fetchSubscribedModules(), getModuleDueDate(), handleSubscribeModule(), handleUnsubscribeModule(), isModuleDueSoon() (+11 more)
 
 ### Community 41 - "LinkedDocumentsWidget.vue"
 Cohesion: 0.08
@@ -676,13 +652,13 @@ Nodes (30): Alert Fatigue Prevention, Alert Rule Configuration, Alerting System,
 Cohesion: 0.10
 Nodes (27): updateLinkedRecordLocation(), addCustomStage(), addParticipant(), bulkExport(), cancelMeetingAction(), closeAddStageModal(), closeMeetingModal(), completeMeetingAction() (+19 more)
 
-### Community 44 - "calcPerPeriod"
-Cohesion: 0.67
-Nodes (3): allAccountRows, calcCommissions(), calcPerPeriod()
-
-### Community 45 - "auth_api.js"
+### Community 44 - "moduleCards.js"
 Cohesion: 0.20
-Nodes (4): apiClient, listRoles(), NOTE: All session side-effects (localStorage, Pinia store) are handled, fetchRoles()
+Nodes (8): availableModules, BASE_DASHBOARD_ROUTE, getModuleById(), getModuleTitle(), getSidebarItemById(), getSidebarItems(), HR_MODULE_ROUTE, MODULE_CARDS
+
+### Community 45 - "AbsaButton.vue"
+Cohesion: 0.50
+Nodes (3): buttonClasses, props, sizeClasses
 
 ### Community 46 - "CRMLeadsPage.vue"
 Cohesion: 0.07
@@ -745,12 +721,12 @@ Cohesion: 0.08
 Nodes (22): accountData, accountOption, accountSearch, contactData, contactOption, contactSearch, convertLead(), dealData (+14 more)
 
 ### Community 57 - "authFetch"
-Cohesion: 0.31
-Nodes (16): authFetch(), approveCalibration(), approveModel(), fetchAuditLogs(), fetchChallengers(), fetchFeatures(), fetchModelComparison(), fetchModels() (+8 more)
+Cohesion: 0.33
+Nodes (15): authFetch(), getAuthHeaders(), approveCalibration(), approveModel(), fetchAuditLogs(), fetchChallengers(), fetchFeatures(), fetchModels() (+7 more)
 
 ### Community 58 - "CRMModule.js"
 Cohesion: 0.07
-Nodes (23): useAudit(), getUserPerformance(), useNavigationStore, XLSXCompat, currentCalendarDate, editingMeeting, leads, meetingFilter (+15 more)
+Nodes (23): getUserPerformance(), useCRMQuickAccessStore, useNavigationStore, currentCalendarDate, editingMeeting, leads, meetingFilter, meetingForm (+15 more)
 
 ### Community 59 - "Audit Logging"
 Cohesion: 0.08
@@ -770,23 +746,27 @@ Nodes (25): Appendices, Architecture Overview, Conclusion, Core Components, Crea
 
 ### Community 63 - "decodeJWT"
 Cohesion: 0.06
-Nodes (36): checkAndRedirectIfAuthenticated(), clearAutoHideTimer(), dismissInstall(), { fetchPreferences }, { initializeRBAC }, installPWA(), isMfeModalOpen, mfePortalLink (+28 more)
+Nodes (37): checkAndRedirectIfAuthenticated(), clearAutoHideTimer(), dismissInstall(), { fetchPreferences }, { initializeRBAC }, installPWA(), isMfeModalOpen, mfePortalLink (+29 more)
 
 ### Community 64 - "useSettingsEmail"
-Cohesion: 0.11
-Nodes (13): defaultFrequencies(), useSettingsEmail(), closeTestEmailPrompt(), confirmTestEmailPrompt(), deleteEmailConfig(), editEmailConfig(), loadEmailConfigurations(), openNewEmailConfig() (+5 more)
+Cohesion: 0.12
+Nodes (14): defaultFrequencies(), NOTIFICATION_TYPES, useSettingsEmail(), closeTestEmailPrompt(), confirmTestEmailPrompt(), deleteEmailConfig(), editEmailConfig(), loadEmailConfigurations() (+6 more)
 
 ### Community 65 - "DocumentAttachModal.vue"
 Cohesion: 0.10
 Nodes (20): uploadDocument(), availableDocuments, canUpload, close(), emit, fileInput, { getTenantId }, isDragging (+12 more)
 
 ### Community 66 - "CustomerValueIntelligence.vue"
-Cohesion: 0.06
-Nodes (25): containerRef, open, props, activeTab, allSelected, bandsWithPct, getQuadrant(), loading (+17 more)
+Cohesion: 0.04
+Nodes (48): containerRef, open, props, CLV_BANDS, getClvBandRanges(), _numOrNull(), _rowsFromSeed(), SEED (+40 more)
 
 ### Community 67 - "LifecyclePrediction.vue"
 Cohesion: 0.05
-Nodes (36): activation30Pct, activation60Pct, activation90Pct, activeTab, allWinbackSelected, avgWinBackProb, campaignCustomers, computeStatesResult (+28 more)
+Nodes (37): computeCustomerStates(), activation30Pct, activation60Pct, activation90Pct, activeTab, allWinbackSelected, avgWinBackProb, campaignCustomers (+29 more)
+
+### Community 68 - "scrollToBottom"
+Cohesion: 0.67
+Nodes (3): loadConversation(), scrollToBottom(), startNewConversation()
 
 ### Community 69 - "Security Considerations"
 Cohesion: 0.08
@@ -1008,9 +988,9 @@ Nodes (21): Appendices, Architecture Overview, Conclusion, Core Components, Cust
 Cohesion: 0.09
 Nodes (21): Adding a Route, Appendices, Architecture Overview, Authentication Flow and Dev Bypass, Conclusion, Core Components, Creating a New Component, Dependency Analysis (+13 more)
 
-### Community 128 - "useCurrency.js"
-Cohesion: 0.10
-Nodes (9): currentSettings, isInitialized, install(), CurrencyService, formatCurrency(), formatCurrencyCompact(), getCurrencyCode(), getCurrencySymbol() (+1 more)
+### Community 128 - "CurrencyService"
+Cohesion: 0.13
+Nodes (7): install(), CurrencyService, formatCurrency(), formatCurrencyCompact(), getCurrencyCode(), getCurrencySymbol(), parseCurrency()
 
 ### Community 129 - "Secure API Communication"
 Cohesion: 0.09
@@ -1081,8 +1061,8 @@ Cohesion: 0.10
 Nodes (20): Alerting System: Channels, Escalation, and Incident Response, Appendices, Architecture Overview, Batch Execution Detail: Validation and Investigation, Conclusion, Configuration Management for Extraction Specs, Core Components, Custom Metric Definitions (+12 more)
 
 ### Community 146 - "loadLeads"
-Cohesion: 0.12
-Nodes (21): logAudit(), applyAdvancedFilters(), applyQuickFilter(), applySourceFilter(), applyStageFilter(), applyTouchFilter(), bulkAssign(), bulkDelete() (+13 more)
+Cohesion: 0.09
+Nodes (28): useAudit(), logAudit(), applyAdvancedFilters(), applyQuickFilter(), applySourceFilter(), applyStageFilter(), applyTouchFilter(), bulkAssign() (+20 more)
 
 ### Community 147 - "fetchPipelineData"
 Cohesion: 0.20
@@ -1093,8 +1073,8 @@ Cohesion: 0.10
 Nodes (11): activeAlerts, activeStateFilter, branchFilter, currentPage, customers, filteredCustomers, paginatedCustomers, searchQuery (+3 more)
 
 ### Community 149 - "SettingsModule.vue"
-Cohesion: 0.14
-Nodes (11): createRole(), errorMsg, fetchRoles(), handleCreateRole(), loading, roleForm, roles, router (+3 more)
+Cohesion: 0.12
+Nodes (16): createRole(), logout(), STORAGE_KEYS, useAuthStore, mounted(), updated(), errorMsg, fetchRoles() (+8 more)
 
 ### Community 150 - "error"
 Cohesion: 0.13
@@ -1189,20 +1169,20 @@ Cohesion: 0.10
 Nodes (19): Appendices, Architecture Overview, Authentication Security, Conclusion, Core Components, Dependency Analysis, Detailed Component Analysis, Introduction (+11 more)
 
 ### Community 173 - "tierColor"
-Cohesion: 0.10
-Nodes (28): color, label, props, sizeClass, color, displayValue, pct, props (+20 more)
+Cohesion: 0.07
+Nodes (40): color, label, props, sizeClass, color, displayValue, pct, props (+32 more)
 
 ### Community 174 - "AbsaCard.vue"
 Cohesion: 0.29
 Nodes (6): accentColorClass, cardClasses, hoverGradient, paddingClasses, props, roundedClasses
 
 ### Community 175 - "loadLeads"
-Cohesion: 0.18
-Nodes (20): clearSelection(), updateLead(), assignLeadsToUser(), bulkArchive(), bulkDelete(), bulkRestore(), changeBulkStage(), clearAllFilters() (+12 more)
+Cohesion: 0.14
+Nodes (24): clearSelection(), updateLead(), saveLeadLocation(), assignLeadsToUser(), bulkArchive(), bulkDelete(), bulkRestore(), changeBulkStage() (+16 more)
 
-### Community 176 - "PortfolioOverview.vue"
-Cohesion: 0.06
-Nodes (30): isAlertAcked(), acknowledgeAlert(), ACTION_META, activityRows, alerts, customerStore, donutChartData, donutChartOptions (+22 more)
+### Community 176 - "notify"
+Cohesion: 0.04
+Nodes (62): isAlertAcked(), downloadCsv(), downloadJson(), downloadMarkdown(), downloadText(), escapeCell(), notify(), reportFilename() (+54 more)
 
 ### Community 177 - "Settings & Administration"
 Cohesion: 0.10
@@ -1284,9 +1264,9 @@ Nodes (18): Application Bootstrap and Plugin Registration, Architecture Overview
 Cohesion: 0.12
 Nodes (16): avgQuality, executionHistory, failedRetries, gatewayStatus, gatewayUptime, loading, pgLatency, pgStatus (+8 more)
 
-### Community 197 - "CreateActionPlan.vue"
-Cohesion: 0.09
-Nodes (20): formatCurrency(), formatDate(), formatNumber(), formatPercentage(), churnProb, clvPercentile, clvValue, customer (+12 more)
+### Community 197 - "BalanceForecast.vue"
+Cohesion: 0.05
+Nodes (34): formatCurrency(), formatDate(), formatNumber(), formatPercentage(), churnProb, clvPercentile, clvValue, customer (+26 more)
 
 ### Community 198 - "addPendingLeadDocument"
 Cohesion: 0.40
@@ -1329,12 +1309,12 @@ Cohesion: 0.11
 Nodes (17): API Parameter Sanitization, Architecture Overview, Authentication and Token Refresh Flow, Bulk Import Validation Pipeline, Conclusion, Core Components, Dependency Analysis, Detailed Component Analysis (+9 more)
 
 ### Community 208 - "useSettingsApprovals"
-Cohesion: 0.18
+Cohesion: 0.16
 Nodes (11): useSettingsApprovals(), closeApprovalSubmitModal(), confirmApprovalSubmit(), decideApproval(), fetchMyRequests(), fetchPendingApprovals(), getLevelLabel(), getRequiredLevel() (+3 more)
 
 ### Community 209 - "DealDetailModal.vue"
-Cohesion: 0.13
-Nodes (12): activeTab, activities, close(), emit, { formatCurrency }, { getTenantId }, handleDelete(), handleEdit() (+4 more)
+Cohesion: 0.08
+Nodes (16): useSettingsCurrency(), currentSettings, isInitialized, useCurrency(), activeTab, activities, close(), emit (+8 more)
 
 ### Community 210 - "Profile & Settings"
 Cohesion: 0.11
@@ -1378,7 +1358,7 @@ Nodes (13): canUpload, close(), emit, fileInput, form, { getTenantId }, props, r
 
 ### Community 220 - "useSettingsBase"
 Cohesion: 0.05
-Nodes (22): useSettingsAiAgents(), useSettingsAudit(), useSettingsBase(), useSettingsBranding(), useSettingsCurrency(), NOTIFICATION_TYPES, useSettingsIntegrations(), useSettingsProfile() (+14 more)
+Nodes (20): useSettingsAiAgents(), useSettingsAudit(), useSettingsBase(), useSettingsBranding(), useSettingsIntegrations(), useSettingsProfile(), fetchTenantDetailsForSettings(), normalizeTenantToProfile() (+12 more)
 
 ### Community 221 - "Architecture Overview"
 Cohesion: 0.12
@@ -1439,7 +1419,7 @@ Cohesion: 0.20
 Nodes (12): { activeWidgets, allWidgets, toggleWidget, isWidgetEnabled }, showSettings, enabledWidgets, loadPersisted(), persist(), registeredWidgets, useDashboardWidgets(), disableWidget() (+4 more)
 
 ### Community 236 - "useSettingsGoals"
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (3): useSettingsGoals(), closeGoalModal(), saveGoal()
 
 ### Community 239 - "Modal.vue"
@@ -1447,24 +1427,24 @@ Cohesion: 0.25
 Nodes (9): dialogRef, emit, focusableSelectors, focusInitialElement(), getFocusableElements(), handleFocusIn(), handleKeydown(), props (+1 more)
 
 ### Community 240 - "InvoiceCreationModal.vue"
-Cohesion: 0.17
-Nodes (15): createInvoiceReference(), checkModuleSubscription(), checkingAccess, checkSubscription(), close(), createReference(), emit, { getTenantId } (+7 more)
+Cohesion: 0.11
+Nodes (22): createInvoiceReference(), checkModuleSubscription(), { getTenantId, getToken }, requestModuleSubscription(), checkingAccess, checkSubscription(), close(), createReference() (+14 more)
 
 ### Community 241 - "TakeAction.vue"
-Cohesion: 0.08
-Nodes (25): EXCLUDED_MARKET_SEGMENTS, formatMarketSegment(), isFrontendVisibleMarketSegment(), MARKET_SEGMENT_OPTIONS, MARKET_SEGMENTS, OTHER_MARKET_SEGMENT, resolveMarketSegment(), api (+17 more)
+Cohesion: 0.14
+Nodes (10): action, customer, customerId, customerName, customerStore, form, recordedActions, route (+2 more)
 
 ### Community 242 - "ui/index.js"
-Cohesion: 0.11
-Nodes (7): buttonClasses, props, sizeClasses, formattedValue, props, props, router
+Cohesion: 0.12
+Nodes (7): formattedValue, props, emit, props, toggleKpis(), props, router
 
 ### Community 243 - "ContactDetailModal.vue"
 Cohesion: 0.14
 Nodes (9): activeTab, activities, emit, { getTenantId }, hasAddress, loadActivities(), loadingActivities, props (+1 more)
 
-### Community 244 - "handleDrop"
-Cohesion: 0.14
-Nodes (14): bulkChangeStage(), capitalize(), convertLead(), editRecord(), getStageName(), handleDrop(), kpiLeadsByStage(), kpiStageValue() (+6 more)
+### Community 244 - "bulkChangeStage"
+Cohesion: 0.25
+Nodes (8): bulkChangeStage(), convertLead(), kpiLeadsByStage(), kpiStageValue(), removeCustomStage(), showPipelineAlert(), showPipelineConfirm(), activePipelineStages
 
 ### Community 245 - "_check_exports.mjs"
 Cohesion: 0.22
@@ -1472,7 +1452,7 @@ Nodes (4): files, missing, SRC, unresolved
 
 ### Community 246 - "dependencies"
 Cohesion: 0.13
-Nodes (15): docx, @fontsource/montserrat, idb, mathjax, ollama, dependencies, docx, @fontsource/montserrat (+7 more)
+Nodes (15): barcode-detector, @fontsource/montserrat, idb, mathjax, ollama, dependencies, barcode-detector, @fontsource/montserrat (+7 more)
 
 ### Community 247 - "Skill: RM Dashboard — Colour Mapping Spec"
 Cohesion: 0.14
@@ -1513,10 +1493,6 @@ Nodes (5): items, useBulkSelect(), isAllPageSelected(), toggleSelectAll(), toggl
 ### Community 256 - "crm_meetings_api.js"
 Cohesion: 0.20
 Nodes (3): getMeetings(), getTodaysMeetings(), getUpcomingMeetings()
-
-### Community 257 - "validateData"
-Cohesion: 0.40
-Nodes (5): isValidEmail(), isValidURL(), processFile(), readFileData(), validateData()
 
 ### Community 258 - "initLeadMap"
 Cohesion: 0.18
@@ -1563,18 +1539,6 @@ Nodes (12): createETLConfig(), deleteETLConfig(), fetchETLConfigContent(), fetch
 Cohesion: 0.43
 Nodes (6): close(), emit, form, { getTenantId }, props, saveChanges()
 
-### Community 269 - "useClvBands.js"
-Cohesion: 0.32
-Nodes (11): CLV_BANDS, getClvBandRanges(), _numOrNull(), _rowsFromSeed(), SEED, serializeRanges(), useClvBands(), apply() (+3 more)
-
-### Community 270 - "customerAdminApi.js"
-Cohesion: 0.27
-Nodes (14): _authHeaders(), bulkDeleteCustomers(), deleteCustomer(), fetchDeletedCount(), fetchDeletedCustomers(), _handleRes(), MAX_BULK_DELETE, restoreCustomers() (+6 more)
-
-### Community 271 - "KpiSection.vue"
-Cohesion: 0.67
-Nodes (3): emit, props, toggleKpis()
-
 ### Community 272 - "ResetPassword.vue"
 Cohesion: 0.20
 Nodes (11): resetPassword(), errors, form, handleSubmit(), isLoading, route, router, showConfirmPassword (+3 more)
@@ -1592,8 +1556,8 @@ Cohesion: 0.24
 Nodes (5): close(), downloadDocument(), emit, { getTenantId }, props
 
 ### Community 278 - "initCharts"
-Cohesion: 0.26
-Nodes (10): fetchChampion(), promoteModel(), initCharts(), actionApprove(), actionPromote(), actionValidate(), debounceSimulate(), doSimulate() (+2 more)
+Cohesion: 0.22
+Nodes (12): fetchChampion(), fetchModelComparison(), validateModel(), initCharts(), actionApprove(), actionPromote(), actionValidate(), debounceSimulate() (+4 more)
 
 ### Community 279 - "authHeaders"
 Cohesion: 0.27
@@ -1627,10 +1591,6 @@ Nodes (7): Backend Integration, Business Constraints, Domain Terminology, Projec
 Cohesion: 0.25
 Nodes (7): API Endpoints (via Gateway :8080), Backend Service Map, Docs, Frontend Config (automatic), Quick Test, Remote Dev Connection Guide — Frontend, Which Store Calls What
 
-### Community 288 - "PostEngagementPerformance.vue"
-Cohesion: 0.20
-Nodes (9): after, before, chartData, chartOptions, hasData, loading, metrics, pct() (+1 more)
-
 ### Community 289 - "BackButton.vue"
 Cohesion: 0.25
 Nodes (5): mockBack, mockPush, ariaLabel, props, router
@@ -1662,14 +1622,6 @@ Nodes (6): 1. Component Tree, 2. Routing, 3. Data Flow, 4. State Management (Pin
 ### Community 296 - ".ai/README.md"
 Cohesion: 0.25
 Nodes (6): AI Development Guide — ABSA Foundry Frontend, .ai Directory Structure, Before You Write Code, Project Layout, Quick Rules (Always Follow), Running
-
-### Community 298 - "AiNbaPanel.vue"
-Cohesion: 0.29
-Nodes (4): churnProbPct, nba, props, urgencyBadgeClass
-
-### Community 299 - "HealthScoreGauge.vue"
-Cohesion: 0.20
-Nodes (10): color, dashOffset, props, score, tier, trendLabel, trendUp, healthTier() (+2 more)
 
 ### Community 301 - "Skill: ABSA Brand Colour System"
 Cohesion: 0.17
@@ -1799,10 +1751,6 @@ Nodes (4): handleCVUpload(), handleFileUpload(), handleLogoUpload(), handleProfi
 Cohesion: 0.40
 Nodes (4): Architecture and conventions, Conventions and constraints, Key files and packages, What system/approach is used
 
-### Community 349 - "saveExcelChanges"
-Cohesion: 0.67
-Nodes (3): enterExcelEditMode(), saveExcelChanges(), toggleExcelEdit()
-
 ### Community 357 - "requestRetrain"
 Cohesion: 0.50
 Nodes (4): baselineSignature(), triggerRetrainAction(), refreshAllData(), requestRetrain()
@@ -1812,72 +1760,44 @@ Cohesion: 0.19
 Nodes (14): createLeadNote(), createMeeting(), getLeadActivities(), getLeadNotes(), getMeetings(), updateMeeting(), loadMeetings(), saveMeeting() (+6 more)
 
 ### Community 453 - "sendMessage"
-Cohesion: 0.22
-Nodes (10): createConversation(), deleteConversation(), fetchConversations(), loadConversation(), parseDemoActions(), saveMessagesToConversation(), scrollToBottom(), sendMessage() (+2 more)
+Cohesion: 0.20
+Nodes (11): addHighlight(), clearHighlights(), createConversation(), deleteConversation(), executeDemoActions(), fetchConversations(), findByText(), parseDemoActions() (+3 more)
 
 ### Community 454 - "ForgotPassword.vue"
 Cohesion: 0.28
 Nodes (8): requestPasswordReset(), email, emailSent, error, handleSubmit(), loading, otpCode, validateEmail()
 
 ### Community 455 - "logActivity"
-Cohesion: 0.33
-Nodes (9): emit, handleDocumentAttached(), handleDocumentDeleted(), logActivity(), _origArchive(), _origCall(), _origConvert(), _origEmail() (+1 more)
-
-### Community 456 - "MarkovMatrix.vue"
-Cohesion: 0.25
-Nodes (4): cells, DEFAULT, props, TIERS
-
-### Community 457 - "saveCac"
-Cohesion: 0.25
-Nodes (8): addContact(), applyCacAdjust(), deleteActivity(), deleteNote(), leadPayload(), removeContact(), saveCac(), showConfirmDialog()
+Cohesion: 0.16
+Nodes (17): addContact(), applyCacAdjust(), deleteActivity(), deleteNote(), emit, handleDocumentAttached(), handleDocumentDeleted(), leadPayload() (+9 more)
 
 ### Community 458 - "exportReport"
 Cohesion: 0.25
 Nodes (5): exportReport(), formatDate(), formatFileSize(), formatStage(), toTitleCase()
 
-### Community 459 - "exportList"
-Cohesion: 0.25
-Nodes (8): churnColor(), churnOf(), clvLabel(), clvOf(), clvPercentileLabel(), exportList(), filteredRows, recommendedAction()
-
-### Community 460 - "auth.js"
-Cohesion: 0.43
-Nodes (5): logout(), STORAGE_KEYS, useAuthStore, mounted(), updated()
-
-### Community 461 - "calcMeetingDistance"
-Cohesion: 0.29
-Nodes (7): applyManualLocation(), calcMeetingDistance(), saveLeadLocation(), selectLeadLocation(), selectMeetingLocation(), useCurrentLocation(), useLeadLocation()
-
 ### Community 462 - "sendOfflineMessage"
 Cohesion: 0.33
 Nodes (4): getDummySales(), LocalOllamaClient, scrollOfflineChatToBottom(), sendOfflineMessage()
 
-### Community 463 - "AIEnhanceButton.vue"
-Cohesion: 0.50
-Nodes (4): emit, handleEnhance(), isEnhancing, props
-
-### Community 464 - "executeDemoActions"
-Cohesion: 0.50
-Nodes (4): addHighlight(), clearHighlights(), executeDemoActions(), findByText()
-
 ## Knowledge Gaps
-- **4509 isolated node(s):** `fs`, `content`, `ignoreDeprecations`, `baseUrl`, `paths` (+4504 more)
+- **4512 isolated node(s):** `fs`, `content`, `ignoreDeprecations`, `baseUrl`, `paths` (+4507 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **89 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **79 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `decodeJWT()` connect `decodeJWT` to `useCurrency.js`, `AccountDetailModal.vue`, `LeadDetailModal.vue`, `AccountsView.vue`, `useCRMModule`, `SubAccountModule.vue`, `LeadsView.vue`, `MyCustomers.vue`, `DocumentEditModal.vue`, `useSettingsBase.js`, `BulkUploadLeadsModal.vue`, `CustomerProfile.vue`, `DocumentsView.vue`, `AiModule.vue`, `DocumentQuickViewModal.vue`, `BranchSelector.vue`, `AccountFormModal.vue`, `ContactsView.vue`, `ProfileModule.vue`, `DashboardLayout.vue`, `Models.vue`, `DealsView.vue`, `DealFormModal.vue`, `useSettingsModules`, `LinkedDocumentsWidget.vue`, `LeadConversionModal.vue`, `CRMModule.js`, `DocumentAttachModal.vue`, `BulkUploadAccountsModal.vue`, `useSettingsApprovals`, `DealDetailModal.vue`, `DocumentDetailModal.vue`, `DocumentUploadModal.vue`, `useSettingsBase`, `NotificationBell.vue`, `loadActivities`, `InvoiceCreationModal.vue`, `ContactDetailModal.vue`, `ContactFormModal.vue`, `DocumentShareModal.vue`?**
+- **Why does `decodeJWT()` connect `decodeJWT` to `useCRMModule`, `AccountDetailModal.vue`, `LeadDetailModal.vue`, `AccountsView.vue`, `SubAccountModule.vue`, `LeadsView.vue`, `MyCustomers.vue`, `DocumentEditModal.vue`, `useSettingsBase.js`, `BulkUploadLeadsModal.vue`, `loadLeads`, `CustomerProfile.vue`, `DocumentsView.vue`, `AiModule.vue`, `DocumentQuickViewModal.vue`, `BranchSelector.vue`, `AccountFormModal.vue`, `ContactsView.vue`, `ProfileModule.vue`, `DashboardLayout.vue`, `Models.vue`, `DealsView.vue`, `DealFormModal.vue`, `api.js`, `LinkedDocumentsWidget.vue`, `LeadConversionModal.vue`, `CRMModule.js`, `DocumentAttachModal.vue`, `BulkUploadAccountsModal.vue`, `useSettingsApprovals`, `DealDetailModal.vue`, `DocumentDetailModal.vue`, `DocumentUploadModal.vue`, `useSettingsBase`, `NotificationBell.vue`, `loadActivities`, `InvoiceCreationModal.vue`, `ContactDetailModal.vue`, `ContactFormModal.vue`, `DocumentShareModal.vue`?**
   _High betweenness centrality (0.044) - this node is a cross-community bridge._
-- **Why does `useCRMModule()` connect `useCRMModule` to `validateData`, `initLeadMap`, `AccountsView.vue`, `crm_api.js`, `CRMModule.vue`, `CRMCallsPage.vue`, `useSettingsBase.js`, `CRMPipelinePage.vue`, `loadLeads`, `fetchPipelineData`, `CRMMeetingsPage.vue`, `CRMAcquisitionPage.vue`, `CRMMeetingModal.vue`, `DealFormModal.vue`, `loadVisits`, `showToast`, `CRMLeadsPage.vue`, `CRMVisitsPage.vue`, `CRMModule.js`, `decodeJWT`, `addPendingLeadDocument`, `startCallTimer`, `useCRMQuickAccessStore`, `saveCallOutcome`, `getRecordSubtitle`, `useSettingsBase`, `CRMAccountsPage.vue`, `CRMEmailModal.vue`, `handleDrop`, `ContactFormModal.vue`?**
+- **Why does `useCRMModule()` connect `useCRMModule` to `initLeadMap`, `AccountsView.vue`, `crm_api.js`, `CRMModule.vue`, `CRMCallsPage.vue`, `useSettingsBase.js`, `CRMPipelinePage.vue`, `loadLeads`, `fetchPipelineData`, `CRMMeetingsPage.vue`, `CRMAcquisitionPage.vue`, `CRMMeetingModal.vue`, `loadVisits`, `showToast`, `CRMLeadsPage.vue`, `CRMVisitsPage.vue`, `CRMModule.js`, `decodeJWT`, `addPendingLeadDocument`, `startCallTimer`, `DealDetailModal.vue`, `saveCallOutcome`, `getRecordSubtitle`, `CRMAccountsPage.vue`, `CRMEmailModal.vue`, `bulkChangeStage`, `ContactFormModal.vue`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `useSettingsBase()` connect `useSettingsBase` to `useSettingsEmail`, `useSettingsRoles`, `useSettingsNotifications`, `useSettingsModules`, `auth.js`, `useSettingsBase.js`, `useSettingsGoals`, `CRMModule.js`, `decodeJWT`?**
+- **Why does `useSettingsBase()` connect `useSettingsBase` to `useSettingsEmail`, `useSettingsRoles`, `useSettingsNotifications`, `useSettingsModules`, `useSettingsGoals`, `useSettingsBase.js`, `InvoiceCreationModal.vue`, `DealDetailModal.vue`, `loadLeads`, `SettingsModule.vue`, `decodeJWT`?**
   _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Are the 202 inferred relationships involving `useCRMModule()` (e.g. with `addCustomStage()` and `addParticipant()`) actually correct?**
   _`useCRMModule()` has 202 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `fs`, `content`, `ignoreDeprecations` to the rest of the system?**
-  _4509 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _4512 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `useCRMModule` be split into smaller, more focused modules?**
-  _Cohesion score 0.01903772931810315 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.018805309734513276 - nodes in this community are weakly interconnected._
 - **Should `AccountDetailModal.vue` be split into smaller, more focused modules?**
   _Cohesion score 0.0207726655018443 - nodes in this community are weakly interconnected._

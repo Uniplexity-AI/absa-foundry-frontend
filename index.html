@@ -60,7 +60,11 @@
   <script>
     window.MathJax = {
       tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
-      svg: { fontCache: 'global' }
+      svg: { fontCache: 'global' },
+      options: {
+        enableEnrichment: false,
+        sre: { speech: 'none' }
+      }
     };
   </script>
   <script type="module" src="/src/main.js"></script>

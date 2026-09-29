@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full pt-6 px-6 pb-6">
+  <div class="relative w-full min-h-screen">
+    <!-- Mesh background -->
+    <div class="fixed inset-0 z-0 mesh-background pointer-events-none"></div>
+    <div class="relative z-10 w-full pt-6 px-6 pb-6">
     <!-- Loading Skeleton -->
     <template v-if="loading">
       <div class="mb-6 h-6 bg-white rounded-sm w-1/3 animate-pulse"></div>
@@ -16,12 +19,12 @@
     <!-- Empty State -->
     <template v-else-if="!customerId || isEmpty">
       <div class="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+        <div class="w-16 h-16 bg-amber-100 rounded-none flex items-center justify-center mb-4 border border-amber-200">
           <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
         </div>
-        <h2 class="text-sm font-bold text-absa-enrich mb-2">Customer Not Found</h2>
+        <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-absa-enrich mb-2">Customer Not Found</h2>
         <p class="text-xs text-gray-500 max-w-md">No predictive profile is available for this customer.</p>
-        <button @click="goBack" class="mt-6 bg-absa-passion text-white text-xs font-bold py-2 px-5 rounded-sm shadow-none hover:bg-absa-power transition-colors">Back to Predictive Lifecycle Ledger</button>
+        <button @click="goBack" class="mt-6 bg-absa-passion text-white text-[10px] font-mono font-bold py-2.5 px-5 rounded-none uppercase tracking-widest hover:bg-absa-power transition-colors">Back to Predictive Lifecycle Ledger</button>
       </div>
     </template>
 
@@ -29,7 +32,7 @@
     <template v-else>
       <!-- Breadcrumb + Back -->
       <div class="mb-5">
-        <button @click="goBack" class="flex items-center gap-2 text-xs font-bold text-absa-passion hover:text-absa-power transition-colors">
+        <button @click="goBack" class="flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-widest text-absa-passion hover:text-absa-power transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/></svg>
           Back to Predictive Lifecycle Ledger
         </button>
@@ -94,45 +97,47 @@
       </div>
 
       <!-- ═══ Customer Profile Header ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <!-- dotted overlay -->
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div class="flex items-start gap-4">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shrink-0" :style="{ background: STATE_COLORS[state] || '#7f1d1d' }">
+            <div class="w-14 h-14 rounded-none flex items-center justify-center text-white text-xl font-bold shrink-0 border border-white/20" :style="{ background: STATE_COLORS[state] || '#7f1d1d' }">
               {{ initials }}
             </div>
             <div>
               <div class="flex items-center gap-3 flex-wrap">
-                <h1 class="text-sm font-bold text-absa-enrich">{{ customer.fullName || ('Customer ' + (customerId || '').replace('CUST', '')) }}</h1>
+                <h1 class="text-base font-bold font-display uppercase tracking-tight text-gray-900">{{ customer.fullName || ('Customer ' + (customerId || '').replace('CUST', '')) }}</h1>
                 <StatePill :state="state" />
               </div>
-              <p class="text-xs text-gray-500 mt-1">ID: {{ customerId }}</p>
+              <p class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mt-0.5">ID: {{ customerId }}</p>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-2 mt-4 text-xs">
-                <div><span class="text-gray-500 block text-[11px] uppercase">Customer Since</span><span class="font-bold text-absa-enrich">{{ customerSince || '—' }}</span></div>
-                <div><span class="text-gray-500 block text-[11px] uppercase">Last Activity</span><span class="font-bold text-absa-enrich">{{ lastActivity }}</span></div>
-                <div><span class="text-gray-500 block text-[11px] uppercase">Last Snapshot</span><span class="font-bold text-absa-enrich">{{ computedAt || '—' }}</span></div>
-                <div><span class="text-gray-500 block text-[11px] uppercase">State Since</span><span class="font-bold text-absa-enrich">{{ stateSince || '—' }}</span></div>
-                <div v-if="customer.branch"><span class="text-gray-500 block text-[11px] uppercase">Branch</span><span class="font-bold text-absa-enrich">{{ customer.branch }}</span></div>
-                <div><span class="text-gray-500 block text-[11px] uppercase">Market segment</span><span class="font-bold text-absa-enrich">{{ customer.segment }}</span></div>
+                <div><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">Customer Since</span><span class="font-bold text-gray-900">{{ customerSince || '—' }}</span></div>
+                <div><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">Last Activity</span><span class="font-bold text-gray-900">{{ lastActivity }}</span></div>
+                <div><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">Last Snapshot</span><span class="font-bold text-gray-900">{{ computedAt || '—' }}</span></div>
+                <div><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">State Since</span><span class="font-bold text-gray-900">{{ stateSince || '—' }}</span></div>
+                <div v-if="customer.branch"><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">Branch</span><span class="font-bold text-gray-900">{{ customer.branch }}</span></div>
+                <div><span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 block">Market Segment</span><span class="font-bold text-gray-900">{{ customer.segment }}</span></div>
               </div>
             </div>
           </div>
           <div class="flex items-center gap-2 flex-wrap shrink-0">
-            <button @click="goToActionPlan" class="bg-absa-passion text-white text-xs font-bold py-2.5 px-4 shadow-none hover:bg-absa-power transition-colors">CREATE ACTION PLAN</button>
+            <button @click="goToActionPlan" class="bg-absa-passion text-white text-[10px] font-mono font-bold py-2.5 px-4 rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors">Create Action Plan</button>
             <div class="relative">
-              <button @click="showMoreMenu = !showMoreMenu" class="border border-gray-300 text-absa-enrich text-xs font-bold py-2.5 px-4 hover:bg-gray-50 transition-colors flex items-center gap-1">
-                MORE
+              <button @click="showMoreMenu = !showMoreMenu" class="border border-gray-300 text-absa-enrich text-[10px] font-mono font-bold py-2.5 px-4 rounded-none uppercase tracking-widest hover:bg-gray-50 hover:border-absa-passion hover:text-absa-passion transition-colors flex items-center gap-1">
+                More
                 <span class="material-symbols-outlined text-[16px]">expand_more</span>
               </button>
-              <div v-if="showMoreMenu" class="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-200 shadow-lg z-30 py-1">
-                <button @click="exportProfile()" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+              <div v-if="showMoreMenu" class="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-200 shadow-lg z-30 py-1 rounded-none">
+                <button @click="exportProfile()" class="w-full text-left px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[16px] text-gray-400">download</span>
                   Export Profile (JSON)
                 </button>
-                <button @click="goToTakeAction(actionPlan[0])" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+                <button @click="goToTakeAction(actionPlan[0])" class="w-full text-left px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[16px] text-gray-400">flash_on</span>
                   Take Action
                 </button>
-                <button @click="copyCustomerId" class="w-full text-left px-4 py-2 text-xs font-semibold text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
+                <button @click="copyCustomerId" class="w-full text-left px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest text-absa-enrich hover:bg-gray-50 flex items-center gap-2">
                   <span class="material-symbols-outlined text-[16px] text-gray-400">content_copy</span>
                   Copy Customer ID
                 </button>
@@ -145,13 +150,13 @@
       <!-- ═══ Predictive Lifecycle Summary ═══ -->
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-4 mb-8">
         <!-- Health -->
-        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+        <div class="bg-white border border-gray-200 p-4 shadow-sm">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Customer Health</h3>
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Customer Health</h3>
             <InfoDot :label="'Combined health score from churn risk, customer value and behavioural engagement.'" />
           </div>
           <div class="flex items-baseline gap-1">
-            <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span>
+            <span class="text-2xl font-bold font-mono text-absa-enrich">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span>
             <span class="text-xs text-gray-500">/ 100</span>
           </div>
           <div class="pp-track mt-3"><div class="pp-fill" :style="{ width: (healthScore || 0) + '%', background: healthColor }"></div></div>
@@ -159,20 +164,20 @@
         </div>
 
         <!-- Churn -->
-        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+        <div class="bg-white border border-gray-200 p-4 shadow-sm">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Churn Probability</h3>
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Churn Probability</h3>
             <InfoDot :label="'Probability the customer will churn within the prediction horizon, from the XGBoost churn model.'" />
           </div>
-          <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span>
+          <span class="text-2xl font-bold font-mono text-absa-enrich">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span>
           <p class="text-xs font-bold mt-2" :style="{ color: churnColor }">{{ churnLabel }}</p>
-          <a href="#why-predictions" class="text-xs font-bold text-absa-passion hover:text-absa-power mt-2 inline-block">Why?</a>
+          <a href="#why-predictions" class="text-[10px] font-mono font-bold uppercase tracking-widest text-absa-passion hover:text-absa-power mt-2 inline-block">Why?</a>
         </div>
 
         <!-- CLV -->
-        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
+        <div class="bg-white border border-gray-200 p-4 shadow-sm">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase">Customer Lifetime Value</h3>
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Customer Lifetime Value</h3>
             <InfoDot :label="'Predicted 12-month net revenue in ZMW, from the CLV LightGBM model — an estimate, not guaranteed future revenue.'" />
           </div>
           <span class="text-2xl font-bold font-mono text-absa-enrich">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</span>
@@ -183,8 +188,8 @@
         </div>
 
         <!-- Lifecycle State -->
-        <div class="bg-white rounded-sm border border-gray-300 p-4 shadow-none">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">Lifecycle State</h3>
+        <div class="bg-white border border-gray-200 p-4 shadow-sm">
+          <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-3">Lifecycle State</h3>
           <StatePill :state="state" size="lg" />
           <p v-if="statePct != null" class="text-xs text-gray-500 mt-3">{{ statePct }}% of portfolio customers are currently {{ state.toLowerCase().replace('_', ' ') }}</p>
           <p v-else class="text-xs text-gray-500 mt-3">Current predictive lifecycle classification</p>
@@ -192,233 +197,274 @@
       </div>
 
       <!-- ═══ Why These Predictions ═══ -->
-      <div id="why-predictions" class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <div class="mb-4">
-          <h2 class="text-sm font-bold text-absa-enrich">Why These Predictions?</h2>
-          <p class="text-xs text-gray-500">Explanation of the customer's current lifecycle position</p>
+      <div id="why-predictions" class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative mb-4">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Why These Predictions?</h2>
+          </div>
+          <p class="text-xs text-gray-500 ml-3">Explanation of the customer's current lifecycle position</p>
         </div>
-
         <!-- Health factors -->
-        <div class="grid grid-cols-12 gap-6">
+        <div class="relative grid grid-cols-12 gap-6 z-10">
           <div class="col-span-12 lg:col-span-6">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">Customer Health Score — {{ healthScore != null ? healthScore.toFixed(1) + ' / 100' : '—' }}</h3>
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-3">Customer Health Score — {{ healthScore != null ? healthScore.toFixed(1) + ' / 100' : '—' }}</h3>
             <div class="space-y-3">
               <div v-for="f in healthFactors" :key="f.key" class="flex items-center gap-3">
-                <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ background: f.good ? '#16a34a' : '#7f1d1d' }"></span>
-                <span class="text-xs text-absa-enrich w-48 shrink-0">{{ f.label }}</span>
-                <div class="pp-track flex-1"><div class="pp-fill" :style="{ width: (f.value || 0) + '%', background: f.good ? '#16a34a' : '#7f1d1d' }"></div></div>
-                <span class="text-xs font-bold text-absa-enrich w-14 text-right">{{ f.value != null ? f.value.toFixed(0) : '—' }}</span>
+                <span class="w-2.5 h-2.5 rounded-none shrink-0" :style="{ background: f.good ? '#16a34a' : '#7f1d1d' }"></span>
+                <span class="text-xs text-gray-900 w-48 shrink-0">{{ f.label }}</span>
+                <div class="pp-track flex-1 rounded-none"><div class="pp-fill rounded-none" :style="{ width: (f.value || 0) + '%', background: f.good ? '#16a34a' : '#7f1d1d' }"></div></div>
+                <span class="text-xs font-bold text-gray-900 w-14 text-right">{{ f.value != null ? f.value.toFixed(0) : '—' }}</span>
               </div>
-              <p class="text-[11px] text-gray-500 pt-1">Components: Churn risk, customer value (CLV) and behavioural engagement — as produced by the health scorer.</p>
+              <p class="text-[10px] font-mono text-gray-400 uppercase tracking-widest pt-1">Components: Churn risk, CLV, engagement</p>
             </div>
           </div>
 
           <!-- Churn signals -->
-          <div class="col-span-12 lg:col-span-6 border-t lg:border-t-0 lg:border-l border-gray-300 lg:pl-6">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-3">What is driving churn? — {{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</h3>
+          <div class="col-span-12 lg:col-span-6 border-t lg:border-t-0 lg:border-l border-gray-200 lg:pl-6">
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-3">What is driving churn? — {{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</h3>
             <div v-if="riskCodes.length" class="space-y-3">
               <div v-for="r in riskCodes" :key="r.code" class="flex items-start gap-3">
-                <span class="w-2.5 h-2.5 rounded-full shrink-0 mt-1.5" :style="{ background: severityColor(r.severity) }"></span>
+                <span class="w-2.5 h-2.5 rounded-none shrink-0 mt-1.5" :style="{ background: severityColor(r.severity) }"></span>
                 <div>
-                  <div class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</div>
+                  <div class="text-xs font-bold text-gray-900">{{ codeLabel(r.code) }}</div>
                   <div class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</div>
                 </div>
-                <span class="ml-auto text-[11px] font-bold" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
+                <span class="ml-auto text-[10px] font-mono font-bold tracking-widest uppercase" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-500">No churn risk signals flagged for this customer.</p>
+            <p v-else class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">No churn risk signals flagged.</p>
           </div>
         </div>
 
         <!-- CLV explanation -->
-        <div class="mt-6 pt-5 border-t border-gray-300">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-2">How was Customer Lifetime Value estimated?</h3>
+        <div class="relative mt-6 pt-5 border-t border-gray-200 z-10">
+          <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-2">How was CLV estimated?</h3>
           <p class="text-xs text-gray-500 max-w-3xl">
-            Predicted CLV is an <strong class="text-absa-enrich">absolute</strong> figure —
-            <strong class="text-absa-enrich">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</strong>
-            of 12-month net revenue in ZMW, from the CLV LightGBM model.
-            <span v-if="clvPercentileOrdinal">That ranks at the {{ clvPercentileOrdinal }} percentile of the portfolio.</span>
-            It is a <strong class="text-absa-enrich">prediction / estimate</strong>, not a guaranteed future revenue figure.
+            Predicted CLV is an <strong class="text-gray-900">absolute</strong> figure —
+            <strong class="text-gray-900">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</strong>
+            of 12-month net revenue in ZMW.
+            <span v-if="clvPercentileOrdinal">That ranks at the {{ clvPercentileOrdinal }} percentile.</span>
           </p>
-          <p class="text-[11px] text-gray-500 mt-3">{{ clvEvidence.length ? clvEvidence.join(' · ') : 'No historical revenue data available for this customer.' }}</p>
+          <p class="text-[10px] font-mono text-gray-400 mt-3">{{ clvEvidence.length ? clvEvidence.join(' · ') : 'No historical data' }}</p>
         </div>
       </div>
 
       <!-- ═══ Lifecycle Journey ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <h2 class="text-sm font-bold text-absa-enrich mb-5">Customer Lifecycle Journey</h2>
-        <div class="flex flex-wrap items-center gap-2">
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 mb-5">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Lifecycle Journey</h2>
+          </div>
+        </div>
+        <div class="relative z-10 flex flex-wrap items-center gap-2">
           <template v-for="(s, i) in LIFECYCLE_ORDER" :key="s">
             <div class="flex items-center gap-2">
-              <div :class="['flex items-center gap-2 px-3 py-1.5 rounded-full border-2 text-[11px] font-bold uppercase tracking-wider', i === currentStateIndex ? 'pp-current-state' : 'border-gray-300 bg-white']"
+              <div :class="['flex items-center gap-2 px-3 py-1.5 rounded-none border-2 text-[10px] font-mono font-bold uppercase tracking-widest', i === currentStateIndex ? 'pp-current-state' : 'border-gray-200 bg-white']"
                    :style="i === currentStateIndex ? { borderColor: STATE_COLORS[s], color: STATE_COLORS[s] } : { color: '#857371' }">
-                <span class="w-2 h-2 rounded-full" :style="{ background: STATE_COLORS[s] }"></span>
+                <span class="w-2 h-2 rounded-none" :style="{ background: STATE_COLORS[s] }"></span>
                 {{ s.replace('_', ' ') }}
               </div>
-              <svg v-if="i < LIFECYCLE_ORDER.length - 1" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              <svg v-if="i < LIFECYCLE_ORDER.length - 1" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
             </div>
           </template>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           <div class="pp-metric"><span class="pp-metric__label">Date entered current state</span><span class="pp-metric__value">{{ stateSince || '—' }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Previous state</span><span class="pp-metric__value">{{ previousState || '—' }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">State transitions</span><span class="pp-metric__value">{{ transitions.length || (timelineEntries.length ? timelineEntries.length - 1 : 0) }}</span></div>
           <div class="pp-metric">
             <span class="pp-metric__label">Next state (Markov)</span>
             <span class="pp-metric__value">{{ predictedNextState ? predictedNextState.state.replace('_', ' ') : '—' }}</span>
-            <span v-if="predictedNextState" class="text-[11px] text-gray-500">{{ Math.round(predictedNextState.probability * 100) }}% from observed transitions</span>
+            <span v-if="predictedNextState" class="text-[10px] text-gray-400 mt-1 block font-mono">{{ Math.round(predictedNextState.probability * 100) }}% from observed transitions</span>
           </div>
         </div>
 
         <!-- Forward stage forecast: all three horizons at once -->
-        <div v-if="horizonForecast" class="mt-6 pt-5 border-t border-gray-300">
+        <div v-if="horizonForecast" class="relative z-10 mt-6 pt-5 border-t border-gray-200">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Stage forecast by horizon</h3>
-            <span class="text-[10px] text-gray-400">Lifecycle models · predictions, not the current state</span>
+            <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Stage forecast by horizon</h3>
+            <span class="text-[10px] text-gray-400">Lifecycle models · predictions</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="h in HORIZONS" :key="h" class="border border-gray-300 rounded-sm p-4">
-              <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ h }}-day</p>
+            <div v-for="h in HORIZONS" :key="h" class="border border-gray-200 rounded-none p-4 bg-gray-50/40">
+              <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">{{ h }}-day</p>
               <template v-if="horizonForecast[h]?.stage">
                 <StatePill :state="horizonForecast[h].stage" />
-                <p class="text-2xl font-bold font-mono text-absa-enrich mt-2">{{ Math.round(horizonForecast[h].confidence * 100) }}%</p>
-                <p class="text-[11px] text-gray-500">confidence</p>
-                <p v-if="runnerUp(h)" class="text-[11px] text-gray-500 mt-1">
+                <p class="text-2xl font-bold font-mono text-gray-900 mt-2">{{ Math.round(horizonForecast[h].confidence * 100) }}%</p>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-mono">confidence</p>
+                <p v-if="runnerUp(h)" class="text-[10px] text-gray-400 mt-1 font-mono">
                   vs {{ runnerUp(h).stage }} {{ Math.round(runnerUp(h).prob * 100) }}%
                 </p>
               </template>
-              <p v-else class="text-xs text-gray-400">Not available for this horizon</p>
+              <p v-else class="text-[10px] font-mono uppercase tracking-widest text-gray-400">Not available</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ═══ Activity Timeline ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <h2 class="text-sm font-bold text-absa-enrich mb-5">Customer Activity Timeline</h2>
-        <div v-if="timelineEntries.length" class="relative pl-6">
-          <div class="absolute left-2 top-1 bottom-1 w-px bg-outline-variant"></div>
-          <div v-for="(e, i) in timelineEntries" :key="i" class="relative pl-6 pb-5">
-            <span class="absolute left-[-10px] top-1 w-4 h-4 rounded-full border-2 border-white" :style="{ background: STATE_COLORS[e.state] || '#7f1d1d' }"></span>
-            <div class="text-xs font-bold text-absa-enrich">{{ e.state ? e.state.replace('_', ' ') : '—' }}</div>
-            <div class="text-[11px] text-gray-500">{{ fmtDate(e.as_of_date) }}</div>
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 mb-5">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Activity Timeline</h2>
           </div>
         </div>
-        <p v-else class="text-xs text-gray-500">No lifecycle activity recorded for this customer.</p>
+        <div v-if="timelineEntries.length" class="relative z-10 pl-6 mt-4">
+          <div class="absolute left-2 top-1 bottom-1 w-px bg-gray-200"></div>
+          <div v-for="(e, i) in timelineEntries" :key="i" class="relative pl-6 pb-5">
+            <span class="absolute left-[-10px] top-1 w-4 h-4 rounded-none border-2 border-white" :style="{ background: STATE_COLORS[e.state] || '#7f1d1d' }"></span>
+            <div class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ e.state ? e.state.replace('_', ' ') : '—' }}</div>
+            <div class="text-[10px] font-mono text-gray-500 mt-0.5">{{ fmtDate(e.as_of_date) }}</div>
+          </div>
+        </div>
+        <p v-else class="relative z-10 text-[10px] font-mono text-gray-400 uppercase tracking-widest mt-4">No lifecycle activity recorded.</p>
       </div>
 
       <!-- ═══ Customer Behaviour ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <h2 class="text-sm font-bold text-absa-enrich mb-1">Customer Behaviour</h2>
-        <p class="text-xs text-gray-500 mb-5">Behavioural signals derived from the customer's transaction and engagement history</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <div v-for="b in behaviourFactors" :key="b.label" class="border border-gray-300 rounded-sm p-4">
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 mb-5">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Behaviour</h2>
+          </div>
+          <p class="text-[10px] font-mono text-gray-500 ml-3">Behavioural signals derived from history</p>
+        </div>
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div v-for="b in behaviourFactors" :key="b.label" class="border border-gray-200 rounded-none p-4 bg-gray-50/40">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-absa-enrich">{{ b.label }}</span>
-              <span class="text-[11px] text-gray-500">{{ b.unit }}</span>
+              <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-900">{{ b.label }}</span>
+              <span class="text-[10px] text-gray-400 font-mono">{{ b.unit }}</span>
             </div>
             <div v-if="b.evidence" class="text-[11px] text-gray-500 mb-3">{{ b.evidence }}</div>
-            <div v-if="b.evidence" class="pp-track"><div class="pp-fill" :style="{ width: behaviourBarWidth(b) + '%', background: '#7f1d1d' }"></div></div>
-            <span v-else class="text-xs text-gray-500">Not available for this customer</span>
+            <div v-if="b.evidence" class="pp-track rounded-none"><div class="pp-fill rounded-none" :style="{ width: behaviourBarWidth(b) + '%', background: '#7f1d1d' }"></div></div>
+            <span v-else class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Not available</span>
           </div>
         </div>
       </div>
 
       <!-- ═══ Risk & Opportunity ═══ -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-4 mb-6">
-        <div class="bg-white rounded-sm border border-gray-300 shadow-none  p-4">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-4">Risk Signals</h3>
-          <div v-if="riskCodes.length" class="space-y-3">
+        <div class="bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Risk Signals</h3>
+          <div v-if="riskCodes.length" class="relative z-10 space-y-3">
             <div v-for="r in riskCodes" :key="r.code" class="border-l-4 pl-3" :style="{ borderColor: severityColor(r.severity) }">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</span>
-                <span class="text-[11px] font-bold" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
+                <span class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ codeLabel(r.code) }}</span>
+                <span class="text-[10px] font-mono font-bold uppercase tracking-widest" :style="{ color: severityColor(r.severity) }">{{ r.severity }}</span>
               </div>
-              <p class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</p>
+              <p class="text-[11px] text-gray-500 mt-0.5">{{ detailText(r.detail) }}</p>
             </div>
           </div>
-          <p v-else class="text-xs text-gray-500">No risk signals detected.</p>
+          <p v-else class="relative z-10 text-[10px] font-mono text-gray-400 uppercase tracking-widest">No risk signals detected.</p>
         </div>
-        <div class="bg-white rounded-sm border border-gray-300 shadow-none  p-4">
-          <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 uppercase mb-4">Opportunity Signals</h3>
-          <div v-if="opportunityCodes.length" class="space-y-3">
-            <div v-for="r in opportunityCodes" :key="r.code" class="border-l-4 pl-3 border-[#4CAF50]">
-              <span class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</span>
-              <p class="text-[11px] text-gray-500">{{ detailText(r.detail) }}</p>
+        <div class="bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Opportunity Signals</h3>
+          <div v-if="opportunityCodes.length" class="relative z-10 space-y-3">
+            <div v-for="r in opportunityCodes" :key="r.code" class="border-l-4 pl-3 border-[#16a34a]">
+              <span class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ codeLabel(r.code) }}</span>
+              <p class="text-[11px] text-gray-500 mt-0.5">{{ detailText(r.detail) }}</p>
             </div>
           </div>
-          <p v-else class="text-xs text-gray-500">No opportunity signals detected.</p>
+          <p v-else class="relative z-10 text-[10px] font-mono text-gray-400 uppercase tracking-widest">No opportunity signals detected.</p>
         </div>
       </div>
 
       <!-- ═══ Recommended Actions ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <h2 class="text-sm font-bold text-absa-enrich mb-5">Recommended Actions</h2>
-        <div v-if="actionPlan.length" class="space-y-4">
-          <div v-for="a in actionPlan" :key="a.priority" class="border border-gray-300 rounded-sm p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-            <div class="w-10 h-10 bg-white border border-gray-200 text-absa-passion flex items-center justify-center font-bold shrink-0">{{ a.priority }}</div>
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 mb-5">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Recommended Actions</h2>
+          </div>
+        </div>
+        <div v-if="actionPlan.length" class="relative z-10 space-y-4">
+          <div v-for="a in actionPlan" :key="a.priority" class="border border-gray-200 rounded-none p-4 flex flex-col sm:flex-row sm:items-center gap-4 bg-white">
+            <div class="w-10 h-10 bg-gray-50 border border-gray-200 text-absa-passion flex items-center justify-center font-mono font-bold shrink-0 rounded-none">{{ a.priority }}</div>
             <div class="flex-1">
-              <div class="text-xs font-bold text-absa-enrich">{{ a.title }}</div>
-              <div class="text-[11px] text-gray-500">{{ a.reason }}</div>
-              <div class="text-xs text-absa-enrich mt-1">{{ a.action }}</div>
+              <div class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ a.title }}</div>
+              <div class="text-[11px] text-gray-500 mt-0.5">{{ a.reason }}</div>
+              <div class="text-[10px] font-mono text-absa-passion uppercase tracking-widest mt-1.5">{{ a.action }}</div>
             </div>
             <div class="text-right shrink-0">
-              <div class="text-[11px] text-gray-500 mb-1">Propensity {{ a.confidence }}%</div>
-              <button @click="goToTakeAction(a)" class="bg-absa-passion text-white text-xs font-bold py-2 px-4 shadow-none hover:bg-absa-power transition-colors">TAKE ACTION</button>
+              <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-2">Propensity {{ a.confidence }}%</div>
+              <button @click="goToTakeAction(a)" class="bg-absa-passion text-white text-[10px] font-mono font-bold py-2.5 px-4 rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors">Take Action</button>
             </div>
           </div>
         </div>
-        <p v-else class="text-xs text-gray-500">No recommended actions generated yet.</p>
+        <p v-else class="relative z-10 text-[10px] font-mono text-gray-400 uppercase tracking-widest">No recommended actions generated yet.</p>
       </div>
 
       <!-- ═══ Prediction Confidence + Data Used ═══ -->
       <div class="grid grid-cols-12 gap-4 md:gap-4 mb-6">
-        <div class="col-span-12 lg:col-span-5 bg-white rounded-sm border border-gray-300 shadow-none  p-4">
-          <h2 class="text-sm font-bold text-absa-enrich mb-4">Prediction Confidence</h2>
-          <div class="flex items-baseline gap-2 mb-3">
-            <span class="text-2xl font-bold font-mono text-absa-enrich text-absa-enrich">{{ modelConfidence }}</span>
-            <span class="text-xs text-gray-500">Model Confidence</span>
+        <div class="col-span-12 lg:col-span-5 bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <div class="relative z-10">
+            <h2 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Prediction Confidence</h2>
+            <div class="flex items-baseline gap-2 mb-3">
+              <span class="text-2xl font-bold font-mono text-gray-900">{{ modelConfidence }}</span>
+              <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Confidence</span>
+            </div>
+            <ul class="space-y-2 text-xs">
+              <li class="flex justify-between"><span class="text-gray-500">Data completeness</span><span class="font-bold font-mono text-gray-900">{{ dataCompleteness ? Math.round(dataCompleteness.populated / dataCompleteness.total * 100) + '%' : '—' }}</span></li>
+              <li class="flex justify-between"><span class="text-gray-500">Behavioural features populated</span><span class="font-bold font-mono text-gray-900">{{ dataCompleteness ? dataCompleteness.populated + ' / ' + dataCompleteness.total : '—' }}</span></li>
+              <li class="flex justify-between"><span class="text-gray-500">Model version</span><span class="font-bold font-mono text-gray-900">{{ modelVersion }}</span></li>
+              <li class="flex justify-between"><span class="text-gray-500">Last model update</span><span class="font-bold font-mono text-gray-900">{{ computedAt || '—' }}</span></li>
+            </ul>
+            <p class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mt-4 leading-relaxed">Confidence is based on the amount, recency, and consistency of behavioural data. Predictions are estimates.</p>
           </div>
-          <ul class="space-y-2 text-xs">
-            <li class="flex justify-between"><span class="text-gray-500">Data completeness</span><span class="font-bold text-absa-enrich">{{ dataCompleteness ? Math.round(dataCompleteness.populated / dataCompleteness.total * 100) + '%' : '—' }}</span></li>
-            <li class="flex justify-between"><span class="text-gray-500">Behavioural features populated</span><span class="font-bold text-absa-enrich">{{ dataCompleteness ? dataCompleteness.populated + ' / ' + dataCompleteness.total : '—' }}</span></li>
-            <li class="flex justify-between"><span class="text-gray-500">Model version</span><span class="font-bold text-absa-enrich">{{ modelVersion }}</span></li>
-            <li class="flex justify-between"><span class="text-gray-500">Last model update</span><span class="font-bold text-absa-enrich">{{ computedAt || '—' }}</span></li>
-          </ul>
-          <p class="text-[11px] text-gray-500 mt-4">Confidence is based on the amount, recency, and consistency of behavioural data available for this customer. Predictive results are estimates.</p>
         </div>
 
-        <div class="col-span-12 lg:col-span-7 bg-white rounded-sm border border-gray-300 shadow-none  p-4">
-          <details open>
-            <summary class="text-sm font-bold text-absa-enrich cursor-pointer list-none">Data Used for Prediction</summary>
-            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div v-for="d in dataUsed" :key="d.name" class="border border-gray-300 rounded-sm p-3">
-                <div class="text-xs font-bold text-absa-enrich">{{ d.name }}</div>
-                <div class="text-[11px] text-gray-500">{{ d.available }}</div>
+        <div class="col-span-12 lg:col-span-7 bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+          <div class="relative z-10">
+            <details open>
+              <summary class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 cursor-pointer list-none flex items-center justify-between">
+                Data Used for Prediction
+                <span class="material-symbols-outlined text-[16px]">expand_more</span>
+              </summary>
+              <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div v-for="d in dataUsed" :key="d.name" class="border border-gray-200 bg-gray-50/40 rounded-none p-3">
+                  <div class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-900 mb-0.5">{{ d.name }}</div>
+                  <div class="text-[11px] text-gray-500">{{ d.available }}</div>
+                </div>
               </div>
-            </div>
-          </details>
+            </details>
+          </div>
         </div>
       </div>
 
       <!-- ═══ Prediction History ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none overflow-hidden  mb-6">
-        <div class="p-4 border-b border-gray-300">
-          <h2 class="text-sm font-bold text-absa-enrich">Prediction History</h2>
-          <p class="text-xs text-gray-500">Lifecycle state over time</p>
+      <div class="bg-white border border-gray-200 shadow-sm mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 p-4 border-b border-gray-200">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Prediction History</h2>
+          </div>
+          <p class="text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-3">Lifecycle state over time</p>
         </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-outline-variant">
+        <div class="relative z-10 overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
             <thead>
-              <tr class="bg-white">
-                <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-absa-enrich text-left">Date</th>
-                <th class="p-4 text-[11px] font-bold uppercase tracking-wider text-absa-enrich text-left">Lifecycle State</th>
+              <tr class="bg-gray-50/50">
+                <th class="p-4 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 text-left">Date</th>
+                <th class="p-4 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 text-left">Lifecycle State</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-outline-variant">
-              <tr v-if="!timelineEntries.length"><td colspan="2" class="p-8 text-center text-xs text-gray-500">No history available</td></tr>
-              <tr v-for="(e, i) in timelineEntries" :key="i">
-                <td class="p-4 text-xs text-absa-enrich">{{ fmtDate(e.as_of_date) }}</td>
+            <tbody class="bg-white divide-y divide-gray-100">
+              <tr v-if="!timelineEntries.length"><td colspan="2" class="p-8 text-center text-[10px] font-mono text-gray-400 uppercase tracking-widest">No history available</td></tr>
+              <tr v-for="(e, i) in timelineEntries" :key="i" class="hover:bg-gray-50/50">
+                <td class="p-4 text-[10px] font-mono text-gray-900">{{ fmtDate(e.as_of_date) }}</td>
                 <td class="p-4"><StatePill :state="e.state" /></td>
               </tr>
             </tbody>
@@ -427,23 +473,33 @@
       </div>
 
       <!-- ═══ Customer Alerts ═══ -->
-      <div v-if="alertCodes.length" class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-sm font-bold text-absa-enrich">Customer Alerts</h2>
-          <span class="text-[11px] font-bold text-absa-passion">{{ alertCodes.length }} ACTIVE</span>
+      <div v-if="alertCodes.length" class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-1 h-3.5 bg-[#DC0037] shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Alerts</h2>
+          </div>
+          <span class="text-[10px] font-mono font-bold tracking-widest text-[#DC0037]">{{ alertCodes.length }} ACTIVE</span>
         </div>
-        <div class="space-y-3">
-          <div v-for="r in alertCodes" :key="r.code" class="border-l-4 border-[#DC0037] pl-4">
-            <div class="text-xs font-bold text-absa-enrich">{{ codeLabel(r.code) }}</div>
-            <div class="text-[11px] text-gray-500">Severity: {{ r.severity }} · {{ detailText(r.detail) }}</div>
+        <div class="relative z-10 space-y-3">
+          <div v-for="r in alertCodes" :key="r.code" class="border-l-4 border-[#DC0037] pl-4 bg-red-50/30 py-2">
+            <div class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ codeLabel(r.code) }}</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Severity: {{ r.severity }} · {{ detailText(r.detail) }}</div>
           </div>
         </div>
       </div>
 
       <!-- ═══ Customer Information ═══ -->
-      <div class="bg-white rounded-sm border border-gray-300 shadow-none p-5 mb-6">
-        <h2 class="text-sm font-bold text-absa-enrich mb-4">Customer Information</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        <div class="relative z-10 mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-1 h-3.5 bg-gray-400 shrink-0"></div>
+            <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Information</h2>
+          </div>
+        </div>
+        <div class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="pp-metric"><span class="pp-metric__label">Customer ID</span><span class="pp-metric__value">{{ customerId }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Name</span><span class="pp-metric__value">{{ customer.fullName || '—' }}</span></div>
           <div class="pp-metric"><span class="pp-metric__label">Account status</span><span class="pp-metric__value">{{ state.replace('_', ' ') }}</span></div>
@@ -464,7 +520,8 @@
       />
 
     </template>
-  </div>
+    </div><!-- /z-10 content -->
+  </div><!-- /relative root -->
 </template>
 
 <script setup>
@@ -971,3 +1028,51 @@ onMounted(async () => {
 
 
 
+
+<style scoped>
+.pp-metric {
+  border: 1px solid #e5e7eb;
+  padding: 0.875rem 1rem;
+  background: #f9fafb;
+}
+.pp-metric__label {
+  display: block;
+  font-size: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+.pp-metric__value {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+.pp-track {
+  background: #EAEAEA;
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+}
+.pp-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+.pp-current-state {
+  box-shadow: 0 0 0 2px rgba(220, 0, 55, 0.15);
+}
+.mesh-background {
+  background-color: #fafafa;
+  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dotted-pattern {
+  background-image: radial-gradient(circle, #000 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.03;
+}
+</style>

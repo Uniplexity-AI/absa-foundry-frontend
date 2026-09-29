@@ -53,7 +53,7 @@ export default {
 </script>
 
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onErrorCaptured, onMounted, ref } from 'vue';
 
 const props = defineProps({
   to: {
@@ -76,10 +76,15 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-// Use reactive ref for teleport target to ensure it's set after DOM is ready
-const toTarget = ref('body');
+// Reactive target for Teleport
+const toTarget = computed(() => props.to || 'body');
 const dialogRef = ref(null);
 let previouslyFocusedElement = null;
+
+onErrorCaptured((err, instance, info) => {
+  console.error('[Modal] Captured render/runtime error:', err, 'Info:', info, 'Instance:', instance);
+  return false;
+});
 
 const focusableSelectors = [
   'button:not([disabled])',
@@ -106,7 +111,10 @@ const focusInitialElement = async () => {
   await nextTick();
 
   const dialog = dialogRef.value;
-  if (!dialog) return;
+  if (!dialog) {
+    console.warn('[Modal] Cannot focus initial element: dialogRef is null');
+    return;
+  }
 
   const autofocusElement = dialog.querySelector('[autofocus], [data-autofocus]');
   if (autofocusElement instanceof HTMLElement) {
@@ -139,6 +147,7 @@ const restoreFocus = () => {
 const handleKeydown = (event) => {
   if (event.key === 'Escape' && props.closeOnEscape) {
     event.preventDefault();
+    console.log('[Modal] Escape key pressed, closing modal');
     emit('close');
     return;
   }
@@ -187,11 +196,11 @@ const handleFocusIn = (event) => {
 
 // Prevent body scrolling while modal is open
 onMounted(() => {
+  console.log('[Modal] onMounted called. toTarget:', toTarget.value);
   previouslyFocusedElement = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
     ? document.activeElement
     : null;
 
-  toTarget.value = document.body || 'body';
   try { document.body.classList.add('modal-open'); } catch (e) { /* ignore */ }
 
   document.addEventListener('keydown', handleKeydown);
@@ -200,6 +209,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  console.log('[Modal] onBeforeUnmount called');
   document.removeEventListener('keydown', handleKeydown);
   document.removeEventListener('focusin', handleFocusIn);
   try { document.body.classList.remove('modal-open'); } catch (e) { /* ignore */ }
@@ -240,18 +250,5 @@ onBeforeUnmount(() => {
 /* Prevent body scroll when modal is open */
 :global(body.modal-open) {
   overflow: hidden;
-}
-
-/* When a modal is open, push/hide common fixed bottom bars to avoid blocking the modal on mobile */
-:global(body.modal-open) .fixed.bottom-0,
-:global(body.modal-open) .fixed.bottom-4,
-:global(body.modal-open) .fixed.bottom-6,
-:global(body.modal-open) .fixed.bottom-8,
-:global(body.modal-open) .fixed.bottom-16,
-:global(body.modal-open) .fixed.bottom-24,
-:global(body.modal-open) .fixed.bottom-32 {
-  pointer-events: none !important;
-  transform: translateY(120%) !important;
-  opacity: 0 !important;
 }
 </style>

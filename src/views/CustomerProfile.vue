@@ -411,9 +411,27 @@ const nba = computed(() => {
   return { priority: 'I', confidence, source: 'AI-Lifecycle Engine', ...fallback }
 })
 
+const EXCLUDED_INTERACTION_TYPES = new Set([
+  'CUSTOMER_DELETED',
+  'CUSTOMER_RESTORED',
+  'CUSTOMER_DELETED_PERMANENT',
+  'BULK_ACTION',
+  'BULK_DELETE',
+  'SYSTEM',
+  'AUDIT',
+])
+
 const historyEntries = computed(() => {
   return actionLog.value
-    .filter((a) => !a.customerId || a.customerId === customerId.value)
+    .filter((a) => {
+      // Must strictly match this customer ID
+      if (!a.customerId || a.customerId !== customerId.value) return false
+      // Administrative audit actions must not appear in customer interaction history
+      const rawType = String(a.type || '').toUpperCase()
+      if (rawType.includes('DELETE') || rawType.includes('RESTORE')) return false
+      if (EXCLUDED_INTERACTION_TYPES.has(rawType)) return false
+      return true
+    })
     .map((a) => ({
       id: a.id,
       title: prettify(a.type || 'Action'),
@@ -518,10 +536,9 @@ async function confirmDelete() {
       return
     }
 
-    // The profile 404s once flagged, so this page can no longer render the
-    // record — leave before the page refetches anything.
+    // The profile 404s once removed, so leave before the page refetches anything.
     notify(
-      `Deleted ${displayName.value} — hidden from the portfolio and restorable from My Customers`,
+      `Permanently deleted ${displayName.value} from the database`,
       'success',
       { autoClose: 5000 },
     )
@@ -643,7 +660,10 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 </script>
 
 <template>
-  <div class="w-full pt-6 px-6 pb-8">
+  <div class="w-full min-h-screen pt-6 px-6 pb-12 font-sans relative text-gray-900 bg-transparent">
+    <!-- Mesh Background -->
+    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
+    <div class="relative z-10 w-full">
     <!-- The master record could not be read. Without this the identity panel
          silently falls back to snapshot data and a saved edit looks ignored. -->
     <div
@@ -674,14 +694,14 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
     <!-- Empty state -->
     <template v-else-if="!customerId || isEmpty">
       <div class="flex flex-col items-center justify-center min-h-[50vh] text-center">
-        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+        <div class="w-16 h-16 bg-amber-50 border border-amber-200 rounded-none flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-amber-600 text-[32px]">person_off</span>
         </div>
         <h2 class="text-sm font-bold text-absa-enrich mb-2">Customer Not Found</h2>
         <p class="text-xs text-gray-500 max-w-md">No profile is available for this customer.</p>
         <router-link
           to="/dashboard/customers"
-          class="mt-6 bg-absa-passion text-white text-xs font-bold py-2.5 px-5 rounded-sm hover:bg-absa-power transition-colors"
+          class="mt-6 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-xs font-mono font-bold tracking-widest uppercase rounded-none py-2.5 px-5 transition-all"
         >Back to My Customers</router-link>
       </div>
     </template>
@@ -689,12 +709,12 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
     <!-- Profile -->
     <template v-else>
       <!-- Breadcrumb + actions -->
-      <div v-if="bozAlert" class="mb-5 bg-absa-inspire/10 border border-absa-inspire rounded-sm p-4 flex items-start gap-3">
+      <div v-if="bozAlert" class="mb-5 bg-red-50/80 border-l-4 border-l-red-600 border border-red-200 rounded-none p-4 flex items-start gap-3 shadow-sm">
         <span class="material-symbols-outlined text-absa-inspire mt-0.5">warning</span>
         <div>
           <h3 class="text-sm font-bold text-absa-inspire">URGENT: Account approaching 10-year dormancy (BOZ Transfer Rule)</h3>
           <p class="text-xs text-absa-enrich mt-1">This account has been inactive for {{ features?.days_since_last_txn }} days. Funds are at risk of being transferred to BOZ in <span class="font-bold">{{ bozRemainingText }}</span>. Immediate client contact is required to prevent deposit loss.</p>
-          <button @click="showEngagementModal = true" class="mt-2 bg-absa-inspire text-white px-3 py-1.5 text-[11px] font-bold rounded-sm hover:bg-red-800 transition-colors uppercase tracking-wider">Log Outreach</button>
+          <button @click="showEngagementModal = true" class="mt-2 bg-transparent text-red-600 border border-red-600 hover:bg-red-50 px-3 py-1.5 text-[10px] font-mono font-bold rounded-none uppercase tracking-widest transition-all">Log Outreach</button>
         </div>
       </div>
       <div class="mb-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
@@ -716,20 +736,20 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             :href="coreBankingUrl"
             target="_blank"
             rel="noopener"
-            class="px-4 py-2.5 bg-absa-passion text-white rounded-sm flex items-center gap-2 hover:bg-absa-power transition-colors text-xs font-bold"
+            class="px-4 py-2 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 rounded-none flex items-center gap-2 transition-all text-xs font-mono font-bold uppercase tracking-widest"
           >
             <span class="material-symbols-outlined text-[18px]">open_in_new</span>
             View in Core Banking
           </a>
           <router-link
             :to="`/dashboard/customer/${customerId}`"
-            class="px-4 py-2.5 bg-white text-absa-enrich border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors text-xs font-bold flex items-center gap-2"
+            class="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-none hover:border-absa-passion hover:text-absa-passion transition-all text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2"
           >
             <span class="material-symbols-outlined text-[18px]">analytics</span>
             Full Analytics
           </router-link>
           <button
-            class="px-4 py-2.5 bg-white text-absa-enrich border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors text-xs font-bold flex items-center gap-2"
+            class="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-none hover:border-absa-passion hover:text-absa-passion transition-all text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2"
             @click="copyId"
           >
             <span class="material-symbols-outlined text-[18px]">content_copy</span>
@@ -737,7 +757,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
           </button>
           <button
             v-if="canDelete"
-            class="px-4 py-2.5 bg-white text-absa-passion border border-red-200 rounded-sm hover:bg-red-50 transition-colors text-xs font-bold flex items-center gap-2"
+            class="px-4 py-2 bg-transparent text-red-600 border border-red-200 rounded-none hover:bg-red-50 hover:border-red-400 transition-all text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2"
             :disabled="deleting"
             @click="askDelete"
           >
@@ -748,11 +768,13 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
       </div>
 
       <!-- ═══ Customer identity header ═══ -->
-      <section class="bg-white border border-gray-300 rounded-sm mb-5">
+      <section class="bg-white border border-gray-200 rounded-none shadow-sm mb-5 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+        <div class="relative z-10">
         <div class="p-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div class="flex items-start gap-4 min-w-0">
             <div
-              class="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-bold shrink-0"
+              class="w-16 h-16 rounded-none border border-white/20 shadow-inner flex items-center justify-center text-white text-xl font-bold font-mono shrink-0"
               :style="{ background: stateColor }"
             >{{ initials }}</div>
             <div class="min-w-0">
@@ -761,10 +783,10 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
                 <CustomerStatePill :state="state" />
                 <span
                   v-if="clientTier"
-                  class="text-[10px] font-bold uppercase tracking-wide text-gray-500 border border-gray-300 rounded-sm px-2 py-0.5"
+                  class="text-[9px] font-mono font-bold uppercase tracking-widest text-gray-500 border border-gray-200 rounded-none px-2 py-0.5 bg-gray-50"
                 >{{ clientTier }}</span>
               </div>
-              <h1 class="text-xl font-headline font-semibold text-absa-enrich leading-tight mt-1.5">{{ displayName }}</h1>
+              <h1 class="text-xl font-bold font-display uppercase tracking-tight text-gray-900 leading-tight mt-1.5">{{ displayName }}</h1>
               <p class="text-[11px] text-gray-500 mt-1">
                 <span v-if="ageText">{{ ageText }} · </span>
                 Profile snapshot {{ fmtDate(profile?.snapshot_date || computedAt) }}
@@ -774,17 +796,17 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <dl class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-3 shrink-0">
             <div v-for="f in detailFields" :key="f.label">
-              <dt class="text-[10px] font-bold uppercase tracking-wide text-gray-400">{{ f.label }}</dt>
-              <dd class="text-xs font-semibold text-absa-enrich mt-0.5 break-words">{{ f.value }}</dd>
+              <dt class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">{{ f.label }}</dt>
+              <dd class="text-xs font-bold text-gray-900 mt-0.5 break-words font-display">{{ f.value }}</dd>
             </div>
           </dl>
         </div>
 
         <!-- Headline facts -->
-        <div class="border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5">
+        <div class="border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 bg-gray-50/40">
           <!-- Account number -->
           <div class="px-5 py-4 border-b border-gray-200 sm:border-b-0 sm:border-r xl:border-r border-gray-200">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Account Number</p>
+            <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Account Number</p>
             <p
               class="mt-1 text-sm font-bold font-mono break-all"
               :class="accountNumber ? 'text-absa-enrich' : 'text-gray-400 font-normal italic'"
@@ -794,7 +816,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <!-- NRC -->
           <div class="px-5 py-4 border-b border-gray-200 sm:border-b-0 sm:border-r xl:border-r border-gray-200">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">ID Number (NRC)</p>
+            <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">ID Number (NRC)</p>
             <p
               class="mt-1 text-sm font-bold font-mono break-all"
               :class="nationalId ? 'text-absa-enrich' : 'text-gray-400 font-normal italic'"
@@ -806,7 +828,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <!-- Tenure -->
           <div class="px-5 py-4 border-b border-gray-200 sm:border-b-0 sm:border-r xl:border-r border-gray-200">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Tenure</p>
+            <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Tenure</p>
             <p
               class="mt-1 text-sm font-bold"
               :class="tenureText ? 'text-absa-enrich' : 'text-gray-400 font-normal italic'"
@@ -816,7 +838,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <!-- Assigned RM -->
           <div class="px-5 py-4 border-b border-gray-200 sm:border-b-0 sm:border-r xl:border-r border-gray-200">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Assigned RM</p>
+            <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Assigned RM</p>
             <p
               class="mt-1 text-sm font-bold"
               :class="assignedRm ? 'text-absa-enrich' : 'text-gray-400 font-normal italic'"
@@ -826,7 +848,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <!-- Health score -->
           <div class="px-5 py-4">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Health Score</p>
+            <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Health Score</p>
             <div class="flex items-baseline gap-1 mt-1">
               <span
                 class="text-lg font-bold font-mono leading-none"
@@ -834,8 +856,8 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
               >{{ hasHealth ? Math.round(ringValue) : '—' }}</span>
               <span v-if="hasHealth" class="text-[11px] text-gray-400">/ 100</span>
             </div>
-            <div class="h-1 bg-gray-200 rounded-full overflow-hidden mt-2">
-              <div class="h-full rounded-full transition-all" :style="{ width: (hasHealth ? ringValue : 0) + '%', background: ringColor }"></div>
+            <div class="h-1 bg-gray-200 rounded-none overflow-hidden mt-2">
+              <div class="h-full rounded-none transition-all" :style="{ width: (hasHealth ? ringValue : 0) + '%', background: ringColor }"></div>
             </div>
             <p
               class="text-[11px] font-semibold mt-1"
@@ -843,13 +865,16 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             >{{ healthTileLabel }}</p>
           </div>
         </div>
+        </div>
       </section>
 
       <!-- ── Predictive insights / risk drivers ── -->
       <div class="grid grid-cols-12 gap-4 mb-5">
-        <section class="col-span-12 lg:col-span-6 bg-white border border-gray-300 rounded-sm p-5">
+        <section class="col-span-12 lg:col-span-6 bg-white border border-gray-200 rounded-none shadow-sm p-5 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+          <div class="relative z-10">
           <div class="flex items-center justify-between mb-1">
-            <h2 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Predictive Insights</h2>
+            <div class="flex items-center gap-2"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Predictive Insights</h2></div>
             <span v-if="profile?.snapshot_date || computedAt" class="text-[10px] text-gray-400">
               Updated {{ fmtDate(profile?.snapshot_date || computedAt) }}
             </span>
@@ -907,37 +932,43 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
                   <span class="text-gray-500 font-semibold">{{ m.label }}</span>
                   <span class="font-bold" :style="{ color: m.color }">{{ m.value }}</span>
                 </div>
-                <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div class="h-full rounded-full" :style="{ width: m.pct + '%', background: m.color }"></div>
+                <div class="h-1.5 bg-gray-100 rounded-none overflow-hidden">
+                  <div class="h-full rounded-none" :style="{ width: m.pct + '%', background: m.color }"></div>
                 </div>
               </div>
             </div>
           </div>
+          </div>
         </section>
 
         <!-- Key risk drivers -->
-        <section class="col-span-12 lg:col-span-6 bg-white border border-gray-300 rounded-sm p-5">
-          <h2 class="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-4">Key Risk Drivers</h2>
+        <section class="col-span-12 lg:col-span-6 bg-white border border-gray-200 rounded-none shadow-sm p-5 relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+          <div class="relative z-10">
+          <div class="flex items-center gap-2 mb-4"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Key Risk Drivers</h2></div>
           <div v-if="riskDrivers.length" class="space-y-4">
             <div v-for="d in riskDrivers" :key="d.label">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-absa-enrich">{{ d.label }}</span>
                 <span class="text-[11px] font-bold font-mono" :style="{ color: d.color }">{{ d.value }}</span>
               </div>
-              <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden mb-1.5">
-                <div class="h-full rounded-full" :style="{ width: d.pct + '%', background: d.color }"></div>
+              <div class="h-1.5 bg-gray-100 rounded-none overflow-hidden mb-1.5">
+                <div class="h-full rounded-none" :style="{ width: d.pct + '%', background: d.color }"></div>
               </div>
               <p class="text-[11px] text-gray-500 leading-snug">{{ d.detail }}</p>
             </div>
           </div>
           <p v-else class="text-xs text-gray-500">No material risk drivers detected for this customer.</p>
+          </div>
         </section>
       </div>
 
       <!-- Lifecycle journey -->
-      <section class="bg-white border border-gray-300 rounded-sm p-5 mb-5">
+      <section class="bg-white border border-gray-200 rounded-none shadow-sm p-5 mb-5 relative overflow-hidden">
+        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+        <div class="relative z-10">
         <div class="flex items-center justify-between mb-1">
-          <h2 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Lifecycle Journey (12 Months)</h2>
+          <div class="flex items-center gap-2"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Lifecycle Journey (12 Months)</h2></div>
           <span class="text-[10px] text-gray-400">{{ journeyNodes.length }} snapshots</span>
         </div>
         <div v-if="journeyNodes.length" class="mt-6 overflow-x-auto pb-2">
@@ -945,7 +976,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             <template v-for="(n, i) in journeyNodes" :key="i">
               <div class="flex flex-col items-center flex-1 min-w-[92px]">
                 <div
-                  class="w-4 h-4 rounded-full border-2"
+                  class="w-3.5 h-3.5 rounded-none border-2"
                   :style="{ borderColor: n.color, background: n.isCurrent ? n.color : '#ffffff' }"
                 ></div>
                 <div class="text-[11px] font-bold mt-2" :style="{ color: n.color }">{{ n.isCurrent ? 'Current' : n.when }}</div>
@@ -960,12 +991,13 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
           </div>
         </div>
         <p v-else class="text-xs text-gray-500 mt-4">No lifecycle history recorded for this customer.</p>
+        </div>
       </section>
 
       <!-- Next best action + action history -->
       <div class="grid grid-cols-12 gap-4">
         <section
-          class="col-span-12 lg:col-span-4 rounded-sm p-5 text-white"
+          class="col-span-12 lg:col-span-4 rounded-none p-5 text-white bg-[#0F172A] border border-gray-800 shadow-sm relative overflow-hidden flex flex-col justify-between"
           style="background: linear-gradient(135deg, #77021E 0%, #3d0110 55%, #131010 100%)"
         >
           <div class="flex items-center justify-between mb-4">
@@ -975,7 +1007,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             </span>
           </div>
           <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-full bg-white/10 border border-white/30 flex items-center justify-center shrink-0">
+            <div class="w-12 h-12 rounded-none bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-[26px]">{{ nba.icon }}</span>
             </div>
             <div class="min-w-0">
@@ -987,7 +1019,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
           <div class="flex items-center gap-2 mt-5">
             <button
               :disabled="nbaDismissed"
-              class="flex-1 bg-white/95 text-absa-inspire text-xs font-bold py-2.5 px-4 rounded-sm hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              class="flex-1 bg-white text-absa-passion border border-white hover:bg-gray-100 text-xs font-mono font-bold tracking-widest uppercase rounded-none py-2 px-3 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               @click="logAction"
             >
               <span class="material-symbols-outlined text-[18px]">call</span>
@@ -995,32 +1027,41 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             </button>
             <button
               :disabled="nbaDismissed"
-              class="flex-1 border border-white/40 text-white text-xs font-bold py-2.5 px-4 rounded-sm hover:bg-white/10 transition-colors disabled:opacity-50"
+              class="flex-1 bg-transparent text-white border border-white/30 hover:border-white text-xs font-mono font-bold tracking-widest uppercase rounded-none py-2 px-3 transition-all disabled:opacity-50"
               @click="dismissAction"
             >{{ nbaDismissed ? 'Dismissed' : 'Dismiss' }}</button>
           </div>
         </section>
 
         <!-- Interaction History / Next of Kin Tabs -->
-        <section class="col-span-12 lg:col-span-8 bg-white border border-gray-300 rounded-sm p-5 flex flex-col">
-          <!-- Tabs Header -->
-          <div class="flex items-center gap-4 border-b border-gray-200 mb-4 pb-2">
-            <button
-              class="text-[11px] font-bold uppercase tracking-wider px-2 py-1 transition-colors"
-              :class="activeTab === 'interactions' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
-              @click="activeTab = 'interactions'"
-            >
-              Interaction History
-            </button>
-            <button
-              class="text-[11px] font-bold uppercase tracking-wider px-2 py-1 transition-colors"
-              :class="activeTab === 'nok' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
-              @click="activeTab = 'nok'"
-            >
-              Next of Kin
-            </button>
+        <section class="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-none shadow-sm p-5 flex flex-col relative overflow-hidden">
+          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col flex-1">
+                      <!-- Tabs Header -->
+            <div class="flex items-center gap-4 border-b border-gray-200 mb-4 pb-2">
+              <button
+                class="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all"
+                :class="activeTab === 'interactions' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+                @click="activeTab = 'interactions'"
+              >
+                Interaction History
+              </button>
+              <button
+                class="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all flex items-center gap-1"
+                :class="activeTab === 'omni' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+                @click="activeTab = 'omni'"
+              >
+                <span class="material-symbols-outlined text-[14px]">headset_mic</span> Omnichannel
+              </button>
+              <button
+                class="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all"
+                :class="activeTab === 'nok' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+                @click="activeTab = 'nok'"
+              >
+                Next of Kin
+              </button>
             <div class="ml-auto flex items-center gap-2">
-              <button class="bg-absa-passion text-white text-[10px] font-bold px-3 py-1.5 rounded-sm hover:bg-absa-power transition-colors flex items-center gap-1" @click="showEngagementModal = true">
+              <button class="bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all flex items-center gap-1" @click="showEngagementModal = true">
                 <span class="material-symbols-outlined text-[14px]">add</span>
                 Log Engagement
               </button>
@@ -1030,7 +1071,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
           <!-- Interaction History Tab -->
           <div v-if="activeTab === 'interactions'" class="flex-1">
             <div class="flex items-center justify-between mb-4">
-              <select v-model="historyFilter" class="border border-gray-300 rounded-sm px-2 py-1 text-[11px] font-semibold text-absa-enrich outline-none ml-auto">
+              <select v-model="historyFilter" class="border border-gray-200 rounded-none px-2 py-1 text-[10px] font-mono font-bold uppercase text-gray-600 bg-white outline-none focus:border-absa-passion ml-auto">
                 <option value="">All</option>
                 <option v-for="t in historyTypes" :key="t" :value="t">{{ t }}</option>
               </select>
@@ -1038,7 +1079,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             <div v-if="filteredHistory.length" class="space-y-4 max-h-[280px] overflow-y-auto pr-1">
               <div v-for="h in filteredHistory" :key="h.id" class="flex gap-3">
                 <div class="flex flex-col items-center pt-1">
-                  <div class="w-2.5 h-2.5 rounded-full" :style="{ background: tierColor('power') }"></div>
+                  <div class="w-2 h-2 rounded-none" :style="{ background: tierColor('power') }"></div>
                   <div class="w-[1px] flex-1 bg-gray-200 mt-1"></div>
                 </div>
                 <div class="pb-1 min-w-0">
@@ -1068,36 +1109,101 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
             />
           </div>
 
-          <!-- Next of Kin Tab -->
+          
+            <!-- Omnichannel Tab (FR-D-001) -->
+            <div v-if="activeTab === 'omni'" class="flex-1 pt-2 flex flex-col gap-4">
+              <!-- Cisco Finesse Incoming Call Mock (FR-V-003) -->
+              <div class="bg-blue-50 border border-blue-200 p-4 rounded-sm flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 animate-pulse">
+                    <span class="material-symbols-outlined">call</span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-blue-900 uppercase tracking-widest">Incoming Call - Cisco Finesse</p>
+                    <p class="text-sm font-bold text-blue-800">{{ profile?.mobile_number || '0970000000' }}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-bold uppercase text-blue-600">Priority Tier</p>
+                  <p class="text-xs font-bold text-blue-900">{{ profile?.market_segment || 'Standard' }} (Auto-matched via ANI)</p>
+                  <p class="text-[10px] text-blue-700 mt-1">Linked Cases: <span class="font-mono">CAS-00124</span></p>
+                </div>
+                <div class="flex gap-2">
+                  <button class="bg-blue-600 text-white px-3 py-1.5 rounded-sm text-xs font-bold hover:bg-blue-700">Answer</button>
+                  <button class="bg-red-500 text-white px-3 py-1.5 rounded-sm text-xs font-bold hover:bg-red-600">Reject</button>
+                </div>
+              </div>
+
+              <!-- Unified Desktop Layout -->
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Case Management (FR-T-001) -->
+                <div class="border border-gray-200 rounded-sm">
+                  <div class="bg-gray-50 border-b border-gray-200 px-3 py-2">
+                    <h4 class="text-xs font-bold text-absa-enrich">Active Tickets / Cases</h4>
+                  </div>
+                  <div class="p-3">
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-sm border border-gray-100 mb-2">
+                      <div>
+                        <p class="text-[11px] font-bold text-absa-enrich">CAS-00124 <span class="bg-red-100 text-red-600 px-1 rounded-sm text-[9px]">> 2 Days</span></p>
+                        <p class="text-[10px] text-gray-500">Unresolved charge dispute</p>
+                      </div>
+                      <button class="text-[10px] bg-white border border-gray-300 px-2 py-1 rounded-sm hover:bg-gray-50">Open</button>
+                    </div>
+                    <button class="w-full text-[11px] text-absa-passion font-bold border border-absa-passion py-1.5 rounded-sm hover:bg-absa-passion/5">
+                      + Create New Ticket
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Messaging Templates (FR-A-003, FR-S-001) -->
+                <div class="border border-gray-200 rounded-sm">
+                  <div class="bg-gray-50 border-b border-gray-200 px-3 py-2">
+                    <h4 class="text-xs font-bold text-absa-enrich">Quick Responses (SMS/WhatsApp)</h4>
+                  </div>
+                  <div class="p-3 space-y-2">
+                    <button class="w-full text-left bg-gray-50 p-2 border border-gray-200 rounded-sm hover:border-gray-300 group">
+                      <p class="text-[11px] font-bold text-absa-enrich">Holding Response Template</p>
+                      <p class="text-[10px] text-gray-500 mt-0.5 group-hover:text-gray-700">"Your query CAS-00124 is taking longer than expected..."</p>
+                    </button>
+                    <button class="w-full text-left bg-gray-50 p-2 border border-gray-200 rounded-sm hover:border-gray-300 group">
+                      <p class="text-[11px] font-bold text-absa-enrich">Resolution Template</p>
+                      <p class="text-[10px] text-gray-500 mt-0.5 group-hover:text-gray-700">"Your query CAS-00124 has been resolved. Please contact..."</p>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Next of Kin Tab -->
           <div v-if="activeTab === 'nok'" class="flex-1 pt-2">
-            <div v-if="nextOfKin" class="grid grid-cols-2 gap-6 bg-gray-50 p-4 border border-gray-200 rounded-sm">
+            <div v-if="nextOfKin" class="grid grid-cols-2 gap-4 bg-gray-50/70 p-4 border border-gray-200 rounded-none">
               <div>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Name</p>
+                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Name</p>
                 <p class="mt-1 text-sm font-bold text-absa-enrich">{{ nextOfKin.name }}</p>
               </div>
               <div>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Relationship</p>
+                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Relationship</p>
                 <p class="mt-1 text-sm font-bold text-absa-enrich">{{ nextOfKin.relation }}</p>
               </div>
               <div>
-                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Phone</p>
+                <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Phone</p>
                 <p class="mt-1 text-sm font-bold font-mono text-absa-enrich">{{ nextOfKin.phone }}</p>
               </div>
             </div>
             <p v-else class="text-xs text-gray-500">No Next of Kin data available.</p>
           </div>
+          </div>
         </section>
       </div>
     </template>
 
-    <!-- Destructive-action confirmation. Deleting is soft and reversible: the
-         record is retained and can be restored from My Customers. -->
+    <!-- Destructive-action confirmation: permanent deletion cannot be undone. -->
     <ConfirmDialog
       :open="confirmOpen"
-      title="Delete customer"
-      :message="`Remove ${displayName} (${customerId}) from the portfolio?\n\nThe record is hidden from every list, score and report, and this is recorded in the audit trail. You can restore it from My Customers.`"
-      eyebrow="Soft delete — reversible"
-      confirm-label="Delete customer"
+      title="Delete customer permanently"
+      :message="`Are you sure you want to permanently delete ${displayName} (${customerId})?\n\nAll customer records, accounts, cards, loans, transactions, and predictive metrics will be permanently removed from the database.\n\nThis action is irreversible and cannot be undone.`"
+      eyebrow="Permanent delete — cannot be undone"
+      confirm-label="Delete Permanently"
       busy-label="Deleting…"
       :busy="deleting"
       variant="danger"
@@ -1136,8 +1242,24 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
           detail: payload.notes || 'Engagement logged by RM.',
           meta: payload
         })
-        actionLog = [entry, ...actionLog]
+        actionLog.value = [entry, ...actionLog.value]
       }"
     />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.mesh-background {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
+  background-size: 38px 38px;
+}
+.dotted-pattern {
+  background-image: radial-gradient(#DC0037 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.04;
+}
+</style>

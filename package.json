@@ -43,6 +43,7 @@
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.14.0",
     "idb": "^8.0.3",
+    "js-yaml": "^5.4.2",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",

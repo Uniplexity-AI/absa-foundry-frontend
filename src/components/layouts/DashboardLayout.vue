@@ -20,9 +20,9 @@
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                 <span class="text-body-md font-medium">Dashboard</span>
               </router-link>
-              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/customers" active-class="!bg-[#a40022] !text-white !font-semibold">
+              <router-link v-if="canAnalytics" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/crm" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">group</span>
-                <span class="text-body-md font-medium">My Customers</span>
+                <span class="text-body-md font-medium">CRM</span>
               </router-link>
               <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/branch-manager" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">store</span>
@@ -51,6 +51,10 @@
               <router-link v-if="canModels" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/models" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">monitoring</span>
                 <span class="text-body-md font-medium">Model Performance</span>
+              </router-link>
+              <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-pipeline" active-class="!bg-[#a40022] !text-white !font-semibold">
+                <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                <span class="text-body-md font-medium">Data Pipeline</span>
               </router-link>
               <router-link v-if="canEtl" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/etl-run-history" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">schedule</span>
@@ -191,7 +195,7 @@
           </div>
         </div>
       </div>
-      <div class="absa-content pt-14">
+      <div class="absa-content pt-20">
         <router-view />
       </div>
     </main>

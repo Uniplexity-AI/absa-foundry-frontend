@@ -122,6 +122,24 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm', 'cancel', 'close']);
 
+import { onErrorCaptured, onMounted } from 'vue';
+
+onErrorCaptured((err, instance, info) => {
+  console.error('[ConfirmDialog] Captured error:', err, 'Info:', info);
+  return false;
+});
+
+onMounted(() => {
+  console.log('[ConfirmDialog] onMounted called. Props:', {
+    open: props.open,
+    title: props.title,
+    message: props.message,
+    variant: props.variant,
+    busy: props.busy,
+    confirmLabel: props.confirmLabel,
+  });
+});
+
 const dialogId = Math.random().toString(36).slice(2, 10);
 const titleId = `confirm-dialog-title-${dialogId}`;
 const descriptionId = `confirm-dialog-description-${dialogId}`;
@@ -163,15 +181,18 @@ const iconBoxClasses = computed(() => variantConfig.value.iconBoxClasses);
 const confirmButtonClasses = computed(() => variantConfig.value.confirmButtonClasses);
 
 const handleConfirm = () => {
+  console.log('[ConfirmDialog] User confirmed action');
   emit('confirm');
 };
 
 const handleCancel = () => {
+  console.log('[ConfirmDialog] User cancelled dialog');
   emit('cancel');
   emit('close');
 };
 
 const handleClose = () => {
+  console.log('[ConfirmDialog] User closed dialog');
   emit('close');
 };
 </script>

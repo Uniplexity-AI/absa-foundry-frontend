@@ -157,6 +157,30 @@ fetch('/version.json?t=' + Date.now())
   })
   .catch(() => {/* version.json may not exist in dev */});
 
+// Global error handlers for diagnostics
+app.config.errorHandler = (err, vm, info) => {
+  console.error('🚨 [Vue Global Error]', {
+    error: err,
+    info,
+    componentName: vm?.$options?.name || vm?.$options?.__name,
+    component: vm,
+  });
+};
+
+window.addEventListener('error', (event) => {
+  console.error('🚨 [Window Uncaught Error]', {
+    message: event?.message,
+    filename: event?.filename,
+    lineno: event?.lineno,
+    colno: event?.colno,
+    error: event?.error,
+  });
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('🚨 [Unhandled Promise Rejection]', event?.reason);
+});
+
 // Mount the app
 app.mount('#app');
 

@@ -167,3 +167,14 @@ export async function triggerETLPipeline(configName, dryRun = false) {
   })
   return _handleRes(res)
 }
+
+/**
+ * Fetch database metadata for ETL visual builder
+ */
+export async function fetchDatabaseMetadata() {
+  const res = await fetch(`${API_BASE_URL}/api/etl/metadata/tables`, {
+    method: 'GET',
+    headers: _headers(),
+  })
+  return _handleRes(res)
+}

@@ -62,7 +62,10 @@ const routes = [
 
       // ── CRM — RM + ADMIN ──
       { path: 'crm',                 name: 'CrmModule',           component: () => import('../views/Modules/crm/CRMModule.vue'),           meta: { requiresRoles: [ADMIN, RM], title: 'CRM' } },
-      { path: 'crm/leads',           name: 'CrmLeads',            component: () => import('../views/Modules/crm/CRMLeadsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },
+      { path: 'crm/workspace',       name: 'CrmWorkspace', component: () => import('../views/Modules/crm/CRMOmnichannelWorkspace.vue'), meta: { requiresRoles: [ADMIN, RM] } },
+      { path: 'crm/analytics', name: 'CrmAnalytics', component: () => import('../views/Modules/crm/CRMAnalyticsDashboard.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Analytics' } },
+      { path: 'crm/tickets', name: 'CrmTickets', component: () => import('../views/Modules/crm/CRMTicketsPage.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Tickets' } },
+      { path: 'crm/leads', name: 'CrmLeads',            component: () => import('../views/Modules/crm/CRMLeadsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },
       { path: 'crm/pipeline',        name: 'CrmPipeline',         component: () => import('../views/Modules/crm/CRMPipelinePage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
       { path: 'crm/contacts',        name: 'CrmContacts',         component: () => import('../views/Modules/crm/CRMContactsPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
       { path: 'crm/accounts',        name: 'CrmAccounts',         component: () => import('../views/Modules/crm/CRMAccountsPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
@@ -144,6 +147,12 @@ router.beforeEach(async (to) => {
   }
 
   return true
+})
+
+router.onError((error) => {
+  if (/Failed to fetch dynamically imported module/.test(error?.message)) {
+    window.location.reload()
+  }
 })
 
 export default router

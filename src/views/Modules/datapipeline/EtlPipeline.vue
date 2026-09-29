@@ -21,12 +21,90 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export Logs
         </button>
-        <button class="absa-etl__btn absa-etl__btn--primary">
+        <button class="absa-etl__btn absa-etl__btn--primary" @click="openPipelineRunner">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           Trigger Manual Run
         </button>
       </div>
     </div>
+
+
+    <!-- ═══ Pipeline Runner Modal ═══ -->
+    <Teleport to="body">
+      <div v-if="showRunModal" class="pr-overlay" @click.self="closeRunModal">
+        <div class="pr-modal">
+          <!-- Modal Header -->
+          <div class="pr-modal__header">
+            <div>
+              <h2 class="pr-modal__title">Run AI Pipeline</h2>
+              <p class="pr-modal__sub">Runs Feature Engine → State Engine → Predictions in sequence for the selected date.</p>
+            </div>
+            <button class="pr-modal__close" @click="closeRunModal" :disabled="isRunning">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <!-- Date Picker -->
+          <div class="pr-modal__date-row">
+            <label class="pr-modal__label">As-of Date</label>
+            <input
+              v-model="runDate"
+              type="date"
+              class="pr-modal__date-input"
+              :disabled="isRunning"
+              :max="todayStr"
+            />
+            <span class="pr-modal__date-hint">Defaults to today. Predictions are keyed by this date.</span>
+          </div>
+
+          <!-- Steps -->
+          <div class="pr-modal__steps">
+            <div
+              v-for="step in pipelineSteps"
+              :key="step.id"
+              class="pr-step"
+              :class="`pr-step--${step.status}`"
+            >
+              <div class="pr-step__icon">
+                <!-- idle -->
+                <svg v-if="step.status === 'idle'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg>
+                <!-- running -->
+                <svg v-else-if="step.status === 'running'" class="pr-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                <!-- done -->
+                <svg v-else-if="step.status === 'done'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <!-- error -->
+                <svg v-else-if="step.status === 'error'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="pr-step__body">
+                <div class="pr-step__name">{{ step.label }}</div>
+                <div class="pr-step__detail" v-if="step.detail">{{ step.detail }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Overall Result -->
+          <div v-if="runResult" class="pr-modal__result" :class="runResult.ok ? 'pr-modal__result--ok' : 'pr-modal__result--err'">
+            <svg v-if="runResult.ok" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ runResult.message }}
+          </div>
+
+          <!-- Actions -->
+          <div class="pr-modal__actions">
+            <button class="absa-etl__btn absa-etl__btn--outline" @click="closeRunModal" :disabled="isRunning">Cancel</button>
+            <button
+              class="absa-etl__btn absa-etl__btn--primary"
+              @click="startPipeline"
+              :disabled="isRunning || !!runResult?.ok"
+            >
+              <svg v-if="!isRunning" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg v-else class="pr-spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              {{ isRunning ? 'Running…' : runResult?.ok ? 'Done' : 'Run Pipeline' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
 
     <!-- ═══ System Health Cards ═══ -->
     <LoadingSkeleton v-if="loading" type="stats" />
@@ -216,11 +294,22 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import { useETLStore } from '@/stores/etlStore'
+import { useSnapshotStore } from '@/stores/snapshotStore'
+import { API_BASE_URL } from '@/services/api'
 
 const store = useETLStore()
+const snapshotStore = useSnapshotStore()
 const loading = computed(() => store.loading)
+
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 300000 })
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 
 // ── System Health from KPIs ──
 const pgStatus = computed(() => store.statusPanel?.current_status || '--')
@@ -282,6 +371,100 @@ const executionHistory = computed(() =>
 // ── Bottom Stats ──
 const totalRuns = computed(() => store.totalRuns || '--')
 const failedRetries = computed(() => store.kpis?.failed_runs || 0)
+
+// ────────────────────────────────────────────────────────────────
+// Pipeline Runner
+// ────────────────────────────────────────────────────────────────
+const todayStr = new Date().toISOString().slice(0, 10)
+const showRunModal = ref(false)
+const isRunning = ref(false)
+const runDate = ref(todayStr)
+const runResult = ref(null)
+
+const pipelineSteps = ref([
+    { id: 'extraction',  label: '1 A Data Extraction', detail: '', status: 'idle' },
+    { id: 'features',    label: '2 A Feature Engine',  detail: '', status: 'idle' },
+    { id: 'states',      label: '3 A State Engine',    detail: '', status: 'idle' },
+    { id: 'predictions', label: '4 A Prediction Batch', detail: '', status: 'idle' },
+  ])
+
+function resetSteps() {
+  pipelineSteps.value.forEach(s => { s.status = 'idle'; s.detail = '' })
+  runResult.value = null
+}
+
+function openPipelineRunner() {
+  resetSteps()
+  showRunModal.value = true
+}
+
+function closeRunModal() {
+  if (isRunning.value) return
+  showRunModal.value = false
+}
+
+async function startPipeline() {
+  if (isRunning.value) return
+  isRunning.value = true
+  resetSteps()
+  const date = runDate.value
+
+  const stepConfigs = [
+    {
+      id: 'extraction',
+      label: 'Data Extraction',
+      call: () => api.post('/api/etl/trigger', { config_name: 'customer_360.yaml', sync: true }),
+      summary: (d) => `Extraction triggered (Config: ${d?.config_name ?? 'customer_360.yaml'})`,
+    },
+    {
+      id: 'features',
+      label: 'Feature Engine',
+      call: () => api.post('/features/compute-batch', null, { params: { as_of_date: date } }),
+      summary: (d) => `${d?.customers_processed ?? d?.rows_processed ?? '?'} customers processed`,
+    },
+    {
+      id: 'states',
+      label: 'State Engine',
+      call: () => api.post('/api/v1/customers/compute-states', null, { params: { as_of_date: date } }),
+      summary: (d) => `${d?.customers_processed ?? '?'} classified, ${d?.states_upserted ?? '?'} upserted`,
+    },
+    {
+      id: 'predictions',
+      label: 'Prediction Batch',
+      call: () => api.post('/api/v1/predictions/batch', null, { params: { as_of_date: date } }),
+      summary: (d) => `${d?.customers_scored ?? '?'} customers scored`,
+    },
+  ]
+
+  let allOk = true
+  for (const cfg of stepConfigs) {
+    const step = pipelineSteps.value.find(s => s.id === cfg.id)
+    step.status = 'running'
+    step.detail = 'In progress…'
+    try {
+      const { data } = await cfg.call()
+      step.status = 'done'
+      step.detail = cfg.summary(data)
+    } catch (e) {
+      step.status = 'error'
+      step.detail = e?.response?.data?.detail || e.message || 'Request failed'
+      allOk = false
+      break
+    }
+  }
+
+  isRunning.value = false
+
+  if (allOk) {
+    runResult.value = { ok: true, message: `Pipeline complete for ${date}. Snapshot selector updated.` }
+    // Refresh snapshot dates so the new date appears in the selector immediately
+    await snapshotStore.fetchAvailable()
+    snapshotStore.setDate(date)
+    store.loadDashboard()
+  } else {
+    runResult.value = { ok: false, message: 'Pipeline stopped at error above. Fix the issue and re-run.' }
+  }
+}
 
 onMounted(() => {
   store.loadDashboard()
@@ -434,4 +617,93 @@ onMounted(() => {
 /* Responsive */
 @media (max-width: 1200px) { .absa-etl__health-grid { grid-template-columns: repeat(2,1fr); } .absa-etl__stats-grid { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 768px) { .absa-etl__health-grid,.absa-etl__stats-grid { grid-template-columns: 1fr; } .absa-etl__header { flex-direction: column; } }
+
+/* ═══ Pipeline Runner Modal ═══ */
+.pr-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: prFadeIn 150ms ease;
+}
+@keyframes prFadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.pr-modal {
+  background: #FFF; border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  width: 440px; max-width: calc(100vw - 32px);
+  padding: 28px; display: flex; flex-direction: column; gap: 20px;
+  animation: prSlideUp 180ms ease;
+}
+@keyframes prSlideUp { from { transform: translateY(12px); opacity: 0 } to { transform: none; opacity: 1 } }
+
+.pr-modal__header { display: flex; justify-content: space-between; align-items: flex-start; }
+.pr-modal__title { font-size: 1.05rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
+.pr-modal__sub { font-size: 0.675rem; color: #9CA3AF; margin: 0; font-family: 'Space Mono', monospace; line-height: 1.5; }
+.pr-modal__close {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid #E8E8EC; border-radius: 8px; background: #FFF; color: #6B7280;
+  cursor: pointer; flex-shrink: 0; margin-left: 12px; transition: all 150ms ease;
+}
+.pr-modal__close:hover { border-color: #BE0F2C; color: #BE0F2C; }
+.pr-modal__close:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.pr-modal__date-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pr-modal__label { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.pr-modal__date-input {
+  padding: 7px 10px; border: 1px solid #E8E8EC; border-radius: 7px;
+  font-size: 0.75rem; font-family: 'Space Mono', monospace; font-weight: 700;
+  color: #111827; background: #F9FAFB; outline: none; cursor: pointer;
+  transition: border-color 150ms ease;
+}
+.pr-modal__date-input:focus { border-color: #BE0F2C; }
+.pr-modal__date-input:disabled { opacity: 0.5; cursor: not-allowed; }
+.pr-modal__date-hint { font-size: 0.6rem; color: #9CA3AF; font-family: 'Space Mono', monospace; }
+
+/* Steps */
+.pr-modal__steps { display: flex; flex-direction: column; gap: 10px; }
+
+.pr-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border-radius: 10px; border: 1px solid #E8E8EC;
+  background: #F9FAFB; transition: all 180ms ease;
+}
+.pr-step--running { border-color: #93C5FD; background: #EFF6FF; }
+.pr-step--done    { border-color: #86EFAC; background: #F0FDF4; }
+.pr-step--error   { border-color: #FCA5A5; background: #FEF2F2; }
+
+.pr-step__icon {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+}
+.pr-step--idle    .pr-step__icon { background: #E5E7EB; color: #9CA3AF; }
+.pr-step--running .pr-step__icon { background: #DBEAFE; color: #2563EB; }
+.pr-step--done    .pr-step__icon { background: #DCFCE7; color: #16A34A; }
+.pr-step--error   .pr-step__icon { background: #FEE2E2; color: #DC2626; }
+
+.pr-step__body { flex: 1; min-width: 0; }
+.pr-step__name { font-size: 0.775rem; font-weight: 800; color: #111827; margin-bottom: 2px; }
+.pr-step--idle .pr-step__name { color: #6B7280; }
+.pr-step__detail { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #6B7280; }
+.pr-step--error .pr-step__detail { color: #DC2626; }
+
+/* Result banner */
+.pr-modal__result {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; border-radius: 10px;
+  font-size: 0.7rem; font-weight: 700; font-family: 'Space Mono', monospace;
+}
+.pr-modal__result--ok  { background: #F0FDF4; color: #16A34A; border: 1px solid #86EFAC; }
+.pr-modal__result--err { background: #FEF2F2; color: #DC2626; border: 1px solid #FCA5A5; }
+
+/* Actions */
+.pr-modal__actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+/* Spinner animation */
+.pr-spin { animation: prSpin 900ms linear infinite; }
+@keyframes prSpin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+
 </style>
+
+
+

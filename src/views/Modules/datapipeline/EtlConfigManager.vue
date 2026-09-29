@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   fetchETLConfigs,
   fetchETLConfigContent,
@@ -9,16 +10,18 @@ import {
   triggerETLPipeline,
 } from '@/services/etlApi'
 import { notify } from '@/utils/absaExport'
+import EtlVisualBuilder from './EtlVisualBuilder.vue'
 
-// Tab & Search State
-const activeTab = ref('configurations')
+const router = useRouter()
+
+// Search State
 const searchQuery = ref('')
 const isSaving = ref(false)
 
 // Editor view state: null = show configs table, config object = show editor
 const editorView = ref(null)
 const editingConfig = ref(null)
-const editorMode = ref('edit') // 'edit' | 'preview'
+const editorMode = ref('visual') // 'visual' | 'edit' | 'preview'
 const isNewConfig = ref(false)
 
 // Config Specifications Data (loaded from the backend extraction_specs dir)
@@ -166,7 +169,7 @@ async function runConfig(config) {
   try {
     const res = await triggerETLPipeline(name)
     notify(`${res.message || `Pipeline triggered — ${name}`}`, 'success', { autoClose: 5000 })
-    activeTab.value = 'run_history'
+    router.push('/dashboard/etl-run-history')
   } catch (e) {
     notify(`Failed to run "${name}" — ${e.message || 'backend error'}`, 'error')
   }
@@ -207,39 +210,18 @@ onMounted(() => {
         </div>
         <h1 class="text-headline-md font-headline font-semibold text-absa-enrich">ETL Config Manager</h1>
       </div>
-    </div>
-
-    <!-- ═══ Tabbed Navigation ═══ -->
-    <div class="flex border-b border-gray-300 mb-6">
-      <button 
-        @click="activeTab = 'run_history'"
-        :class="[
-          'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
-          activeTab === 'run_history' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-on-surface-variant hover:text-[#DC0037]'
-        ]"
-      >
-        <span class="material-symbols-outlined text-[20px]">history</span>
-        Run History
-      </button>
-      <button 
-        @click="activeTab = 'configurations'"
-        :class="[
-          'px-6 py-3 text-body-lg flex items-center gap-2 transition-colors',
-          activeTab === 'configurations' ? 'font-bold text-[#DC0037] border-b-2 border-[#DC0037]' : 'font-medium text-on-surface-variant hover:text-[#DC0037]'
-        ]"
-      >
-        <span 
-          class="material-symbols-outlined text-[20px]" 
-          :style="{ fontVariationSettings: activeTab === 'configurations' ? '\'FILL\' 1' : '\'FILL\' 0' }"
-        >description</span>
-        Configurations
-      </button>
+      <div class="flex items-center gap-3">
+        <router-link to="/dashboard/etl-run-history" class="px-4 py-2 bg-absa-serene text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors font-label text-sm font-semibold shadow-none">
+          <span class="material-symbols-outlined text-[18px]">history</span>
+          Run History
+        </router-link>
+      </div>
     </div>
 
         <!-- ═══════════════════════════════════════════════ -->
         <!-- Configurations Panel                          -->
         <!-- ═══════════════════════════════════════════════ -->
-        <template v-if="activeTab === 'configurations'">
+        <template v-if="true">
 
           <!-- Editor View: inline GitHub-style YAML editor -->
           <div v-if="editorView" class="bg-white rounded-sm border border-gray-300  shadow-none overflow-hidden flex flex-col relative text-on-surface text-sm min-h-[600px]">
@@ -259,10 +241,11 @@ onMounted(() => {
                 </button>
               </div>
             </div>
-            <!-- Editor Sub-header -->
+              <!-- Editor Sub-header -->
             <div class="flex justify-between items-center px-4 py-2 border-b border-gray-300 bg-white relative z-10">
               <div class="flex gap-2">
-                <button @click="editorMode = 'edit'" :class="['px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md transition-colors', editorMode === 'edit' ? 'text-on-surface bg-white' : 'text-on-surface-variant hover:text-on-surface']">Edit</button>
+                <button @click="editorMode = 'visual'" :class="['px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md transition-colors', editorMode === 'visual' ? 'text-on-surface bg-white' : 'text-on-surface-variant hover:text-on-surface']">Visual Builder</button>
+                <button @click="editorMode = 'edit'" :class="['px-3 py-1.5 text-sm font-medium border border-gray-300 rounded-md transition-colors', editorMode === 'edit' ? 'text-on-surface bg-white' : 'text-on-surface-variant hover:text-on-surface']">Code Editor</button>
                 <button @click="editorMode = 'preview'" :class="['px-3 py-1.5 text-sm font-medium transition-colors', editorMode === 'preview' ? 'text-on-surface bg-white border border-gray-300 rounded-md' : 'text-on-surface-variant hover:text-on-surface']">Preview</button>
               </div>
               <div class="flex gap-4 items-center">
@@ -283,7 +266,10 @@ onMounted(() => {
               </div>
             </div>
             <!-- Editor Body: line numbers + YAML content -->
-            <div class="flex-1 overflow-auto flex bg-transparent font-mono text-[13px] leading-[1.6] relative z-10">
+            <div v-if="editorMode === 'visual'" class="flex-1 overflow-auto bg-gray-50 p-6 relative z-10">
+              <EtlVisualBuilder v-model="editingConfig.content" />
+            </div>
+            <div v-else class="flex-1 overflow-auto flex bg-transparent font-mono text-[13px] leading-[1.6] relative z-10">
               <div class="w-12 flex-shrink-0 text-right pr-4 text-on-surface-variant bg-white-container-low select-none py-4 border-r border-gray-300">
                 <template v-for="(_, i) in editorLines" :key="i">{{ i + 1 }}<br /></template>
               </div>
@@ -386,11 +372,6 @@ onMounted(() => {
             </div>
           </div>
         </template>
-
-        <!-- Run History Panel -->
-        <div v-else class="bg-white rounded-sm border border-gray-300  shadow-none p-8 text-center text-on-surface-variant">
-          <p class="text-body-lg">Run History logs will appear here.</p>
-        </div>
   </div>
 </template>
 

@@ -624,8 +624,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1790672916.4092505,
-    "seen": 1790673067.5344594,
+    "mtime": 1790677623.8043938,
+    "seen": 1790677783.0489361,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },
@@ -2538,9 +2538,9 @@
     "semantic_hash": ""
   },
   "src/stores/snapshotStore.js": {
-    "mtime": 1790168999.692829,
-    "seen": 1790673067.5344594,
-    "ast_hash": "2922fbbd60a0ae7f635bed08544be8f0",
+    "mtime": 1790677618.3299687,
+    "seen": 1790677783.0489361,
+    "ast_hash": "962dda05833847ffe446782704470e66",
     "semantic_hash": ""
   },
   "fix.cjs": {

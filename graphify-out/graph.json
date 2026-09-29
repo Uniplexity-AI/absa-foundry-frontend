@@ -2036,6 +2036,66 @@
       "source_location": "L395"
     },
     {
+      "id": "src_views_mycustomers_churncolor",
+      "label": "churnColor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "churncolor()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L218"
+    },
+    {
+      "id": "src_views_mycustomers_churnof",
+      "label": "churnOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "churnof()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L162"
+    },
+    {
+      "id": "src_views_mycustomers_clvlabel",
+      "label": "clvLabel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "clvlabel()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L175"
+    },
+    {
+      "id": "src_views_mycustomers_clvof",
+      "label": "clvOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "clvof()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L169"
+    },
+    {
+      "id": "src_views_mycustomers_clvpercentilelabel",
+      "label": "clvPercentileLabel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "clvpercentilelabel()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L181"
+    },
+    {
       "id": "src_views_mycustomers_computestates",
       "label": "computeStates()",
       "_callable": true,
@@ -2058,6 +2118,18 @@
       "norm_label": "driftof()",
       "source_file": "src/views/MyCustomers.vue",
       "source_location": "L200"
+    },
+    {
+      "id": "src_views_mycustomers_exportlist",
+      "label": "exportList()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "exportlist()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L271"
     },
     {
       "id": "src_views_mycustomers_forecastof",
@@ -2130,6 +2202,18 @@
       "norm_label": "openprofile()",
       "source_file": "src/views/MyCustomers.vue",
       "source_location": "L255"
+    },
+    {
+      "id": "src_views_mycustomers_recommendedaction",
+      "label": "recommendedAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "recommendedaction()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L245"
     },
     {
       "id": "src_views_mycustomers_reload",
@@ -3236,18 +3320,6 @@
       "source_location": "L781"
     },
     {
-      "id": "src_config_useaudit_useaudit_logaudit",
-      "label": "logAudit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 146,
-      "community_name": "loadLeads",
-      "file_type": "code",
-      "norm_label": "logaudit()",
-      "source_file": "src/config/useAudit.js",
-      "source_location": "L39"
-    },
-    {
       "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_applyadvancedfilters",
       "label": "applyAdvancedFilters()",
       "_callable": true,
@@ -3366,18 +3438,6 @@
       "norm_label": "closeleadmodal()",
       "source_file": "src/views/Modules/crm/composables/CRMModule.js",
       "source_location": "L2145"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_deletecustomer",
-      "label": "deleteCustomer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 146,
-      "community_name": "loadLeads",
-      "file_type": "code",
-      "norm_label": "deletecustomer()",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L2123"
     },
     {
       "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_deletelead",
@@ -4124,30 +4184,6 @@
       "source_location": "L1333"
     },
     {
-      "id": "src_views_modules_settings_subaccountmodule_fetchassignedmodules",
-      "label": "fetchAssignedModules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 150,
-      "community_name": "error",
-      "file_type": "code",
-      "norm_label": "fetchassignedmodules()",
-      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
-      "source_location": "L1707"
-    },
-    {
-      "id": "src_views_modules_settings_subaccountmodule_fetchavailablemodules",
-      "label": "fetchAvailableModules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 150,
-      "community_name": "error",
-      "file_type": "code",
-      "norm_label": "fetchavailablemodules()",
-      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
-      "source_location": "L1694"
-    },
-    {
       "id": "src_views_modules_settings_subaccountmodule_fetchsubaccounts",
       "label": "fetchSubAccounts()",
       "_callable": true,
@@ -4194,18 +4230,6 @@
       "norm_label": "loadsessions()",
       "source_file": "src/views/Modules/settings/SubAccountModule.vue",
       "source_location": "L1444"
-    },
-    {
-      "id": "src_views_modules_settings_subaccountmodule_opendetailsmodal",
-      "label": "openDetailsModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 150,
-      "community_name": "error",
-      "file_type": "code",
-      "norm_label": "opendetailsmodal()",
-      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
-      "source_location": "L1651"
     },
     {
       "id": "src_views_modules_settings_subaccountmodule_refresh",
@@ -4628,6 +4652,18 @@
       "source_location": "L896"
     },
     {
+      "id": "src_stores_snapshotstore_cleandate",
+      "label": "cleanDate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "cleandate()",
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L26"
+    },
+    {
       "id": "src_utils_absaactions_isalertacked",
       "label": "isAlertAcked()",
       "_callable": true,
@@ -4736,6 +4772,18 @@
       "source_location": "L35"
     },
     {
+      "id": "src_composables_useseveritytier_healthtier",
+      "label": "healthTier()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 173,
+      "community_name": "tierColor",
+      "file_type": "code",
+      "norm_label": "healthtier()",
+      "source_file": "src/composables/useSeverityTier.js",
+      "source_location": "L44"
+    },
+    {
       "id": "src_composables_useseveritytier_statetier",
       "label": "stateTier()",
       "_callable": true,
@@ -4784,6 +4832,18 @@
       "source_location": "L476"
     },
     {
+      "id": "src_views_mycustomers_healthcolor",
+      "label": "healthColor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 173,
+      "community_name": "tierColor",
+      "file_type": "code",
+      "norm_label": "healthcolor()",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L214"
+    },
+    {
       "id": "src_views_mycustomers_statecolor",
       "label": "stateColor()",
       "_callable": true,
@@ -4794,6 +4854,114 @@
       "norm_label": "statecolor()",
       "source_file": "src/views/MyCustomers.vue",
       "source_location": "L227"
+    },
+    {
+      "id": "src_composables_useclvbands_getclvbandranges",
+      "label": "getClvBandRanges()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "getclvbandranges()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L107"
+    },
+    {
+      "id": "src_composables_useclvbands_numornull",
+      "label": "_numOrNull()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "_numornull()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "src_composables_useclvbands_rowsfromseed",
+      "label": "_rowsFromSeed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "_rowsfromseed()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L33"
+    },
+    {
+      "id": "src_composables_useclvbands_serializeranges",
+      "label": "serializeRanges()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "serializeranges()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L101"
+    },
+    {
+      "id": "src_composables_useclvbands_useclvbands",
+      "label": "useClvBands()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "useclvbands()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L118"
+    },
+    {
+      "id": "src_composables_useclvbands_useclvbands_apply",
+      "label": "apply()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "apply()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L146"
+    },
+    {
+      "id": "src_composables_useclvbands_useclvbands_persist",
+      "label": "_persist()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "_persist()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L139"
+    },
+    {
+      "id": "src_composables_useclvbands_useclvbands_reset",
+      "label": "reset()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "reset()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L159"
+    },
+    {
+      "id": "src_composables_useclvbands_validaterows",
+      "label": "validateRows()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "validaterows()",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L44"
     },
     {
       "id": "src_views_modules_intelligence_balanceforecast_formataum",
@@ -5396,6 +5564,18 @@
       "source_location": "L954"
     },
     {
+      "id": "src_views_modules_intelligence_customervalueintelligence_runclvpredictions",
+      "label": "runClvPredictions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 176,
+      "community_name": "notify",
+      "file_type": "code",
+      "norm_label": "runclvpredictions()",
+      "source_file": "src/views/Modules/intelligence/CustomerValueIntelligence.vue",
+      "source_location": "L925"
+    },
+    {
       "id": "src_views_modules_intelligence_lifecycleprediction_exportreport",
       "label": "exportReport()",
       "_callable": true,
@@ -5454,30 +5634,6 @@
       "norm_label": "toggleledgerfilter()",
       "source_file": "src/views/PortfolioOverview.vue",
       "source_location": "L507"
-    },
-    {
-      "id": "src_services_customerprofileapi_fetchcustomerprofile",
-      "label": "fetchCustomerProfile()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "fetchcustomerprofile()",
-      "source_file": "src/services/customerProfileApi.js",
-      "source_location": "L30"
-    },
-    {
-      "id": "src_services_customerprofileapi_headers",
-      "label": "_headers()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "_headers()",
-      "source_file": "src/services/customerProfileApi.js",
-      "source_location": "L14"
     },
     {
       "id": "src_views_customerprofile_askdelete",
@@ -5564,6 +5720,18 @@
       "source_location": "L763"
     },
     {
+      "id": "src_views_modules_crm_crmmeetingspage_addmeetingtogooglecalendar",
+      "label": "addMeetingToGoogleCalendar()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "CRMMeetingsPage.vue",
+      "file_type": "code",
+      "norm_label": "addmeetingtogooglecalendar()",
+      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
+      "source_location": "L851"
+    },
+    {
       "id": "src_views_modules_crm_crmmeetingspage_addsavedemail",
       "label": "addSavedEmail()",
       "_callable": true,
@@ -5576,6 +5744,30 @@
       "source_location": "L781"
     },
     {
+      "id": "src_views_modules_crm_crmmeetingspage_closecancelmodal",
+      "label": "closeCancelModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "CRMMeetingsPage.vue",
+      "file_type": "code",
+      "norm_label": "closecancelmodal()",
+      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
+      "source_location": "L639"
+    },
+    {
+      "id": "src_views_modules_crm_crmmeetingspage_confirmcancelmeeting",
+      "label": "confirmCancelMeeting()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "CRMMeetingsPage.vue",
+      "file_type": "code",
+      "norm_label": "confirmcancelmeeting()",
+      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
+      "source_location": "L645"
+    },
+    {
       "id": "src_views_modules_crm_crmmeetingspage_copyfeedurl",
       "label": "copyFeedUrl()",
       "_callable": true,
@@ -5586,6 +5778,18 @@
       "norm_label": "copyfeedurl()",
       "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
       "source_location": "L838"
+    },
+    {
+      "id": "src_views_modules_crm_crmmeetingspage_exportalltogooglecalendar",
+      "label": "exportAllToGoogleCalendar()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "CRMMeetingsPage.vue",
+      "file_type": "code",
+      "norm_label": "exportalltogooglecalendar()",
+      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
+      "source_location": "L869"
     },
     {
       "id": "src_views_modules_crm_crmmeetingspage_fmtmoney",
@@ -5694,6 +5898,18 @@
       "norm_label": "sendcalendarbyemail()",
       "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
       "source_location": "L790"
+    },
+    {
+      "id": "src_views_modules_crm_crmmeetingspage_togcaldate",
+      "label": "toGCalDate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "CRMMeetingsPage.vue",
+      "file_type": "code",
+      "norm_label": "togcaldate()",
+      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
+      "source_location": "L884"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_closerunmodal",
@@ -7352,6 +7568,30 @@
       "source_location": "L292"
     },
     {
+      "id": "src_views_modules_aiagents_aimodule_addhighlight",
+      "label": "addHighlight()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "addhighlight()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L617"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_clearhighlights",
+      "label": "clearHighlights()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "clearhighlights()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L644"
+    },
+    {
       "id": "src_views_modules_aiagents_aimodule_copytoclipboard",
       "label": "copyToClipboard()",
       "_callable": true,
@@ -7362,6 +7602,30 @@
       "norm_label": "copytoclipboard()",
       "source_file": "src/views/Modules/aiagents/AiModule.vue",
       "source_location": "L858"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_createconversation",
+      "label": "createConversation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "createconversation()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L881"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_deleteconversation",
+      "label": "deleteConversation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "deleteconversation()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L941"
     },
     {
       "id": "src_views_modules_aiagents_aimodule_downloadeditedreport",
@@ -7388,6 +7652,30 @@
       "source_location": "L1151"
     },
     {
+      "id": "src_views_modules_aiagents_aimodule_executedemoactions",
+      "label": "executeDemoActions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "executedemoactions()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L655"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_fetchconversations",
+      "label": "fetchConversations()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "fetchconversations()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L869"
+    },
+    {
       "id": "src_views_modules_aiagents_aimodule_fetchsuggestions",
       "label": "fetchSuggestions()",
       "_callable": true,
@@ -7398,6 +7686,18 @@
       "norm_label": "fetchsuggestions()",
       "source_file": "src/views/Modules/aiagents/AiModule.vue",
       "source_location": "L1204"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_findbytext",
+      "label": "findByText()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "findbytext()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L607"
     },
     {
       "id": "src_views_modules_aiagents_aimodule_formatdate",
@@ -7424,6 +7724,18 @@
       "source_location": "L807"
     },
     {
+      "id": "src_views_modules_aiagents_aimodule_handlenewline",
+      "label": "handleNewLine()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "handlenewline()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L820"
+    },
+    {
       "id": "src_views_modules_aiagents_aimodule_loadchathistory",
       "label": "loadChatHistory()",
       "_callable": true,
@@ -7434,6 +7746,102 @@
       "norm_label": "loadchathistory()",
       "source_file": "src/views/Modules/aiagents/AiModule.vue",
       "source_location": "L1192"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_loadconversation",
+      "label": "loadConversation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "loadconversation()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L897"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_parsedemoactions",
+      "label": "parseDemoActions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "parsedemoactions()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L717"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_resizetextarea",
+      "label": "resizeTextarea()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "resizetextarea()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L831"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_savemessagestoconversation",
+      "label": "saveMessagesToConversation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "savemessagestoconversation()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L919"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_scrolltobottom",
+      "label": "scrollToBottom()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "scrolltobottom()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L844"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_sendmessage",
+      "label": "sendMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "sendmessage()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L1053"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_setmessage",
+      "label": "setMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "setmessage()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L839"
+    },
+    {
+      "id": "src_views_modules_aiagents_aimodule_startnewconversation",
+      "label": "startNewConversation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 21,
+      "community_name": "AiModule.vue",
+      "file_type": "code",
+      "norm_label": "startnewconversation()",
+      "source_file": "src/views/Modules/aiagents/AiModule.vue",
+      "source_location": "L933"
     },
     {
       "id": "src_views_modules_aiagents_aimodule_togglepanel",
@@ -10136,42 +10544,6 @@
       "source_location": "L893"
     },
     {
-      "id": "src_components_intelligence_aicampaignmodal_close",
-      "label": "close()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "close()",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L266"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_fetchcohortinsights",
-      "label": "fetchCohortInsights()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "fetchcohortinsights()",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L230"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_launch",
-      "label": "launch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "launch()",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L271"
-    },
-    {
       "id": "src_utils_absaactions_acknowledgealert",
       "label": "acknowledgeAlert()",
       "_callable": true,
@@ -10976,28 +11348,40 @@
       "source_location": "L108"
     },
     {
-      "id": "src_composables_useseveritytier_healthtier",
-      "label": "healthTier()",
+      "id": "src_components_telemetry_markovmatrix_cellcolor",
+      "label": "cellColor()",
       "_callable": true,
       "_origin": "ast",
       "community": 257,
       "community_name": "HealthScoreGauge.vue",
       "file_type": "code",
-      "norm_label": "healthtier()",
-      "source_file": "src/composables/useSeverityTier.js",
-      "source_location": "L44"
+      "norm_label": "cellcolor()",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L27"
     },
     {
-      "id": "src_views_mycustomers_healthcolor",
-      "label": "healthColor()",
+      "id": "src_components_telemetry_markovmatrix_celltext",
+      "label": "cellText()",
       "_callable": true,
       "_origin": "ast",
       "community": 257,
       "community_name": "HealthScoreGauge.vue",
       "file_type": "code",
-      "norm_label": "healthcolor()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L214"
+      "norm_label": "celltext()",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L36"
+    },
+    {
+      "id": "src_components_telemetry_markovmatrix_fmt",
+      "label": "fmt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 257,
+      "community_name": "HealthScoreGauge.vue",
+      "file_type": "code",
+      "norm_label": "fmt()",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L41"
     },
     {
       "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_createlogoicon",
@@ -11214,6 +11598,18 @@
       "norm_label": "setrouter()",
       "source_file": "src/services/decodeJWT.js",
       "source_location": "L7"
+    },
+    {
+      "id": "src_views_modules_crm_crmwhatsapppage_scrolltobottom",
+      "label": "scrollToBottom()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "scrolltobottom()",
+      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
+      "source_location": "L220"
     },
     {
       "id": "src_services_etlapi_createetlconfig",
@@ -11456,18 +11852,6 @@
       "source_location": "L443"
     },
     {
-      "id": "src_views_modules_crm_components_contactsview_changepage",
-      "label": "changePage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "ContactsView.vue",
-      "file_type": "code",
-      "norm_label": "changepage()",
-      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
-      "source_location": "L474"
-    },
-    {
       "id": "src_views_modules_crm_components_contactsview_confirmdelete",
       "label": "confirmDelete()",
       "_callable": true,
@@ -11478,30 +11862,6 @@
       "norm_label": "confirmdelete()",
       "source_file": "src/views/Modules/crm/components/ContactsView.vue",
       "source_location": "L447"
-    },
-    {
-      "id": "src_views_modules_crm_components_contactsview_debouncedsearch",
-      "label": "debouncedSearch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "ContactsView.vue",
-      "file_type": "code",
-      "norm_label": "debouncedsearch()",
-      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
-      "source_location": "L479"
-    },
-    {
-      "id": "src_views_modules_crm_components_contactsview_deletecontact",
-      "label": "deleteContact()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "ContactsView.vue",
-      "file_type": "code",
-      "norm_label": "deletecontact()",
-      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
-      "source_location": "L449"
     },
     {
       "id": "src_views_modules_crm_components_contactsview_editcontact",
@@ -11528,18 +11888,6 @@
       "source_location": "L435"
     },
     {
-      "id": "src_views_modules_crm_components_contactsview_handlecontactsaved",
-      "label": "handleContactSaved()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "ContactsView.vue",
-      "file_type": "code",
-      "norm_label": "handlecontactsaved()",
-      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
-      "source_location": "L466"
-    },
-    {
       "id": "src_views_modules_crm_components_contactsview_loadaccounts",
       "label": "loadAccounts()",
       "_callable": true,
@@ -11550,18 +11898,6 @@
       "norm_label": "loadaccounts()",
       "source_file": "src/views/Modules/crm/components/ContactsView.vue",
       "source_location": "L426"
-    },
-    {
-      "id": "src_views_modules_crm_components_contactsview_loadcontacts",
-      "label": "loadContacts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 27,
-      "community_name": "ContactsView.vue",
-      "file_type": "code",
-      "norm_label": "loadcontacts()",
-      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
-      "source_location": "L401"
     },
     {
       "id": "src_views_modules_crm_components_contactsview_viewcontact",
@@ -11670,42 +12006,6 @@
       "norm_label": "fetchroles()",
       "source_file": "src/views/Modules/settings/UserManagement.vue",
       "source_location": "L138"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_cellcolor",
-      "label": "cellColor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "cellcolor()",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L27"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_celltext",
-      "label": "cellText()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "celltext()",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L36"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_fmt",
-      "label": "fmt()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "fmt()",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L41"
     },
     {
       "id": "src_services_auth_api_resetpassword",
@@ -12402,90 +12702,6 @@
       "norm_label": "submit()",
       "source_file": "src/components/managers/CatalogUploadModal.vue",
       "source_location": "L194"
-    },
-    {
-      "id": "src_views_mycustomers_churncolor",
-      "label": "churnColor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "churncolor()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L218"
-    },
-    {
-      "id": "src_views_mycustomers_churnof",
-      "label": "churnOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "churnof()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L162"
-    },
-    {
-      "id": "src_views_mycustomers_clvlabel",
-      "label": "clvLabel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "clvlabel()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L175"
-    },
-    {
-      "id": "src_views_mycustomers_clvof",
-      "label": "clvOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "clvof()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L169"
-    },
-    {
-      "id": "src_views_mycustomers_clvpercentilelabel",
-      "label": "clvPercentileLabel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "clvpercentilelabel()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L181"
-    },
-    {
-      "id": "src_views_mycustomers_exportlist",
-      "label": "exportList()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "exportlist()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L271"
-    },
-    {
-      "id": "src_views_mycustomers_recommendedaction",
-      "label": "recommendedAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "recommendedaction()",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L245"
     },
     {
       "id": "src_components_ui_backbutton_handleback",
@@ -13206,6 +13422,66 @@
       "norm_label": "usecurrentlocationformeeting()",
       "source_file": "src/views/Modules/crm/components/CRMMeetingModal.vue",
       "source_location": "L489"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_clearselection",
+      "label": "clearSelection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "clearselection()",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L129"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_handleclickoutside",
+      "label": "handleClickOutside()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "handleclickoutside()",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L135"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_selectoption",
+      "label": "selectOption()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "selectoption()",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L123"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_toggledropdown",
+      "label": "toggleDropdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "toggledropdown()",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L103"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_updatedropdownposition",
+      "label": "updateDropdownPosition()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "updatedropdownposition()",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L111"
     },
     {
       "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_onleadselect",
@@ -14238,42 +14514,6 @@
       "norm_label": "isbackendrequest()",
       "source_file": "src/sw.js",
       "source_location": "L24"
-    },
-    {
-      "id": "src_views_modules_crm_crmmeetingspage_addmeetingtogooglecalendar",
-      "label": "addMeetingToGoogleCalendar()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 347,
-      "community_name": "addMeetingToGoogleCalendar",
-      "file_type": "code",
-      "norm_label": "addmeetingtogooglecalendar()",
-      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
-      "source_location": "L851"
-    },
-    {
-      "id": "src_views_modules_crm_crmmeetingspage_exportalltogooglecalendar",
-      "label": "exportAllToGoogleCalendar()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 347,
-      "community_name": "addMeetingToGoogleCalendar",
-      "file_type": "code",
-      "norm_label": "exportalltogooglecalendar()",
-      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
-      "source_location": "L869"
-    },
-    {
-      "id": "src_views_modules_crm_crmmeetingspage_togcaldate",
-      "label": "toGCalDate()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 347,
-      "community_name": "addMeetingToGoogleCalendar",
-      "file_type": "code",
-      "norm_label": "togcaldate()",
-      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
-      "source_location": "L884"
     },
     {
       "id": "test_auth_test",
@@ -15440,102 +15680,6 @@
       "source_location": "L213"
     },
     {
-      "id": "src_config_modulecards_getavailablemodules",
-      "label": "getAvailableModules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getavailablemodules()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "src_config_modulecards_getfreemodules",
-      "label": "getFreeModules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getfreemodules()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_config_modulecards_getmodulebyid",
-      "label": "getModuleById()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getmodulebyid()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L20"
-    },
-    {
-      "id": "src_config_modulecards_getmoduletitle",
-      "label": "getModuleTitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getmoduletitle()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L48"
-    },
-    {
-      "id": "src_config_modulecards_getpaidmodules",
-      "label": "getPaidModules()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getpaidmodules()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_config_modulecards_getsidebaritembyid",
-      "label": "getSidebarItemById()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getsidebaritembyid()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L37"
-    },
-    {
-      "id": "src_config_modulecards_getsidebaritems",
-      "label": "getSidebarItems()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getsidebaritems()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "src_config_modulecards_getsuperadminsidebaritems",
-      "label": "getSuperAdminSidebarItems()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "getsuperadminsidebaritems()",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L26"
-    },
-    {
       "id": "src_config_moduleidmap_mapbackendtofrontend",
       "label": "mapBackendToFrontend()",
       "_callable": true,
@@ -16208,30 +16352,6 @@
       "source_location": "L2257"
     },
     {
-      "id": "src_views_modules_crm_crmmeetingspage_closecancelmodal",
-      "label": "closeCancelModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 43,
-      "community_name": "showToast",
-      "file_type": "code",
-      "norm_label": "closecancelmodal()",
-      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
-      "source_location": "L639"
-    },
-    {
-      "id": "src_views_modules_crm_crmmeetingspage_confirmcancelmeeting",
-      "label": "confirmCancelMeeting()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 43,
-      "community_name": "showToast",
-      "file_type": "code",
-      "norm_label": "confirmcancelmeeting()",
-      "source_file": "src/views/Modules/crm/CRMMeetingsPage.vue",
-      "source_location": "L645"
-    },
-    {
       "id": "src_views_modules_crm_crmmeetingspage_onexcelimport",
       "label": "onExcelImport()",
       "_callable": true,
@@ -16244,124 +16364,100 @@
       "source_location": "L924"
     },
     {
-      "id": "src_composables_useclvbands_getclvbandranges",
-      "label": "getClvBandRanges()",
+      "id": "src_config_modulecards_getavailablemodules",
+      "label": "getAvailableModules()",
       "_callable": true,
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "getclvbandranges()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L107"
+      "norm_label": "getavailablemodules()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L47"
     },
     {
-      "id": "src_composables_useclvbands_numornull",
-      "label": "_numOrNull()",
+      "id": "src_config_modulecards_getfreemodules",
+      "label": "getFreeModules()",
       "_callable": true,
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "_numornull()",
-      "source_file": "src/composables/useClvBands.js",
+      "norm_label": "getfreemodules()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_config_modulecards_getmodulebyid",
+      "label": "getModuleById()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "moduleCards.js",
+      "file_type": "code",
+      "norm_label": "getmodulebyid()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_config_modulecards_getmoduletitle",
+      "label": "getModuleTitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "moduleCards.js",
+      "file_type": "code",
+      "norm_label": "getmoduletitle()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L48"
+    },
+    {
+      "id": "src_config_modulecards_getpaidmodules",
+      "label": "getPaidModules()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "moduleCards.js",
+      "file_type": "code",
+      "norm_label": "getpaidmodules()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_config_modulecards_getsidebaritembyid",
+      "label": "getSidebarItemById()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 44,
+      "community_name": "moduleCards.js",
+      "file_type": "code",
+      "norm_label": "getsidebaritembyid()",
+      "source_file": "src/config/moduleCards.js",
       "source_location": "L37"
     },
     {
-      "id": "src_composables_useclvbands_rowsfromseed",
-      "label": "_rowsFromSeed()",
+      "id": "src_config_modulecards_getsidebaritems",
+      "label": "getSidebarItems()",
       "_callable": true,
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "_rowsfromseed()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L33"
+      "norm_label": "getsidebaritems()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L22"
     },
     {
-      "id": "src_composables_useclvbands_serializeranges",
-      "label": "serializeRanges()",
+      "id": "src_config_modulecards_getsuperadminsidebaritems",
+      "label": "getSuperAdminSidebarItems()",
       "_callable": true,
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "serializeranges()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L101"
-    },
-    {
-      "id": "src_composables_useclvbands_useclvbands",
-      "label": "useClvBands()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "useclvbands()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L118"
-    },
-    {
-      "id": "src_composables_useclvbands_useclvbands_apply",
-      "label": "apply()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "apply()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L146"
-    },
-    {
-      "id": "src_composables_useclvbands_useclvbands_persist",
-      "label": "_persist()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "_persist()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L139"
-    },
-    {
-      "id": "src_composables_useclvbands_useclvbands_reset",
-      "label": "reset()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "reset()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L159"
-    },
-    {
-      "id": "src_composables_useclvbands_validaterows",
-      "label": "validateRows()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "validaterows()",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L44"
-    },
-    {
-      "id": "src_views_modules_intelligence_customervalueintelligence_runclvpredictions",
-      "label": "runClvPredictions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "runclvpredictions()",
-      "source_file": "src/views/Modules/intelligence/CustomerValueIntelligence.vue",
-      "source_location": "L925"
+      "norm_label": "getsuperadminsidebaritems()",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L26"
     },
     {
       "id": "src_services_customeradminapi_authheaders",
@@ -16518,138 +16614,6 @@
       "norm_label": "synchiddencount()",
       "source_file": "src/views/MyCustomers.vue",
       "source_location": "L474"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_addhighlight",
-      "label": "addHighlight()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "addhighlight()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L617"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_clearhighlights",
-      "label": "clearHighlights()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "clearhighlights()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L644"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_createconversation",
-      "label": "createConversation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "createconversation()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L881"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_deleteconversation",
-      "label": "deleteConversation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "deleteconversation()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L941"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_executedemoactions",
-      "label": "executeDemoActions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "executedemoactions()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L655"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_fetchconversations",
-      "label": "fetchConversations()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "fetchconversations()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L869"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_findbytext",
-      "label": "findByText()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "findbytext()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L607"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_parsedemoactions",
-      "label": "parseDemoActions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "parsedemoactions()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L717"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_savemessagestoconversation",
-      "label": "saveMessagesToConversation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "savemessagestoconversation()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L919"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_sendmessage",
-      "label": "sendMessage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "sendmessage()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L1053"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_setmessage",
-      "label": "setMessage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 453,
-      "community_name": "sendMessage",
-      "file_type": "code",
-      "norm_label": "setmessage()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L839"
     },
     {
       "id": "src_services_auth_api_requestpasswordreset",
@@ -16986,30 +16950,6 @@
       "norm_label": "sendofflinemessage()",
       "source_file": "src/views/Modules/aiagents/AiModule.vue",
       "source_location": "L956"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_handlenewline",
-      "label": "handleNewLine()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 467,
-      "community_name": "handleNewLine",
-      "file_type": "code",
-      "norm_label": "handlenewline()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L820"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_resizetextarea",
-      "label": "resizeTextarea()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 467,
-      "community_name": "handleNewLine",
-      "file_type": "code",
-      "norm_label": "resizetextarea()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L831"
     },
     {
       "id": "src_components_ui_kpicard_handleaction",
@@ -18380,6 +18320,54 @@
       "source_location": "L842"
     },
     {
+      "id": "src_views_modules_crm_components_contactsview_changepage",
+      "label": "changePage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "emit",
+      "file_type": "code",
+      "norm_label": "changepage()",
+      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
+      "source_location": "L474"
+    },
+    {
+      "id": "src_views_modules_crm_components_contactsview_debouncedsearch",
+      "label": "debouncedSearch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "emit",
+      "file_type": "code",
+      "norm_label": "debouncedsearch()",
+      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
+      "source_location": "L479"
+    },
+    {
+      "id": "src_views_modules_crm_components_contactsview_deletecontact",
+      "label": "deleteContact()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "emit",
+      "file_type": "code",
+      "norm_label": "deletecontact()",
+      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
+      "source_location": "L449"
+    },
+    {
+      "id": "src_views_modules_crm_components_contactsview_handlecontactsaved",
+      "label": "handleContactSaved()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "emit",
+      "file_type": "code",
+      "norm_label": "handlecontactsaved()",
+      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
+      "source_location": "L466"
+    },
+    {
       "id": "src_views_modules_crm_components_contactsview_handleviewaccount",
       "label": "handleViewAccount()",
       "_callable": true,
@@ -18390,6 +18378,18 @@
       "norm_label": "handleviewaccount()",
       "source_file": "src/views/Modules/crm/components/ContactsView.vue",
       "source_location": "L484"
+    },
+    {
+      "id": "src_views_modules_crm_components_contactsview_loadcontacts",
+      "label": "loadContacts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "emit",
+      "file_type": "code",
+      "norm_label": "loadcontacts()",
+      "source_file": "src/views/Modules/crm/components/ContactsView.vue",
+      "source_location": "L401"
     },
     {
       "id": "src_views_modules_crm_components_leadconversionmodal_convertlead",
@@ -18668,28 +18668,40 @@
       "source_location": "L790"
     },
     {
-      "id": "src_config_useaudit_useaudit",
-      "label": "useAudit()",
+      "id": "src_components_intelligence_aicampaignmodal_close",
+      "label": "close()",
       "_callable": true,
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "useaudit()",
-      "source_file": "src/config/useAudit.js",
-      "source_location": "L19"
+      "norm_label": "close()",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L266"
     },
     {
-      "id": "src_views_modules_crm_crmwhatsapppage_scrolltobottom",
-      "label": "scrollToBottom()",
+      "id": "src_components_intelligence_aicampaignmodal_fetchcohortinsights",
+      "label": "fetchCohortInsights()",
       "_callable": true,
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "scrolltobottom()",
-      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
-      "source_location": "L220"
+      "norm_label": "fetchcohortinsights()",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L230"
+    },
+    {
+      "id": "src_components_intelligence_aicampaignmodal_launch",
+      "label": "launch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 58,
+      "community_name": "AiCampaignModal.vue",
+      "file_type": "code",
+      "norm_label": "launch()",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L271"
     },
     {
       "id": "src_services_api_login",
@@ -18824,6 +18836,30 @@
       "source_location": "L22"
     },
     {
+      "id": "src_config_useaudit_useaudit",
+      "label": "useAudit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "decodeJWT",
+      "file_type": "code",
+      "norm_label": "useaudit()",
+      "source_file": "src/config/useAudit.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_config_useaudit_useaudit_logaudit",
+      "label": "logAudit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "decodeJWT",
+      "file_type": "code",
+      "norm_label": "logaudit()",
+      "source_file": "src/config/useAudit.js",
+      "source_location": "L39"
+    },
+    {
       "id": "src_config_usepreferences_usepreferences",
       "label": "usePreferences()",
       "_callable": true,
@@ -18882,6 +18918,18 @@
       "norm_label": "sendnotification()",
       "source_file": "src/services/notification_api.js",
       "source_location": "L18"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_usecrmmodule_deletecustomer",
+      "label": "deleteCustomer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "decodeJWT",
+      "file_type": "code",
+      "norm_label": "deletecustomer()",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L2123"
     },
     {
       "id": "src_composables_settings_usesettingsemail_defaultfrequencies",
@@ -19628,40 +19676,28 @@
       "source_location": "L929"
     },
     {
-      "id": "src_views_modules_aiagents_aimodule_loadconversation",
-      "label": "loadConversation()",
+      "id": "src_services_customerprofileapi_fetchcustomerprofile",
+      "label": "fetchCustomerProfile()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "scrollToBottom",
+      "community_name": "customerProfileApi.js",
       "file_type": "code",
-      "norm_label": "loadconversation()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L897"
+      "norm_label": "fetchcustomerprofile()",
+      "source_file": "src/services/customerProfileApi.js",
+      "source_location": "L30"
     },
     {
-      "id": "src_views_modules_aiagents_aimodule_scrolltobottom",
-      "label": "scrollToBottom()",
+      "id": "src_services_customerprofileapi_headers",
+      "label": "_headers()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "scrollToBottom",
+      "community_name": "customerProfileApi.js",
       "file_type": "code",
-      "norm_label": "scrolltobottom()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L844"
-    },
-    {
-      "id": "src_views_modules_aiagents_aimodule_startnewconversation",
-      "label": "startNewConversation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "scrollToBottom",
-      "file_type": "code",
-      "norm_label": "startnewconversation()",
-      "source_file": "src/views/Modules/aiagents/AiModule.vue",
-      "source_location": "L933"
+      "norm_label": "_headers()",
+      "source_file": "src/services/customerProfileApi.js",
+      "source_location": "L14"
     },
     {
       "id": "src_views_modules_crm_components_leadsview_deleteselectedexcelrows",
@@ -20108,64 +20144,40 @@
       "source_location": "L29"
     },
     {
-      "id": "src_views_modules_crm_components_searchableselect_clearselection",
-      "label": "clearSelection()",
+      "id": "src_views_modules_settings_subaccountmodule_fetchassignedmodules",
+      "label": "fetchAssignedModules()",
       "_callable": true,
       "_origin": "ast",
       "community": 79,
-      "community_name": "SearchableSelect.vue",
+      "community_name": "openDetailsModal",
       "file_type": "code",
-      "norm_label": "clearselection()",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L129"
+      "norm_label": "fetchassignedmodules()",
+      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
+      "source_location": "L1707"
     },
     {
-      "id": "src_views_modules_crm_components_searchableselect_handleclickoutside",
-      "label": "handleClickOutside()",
+      "id": "src_views_modules_settings_subaccountmodule_fetchavailablemodules",
+      "label": "fetchAvailableModules()",
       "_callable": true,
       "_origin": "ast",
       "community": 79,
-      "community_name": "SearchableSelect.vue",
+      "community_name": "openDetailsModal",
       "file_type": "code",
-      "norm_label": "handleclickoutside()",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L135"
+      "norm_label": "fetchavailablemodules()",
+      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
+      "source_location": "L1694"
     },
     {
-      "id": "src_views_modules_crm_components_searchableselect_selectoption",
-      "label": "selectOption()",
+      "id": "src_views_modules_settings_subaccountmodule_opendetailsmodal",
+      "label": "openDetailsModal()",
       "_callable": true,
       "_origin": "ast",
       "community": 79,
-      "community_name": "SearchableSelect.vue",
+      "community_name": "openDetailsModal",
       "file_type": "code",
-      "norm_label": "selectoption()",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L123"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_toggledropdown",
-      "label": "toggleDropdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "toggledropdown()",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L103"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_updatedropdownposition",
-      "label": "updateDropdownPosition()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "updatedropdownposition()",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L111"
+      "norm_label": "opendetailsmodal()",
+      "source_file": "src/views/Modules/settings/SubAccountModule.vue",
+      "source_location": "L1651"
     },
     {
       "id": "src_views_customerdetail_behaviourbarwidth",
@@ -21456,6 +21468,17 @@
       "norm_label": "editingcustomer",
       "source_file": "src/views/MyCustomers.vue",
       "source_location": "L48"
+    },
+    {
+      "id": "src_views_mycustomers_filteredrows",
+      "label": "filteredRows",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "MyCustomers.vue",
+      "file_type": "code",
+      "norm_label": "filteredrows",
+      "source_file": "src/views/MyCustomers.vue",
+      "source_location": "L127"
     },
     {
       "id": "src_views_mycustomers_hiddencount",
@@ -39591,6 +39614,72 @@
       "source_location": "L316"
     },
     {
+      "id": "src_stores_predictionstore",
+      "label": "predictionStore.js",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "predictionstore.js",
+      "source_file": "src/stores/predictionStore.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_stores_predictionstore_api",
+      "label": "api",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "api",
+      "source_file": "src/stores/predictionStore.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_stores_predictionstore_usepredictionstore",
+      "label": "usePredictionStore",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "usepredictionstore",
+      "source_file": "src/stores/predictionStore.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "src_stores_snapshotstore",
+      "label": "snapshotStore.js",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "snapshotstore.js",
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_stores_snapshotstore_api",
+      "label": "api",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "api",
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_stores_snapshotstore_usesnapshotstore",
+      "label": "useSnapshotStore",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "PortfolioOverview.vue",
+      "file_type": "code",
+      "norm_label": "usesnapshotstore",
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L40"
+    },
+    {
       "id": "src_views_portfoliooverview",
       "label": "PortfolioOverview.vue",
       "_origin": "ast",
@@ -40883,6 +40972,17 @@
       "source_location": "L341"
     },
     {
+      "id": "src_views_customerprofile_ringcolor",
+      "label": "ringColor",
+      "_origin": "ast",
+      "community": 173,
+      "community_name": "tierColor",
+      "file_type": "code",
+      "norm_label": "ringcolor",
+      "source_file": "src/views/CustomerProfile.vue",
+      "source_location": "L244"
+    },
+    {
       "id": "src_views_customerprofile_statecolor",
       "label": "stateColor",
       "_origin": "ast",
@@ -40903,28 +41003,6 @@
       "norm_label": "note: absa brand guide contains no green and no amber/red severity convention.",
       "source_file": "src/composables/useSeverityTier.js",
       "source_location": "L4"
-    },
-    {
-      "id": "src_components_loadingskeleton",
-      "label": "LoadingSkeleton.vue",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "BalanceForecast.vue",
-      "file_type": "code",
-      "norm_label": "loadingskeleton.vue",
-      "source_file": "src/components/LoadingSkeleton.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_tests_loadingskeleton_spec",
-      "label": "LoadingSkeleton.spec.js",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "BalanceForecast.vue",
-      "file_type": "code",
-      "norm_label": "loadingskeleton.spec.js",
-      "source_file": "src/components/__tests__/LoadingSkeleton.spec.js",
-      "source_location": "L1"
     },
     {
       "id": "src_components_ui_absabadge",
@@ -41068,6 +41146,72 @@
       "norm_label": "roundedclasses",
       "source_file": "src/components/ui/AbsaCard.vue",
       "source_location": "L76"
+    },
+    {
+      "id": "src_composables_useclvbands",
+      "label": "useClvBands.js",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "useclvbands.js",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_composables_useclvbands_clv_bands",
+      "label": "CLV_BANDS",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "clv_bands",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_composables_useclvbands_seed",
+      "label": "SEED",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "seed",
+      "source_file": "src/composables/useClvBands.js",
+      "source_location": "L26"
+    },
+    {
+      "id": "src_stores_intelligencestore",
+      "label": "intelligenceStore.js",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "intelligencestore.js",
+      "source_file": "src/stores/intelligenceStore.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_stores_intelligencestore_api",
+      "label": "api",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "api",
+      "source_file": "src/stores/intelligenceStore.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_stores_intelligencestore_useintelligencestore",
+      "label": "useIntelligenceStore",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "BalanceForecast.vue",
+      "file_type": "code",
+      "norm_label": "useintelligencestore",
+      "source_file": "src/stores/intelligenceStore.js",
+      "source_location": "L16"
     },
     {
       "id": "src_views_modules_intelligence_balanceforecast",
@@ -42030,94 +42174,6 @@
       "norm_label": "troubleshooting guide",
       "source_file": ".qoder/repowiki/en/content/Strategic Management Module/Environmental Analysis.md",
       "source_location": "L316"
-    },
-    {
-      "id": "src_services_api_api_base_url",
-      "label": "API_BASE_URL",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "api_base_url",
-      "source_file": "src/services/api.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "src_services_customerprofileapi",
-      "label": "customerProfileApi.js",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "customerprofileapi.js",
-      "source_file": "src/services/customerProfileApi.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_stores_predictionstore",
-      "label": "predictionStore.js",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "predictionstore.js",
-      "source_file": "src/stores/predictionStore.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_stores_predictionstore_api",
-      "label": "api",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "api",
-      "source_file": "src/stores/predictionStore.js",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_stores_predictionstore_usepredictionstore",
-      "label": "usePredictionStore",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "usepredictionstore",
-      "source_file": "src/stores/predictionStore.js",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_stores_snapshotstore",
-      "label": "snapshotStore.js",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "snapshotstore.js",
-      "source_file": "src/stores/snapshotStore.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_stores_snapshotstore_api",
-      "label": "api",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "api",
-      "source_file": "src/stores/snapshotStore.js",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_stores_snapshotstore_usesnapshotstore",
-      "label": "useSnapshotStore",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "CustomerProfile.vue",
-      "file_type": "code",
-      "norm_label": "usesnapshotstore",
-      "source_file": "src/stores/snapshotStore.js",
-      "source_location": "L26"
     },
     {
       "id": "src_views_customerprofile",
@@ -52608,17 +52664,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_composables_settings_usesettingsgoals",
-      "label": "useSettingsGoals.js",
-      "_origin": "ast",
-      "community": 220,
-      "community_name": "useSettingsBase",
-      "file_type": "code",
-      "norm_label": "usesettingsgoals.js",
-      "source_file": "src/composables/settings/useSettingsGoals.js",
-      "source_location": "L1"
-    },
-    {
       "id": "src_composables_settings_usesettingsintegrations",
       "label": "useSettingsIntegrations.js",
       "_origin": "ast",
@@ -52638,17 +52683,6 @@
       "file_type": "code",
       "norm_label": "usesettingsprofile.js",
       "source_file": "src/composables/settings/useSettingsProfile.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_composables_settings_usesettingsroles",
-      "label": "useSettingsRoles.js",
-      "_origin": "ast",
-      "community": 220,
-      "community_name": "useSettingsBase",
-      "file_type": "code",
-      "norm_label": "usesettingsroles.js",
-      "source_file": "src/composables/settings/useSettingsRoles.js",
       "source_location": "L1"
     },
     {
@@ -54125,6 +54159,17 @@
       "source_location": "L117"
     },
     {
+      "id": "src_composables_settings_usesettingsroles",
+      "label": "useSettingsRoles.js",
+      "_origin": "ast",
+      "community": 228,
+      "community_name": "useSettingsRoles",
+      "file_type": "code",
+      "norm_label": "usesettingsroles.js",
+      "source_file": "src/composables/settings/useSettingsRoles.js",
+      "source_location": "L1"
+    },
+    {
       "id": "src_services_documents_api",
       "label": "documents_api.js",
       "_origin": "ast",
@@ -55167,6 +55212,17 @@
       "norm_label": "registeredwidgets",
       "source_file": "src/composables/useDashboardWidgets.js",
       "source_location": "L5"
+    },
+    {
+      "id": "src_composables_settings_usesettingsgoals",
+      "label": "useSettingsGoals.js",
+      "_origin": "ast",
+      "community": 236,
+      "community_name": "useSettingsGoals",
+      "file_type": "code",
+      "norm_label": "usesettingsgoals.js",
+      "source_file": "src/composables/settings/useSettingsGoals.js",
+      "source_location": "L1"
     },
     {
       "id": "package_dependencies_dotenv",
@@ -56789,94 +56845,6 @@
       "source_location": "L165"
     },
     {
-      "id": "src_components_intelligence_aicampaignmodal",
-      "label": "AiCampaignModal.vue",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "aicampaignmodal.vue",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_aicampaigns",
-      "label": "aiCampaigns",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "aicampaigns",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L220"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_api",
-      "label": "api",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "api",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L223"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_cohortdrivers",
-      "label": "cohortDrivers",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "cohortdrivers",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L219"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_emit",
-      "label": "emit",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "emit",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L212"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_loading",
-      "label": "loading",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "loading",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L221"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_props",
-      "label": "props",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L206"
-    },
-    {
-      "id": "src_components_intelligence_aicampaignmodal_selectedcampaign",
-      "label": "selectedCampaign",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "absaActions.js",
-      "file_type": "code",
-      "norm_label": "selectedcampaign",
-      "source_file": "src/components/intelligence/AiCampaignModal.vue",
-      "source_location": "L218"
-    },
-    {
       "id": "src_utils_absaactions",
       "label": "absaActions.js",
       "_origin": "ast",
@@ -57724,15 +57692,59 @@
       "source_location": "L23"
     },
     {
-      "id": "src_views_customerprofile_ringcolor",
-      "label": "ringColor",
+      "id": "src_components_telemetry_markovmatrix",
+      "label": "MarkovMatrix.vue",
       "_origin": "ast",
       "community": 257,
       "community_name": "HealthScoreGauge.vue",
       "file_type": "code",
-      "norm_label": "ringcolor",
-      "source_file": "src/views/CustomerProfile.vue",
-      "source_location": "L244"
+      "norm_label": "markovmatrix.vue",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_telemetry_markovmatrix_cells",
+      "label": "cells",
+      "_origin": "ast",
+      "community": 257,
+      "community_name": "HealthScoreGauge.vue",
+      "file_type": "code",
+      "norm_label": "cells",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_components_telemetry_markovmatrix_default",
+      "label": "DEFAULT",
+      "_origin": "ast",
+      "community": 257,
+      "community_name": "HealthScoreGauge.vue",
+      "file_type": "code",
+      "norm_label": "default",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_components_telemetry_markovmatrix_props",
+      "label": "props",
+      "_origin": "ast",
+      "community": 257,
+      "community_name": "HealthScoreGauge.vue",
+      "file_type": "code",
+      "norm_label": "props",
+      "source_file": "src/components/telemetry/MarkovMatrix.vue",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_composables_useseveritytier_tiers",
+      "label": "TIERS",
+      "_origin": "ast",
+      "community": 257,
+      "community_name": "HealthScoreGauge.vue",
+      "file_type": "code",
+      "norm_label": "tiers",
+      "source_file": "src/composables/useSeverityTier.js",
+      "source_location": "L10"
     },
     {
       "id": "package_dependencies_jspdf",
@@ -58973,6 +58985,28 @@
       "source_location": "L22"
     },
     {
+      "id": "src_stores_usenavigationstore",
+      "label": "useNavigationStore.js",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "usenavigationstore.js",
+      "source_file": "src/stores/useNavigationStore.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_stores_usenavigationstore_usenavigationstore",
+      "label": "useNavigationStore",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "usenavigationstore",
+      "source_file": "src/stores/useNavigationStore.js",
+      "source_location": "L4"
+    },
+    {
       "id": "src_views_403",
       "label": "403.vue",
       "_origin": "ast",
@@ -59105,6 +59139,204 @@
       "source_location": "L87"
     },
     {
+      "id": "src_views_modules_crm_composables_crmmodule",
+      "label": "CRMModule.js",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "crmmodule.js",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_currentcalendardate",
+      "label": "currentCalendarDate",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "currentcalendardate",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L31"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_editingmeeting",
+      "label": "editingMeeting",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "editingmeeting",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L27"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_leads",
+      "label": "leads",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "leads",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L33"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_meetingfilter",
+      "label": "meetingFilter",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "meetingfilter",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L25"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_meetingform",
+      "label": "meetingForm",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "meetingform",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L29"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_meetings",
+      "label": "meetings",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "meetings",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_meetingstats",
+      "label": "meetingStats",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "meetingstats",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L26"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_meetingview",
+      "label": "meetingView",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "meetingview",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_newparticipant",
+      "label": "newParticipant",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "newparticipant",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L30"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_pipelineaccounts",
+      "label": "pipelineAccounts",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "pipelineaccounts",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L36"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_pipelinecontacts",
+      "label": "pipelineContacts",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "pipelinecontacts",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L35"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_pipelinedeals",
+      "label": "pipelineDeals",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "pipelinedeals",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_pipelineleads",
+      "label": "pipelineLeads",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "pipelineleads",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L34"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_savingmeeting",
+      "label": "savingMeeting",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "savingmeeting",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L28"
+    },
+    {
+      "id": "src_views_modules_crm_composables_crmmodule_showmeetingmodal",
+      "label": "showMeetingModal",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "showmeetingmodal",
+      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_views_modules_crm_crmaccountspage",
+      "label": "CRMAccountsPage.vue",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "crmaccountspage.vue",
+      "source_file": "src/views/Modules/crm/CRMAccountsPage.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_modules_crm_crmaccountspage_branches_selectedbranch_onbranchchange_getuseremail_tenantusers_activetab_moduleloading_showaccountformmodal_editingaccount_fetchpipelinedata_loadmeetings",
+      "label": "{\n  branches, selectedBranch, onBranchChange, getUserEmail, tenantUsers,\n  activeTab, moduleLoading, showAccountFormModal, editingAccount,\n  fetchPipelineData, loadMeetings\n}",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "{\n  branches, selectedbranch, onbranchchange, getuseremail, tenantusers,\n  activetab, moduleloading, showaccountformmodal, editingaccount,\n  fetchpipelinedata, loadmeetings\n}",
+      "source_file": "src/views/Modules/crm/CRMAccountsPage.vue",
+      "source_location": "L100"
+    },
+    {
       "id": "src_views_modules_crm_crmanalyticsdashboard",
       "label": "CRMAnalyticsDashboard.vue",
       "_origin": "ast",
@@ -59180,6 +59412,28 @@
       "norm_label": "resolutiondata",
       "source_file": "src/views/Modules/crm/CRMAnalyticsDashboard.vue",
       "source_location": "L32"
+    },
+    {
+      "id": "src_views_modules_crm_crmdocumentspage",
+      "label": "CRMDocumentsPage.vue",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "crmdocumentspage.vue",
+      "source_file": "src/views/Modules/crm/CRMDocumentsPage.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_modules_crm_crmdocumentspage_getuseremail_activetab_moduleloading",
+      "label": "{ getUserEmail, activeTab, moduleLoading }",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "{ getuseremail, activetab, moduleloading }",
+      "source_file": "src/views/Modules/crm/CRMDocumentsPage.vue",
+      "source_location": "L46"
     },
     {
       "id": "src_views_modules_crm_crmemailspage",
@@ -59268,6 +59522,50 @@
       "norm_label": "shownewcasemodal",
       "source_file": "src/views/Modules/crm/CRMTicketsPage.vue",
       "source_location": "L8"
+    },
+    {
+      "id": "src_views_modules_crm_crmwhatsapppage",
+      "label": "CRMWhatsAppPage.vue",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "crmwhatsapppage.vue",
+      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_modules_crm_crmwhatsapppage_getuseremail_activetab_moduleloading_filteredcommunications_communicationfilter_whatsappsubtypefilter_getcommunicationborderclass_getcommunicationicon_replytocommunication_deletecommunicationrecord_callnotes_newcallnote_ensurecallnotesloaded_submitcallnote_crmformatdatetime_gotomodule",
+      "label": "{\n  getUserEmail, activeTab, moduleLoading, filteredCommunications, communicationFilter,\n  whatsappSubtypeFilter, getCommunicationBorderClass, getCommunicationIcon,\n  replyToCommunication, deleteCommunicationRecord, callNotes, newCallNote,\n  ensureCallNotesLoaded, submitCallNote, crmFormatDateTime, goToModule\n}",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "{\n  getuseremail, activetab, moduleloading, filteredcommunications, communicationfilter,\n  whatsappsubtypefilter, getcommunicationborderclass, getcommunicationicon,\n  replytocommunication, deletecommunicationrecord, callnotes, newcallnote,\n  ensurecallnotesloaded, submitcallnote, crmformatdatetime, gotomodule\n}",
+      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
+      "source_location": "L204"
+    },
+    {
+      "id": "src_views_modules_crm_crmwhatsapppage_scrollcontainer",
+      "label": "scrollContainer",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "scrollcontainer",
+      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
+      "source_location": "L211"
+    },
+    {
+      "id": "src_views_modules_crm_crmwhatsapppage_whatsappchronological",
+      "label": "whatsappChronological",
+      "_origin": "ast",
+      "community": 266,
+      "community_name": "router/index.js",
+      "file_type": "code",
+      "norm_label": "whatsappchronological",
+      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
+      "source_location": "L214"
     },
     {
       "id": "src_services_etlapi",
@@ -59741,61 +60039,6 @@
       "norm_label": "note: all session side-effects (localstorage, pinia store) are handled",
       "source_file": "src/services/auth_api.js",
       "source_location": "L4"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix",
-      "label": "MarkovMatrix.vue",
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "markovmatrix.vue",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_cells",
-      "label": "cells",
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "cells",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L22"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_default",
-      "label": "DEFAULT",
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "default",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L15"
-    },
-    {
-      "id": "src_components_telemetry_markovmatrix_props",
-      "label": "props",
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/components/telemetry/MarkovMatrix.vue",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_composables_useseveritytier_tiers",
-      "label": "TIERS",
-      "_origin": "ast",
-      "community": 271,
-      "community_name": "MarkovMatrix.vue",
-      "file_type": "code",
-      "norm_label": "tiers",
-      "source_file": "src/composables/useSeverityTier.js",
-      "source_location": "L10"
     },
     {
       "id": "src_views_auth_resetpassword",
@@ -60951,17 +61194,6 @@
       "norm_label": "uploadmode",
       "source_file": "src/components/managers/CatalogUploadModal.vue",
       "source_location": "L141"
-    },
-    {
-      "id": "src_views_mycustomers_filteredrows",
-      "label": "filteredRows",
-      "_origin": "ast",
-      "community": 285,
-      "community_name": "exportList",
-      "file_type": "code",
-      "norm_label": "filteredrows",
-      "source_file": "src/views/MyCustomers.vue",
-      "source_location": "L127"
     },
     {
       "id": "ai_project_context",
@@ -62765,6 +62997,105 @@
       "norm_label": "updatinglinkedlocation",
       "source_file": "src/views/Modules/crm/components/CRMMeetingModal.vue",
       "source_location": "L403"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect",
+      "label": "SearchableSelect.vue",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "searchableselect.vue",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_containerref",
+      "label": "containerRef",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "containerref",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L93"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_dropdownstyle",
+      "label": "dropdownStyle",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "dropdownstyle",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L95"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_emit",
+      "label": "emit",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "emit",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L89"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_filteredoptions",
+      "label": "filteredOptions",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "filteredoptions",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L97"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_inputref",
+      "label": "inputRef",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "inputref",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L94"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_isopen",
+      "label": "isOpen",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "isopen",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L91"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_props",
+      "label": "props",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "props",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L82"
+    },
+    {
+      "id": "src_views_modules_crm_components_searchableselect_searchquery",
+      "label": "searchQuery",
+      "_origin": "ast",
+      "community": 30,
+      "community_name": "CRMMeetingModal.vue",
+      "file_type": "code",
+      "norm_label": "searchquery",
+      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
+      "source_location": "L92"
     },
     {
       "id": "package_dependencies_fontsource_space_mono",
@@ -67467,6 +67798,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_services_api_api_base_url",
+      "label": "API_BASE_URL",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "api.js",
+      "file_type": "code",
+      "norm_label": "api_base_url",
+      "source_file": "src/services/api.js",
+      "source_location": "L17"
+    },
+    {
       "id": "src_services_api_configured",
       "label": "_configured",
       "_origin": "ast",
@@ -69150,61 +69492,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_config_modulecards",
-      "label": "moduleCards.js",
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "modulecards.js",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_config_modulecards_availablemodules",
-      "label": "availableModules",
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "availablemodules",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L41"
-    },
-    {
-      "id": "src_config_modulecards_base_dashboard_route",
-      "label": "BASE_DASHBOARD_ROUTE",
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "base_dashboard_route",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L49"
-    },
-    {
-      "id": "src_config_modulecards_hr_module_route",
-      "label": "HR_MODULE_ROUTE",
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "hr_module_route",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L50"
-    },
-    {
-      "id": "src_config_modulecards_module_cards",
-      "label": "MODULE_CARDS",
-      "_origin": "ast",
-      "community": 40,
-      "community_name": "useSettingsModules",
-      "file_type": "code",
-      "norm_label": "module_cards",
-      "source_file": "src/config/moduleCards.js",
-      "source_location": "L6"
-    },
-    {
       "id": "src_config_moduleidmap",
       "label": "moduleIdMap.js",
       "_origin": "ast",
@@ -70466,70 +70753,59 @@
       "source_location": "L1"
     },
     {
-      "id": "src_composables_useclvbands",
-      "label": "useClvBands.js",
+      "id": "src_config_modulecards",
+      "label": "moduleCards.js",
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "useclvbands.js",
-      "source_file": "src/composables/useClvBands.js",
+      "norm_label": "modulecards.js",
+      "source_file": "src/config/moduleCards.js",
       "source_location": "L1"
     },
     {
-      "id": "src_composables_useclvbands_clv_bands",
-      "label": "CLV_BANDS",
+      "id": "src_config_modulecards_availablemodules",
+      "label": "availableModules",
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "clv_bands",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L22"
+      "norm_label": "availablemodules",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L41"
     },
     {
-      "id": "src_composables_useclvbands_seed",
-      "label": "SEED",
+      "id": "src_config_modulecards_base_dashboard_route",
+      "label": "BASE_DASHBOARD_ROUTE",
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "seed",
-      "source_file": "src/composables/useClvBands.js",
-      "source_location": "L26"
+      "norm_label": "base_dashboard_route",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L49"
     },
     {
-      "id": "src_stores_intelligencestore",
-      "label": "intelligenceStore.js",
+      "id": "src_config_modulecards_hr_module_route",
+      "label": "HR_MODULE_ROUTE",
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "intelligencestore.js",
-      "source_file": "src/stores/intelligenceStore.js",
-      "source_location": "L1"
+      "norm_label": "hr_module_route",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L50"
     },
     {
-      "id": "src_stores_intelligencestore_api",
-      "label": "api",
+      "id": "src_config_modulecards_module_cards",
+      "label": "MODULE_CARDS",
       "_origin": "ast",
       "community": 44,
-      "community_name": "intelligenceStore.js",
+      "community_name": "moduleCards.js",
       "file_type": "code",
-      "norm_label": "api",
-      "source_file": "src/stores/intelligenceStore.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_stores_intelligencestore_useintelligencestore",
-      "label": "useIntelligenceStore",
-      "_origin": "ast",
-      "community": 44,
-      "community_name": "intelligenceStore.js",
-      "file_type": "code",
-      "norm_label": "useintelligencestore",
-      "source_file": "src/stores/intelligenceStore.js",
-      "source_location": "L16"
+      "norm_label": "module_cards",
+      "source_file": "src/config/moduleCards.js",
+      "source_location": "L6"
     },
     {
       "id": "fix_validate",
@@ -73988,301 +74264,92 @@
       "source_location": "L1"
     },
     {
-      "id": "src_config_useaudit",
-      "label": "useAudit.js",
+      "id": "src_components_intelligence_aicampaignmodal",
+      "label": "AiCampaignModal.vue",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "useaudit.js",
-      "source_file": "src/config/useAudit.js",
+      "norm_label": "aicampaignmodal.vue",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
       "source_location": "L1"
     },
     {
-      "id": "src_stores_usenavigationstore",
-      "label": "useNavigationStore.js",
+      "id": "src_components_intelligence_aicampaignmodal_aicampaigns",
+      "label": "aiCampaigns",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "usenavigationstore.js",
-      "source_file": "src/stores/useNavigationStore.js",
-      "source_location": "L1"
+      "norm_label": "aicampaigns",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L220"
     },
     {
-      "id": "src_stores_usenavigationstore_usenavigationstore",
-      "label": "useNavigationStore",
+      "id": "src_components_intelligence_aicampaignmodal_api",
+      "label": "api",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "usenavigationstore",
-      "source_file": "src/stores/useNavigationStore.js",
-      "source_location": "L4"
+      "norm_label": "api",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L223"
     },
     {
-      "id": "src_views_modules_crm_composables_crmmodule",
-      "label": "CRMModule.js",
+      "id": "src_components_intelligence_aicampaignmodal_cohortdrivers",
+      "label": "cohortDrivers",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "crmmodule.js",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L1"
+      "norm_label": "cohortdrivers",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L219"
     },
     {
-      "id": "src_views_modules_crm_composables_crmmodule_currentcalendardate",
-      "label": "currentCalendarDate",
+      "id": "src_components_intelligence_aicampaignmodal_emit",
+      "label": "emit",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "currentcalendardate",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L31"
+      "norm_label": "emit",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L212"
     },
     {
-      "id": "src_views_modules_crm_composables_crmmodule_editingmeeting",
-      "label": "editingMeeting",
+      "id": "src_components_intelligence_aicampaignmodal_loading",
+      "label": "loading",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "editingmeeting",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L27"
+      "norm_label": "loading",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L221"
     },
     {
-      "id": "src_views_modules_crm_composables_crmmodule_leads",
-      "label": "leads",
+      "id": "src_components_intelligence_aicampaignmodal_props",
+      "label": "props",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "leads",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L33"
+      "norm_label": "props",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L206"
     },
     {
-      "id": "src_views_modules_crm_composables_crmmodule_meetingfilter",
-      "label": "meetingFilter",
+      "id": "src_components_intelligence_aicampaignmodal_selectedcampaign",
+      "label": "selectedCampaign",
       "_origin": "ast",
       "community": 58,
-      "community_name": "CRMModule.js",
+      "community_name": "AiCampaignModal.vue",
       "file_type": "code",
-      "norm_label": "meetingfilter",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L25"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_meetingform",
-      "label": "meetingForm",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "meetingform",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L29"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_meetings",
-      "label": "meetings",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "meetings",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_meetingstats",
-      "label": "meetingStats",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "meetingstats",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L26"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_meetingview",
-      "label": "meetingView",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "meetingview",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_newparticipant",
-      "label": "newParticipant",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "newparticipant",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L30"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_pipelineaccounts",
-      "label": "pipelineAccounts",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "pipelineaccounts",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L36"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_pipelinecontacts",
-      "label": "pipelineContacts",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "pipelinecontacts",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L35"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_pipelinedeals",
-      "label": "pipelineDeals",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "pipelinedeals",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L37"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_pipelineleads",
-      "label": "pipelineLeads",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "pipelineleads",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_savingmeeting",
-      "label": "savingMeeting",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "savingmeeting",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L28"
-    },
-    {
-      "id": "src_views_modules_crm_composables_crmmodule_showmeetingmodal",
-      "label": "showMeetingModal",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "showmeetingmodal",
-      "source_file": "src/views/Modules/crm/composables/CRMModule.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "src_views_modules_crm_crmaccountspage",
-      "label": "CRMAccountsPage.vue",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "crmaccountspage.vue",
-      "source_file": "src/views/Modules/crm/CRMAccountsPage.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_views_modules_crm_crmaccountspage_branches_selectedbranch_onbranchchange_getuseremail_tenantusers_activetab_moduleloading_showaccountformmodal_editingaccount_fetchpipelinedata_loadmeetings",
-      "label": "{\n  branches, selectedBranch, onBranchChange, getUserEmail, tenantUsers,\n  activeTab, moduleLoading, showAccountFormModal, editingAccount,\n  fetchPipelineData, loadMeetings\n}",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "{\n  branches, selectedbranch, onbranchchange, getuseremail, tenantusers,\n  activetab, moduleloading, showaccountformmodal, editingaccount,\n  fetchpipelinedata, loadmeetings\n}",
-      "source_file": "src/views/Modules/crm/CRMAccountsPage.vue",
-      "source_location": "L100"
-    },
-    {
-      "id": "src_views_modules_crm_crmdocumentspage",
-      "label": "CRMDocumentsPage.vue",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "crmdocumentspage.vue",
-      "source_file": "src/views/Modules/crm/CRMDocumentsPage.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_views_modules_crm_crmdocumentspage_getuseremail_activetab_moduleloading",
-      "label": "{ getUserEmail, activeTab, moduleLoading }",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "{ getuseremail, activetab, moduleloading }",
-      "source_file": "src/views/Modules/crm/CRMDocumentsPage.vue",
-      "source_location": "L46"
-    },
-    {
-      "id": "src_views_modules_crm_crmwhatsapppage",
-      "label": "CRMWhatsAppPage.vue",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "crmwhatsapppage.vue",
-      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_views_modules_crm_crmwhatsapppage_getuseremail_activetab_moduleloading_filteredcommunications_communicationfilter_whatsappsubtypefilter_getcommunicationborderclass_getcommunicationicon_replytocommunication_deletecommunicationrecord_callnotes_newcallnote_ensurecallnotesloaded_submitcallnote_crmformatdatetime_gotomodule",
-      "label": "{\n  getUserEmail, activeTab, moduleLoading, filteredCommunications, communicationFilter,\n  whatsappSubtypeFilter, getCommunicationBorderClass, getCommunicationIcon,\n  replyToCommunication, deleteCommunicationRecord, callNotes, newCallNote,\n  ensureCallNotesLoaded, submitCallNote, crmFormatDateTime, goToModule\n}",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "{\n  getuseremail, activetab, moduleloading, filteredcommunications, communicationfilter,\n  whatsappsubtypefilter, getcommunicationborderclass, getcommunicationicon,\n  replytocommunication, deletecommunicationrecord, callnotes, newcallnote,\n  ensurecallnotesloaded, submitcallnote, crmformatdatetime, gotomodule\n}",
-      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
-      "source_location": "L204"
-    },
-    {
-      "id": "src_views_modules_crm_crmwhatsapppage_scrollcontainer",
-      "label": "scrollContainer",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "scrollcontainer",
-      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
-      "source_location": "L211"
-    },
-    {
-      "id": "src_views_modules_crm_crmwhatsapppage_whatsappchronological",
-      "label": "whatsappChronological",
-      "_origin": "ast",
-      "community": 58,
-      "community_name": "CRMModule.js",
-      "file_type": "code",
-      "norm_label": "whatsappchronological",
-      "source_file": "src/views/Modules/crm/CRMWhatsAppPage.vue",
-      "source_location": "L214"
+      "norm_label": "selectedcampaign",
+      "source_file": "src/components/intelligence/AiCampaignModal.vue",
+      "source_location": "L218"
     },
     {
       "id": "qoder_repowiki_en_content_architecture_design_security_architecture_audit_logging",
@@ -75753,6 +75820,17 @@
       "source_location": "L7"
     },
     {
+      "id": "src_config_useaudit",
+      "label": "useAudit.js",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "decodeJWT",
+      "file_type": "code",
+      "norm_label": "useaudit.js",
+      "source_file": "src/config/useAudit.js",
+      "source_location": "L1"
+    },
+    {
       "id": "src_config_usepreferences",
       "label": "usePreferences.js",
       "_origin": "ast",
@@ -76413,6 +76491,28 @@
       "source_location": "L801"
     },
     {
+      "id": "src_components_loadingskeleton",
+      "label": "LoadingSkeleton.vue",
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "LifecyclePrediction.vue",
+      "file_type": "code",
+      "norm_label": "loadingskeleton.vue",
+      "source_file": "src/components/LoadingSkeleton.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_tests_loadingskeleton_spec",
+      "label": "LoadingSkeleton.spec.js",
+      "_origin": "ast",
+      "community": 67,
+      "community_name": "LifecyclePrediction.vue",
+      "file_type": "code",
+      "norm_label": "loadingskeleton.spec.js",
+      "source_file": "src/components/__tests__/LoadingSkeleton.spec.js",
+      "source_location": "L1"
+    },
+    {
       "id": "src_views_modules_intelligence_lifecycleprediction",
       "label": "LifecyclePrediction.vue",
       "_origin": "ast",
@@ -76763,6 +76863,17 @@
       "norm_label": "winbackincampaigncount",
       "source_file": "src/views/Modules/intelligence/LifecyclePrediction.vue",
       "source_location": "L974"
+    },
+    {
+      "id": "src_services_customerprofileapi",
+      "label": "customerProfileApi.js",
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "customerProfileApi.js",
+      "file_type": "code",
+      "norm_label": "customerprofileapi.js",
+      "source_file": "src/services/customerProfileApi.js",
+      "source_location": "L1"
     },
     {
       "id": "qoder_repowiki_en_content_security_considerations_security_considerations",
@@ -79587,105 +79698,6 @@
       "norm_label": "smsmessage",
       "source_file": "src/views/Modules/crm/CRMOmnichannelWorkspace.vue",
       "source_location": "L19"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect",
-      "label": "SearchableSelect.vue",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "searchableselect.vue",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_containerref",
-      "label": "containerRef",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "containerref",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L93"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_dropdownstyle",
-      "label": "dropdownStyle",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "dropdownstyle",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L95"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_emit",
-      "label": "emit",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "emit",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L89"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_filteredoptions",
-      "label": "filteredOptions",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "filteredoptions",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L97"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_inputref",
-      "label": "inputRef",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "inputref",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L94"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_isopen",
-      "label": "isOpen",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "isopen",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L91"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_props",
-      "label": "props",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L82"
-    },
-    {
-      "id": "src_views_modules_crm_components_searchableselect_searchquery",
-      "label": "searchQuery",
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "SearchableSelect.vue",
-      "file_type": "code",
-      "norm_label": "searchquery",
-      "source_file": "src/views/Modules/crm/components/SearchableSelect.vue",
-      "source_location": "L92"
     },
     {
       "id": "src_views_customerdetail",
@@ -91833,6 +91845,18 @@
       "context": "call",
       "source_file": "src/stores/predictionStore.js",
       "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "src_stores_snapshotstore_usesnapshotstore",
+      "target": "src_stores_snapshotstore_cleandate",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -160114,13 +160138,24 @@
     },
     {
       "source": "src_stores_snapshotstore",
-      "target": "src_stores_snapshotstore_usesnapshotstore",
+      "target": "src_stores_snapshotstore_cleandate",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/stores/snapshotStore.js",
       "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "src_stores_snapshotstore",
+      "target": "src_stores_snapshotstore_usesnapshotstore",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/stores/snapshotStore.js",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -192075,5 +192110,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5a86ed6d1522fed5db15100c485242f830a9bfd2"
+  "built_at_commit": "a04ca50ace871908af7611d64fc5187a89699cab"
 }

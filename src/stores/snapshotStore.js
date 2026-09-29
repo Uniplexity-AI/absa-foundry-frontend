@@ -23,13 +23,33 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+function cleanDate(val, fallback = '2026-07-27') {
+  let d = String(val || '').trim()
+  if (!d) return fallback
+  // Auto-correct common adjacent-key typo: 2026-07027 -> 2026-07-27 (0 is next to - on the keyboard)
+  if (/^\d{4}-\d{2}0\d{2}$/.test(d)) {
+    d = d.slice(0, 7) + '-' + d.slice(8)
+  }
+  // Validate standard ISO format YYYY-MM-DD
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+    return fallback
+  }
+  return d
+}
+
 export const useSnapshotStore = defineStore('snapshot', () => {
   const initial = import.meta.env.VITE_AS_OF_DATE || '2026-07-27'
 
-  const selectedDate = ref(localStorage.getItem(STORAGE_KEY) || initial)
+  const stored = localStorage.getItem(STORAGE_KEY)
+  const resolved = cleanDate(stored, initial)
+  if (stored && stored !== resolved) {
+    localStorage.setItem(STORAGE_KEY, resolved)
+  }
+
+  const selectedDate = ref(resolved)
   const availableDates = ref([])
 
-  const asOfDate = computed(() => selectedDate.value)
+  const asOfDate = computed(() => cleanDate(selectedDate.value, initial))
 
   async function fetchAvailable() {
     try {
@@ -47,7 +67,7 @@ export const useSnapshotStore = defineStore('snapshot', () => {
   }
 
   function setDate(value) {
-    const d = String(value || '').trim()
+    const d = cleanDate(value, null)
     if (!d) return
     selectedDate.value = d
     localStorage.setItem(STORAGE_KEY, d)

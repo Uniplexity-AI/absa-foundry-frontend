@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>absa-foundry-frontend — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 7370 nodes, 9367 edges, 485 communities. Commit: 5a86ed6</p>
+<p class="subtitle">Generated from graphify knowledge graph: 7371 nodes, 9369 edges, 480 communities. Commit: a04ca50</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -76,7 +76,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#usecrmmodule">useCRMModule</a>
     <a href="#accountsview-vue">AccountsView.vue</a>
     <a href="#leadsview-vue">LeadsView.vue</a>
-    <a href="#usesettingsbase">useSettingsBase</a>
+    <a href="#aimodule-vue">AiModule.vue</a>
     <a href="#models-vue">Models.vue</a>
     <a href="#other">Other</a>
 </div>
@@ -94,11 +94,11 @@ flowchart LR
     class BUILD_GRAPH_321CBB04 module;
     OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>45 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
-    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>60 nodes</small>")
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>64 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
     INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>192 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>1518 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>1573 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>306 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
@@ -112,24 +112,24 @@ flowchart LR
     class ACCOUNTSVIEW_VUE_A9506722 module;
     LEADSVIEW_VUE_10F58956("LeadsView.vue<br/><small>62 nodes</small>")
     class LEADSVIEW_VUE_10F58956 module;
-    USESETTINGSBASE_5134DBB0("useSettingsBase<br/><small>53 nodes</small>")
-    class USESETTINGSBASE_5134DBB0 module;
+    AIMODULE_VUE_5D2C890C("AiModule.vue<br/><small>59 nodes</small>")
+    class AIMODULE_VUE_5D2C890C module;
     MODELS_VUE_641107F5("Models.vue<br/><small>52 nodes</small>")
     class MODELS_VUE_641107F5 module;
-    OTHER_D0941E68("Other<br/><small>4525 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>4461 nodes</small>")
     class OTHER_D0941E68 module;
-    SERVE_API_35EC8E86 -->|contains x192| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x176| SERVE_API_35EC8E86
-    USECRMMODULE_61828D9C -->|indirect call x115| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x63| CLI_SKILLS_9964CBB8
-    USESETTINGSBASE_5134DBB0 -->|imports x34| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x30| CLI_SKILLS_9964CBB8
+    SERVE_API_35EC8E86 -->|contains x219| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x178| SERVE_API_35EC8E86
+    USECRMMODULE_61828D9C -->|indirect call x112| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x62| CLI_SKILLS_9964CBB8
+    SERVE_API_35EC8E86 -->|imports x36| CLI_SKILLS_9964CBB8
     INGEST_CACHE_UPDATE_FF457338 -->|calls x29| OTHER_D0941E68
-    ACCOUNTSVIEW_VUE_A9506722 -->|contains x27| OTHER_D0941E68
+    ACCOUNTSVIEW_VUE_A9506722 -->|contains x26| OTHER_D0941E68
     LEADSVIEW_VUE_10F58956 -->|contains x26| OTHER_D0941E68
     ACCOUNTDETAILMODAL_VUE_645D977D -->|calls x24| SERVE_API_35EC8E86
     MODELS_VUE_641107F5 -->|imports x24| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x14| USECRMMODULE_61828D9C
+    TESTS_FIXTURES_B84B1DCC -->|re exports x11| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x10| USECRMMODULE_61828D9C
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>2</td><td><code>313</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 305, 307, 349, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Outputs &amp; Docs</td><td>45</td><td><code>142, 169, 367, 368</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>60</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>192</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491</code></td></tr><tr><td>Serving API</td><td>1518</td><td><code>2, 5, 18, 8, 4, 39, 10, 40, 20, 32, 31, 38, 35, 266, 41, 49, 61, 64, 70, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 136, 137, 138, 159, 161, 167, 22, 191, 240, 149, 238, 6, 229, 256, 272, 270, 306, 309, 329, 386, 395, 412, 302, 450</code></td></tr><tr><td>Security &amp; Global Graph</td><td>306</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>46</td><td><code>242, 255, 289, 352, 411</code></td></tr><tr><td>AccountDetailModal.vue</td><td>129</td><td><code>1</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>LeadsView.vue</td><td>62</td><td><code>7</code></td></tr><tr><td>useSettingsBase</td><td>53</td><td><code>220</code></td></tr><tr><td>Models.vue</td><td>52</td><td><code>33</code></td></tr><tr><td>Other</td><td>4525</td><td><code>14, 12, 15, 13, 16, 19, 66, 67, 21, 25, 176, 26, 27, 24, 29, 17, 34, 28, 173, 37, 174, 46, 209, 42, 43, 196, 248, 48, 58, 50, 52, 53, 54, 56, 60, 62, 65, 71, 72, 75, 76, 80, 92, 197, 260, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 130, 131, 30, 9, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 146, 148, 150, 152, 154, 155, 36, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 177, 178, 179, 180, 175, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 55, 200, 201, 203, 204, 205, 206, 208, 210, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 57, 223, 224, 225, 226, 227, 230, 233, 234, 44, 228, 235, 241, 249, 250, 267, 284, 45, 78, 236, 243, 244, 251, 79, 151, 278, 282, 147, 254, 106, 231, 239, 253, 257, 258, 262, 269, 275, 453, 11, 277, 279, 280, 245, 281, 283, 296, 310, 454, 271, 285, 286, 287, 290, 291, 292, 294, 268, 288, 295, 303, 304, 318, 319, 312, 321, 325, 462, 47, 198, 293, 316, 322, 324, 326, 328, 332, 346, 330, 331, 334, 336, 337, 338, 339, 340, 357, 298, 299, 323, 333, 343, 347, 348, 68, 232, 327, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 460, 467, 261, 314, 317, 335, 341, 342, 344, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>2</td><td><code>313</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 305, 307, 349, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Outputs &amp; Docs</td><td>45</td><td><code>142, 169, 367, 368</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>64</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>192</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491</code></td></tr><tr><td>Serving API</td><td>1573</td><td><code>2, 5, 8, 18, 4, 10, 266, 39, 20, 32, 17, 40, 31, 38, 35, 41, 49, 61, 64, 70, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 136, 137, 138, 159, 161, 167, 22, 191, 240, 149, 238, 6, 229, 256, 272, 270, 306, 309, 329, 386, 395, 412, 302, 450</code></td></tr><tr><td>Security &amp; Global Graph</td><td>306</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>46</td><td><code>242, 255, 289, 352, 411</code></td></tr><tr><td>AccountDetailModal.vue</td><td>129</td><td><code>1</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>LeadsView.vue</td><td>62</td><td><code>7</code></td></tr><tr><td>AiModule.vue</td><td>59</td><td><code>21</code></td></tr><tr><td>Models.vue</td><td>52</td><td><code>33</code></td></tr><tr><td>Other</td><td>4461</td><td><code>19, 220, 14, 12, 15, 13, 16, 67, 174, 66, 176, 26, 24, 29, 173, 30, 34, 28, 27, 37, 46, 209, 25, 42, 196, 248, 43, 48, 50, 52, 53, 54, 56, 60, 62, 65, 71, 72, 75, 76, 80, 92, 197, 260, 55, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 130, 131, 9, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 148, 152, 154, 155, 36, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 177, 178, 179, 180, 146, 175, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 150, 200, 201, 203, 204, 205, 206, 208, 210, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 57, 223, 224, 225, 226, 227, 228, 230, 233, 234, 257, 235, 236, 241, 249, 250, 267, 284, 45, 78, 243, 244, 251, 151, 278, 282, 44, 147, 254, 106, 231, 239, 253, 258, 262, 269, 275, 58, 11, 277, 279, 280, 245, 281, 283, 296, 310, 454, 286, 287, 290, 291, 292, 294, 268, 288, 295, 303, 304, 318, 319, 312, 321, 325, 462, 47, 198, 293, 316, 322, 324, 326, 328, 332, 346, 330, 331, 334, 336, 337, 338, 339, 340, 357, 298, 299, 323, 333, 343, 348, 68, 79, 232, 327, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 460, 261, 314, 317, 335, 341, 342, 344, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>7370 nodes · 9367 edges · 485 communities (398 shown, 87 thin omitted)</li>
+      <li>7371 nodes · 9369 edges · 480 communities (393 shown, 87 thin omitted)</li>
       <li>Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 471 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useCRMModule()` - 242 edges</li>
@@ -900,12 +900,12 @@ flowchart LR
 
 <!-- ====== 5. CLI & Skill Installers ====== -->
 <h2 id="cli-skills">5. CLI &amp; Skill Installers</h2>
-<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 60 nodes and 78 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 64 nodes and 84 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: CLI &amp; Skill Installers (60 nodes, 78 edges)
+    %% Section: CLI &amp; Skill Installers (64 nodes, 84 edges)
     subgraph cli_skills_src_App_vue_6c3541eb["src/App.vue"]
         src_app_46efd68e("App.vue")
         src_app_startautohidetimer_43305554("startAutoHideTimer()<br/><small>src/App.vue</small>")
@@ -914,22 +914,18 @@ flowchart LR
         src_app_clearautohidetimer_87ac30a2("clearAutoHideTimer()<br/><small>src/App.vue</small>")
         src_app_installpwa_11c91f16("installPWA()<br/><small>src/App.vue</small>")
     end
-    subgraph cli_skills_src_config_devFlags_js_e8dca5d9["src/config/devFlags.js"]
-        src_config_devflags_ensuredevauthsession_908c9cfa("ensureDevAuthSession()<br/><small>src/config/devFlags.js</small>")
-        src_config_devflags_dev_bypass_0a92a1a6("DEV_BYPASS<br/><small>src/config/devFlags.js</small>")
-    end
-    subgraph cli_skills_src_services_decodeJWT_js_6bde635d["src/services/decodeJWT.js"]
-        src_services_decodejwt_0fa40e58("decodeJWT.js")
-        src_services_decodejwt_decodejwt_639458ba("decodeJWT()<br/><small>src/services/decodeJWT.js</small>")
-    end
-    subgraph cli_skills_src_views_MyCustomers_vue_10a84a70["src/views/MyCustomers.vue"]
-        src_views_mycustomers_candelete_fb074907("canDelete<br/><small>src/views/MyCustomers.vue</small>")
-        src_views_mycustomers_canloaddata_c1968af7("canLoadData<br/><small>src/views/MyCustomers.vue</small>")
+    subgraph cli_skills_src_config_useAudit_js_118718bd["src/config/useAudit.js"]
+        src_config_useaudit_ee385add("useAudit.js")
+        src_config_useaudit_useaudit_c376759f("useAudit()<br/><small>src/config/useAudit.js</small>")
+        src_config_useaudit_useaudit_logaudit_f6846a89("logAudit()<br/><small>src/config/useAudit.js</small>")
     end
     src_views_modules_aiagents_models_canretrain_47a18331("canRetrain<br/><small>Modules/aiagents/Models.vue</small>")
     src_components_layouts_dashboardlayout_handlelog_d19d0bb9("handleLogout()<br/><small>components/layouts/DashboardLayout.vue</small>")
+    src_views_modules_crm_composables_crmmodule_usec_a4a0cb26("deleteCustomer()<br/><small>crm/composables/CRMModule.js</small>")
+    src_config_devflags_ensuredevauthsession_908c9cfa("ensureDevAuthSession()<br/><small>src/config/devFlags.js</small>")
     src_config_usepreferences_d4ca4e13("usePreferences.js")
     src_main_3231ff52("main.js")
+    src_services_decodejwt_decodejwt_639458ba("decodeJWT()<br/><small>src/services/decodeJWT.js</small>")
     src_services_notification_api_5f9f2cf8("notification_api.js")
     src_views_customerprofile_candelete_8470694a("canDelete<br/><small>src/views/CustomerProfile.vue</small>")
     src_app_checkandredirectifauthenticated_63e62923 -->|calls| src_services_decodejwt_decodejwt_639458ba
@@ -938,41 +934,34 @@ flowchart LR
     src_app_startautohidetimer_43305554 -->|calls| src_app_clearautohidetimer_87ac30a2
     src_app_startautohidetimer_43305554 -->|calls| src_app_dismissinstall_91debf6f
     src_components_layouts_dashboardlayout_handlelog_d19d0bb9 -->|calls| src_services_decodejwt_decodejwt_639458ba
+    src_config_useaudit_useaudit_c376759f -->|calls| src_services_decodejwt_decodejwt_639458ba
     src_services_decodejwt_decodejwt_639458ba -->|calls| src_config_devflags_ensuredevauthsession_908c9cfa
+    src_views_modules_crm_composables_crmmodule_usec_a4a0cb26 -->|calls| src_config_useaudit_useaudit_logaudit_f6846a89
     src_views_customerprofile_candelete_8470694a -->|calls| src_services_decodejwt_decodejwt_639458ba
     src_views_modules_aiagents_models_canretrain_47a18331 -->|calls| src_services_decodejwt_decodejwt_639458ba
-    src_views_mycustomers_candelete_fb074907 -->|calls| src_services_decodejwt_decodejwt_639458ba
-    src_views_mycustomers_canloaddata_c1968af7 -->|calls| src_services_decodejwt_decodejwt_639458ba
-    src_app_46efd68e -->|imports| src_config_devflags_dev_bypass_0a92a1a6
     src_app_46efd68e -->|imports| src_services_decodejwt_decodejwt_639458ba
-    src_app_46efd68e -->|imports| src_services_decodejwt_0fa40e58
     src_app_46efd68e -->|imports| src_config_usepreferences_d4ca4e13
+    src_config_useaudit_ee385add -->|imports| src_services_decodejwt_decodejwt_639458ba
     src_config_usepreferences_d4ca4e13 -->|imports| src_services_decodejwt_decodejwt_639458ba
-    src_config_usepreferences_d4ca4e13 -->|imports| src_config_devflags_dev_bypass_0a92a1a6
-    src_config_usepreferences_d4ca4e13 -->|imports| src_services_decodejwt_0fa40e58
-    src_main_3231ff52 -->|imports| src_config_devflags_dev_bypass_0a92a1a6
     src_main_3231ff52 -->|imports| src_app_46efd68e
-    src_services_decodejwt_0fa40e58 -->|imports| src_config_devflags_dev_bypass_0a92a1a6
-    src_services_decodejwt_0fa40e58 -->|imports| src_config_devflags_ensuredevauthsession_908c9cfa
     src_services_notification_api_5f9f2cf8 -->|imports| src_services_decodejwt_decodejwt_639458ba
-    src_services_notification_api_5f9f2cf8 -->|imports| src_services_decodejwt_0fa40e58
-    %% Omitted for readability: 42 nodes, 0 edges
+    %% Omitted for readability: 46 nodes, 0 edges
     class src_app_46efd68e ui;
     class src_app_startautohidetimer_43305554 ui;
     class src_app_checkandredirectifauthenticated_63e62923 ui;
     class src_app_dismissinstall_91debf6f ui;
     class src_app_clearautohidetimer_87ac30a2 ui;
     class src_app_installpwa_11c91f16 ui;
-    class src_config_devflags_ensuredevauthsession_908c9cfa function;
-    class src_config_devflags_dev_bypass_0a92a1a6 klass;
-    class src_services_decodejwt_0fa40e58 module;
-    class src_services_decodejwt_decodejwt_639458ba function;
-    class src_views_mycustomers_candelete_fb074907 ui;
-    class src_views_mycustomers_canloaddata_c1968af7 ui;
+    class src_config_useaudit_ee385add ui;
+    class src_config_useaudit_useaudit_c376759f ui;
+    class src_config_useaudit_useaudit_logaudit_f6846a89 function;
     class src_views_modules_aiagents_models_canretrain_47a18331 ui;
     class src_components_layouts_dashboardlayout_handlelog_d19d0bb9 ui;
+    class src_views_modules_crm_composables_crmmodule_usec_a4a0cb26 function;
+    class src_config_devflags_ensuredevauthsession_908c9cfa function;
     class src_config_usepreferences_d4ca4e13 ui;
     class src_main_3231ff52 module;
+    class src_services_decodejwt_decodejwt_639458ba function;
     class src_services_notification_api_5f9f2cf8 api;
     class src_views_customerprofile_candelete_8470694a ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
@@ -1054,6 +1043,22 @@ flowchart LR
 </tr>
 <tr>
   <td>8</td>
+  <td><code>useAudit()</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>useCRMModule()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br>+1 more</td>
+  <td><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>logAudit()</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
+  <td>useAudit() node in src/config/useAudit.js.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>logAudit()</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>deleteCustomer()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>deleteLead()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>submitCustomer()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>logAudit() node in src/config/useAudit.js.</td>
+</tr>
+<tr>
+  <td>10</td>
   <td><code>usePreferences()</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>LeadDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+3 more</td>
@@ -1061,7 +1066,7 @@ flowchart LR
   <td>usePreferences() node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>11</td>
   <td><code>onNeedRefresh()</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1069,7 +1074,7 @@ flowchart LR
   <td>onNeedRefresh() node in src/main.js.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>12</td>
   <td><code>onRegisterError()</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1077,7 +1082,7 @@ flowchart LR
   <td>onRegisterError() node in src/main.js.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>13</td>
   <td><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>AccountDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>AccountFormModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountFormModal.vue</small><br><code>AccountsView.vue</code><br><small style="color:var(--muted)">crm/components/AccountsView.vue</small><br>+52 more</td>
@@ -1085,7 +1090,7 @@ flowchart LR
   <td>decodeJWT() node in src/services/decodeJWT.js.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>14</td>
   <td><code>sendNotification()</code><br><small style="color:var(--muted)">src/services/notification_api.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>notification_api.js</code><br><small style="color:var(--muted)">src/services/notification_api.js</small></td>
@@ -1093,7 +1098,15 @@ flowchart LR
   <td>sendNotification() node in src/services/notification_api.js.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>15</td>
+  <td><code>deleteCustomer()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>useCRMModule()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small></td>
+  <td><code>logAudit()</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
+  <td>deleteCustomer() node in crm/composables/CRMModule.js.</td>
+</tr>
+<tr>
+  <td>16</td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
@@ -1101,7 +1114,7 @@ flowchart LR
   <td>App.vue node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>17</td>
   <td><code>{ fetchPreferences }</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1109,7 +1122,7 @@ flowchart LR
   <td>{ fetchPreferences } node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>18</td>
   <td><code>{ initializeRBAC }</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1117,7 +1130,7 @@ flowchart LR
   <td>{ initializeRBAC } node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>19</td>
   <td><code>isMfeModalOpen</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1125,7 +1138,7 @@ flowchart LR
   <td>isMfeModalOpen node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>20</td>
   <td><code>mfePortalLink</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1133,7 +1146,7 @@ flowchart LR
   <td>mfePortalLink node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>21</td>
   <td><code>showInstallToast</code><br><small style="color:var(--muted)">src/App.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -1141,7 +1154,7 @@ flowchart LR
   <td>showInstallToast node in src/App.vue.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>22</td>
   <td><code>devFlags.js</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1149,7 +1162,7 @@ flowchart LR
   <td>devFlags.js node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>23</td>
   <td><code>DEV_AUTH_PAYLOAD</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
@@ -1157,7 +1170,7 @@ flowchart LR
   <td>DEV_AUTH_PAYLOAD node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>24</td>
   <td><code>DEV_BYPASS</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1165,7 +1178,15 @@ flowchart LR
   <td>DEV_BYPASS node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>25</td>
+  <td><code>useAudit.js</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>API_BASE_URL</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+1 more</td>
+  <td>useAudit.js node in src/config/useAudit.js.</td>
+</tr>
+<tr>
+  <td>26</td>
   <td><code>usePreferences.js</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>LeadDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
@@ -1173,7 +1194,7 @@ flowchart LR
   <td>usePreferences.js node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>27</td>
   <td><code>preferences</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1181,7 +1202,7 @@ flowchart LR
   <td>preferences node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>28</td>
   <td><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1189,7 +1210,7 @@ flowchart LR
   <td>main.js node in src/main.js.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>29</td>
   <td><code>app</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1197,44 +1218,12 @@ flowchart LR
   <td>app node in src/main.js.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>30</td>
   <td><code>pinia</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>pinia node in src/main.js.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>router</code><br><small style="color:var(--muted)">src/router/index.js</small></td>
-  <td><span class="tag tag-endpoint">API</span></td>
-  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>router node in src/router/index.js.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>AccountDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>AccountFormModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountFormModal.vue</small><br><code>AccountsView.vue</code><br><small style="color:var(--muted)">crm/components/AccountsView.vue</small><br>+40 more</td>
-  <td><code>DEV_AUTH_PAYLOAD</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br><code>DEV_BYPASS</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br><code>devFlags.js</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br>+1 more</td>
-  <td>decodeJWT.js node in src/services/decodeJWT.js.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>notification_api.js</code><br><small style="color:var(--muted)">src/services/notification_api.js</small></td>
-  <td><span class="tag tag-endpoint">API</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+1 more</td>
-  <td>notification_api.js node in src/services/notification_api.js.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>{ getTenantId }</code><br><small style="color:var(--muted)">src/services/notification_api.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>{ getTenantId } node in src/services/notification_api.js.</td>
 </tr>
 </table>
 
@@ -1248,14 +1237,14 @@ flowchart LR
 <tr><td><code>src/App.vue</code></td><td>11 nodes</td></tr>
 <tr><td><code>src/main.js</code></td><td>5 nodes</td></tr>
 <tr><td><code>src/config/devFlags.js</code></td><td>4 nodes</td></tr>
+<tr><td><code>src/config/useAudit.js</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/config/usePreferences.js</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/services/notification_api.js</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/services/decodeJWT.js</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x45, imports x12, calls x11, imports x9. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x46, calls x13, imports x13, imports x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -1613,12 +1602,12 @@ flowchart LR
 
 <!-- ====== 7. Serving API ====== -->
 <h2 id="serve-api">7. Serving API</h2>
-<p>Serving API groups implementation around views, qoder, repowiki, content, mostly in crm/components/LeadDetailModal.vue, src/services/crm_api.js, src/views/CustomerDetail.vue. This section covers 1518 nodes and 1964 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around views, crm, qoder, repowiki, mostly in crm/components/LeadDetailModal.vue, src/services/crm_api.js, src/views/CustomerDetail.vue. This section covers 1573 nodes and 2038 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (1518 nodes, 1964 edges)
+    %% Section: Serving API (1573 nodes, 2038 edges)
     subgraph serve_api_src_services_telemetry_comparison_api_e4e6ddda["src/services/telemetry_comparison_api.js"]
         src_services_telemetry_comparison_api_telemetryc_feee5b40("TelemetryComparisonService<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_70367f3d("getMachineMetrics()<br/><small>src/services/telemetry_comparison_api.js</small>")
@@ -1635,12 +1624,12 @@ flowchart LR
     end
     subgraph serve_api_src_views_MyCustomers_vue_ce0302a1["src/views/MyCustomers.vue"]
         src_views_mycustomers_618d83ab("MyCustomers.vue")
-        src_views_mycustomers_computestates_648bae6e("computeStates()<br/><small>src/views/MyCustomers.vue</small>")
+        src_views_mycustomers_churncolor_45bf15fb("churnColor()<br/><small>src/views/MyCustomers.vue</small>")
     end
     src_views_modules_managers_branchmanagerdashboar_2c5fc4c6("BranchManagerDashboard.vue")
-    src_composables_settings_usesettingsmodules_be15250a("useSettingsModules.js")
     src_views_customerdetail_9a83761f("CustomerDetail.vue")
     src_views_customerprofile_f8c995ed("CustomerProfile.vue")
+    src_views_portfoliooverview_205a627e("PortfolioOverview.vue")
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_70367f3d
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_be0034e3
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_cc3c33f5
@@ -1653,7 +1642,7 @@ flowchart LR
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_bd71a1f4
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_6a6b7d37
     src_services_telemetry_comparison_api_telemetryc_0cff7dbc -->|calls| src_services_telemetry_comparison_api_telemetryc_da656d92
-    %% Omitted for readability: 1500 nodes, 0 edges
+    %% Omitted for readability: 1555 nodes, 0 edges
     class src_services_telemetry_comparison_api_telemetryc_feee5b40 klass;
     class src_services_telemetry_comparison_api_telemetryc_70367f3d function;
     class src_services_telemetry_comparison_api_telemetryc_be0034e3 function;
@@ -1667,11 +1656,11 @@ flowchart LR
     class src_services_telemetry_comparison_api_telemetryc_bd71a1f4 function;
     class src_services_telemetry_comparison_api_telemetryc_6a6b7d37 function;
     class src_views_mycustomers_618d83ab ui;
-    class src_views_mycustomers_computestates_648bae6e ui;
+    class src_views_mycustomers_churncolor_45bf15fb ui;
     class src_views_modules_managers_branchmanagerdashboar_2c5fc4c6 ui;
-    class src_composables_settings_usesettingsmodules_be15250a ui;
     class src_views_customerdetail_9a83761f ui;
     class src_views_customerprofile_f8c995ed ui;
+    class src_views_portfoliooverview_205a627e ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1945,14 +1934,14 @@ flowchart LR
 <tr><td><code>src/views/CustomerDetail.vue</code></td><td>72 nodes</td></tr>
 <tr><td><code>src/views/CustomerProfile.vue</code></td><td>71 nodes</td></tr>
 <tr><td><code>Modules/settings/SubAccountModule.vue</code></td><td>68 nodes</td></tr>
-<tr><td><code>src/views/MyCustomers.vue</code></td><td>58 nodes</td></tr>
+<tr><td><code>src/views/MyCustomers.vue</code></td><td>66 nodes</td></tr>
 <tr><td><code>crm/components/DocumentsView.vue</code></td><td>49 nodes</td></tr>
 <tr><td><code>Modules/managers/BranchManagerDashboard.vue</code></td><td>45 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1299, calls x387, indirect call x113, imports x71. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1348, calls x392, indirect call x113, imports x83. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2922,7 +2911,7 @@ flowchart LR
   <td>24</td>
   <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br>+1 more</td>
   <td>No direct outbound edge</td>
   <td>formatCurrency() node in crm/components/AccountDetailModal.vue.</td>
 </tr>
@@ -3984,77 +3973,69 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 14. useSettingsBase ====== -->
-<h2 id="usesettingsbase">14. useSettingsBase</h2>
-<p>useSettingsBase groups implementation around settings, composables, views, modules, mostly in composables/settings/useSettingsBranding.js, composables/settings/useSettingsProfile.js, composables/settings/useSettingsIntegrations.js. This section covers 53 nodes and 71 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. AiModule.vue ====== -->
+<h2 id="aimodule-vue">14. AiModule.vue</h2>
+<p>AiModule.vue groups implementation around views, modules, aiagents, aimodulevue, mostly in Modules/aiagents/AiModule.vue, aiagents/components/ChatSidebar.vue. This section covers 59 nodes and 73 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: useSettingsBase (53 nodes, 71 edges)
-    subgraph usesettingsbase_composables_settings_useSettings_a73513f8["composables/settings/useSettingsProfile.js"]
-        src_composables_settings_usesettingsprofile_uses_fad0d80f("useSettingsProfile()<br/><small>composables/settings/useSettingsProfile.js</small>")
-        src_composables_settings_usesettingsprofile_uses_e285bdcc("fetchTenantDetailsForSettings()<br/><small>composables/settings/useSettingsProfile.js</small>")
-        src_composables_settings_usesettingsprofile_uses_1187b58b("normalizeTenantToProfile()<br/><small>composables/settings/useSettingsProfile.js</small>")
-        src_composables_settings_usesettingsprofile_uses_7e0d72b6("updateProfile()<br/><small>composables/settings/useSettingsProfile.js</small>")
-        src_composables_settings_usesettingsprofile_fb8cf3b2("useSettingsProfile.js")
+    %% Section: AiModule.vue (59 nodes, 73 edges)
+    subgraph aimodule_vue_Modules_aiagents_AiModule_vue_30c407f7["Modules/aiagents/AiModule.vue"]
+        src_views_modules_aiagents_aimodule_sendmessage_c764ab40("sendMessage()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_executedemoa_ee35f07a("executeDemoActions()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_8bd8a4b6("AiModule.vue")
+        src_views_modules_aiagents_aimodule_deleteconver_ee955780("deleteConversation()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_handlenewlin_f155ad27("handleNewLine()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_loadconversa_62f2565b("loadConversation()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_createconver_36be3612("createConversation()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_fetchconvers_aa7242b8("fetchConversations()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_clearhighlig_0b0b29fc("clearHighlights()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_findbytext_818fef33("findByText()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_addhighlight_08a6c59a("addHighlight()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_resizetextar_9a4152d9("resizeTextarea()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_scrolltobott_ad9b41ee("scrollToBottom()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_savemessages_f028eeb9("saveMessagesToConversation()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_parsedemoact_6646f443("parseDemoActions()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_setmessage_7b69bdb8("setMessage()<br/><small>Modules/aiagents/AiModule.vue</small>")
+        src_views_modules_aiagents_aimodule_startnewconv_a9912c71("startNewConversation()<br/><small>Modules/aiagents/AiModule.vue</small>")
     end
-    subgraph usesettingsbase_composables_settings_useSettings_bb77ed8a["composables/settings/useSettingsAiAgents.js"]
-        src_composables_settings_usesettingsaiagents_e013b42d("useSettingsAiAgents.js")
-        src_composables_settings_usesettingsaiagents_use_273384fe("useSettingsAiAgents()<br/><small>composables/settings/useSettingsAiAgents.js</small>")
-    end
-    subgraph usesettingsbase_composables_settings_useSettings_3d055bd7["composables/settings/useSettingsAudit.js"]
-        src_composables_settings_usesettingsaudit_3ca24ed2("useSettingsAudit.js")
-        src_composables_settings_usesettingsaudit_useset_47c61187("useSettingsAudit()<br/><small>composables/settings/useSettingsAudit.js</small>")
-    end
-    subgraph usesettingsbase_composables_settings_useSettings_36299e90["composables/settings/useSettingsBranding.js"]
-        src_composables_settings_usesettingsbranding_a8afe89d("useSettingsBranding.js")
-        src_composables_settings_usesettingsbranding_use_e9fc72d0("useSettingsBranding()<br/><small>composables/settings/useSettingsBranding.js</small>")
-    end
-    subgraph usesettingsbase_composables_settings_useSettings_696a31d4["composables/settings/useSettingsIntegrations.js"]
-        src_composables_settings_usesettingsintegrations_cee28d8a("useSettingsIntegrations()<br/><small>composables/settings/useSettingsIntegrations.js</small>")
-        src_composables_settings_usesettingsintegrations_15de872f("useSettingsIntegrations.js")
-    end
-    src_composables_settings_usesettingsbase_usesett_ca42ec41("useSettingsBase()<br/><small>composables/settings/useSettingsBase.js</small>")
-    src_composables_settings_usesettingsgoals_23ad7d35("useSettingsGoals.js")
-    src_composables_settings_usesettingsroles_784a172b("useSettingsRoles.js")
-    src_views_modules_settings_components_settingsai_53582525("SettingsAiAgents.vue")
-    src_views_modules_settings_components_settingsau_abac9c53("SettingsAudit.vue")
-    src_composables_settings_usesettingsaiagents_use_273384fe -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsaudit_useset_47c61187 -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsbranding_use_e9fc72d0 -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsintegrations_cee28d8a -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsprofile_uses_fad0d80f -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsprofile_uses_e285bdcc -->|calls| src_composables_settings_usesettingsprofile_uses_1187b58b
-    src_composables_settings_usesettingsprofile_uses_7e0d72b6 -->|calls| src_composables_settings_usesettingsprofile_uses_e285bdcc
-    src_composables_settings_usesettingsaiagents_e013b42d -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsaudit_3ca24ed2 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsbranding_a8afe89d -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsgoals_23ad7d35 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsintegrations_15de872f -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsprofile_fb8cf3b2 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsroles_784a172b -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_views_modules_settings_components_settingsai_53582525 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_views_modules_settings_components_settingsau_abac9c53 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    %% Omitted for readability: 35 nodes, 0 edges
-    class src_composables_settings_usesettingsprofile_uses_fad0d80f ui;
-    class src_composables_settings_usesettingsprofile_uses_e285bdcc function;
-    class src_composables_settings_usesettingsprofile_uses_1187b58b function;
-    class src_composables_settings_usesettingsprofile_uses_7e0d72b6 function;
-    class src_composables_settings_usesettingsprofile_fb8cf3b2 ui;
-    class src_composables_settings_usesettingsaiagents_e013b42d ui;
-    class src_composables_settings_usesettingsaiagents_use_273384fe ui;
-    class src_composables_settings_usesettingsaudit_3ca24ed2 ui;
-    class src_composables_settings_usesettingsaudit_useset_47c61187 ui;
-    class src_composables_settings_usesettingsbranding_a8afe89d ui;
-    class src_composables_settings_usesettingsbranding_use_e9fc72d0 ui;
-    class src_composables_settings_usesettingsintegrations_cee28d8a ui;
-    class src_composables_settings_usesettingsintegrations_15de872f ui;
-    class src_composables_settings_usesettingsbase_usesett_ca42ec41 ui;
-    class src_composables_settings_usesettingsgoals_23ad7d35 ui;
-    class src_composables_settings_usesettingsroles_784a172b ui;
-    class src_views_modules_settings_components_settingsai_53582525 ui;
-    class src_views_modules_settings_components_settingsau_abac9c53 ui;
+    src_views_modules_aiagents_components_chatsideba_9d539606("ChatSidebar.vue")
+    src_views_modules_aiagents_aimodule_createconver_36be3612 -->|calls| src_views_modules_aiagents_aimodule_fetchconvers_aa7242b8
+    src_views_modules_aiagents_aimodule_deleteconver_ee955780 -->|calls| src_views_modules_aiagents_aimodule_fetchconvers_aa7242b8
+    src_views_modules_aiagents_aimodule_executedemoa_ee35f07a -->|calls| src_views_modules_aiagents_aimodule_clearhighlig_0b0b29fc
+    src_views_modules_aiagents_aimodule_executedemoa_ee35f07a -->|calls| src_views_modules_aiagents_aimodule_findbytext_818fef33
+    src_views_modules_aiagents_aimodule_executedemoa_ee35f07a -->|calls| src_views_modules_aiagents_aimodule_addhighlight_08a6c59a
+    src_views_modules_aiagents_aimodule_handlenewlin_f155ad27 -->|calls| src_views_modules_aiagents_aimodule_resizetextar_9a4152d9
+    src_views_modules_aiagents_aimodule_loadconversa_62f2565b -->|calls| src_views_modules_aiagents_aimodule_scrolltobott_ad9b41ee
+    src_views_modules_aiagents_aimodule_savemessages_f028eeb9 -->|calls| src_views_modules_aiagents_aimodule_fetchconvers_aa7242b8
+    src_views_modules_aiagents_aimodule_sendmessage_c764ab40 -->|calls| src_views_modules_aiagents_aimodule_scrolltobott_ad9b41ee
+    src_views_modules_aiagents_aimodule_sendmessage_c764ab40 -->|calls| src_views_modules_aiagents_aimodule_createconver_36be3612
+    src_views_modules_aiagents_aimodule_sendmessage_c764ab40 -->|calls| src_views_modules_aiagents_aimodule_parsedemoact_6646f443
+    src_views_modules_aiagents_aimodule_sendmessage_c764ab40 -->|calls| src_views_modules_aiagents_aimodule_executedemoa_ee35f07a
+    src_views_modules_aiagents_aimodule_sendmessage_c764ab40 -->|calls| src_views_modules_aiagents_aimodule_savemessages_f028eeb9
+    src_views_modules_aiagents_aimodule_setmessage_7b69bdb8 -->|calls| src_views_modules_aiagents_aimodule_sendmessage_c764ab40
+    src_views_modules_aiagents_aimodule_startnewconv_a9912c71 -->|calls| src_views_modules_aiagents_aimodule_scrolltobott_ad9b41ee
+    src_views_modules_aiagents_aimodule_8bd8a4b6 -->|imports| src_views_modules_aiagents_components_chatsideba_9d539606
+    %% Omitted for readability: 41 nodes, 0 edges
+    class src_views_modules_aiagents_aimodule_sendmessage_c764ab40 ui;
+    class src_views_modules_aiagents_aimodule_executedemoa_ee35f07a ui;
+    class src_views_modules_aiagents_aimodule_8bd8a4b6 ui;
+    class src_views_modules_aiagents_aimodule_deleteconver_ee955780 ui;
+    class src_views_modules_aiagents_aimodule_handlenewlin_f155ad27 ui;
+    class src_views_modules_aiagents_aimodule_loadconversa_62f2565b ui;
+    class src_views_modules_aiagents_aimodule_createconver_36be3612 ui;
+    class src_views_modules_aiagents_aimodule_fetchconvers_aa7242b8 ui;
+    class src_views_modules_aiagents_aimodule_clearhighlig_0b0b29fc ui;
+    class src_views_modules_aiagents_aimodule_findbytext_818fef33 ui;
+    class src_views_modules_aiagents_aimodule_addhighlight_08a6c59a ui;
+    class src_views_modules_aiagents_aimodule_resizetextar_9a4152d9 ui;
+    class src_views_modules_aiagents_aimodule_scrolltobott_ad9b41ee ui;
+    class src_views_modules_aiagents_aimodule_savemessages_f028eeb9 ui;
+    class src_views_modules_aiagents_aimodule_parsedemoact_6646f443 ui;
+    class src_views_modules_aiagents_aimodule_setmessage_7b69bdb8 ui;
+    class src_views_modules_aiagents_aimodule_startnewconv_a9912c71 ui;
+    class src_views_modules_aiagents_components_chatsideba_9d539606 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4078,243 +4059,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>useSettingsAiAgents()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><code>addHighlight()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>saveAgentSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small><br><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsAiAgents() node in composables/settings/useSettingsAiAgents.js.</td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>addHighlight() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>saveAgentSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsAiAgents()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><code>clearHighlights()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>saveAgentSettings() node in composables/settings/useSettingsAiAgents.js.</td>
+  <td>clearHighlights() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>useSettingsAudit()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>copyToClipboard()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsAudit() node in composables/settings/useSettingsAudit.js.</td>
+  <td>No direct outbound edge</td>
+  <td>copyToClipboard() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>fetchAuditLogs()</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>fetchAuditLogs() node in composables/settings/useSettingsAudit.js.</td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>createConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td><code>deleteConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>SettingsAiAgents.vue</code><br><small style="color:var(--muted)">settings/components/SettingsAiAgents.vue</small><br><code>SettingsAudit.vue</code><br><small style="color:var(--muted)">settings/components/SettingsAudit.vue</small><br><code>SettingsBranding.vue</code><br><small style="color:var(--muted)">settings/components/SettingsBranding.vue</small><br>+29 more</td>
-  <td><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>fetchOwnerSubscription()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>getPermissionsForEntity()</code><br><small style="color:var(--muted)">src/config/rbac.js</small><br>+10 more</td>
-  <td>useSettingsBase() node in composables/settings/useSettingsBase.js.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>deleteConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>fetchOwnerSubscription()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
+  <td><code>downloadEditedReport()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>fetchOwnerSubscription() node in composables/settings/useSettingsBase.js.</td>
+  <td>downloadEditedReport() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>navigateTo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>downloadReport()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>navigateTo() node in composables/settings/useSettingsBase.js.</td>
+  <td>downloadReport() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>resetActiveTab()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>resetActiveTab() node in composables/settings/useSettingsBase.js.</td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>addHighlight()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>clearHighlights()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>findByText()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>executeDemoActions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>applyVisualStylePreset()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br><code>previewThemeMode()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br><code>resetUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small><br>+3 more</td>
-  <td>useSettingsBranding() node in composables/settings/useSettingsBranding.js.</td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>deleteConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>saveMessagesToConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>fetchConversations() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>applyVisualStylePreset()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>fetchSuggestions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>applyVisualStylePreset() node in composables/settings/useSettingsBranding.js.</td>
+  <td>fetchSuggestions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>previewThemeMode()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>findByText()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>previewThemeMode() node in composables/settings/useSettingsBranding.js.</td>
+  <td>findByText() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>resetUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>formatDate()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>resetUIPreferences() node in composables/settings/useSettingsBranding.js.</td>
+  <td>formatDate() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>saveUIPreferences()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>getSuggestionIcon()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>saveUIPreferences() node in composables/settings/useSettingsBranding.js.</td>
+  <td>getSuggestionIcon() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>updateBrandColor()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsBranding()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>updateBrandColor() node in composables/settings/useSettingsBranding.js.</td>
+  <td><code>handleNewLine()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>resizeTextarea()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>handleNewLine() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td><code>loadChatHistory()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>disableTelegramBot()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br><code>loadTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br><code>loadTelegramConversations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small><br>+2 more</td>
-  <td>useSettingsIntegrations() node in composables/settings/useSettingsIntegrations.js.</td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>disableTelegramBot()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>disableTelegramBot() node in composables/settings/useSettingsIntegrations.js.</td>
+  <td><code>loadConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>loadConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>loadTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td><code>parseDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>Reads, resolves, or persists project configuration.</td>
+  <td>parseDemoActions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>loadTelegramConversations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
+  <td><code>resizeTextarea()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>handleNewLine()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>loadTelegramConversations() node in composables/settings/useSettingsIntegrations.js.</td>
+  <td>resizeTextarea() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>saveTelegramConfig()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsIntegrations()</code><br><small style="color:var(--muted)">composables/settings/useSettingsIntegrations.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>Reads, resolves, or persists project configuration.</td>
+  <td><code>saveMessagesToConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>saveMessagesToConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>handleLogoUpload()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>removeCompanyLogo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br>+2 more</td>
-  <td>useSettingsProfile() node in composables/settings/useSettingsProfile.js.</td>
+  <td><code>loadConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>startNewConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>scrollToBottom() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>updateProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small><br><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><code>normalizeTenantToProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td>fetchTenantDetailsForSettings() node in composables/settings/useSettingsProfile.js.</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>setMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>parseDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br>+2 more</td>
+  <td>sendMessage() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>handleLogoUpload()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>handleLogoUpload() node in composables/settings/useSettingsProfile.js.</td>
+  <td><code>setMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>setMessage() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>normalizeTenantToProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td>No direct outbound edge</td>
-  <td>normalizeTenantToProfile() node in composables/settings/useSettingsProfile.js.</td>
+  <td><code>startNewConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>startNewConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>removeCompanyLogo()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
+  <td><code>togglePanel()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>removeCompanyLogo() node in composables/settings/useSettingsProfile.js.</td>
+  <td>togglePanel() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>updateProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>useSettingsProfile()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td><code>fetchTenantDetailsForSettings()</code><br><small style="color:var(--muted)">composables/settings/useSettingsProfile.js</small></td>
-  <td>updateProfile() node in composables/settings/useSettingsProfile.js.</td>
+  <td><code>viewSummary()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>viewSummary() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>settings/index.js</code><br><small style="color:var(--muted)">composables/settings/index.js</small></td>
-  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AiModule.vue</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>settings/index.js node in composables/settings/index.js.</td>
+  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>ChatSidebar.vue</code><br><small style="color:var(--muted)">aiagents/components/ChatSidebar.vue</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+3 more</td>
+  <td>AiModule.vue node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>useSettingsAiAgents.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsAiAgents.js</small></td>
+  <td><code>activePanel</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsAiAgents.js node in composables/settings/useSettingsAiAgents.js.</td>
+  <td>No direct outbound edge</td>
+  <td>activePanel node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>useSettingsAudit.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsAudit.js</small></td>
+  <td><code>chatContainer</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsAudit.js node in composables/settings/useSettingsAudit.js.</td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>useSettingsBranding.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBranding.js</small></td>
+  <td><code>chatHistory</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsBranding.js node in composables/settings/useSettingsBranding.js.</td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>useSettingsGoals.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsGoals.js</small></td>
+  <td><code>chatMessages</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useSettingsBase()</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
-  <td>useSettingsGoals.js node in composables/settings/useSettingsGoals.js.</td>
+  <td>No direct outbound edge</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 </table>
 
@@ -4323,19 +4304,13 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>composables/settings/useSettingsBranding.js</code></td><td>7 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsProfile.js</code></td><td>7 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsIntegrations.js</code></td><td>6 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsBase.js</code></td><td>4 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsAiAgents.js</code></td><td>3 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsAudit.js</code></td><td>3 nodes</td></tr>
-<tr><td><code>settings/components/SettingsAiAgents.vue</code></td><td>2 nodes</td></tr>
-<tr><td><code>settings/components/SettingsAudit.vue</code></td><td>2 nodes</td></tr>
+      <tr><td><code>Modules/aiagents/AiModule.vue</code></td><td>58 nodes</td></tr>
+<tr><td><code>aiagents/components/ChatSidebar.vue</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x18, imports x17, indirect call x16, re exports x13. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x57, calls x15, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4682,12 +4657,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, Modules/aiagents/AiModule.vue, crm/components/CRMAnalyticsModal.vue. This section covers 4525 nodes and 5151 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, crm/components/CRMAnalyticsModal.vue, Modules/settings/ProfileModule.vue. This section covers 4461 nodes and 5081 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (4525 nodes, 5151 edges)
+    %% Section: Other (4461 nodes, 5081 edges)
     subgraph other_src_utils_pwaManager_js_c8f1bf9b["src/utils/pwaManager.js"]
         src_utils_pwamanager_pwamanager_a606e8c5("PWAManager<br/><small>src/utils/pwaManager.js</small>")
         src_utils_pwamanager_pwamanager_checkandshowprom_6203035d("checkAndShowPrompt()<br/><small>src/utils/pwaManager.js</small>")
@@ -4706,8 +4681,8 @@ flowchart LR
     src_views_modules_intelligence_balanceforecast_513c9fbd("BalanceForecast.vue")
     src_views_modules_intelligence_businessoutcomes_cacf6102("BusinessOutcomes.vue")
     src_views_modules_intelligence_customervalueinte_792b2fab("CustomerValueIntelligence.vue")
-    src_composables_settings_usesettingsbase_7bed58ee("useSettingsBase.js")
     src_composables_userbac_7fc51b41("useRBAC.js")
+    src_services_currencyservice_currencyservice_40311acd("CurrencyService<br/><small>src/services/currencyService.js</small>")
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_checkandshowprom_6203035d
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_showprompt_a204623a
     src_utils_pwamanager_pwamanager_a606e8c5 -->|method| src_utils_pwamanager_pwamanager_install_1a5fb45d
@@ -4727,8 +4702,7 @@ flowchart LR
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_hideprompt_c2ab2e19
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstallsuccess_f8a69fff
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstalldismiss_c54c22cc
-    src_composables_settings_usesettingsbase_7bed58ee -->|imports| src_composables_userbac_7fc51b41
-    %% Omitted for readability: 4507 nodes, 0 edges
+    %% Omitted for readability: 4443 nodes, 0 edges
     class src_utils_pwamanager_pwamanager_a606e8c5 klass;
     class src_utils_pwamanager_pwamanager_checkandshowprom_6203035d function;
     class src_utils_pwamanager_pwamanager_showprompt_a204623a function;
@@ -4745,8 +4719,8 @@ flowchart LR
     class src_views_modules_intelligence_balanceforecast_513c9fbd ui;
     class src_views_modules_intelligence_businessoutcomes_cacf6102 ui;
     class src_views_modules_intelligence_customervalueinte_792b2fab ui;
-    class src_composables_settings_usesettingsbase_7bed58ee ui;
     class src_composables_userbac_7fc51b41 ui;
+    class src_services_currencyservice_currencyservice_40311acd klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4770,243 +4744,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>downloadLeadTemplate()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>downloadTemplate()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>addGCalRecipient()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>downloadLeadTemplate() node in src/services/crm_api.js.</td>
+  <td>addGCalRecipient() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>autoMapColumns()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>addMeetingToGoogleCalendar()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>autoMapColumns() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td><code>exportAllToGoogleCalendar()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
+  <td><code>toGCalDate()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
+  <td>addMeetingToGoogleCalendar() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>checkDuplicates()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>addSavedEmail()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>checkDuplicates() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>addSavedEmail() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>close()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>closeCancelModal()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>close() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td><code>confirmCancelMeeting()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>closeCancelModal() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>deleteAllDuplicates()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>confirmCancelMeeting()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>deleteAllDuplicates() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td><code>closeCancelModal()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small><br><code>loadMeetings()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>loadMeetingStats()</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small></td>
+  <td>confirmCancelMeeting() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>deleteAllInvalid()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>copyFeedUrl()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>deleteAllInvalid() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>copyFeedUrl() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>deleteRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>exportAllToGoogleCalendar()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>deleteRow() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td><code>addMeetingToGoogleCalendar()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
+  <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>downloadTemplate()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>fmtMoney()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>downloadLeadTemplate()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>downloadTemplate() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>fmtMoney() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>formatFileSize()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gcalToggleMeeting()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>formatFileSize() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>gcalToggleMeeting() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>getFieldErrorClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gcalToggleSelectAll()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>getFieldErrorClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>gcalToggleSelectAll() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>getMappedValue()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>openCancelModal()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>hasValidationError()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getMappedValue() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>openCancelModal() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>getPriorityClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>openGCalModal()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getPriorityClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>openGCalModal() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>getRowClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>openGoogleCalendarSubscribe()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getRowClass() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>openGoogleCalendarSubscribe() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>getSampleData()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>removeGCalRecipient()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getSampleData() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>removeGCalRecipient() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>getValidationMessage()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>removeSavedEmail()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>getValidationMessage() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>removeSavedEmail() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>handleFileDrop()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>sendCalendarByEmail()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>handleFileDrop() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>sendCalendarByEmail() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>handleFileSelect()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>toGCalDate()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>addMeetingToGoogleCalendar()</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>handleFileSelect() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>toGCalDate() node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>hasValidationError()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>CRMMeetingsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>getMappedValue()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>hasValidationError() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>crm_meetings_api.js</code><br><small style="color:var(--muted)">src/services/crm_meetings_api.js</small><br><code>CRMMeetingModal.vue</code><br><small style="color:var(--muted)">crm/components/CRMMeetingModal.vue</small><br>+5 more</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>isFieldRequired()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>calEmailError</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>isFieldRequired() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>calEmailError node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>calEmailSent</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>getFieldErrorClass()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>getValidationMessage()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>isValidEmail() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>calEmailSent node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>nextStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>calEmailSuccessCount</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>nextStep() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>calEmailSuccessCount node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>previousStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>cancelling</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>previousStep() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>cancelling node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>processImport()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>cancelMeetingId</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small><br><code>processLeadsBulkUpload()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>processImport() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>cancelMeetingId node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>uploadFile()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>cancelReason</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>uploadLeadsBulkFile()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>uploadFile() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>cancelReason node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>validateRow()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>excelImportRef</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>nextStep()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td><code>isValidEmail()</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
-  <td>validateRow() node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>excelImportRef node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>BulkUploadLeadsModal.vue</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>{ formatCurrencyCompact }</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>CRMLeadsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMLeadsPage.vue</small></td>
-  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>API_BASE_URL</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br>+2 more</td>
-  <td>BulkUploadLeadsModal.vue node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>{ formatCurrencyCompact } node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>canProceed</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gcalAllSelected</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>canProceed node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>gcalAllSelected node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>checkingDuplicates</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gcalDateFrom</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>checkingDuplicates node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>gcalDateFrom node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>columnMapping</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gcalDateTo</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>columnMapping node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>gcalDateTo node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>currentStep</code><br><small style="color:var(--muted)">crm/components/BulkUploadLeadsModal.vue</small></td>
+  <td><code>gCalEmail</code><br><small style="color:var(--muted)">Modules/crm/CRMMeetingsPage.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>currentStep node in crm/components/BulkUploadLeadsModal.vue.</td>
+  <td>gCalEmail node in Modules/crm/CRMMeetingsPage.vue.</td>
 </tr>
 </table>
 
@@ -5015,19 +4989,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>crm/composables/CRMModule.js</code></td><td>127 nodes</td></tr>
-<tr><td><code>Modules/aiagents/AiModule.vue</code></td><td>64 nodes</td></tr>
+      <tr><td><code>crm/composables/CRMModule.js</code></td><td>110 nodes</td></tr>
 <tr><td><code>crm/components/CRMAnalyticsModal.vue</code></td><td>59 nodes</td></tr>
 <tr><td><code>Modules/settings/ProfileModule.vue</code></td><td>57 nodes</td></tr>
 <tr><td><code>Modules/crm/CRMMeetingsPage.vue</code></td><td>53 nodes</td></tr>
 <tr><td><code>Modules/crm/CRMPipelinePage.vue</code></td><td>51 nodes</td></tr>
 <tr><td><code>crm/components/BulkUploadLeadsModal.vue</code></td><td>48 nodes</td></tr>
 <tr><td><code>Modules/intelligence/LifecyclePrediction.vue</code></td><td>46 nodes</td></tr>
+<tr><td><code>Modules/intelligence/CustomerValueIntelligence.vue</code></td><td>43 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x3837, calls x848, imports x152, imports x149. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x3750, calls x835, imports x154, imports x139. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5038,17 +5012,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>7370</td></tr>
-      <tr><td>Edges</td><td>9367</td></tr>
+      <tr><td>Nodes</td><td>7371</td></tr>
+      <tr><td>Edges</td><td>9369</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>485</td></tr>
+      <tr><td>Communities</td><td>480</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>8896</td></tr>
+      <tr><td>EXTRACTED</td><td>8898</td></tr>
       <tr><td>INFERRED</td><td>471</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -5057,7 +5031,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>absa-foundry-frontend — Architecture Documentation</p>
-  <p>Generated: 2026-09-29 09:11 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-09-29 10:29 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

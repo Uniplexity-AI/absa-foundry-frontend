@@ -17,6 +17,10 @@
         <p class="absa-etl__subtitle">Monitoring ingestion, transformation, and quality across all data sources</p>
       </div>
       <div class="absa-etl__header-right">
+        <button class="absa-etl__btn absa-etl__btn--outline" @click="triggerHistoricalExtraction" :disabled="isExtracting">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          {{ isExtracting ? 'Extracting...' : 'Extract Historical Training Data' }}
+        </button>
         <button class="absa-etl__btn absa-etl__btn--outline">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export Logs
@@ -105,6 +109,21 @@
         </div>
       </div>
     </Teleport>
+
+
+    <!-- Historical Extraction Progress -->
+    <div v-if="extractionProgress && extractionProgress.status !== 'idle'" class="absa-etl__progress-container">
+      <div class="absa-etl__progress-header">
+        <span><strong>Historical Extraction</strong> <span v-if="extractionProgress.status === 'running'">- Processing {{ extractionProgress.current_date }}</span></span>
+        <span>{{ Math.round((extractionProgress.current / extractionProgress.total) * 100) || 0 }}% ({{ extractionProgress.current }} / {{ extractionProgress.total }} Months)</span>
+      </div>
+      <div class="absa-etl__progress-track">
+        <div class="absa-etl__progress-fill" :style="{ width: ((extractionProgress.current / extractionProgress.total) * 100) + '%' }"></div>
+      </div>
+      <div v-if="extractionProgress.status === 'completed'" class="absa-etl__progress-complete">
+        Historical Extraction Completed Successfully!
+      </div>
+    </div>
 
     <!-- ═══ System Health Cards ═══ -->
     <LoadingSkeleton v-if="loading" type="stats" />
@@ -301,6 +320,48 @@ import { useSnapshotStore } from '@/stores/snapshotStore'
 import { API_BASE_URL } from '@/services/api'
 
 const store = useETLStore()
+
+const isExtracting = ref(false)
+const extractionProgress = ref(null)
+let progressInterval = null
+
+const fetchExtractionProgress = async () => {
+  try {
+    const { data } = await api.get('/features/extract-historical/status');
+    if (data && data.status !== 'idle') {
+      extractionProgress.value = data;
+      isExtracting.value = data.status === 'running' || data.status === 'started';
+      if (!isExtracting.value && progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to fetch extraction progress', err);
+  }
+}
+
+onMounted(() => {
+  fetchExtractionProgress();
+  progressInterval = setInterval(fetchExtractionProgress, 2000);
+});
+
+const triggerHistoricalExtraction = async () => {
+  if (isExtracting.value) return;
+  isExtracting.value = true;
+  extractionProgress.value = { status: 'started', current: 0, total: 24, current_date: '' };
+  try {
+    await api.post('/features/extract-historical');
+    if (!progressInterval) {
+      progressInterval = setInterval(fetchExtractionProgress, 2000);
+    }
+  } catch (err) {
+    console.error('Failed to start historical extraction', err);
+    alert('Failed to start extraction.');
+    isExtracting.value = false;
+  }
+}
+
 const snapshotStore = useSnapshotStore()
 const loading = computed(() => store.loading)
 
@@ -703,7 +764,44 @@ onMounted(() => {
 .pr-spin { animation: prSpin 900ms linear infinite; }
 @keyframes prSpin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
 
+.absa-etl__progress-container {
+  background: white;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.absa-etl__progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+.absa-etl__progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: #F3F4F6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.absa-etl__progress-fill {
+  height: 100%;
+  background-color: #BE0F2C;
+  transition: width 0.3s ease;
+}
+.absa-etl__progress-complete {
+  margin-top: 10px;
+  color: #10B981;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
 </style>
+
+
+
+
 
 
 

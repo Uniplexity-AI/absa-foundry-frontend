@@ -63,6 +63,7 @@ const routes = [
       // ── CRM — RM + ADMIN ──
       { path: 'crm',                 name: 'CrmModule',           component: () => import('../views/Modules/crm/CRMModule.vue'),           meta: { requiresRoles: [ADMIN, RM], title: 'CRM' } },
       { path: 'crm/workspace',       name: 'CrmWorkspace', component: () => import('../views/Modules/crm/CRMOmnichannelWorkspace.vue'), meta: { requiresRoles: [ADMIN, RM] } },
+      { path: 'crm/forms', name: 'CRMDigitalForms', component: () => import('../views/Modules/crm/CRMDigitalFormsPage.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'Digital Forms' } },
       { path: 'crm/analytics', name: 'CrmAnalytics', component: () => import('../views/Modules/crm/CRMAnalyticsDashboard.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Analytics' } },
       { path: 'crm/tickets', name: 'CrmTickets', component: () => import('../views/Modules/crm/CRMTicketsPage.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Tickets' } },
       { path: 'crm/leads', name: 'CrmLeads',            component: () => import('../views/Modules/crm/CRMLeadsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },

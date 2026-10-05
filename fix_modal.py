@@ -1,19 +1,17 @@
-﻿import re
+import re
 
-file_path = 'src/views/Modules/managers/BranchManagerDashboard.vue'
-with open(file_path, 'r', encoding='utf-8') as f:
+filepath = 'src/views/Modules/crm/CRMTicketsPage.vue'
+with open(filepath, 'r', encoding='utf-8') as f:
     content = f.read()
 
-modal_html = '''
-    <CatalogUploadModal 
-      :show="showUploadModal" 
-      :type="uploadType"
-      @close="showUploadModal = false" 
-    />
-    
-    <AiCampaignModal'''
+# Replace modal
+modal_pattern = r'(<FaqUploadModal :open="showFaqUploadModal" @close="showFaqUploadModal = false" />)'
+if '<FaqViewModal' not in content:
+    new_modal = """\\1
+  <FaqViewModal v-if="showFaqViewModal" @close="showFaqViewModal = false" />"""
+    content = re.sub(modal_pattern, new_modal, content)
 
-content = content.replace('<AiCampaignModal', modal_html, 1)
-
-with open(file_path, 'w', encoding='utf-8') as f:
+with open(filepath, 'w', encoding='utf-8') as f:
     f.write(content)
+
+print("Python replace done.")

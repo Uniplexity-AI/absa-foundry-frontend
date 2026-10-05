@@ -14,7 +14,7 @@ import { useCustomerStore } from '@/stores/customerStore'
 import { usePredictionStore } from '@/stores/predictionStore'
 import { useSnapshotStore } from '@/stores/snapshotStore'
 import { churnTier, healthTier, stateTier, tierColor } from '@/composables/useSeverityTier'
-import { getActionLog, getCustomerState, hydrateLogFromServer, recordAction } from '@/utils/absaActions'
+import { getActionLog, getCustomerState, hydrateLogFromServer, recordAction, deleteAction, updateAction } from '@/utils/absaActions'
 import { notify } from '@/utils/absaExport'
 import { fetchCustomerProfile } from '@/services/customerProfileApi'
 import { deleteCustomer } from '@/services/customerAdminApi'
@@ -23,6 +23,7 @@ import CustomerStatePill from '@/components/CustomerStatePill.vue'
 import LoadingSkeleton from '@/components/LoadingSkeleton.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import EngagementModal from '@/components/crm/EngagementModal.vue'
+import AllHistoryModal from '@/components/crm/AllHistoryModal.vue'
 import PostEngagementPerformance from '@/components/crm/PostEngagementPerformance.vue'
 
 defineOptions({ name: 'CustomerProfile' })
@@ -57,6 +58,46 @@ const profile = ref(null)
 const profileError = ref('')
 
 const showEngagementModal = ref(false)
+const showAllHistoryModal = ref(false)
+
+const engagementToEdit = ref(null)
+
+
+function editEngagement(entry) {
+  engagementToEdit.value = entry
+  showEngagementModal.value = true
+}
+
+
+
+function handleEngagementUpdated(payload) {
+  updateAction(engagementToEdit.value.id, {
+    type: payload.type,
+    detail: payload.notes || 'Engagement updated.',
+    meta: payload
+  })
+  actionLog.value = getActionLog()
+  engagementToEdit.value = null
+  showEngagementModal.value = false
+}
+
+const engagementToDelete = ref(null)
+const showDeleteEngagementDialog = ref(false)
+
+function promptDeleteEngagement(entry) {
+  engagementToDelete.value = entry
+  showDeleteEngagementDialog.value = true
+}
+
+function confirmDeleteEngagement() {
+  if (engagementToDelete.value) {
+    deleteAction(engagementToDelete.value.id)
+    actionLog.value = getActionLog()
+  }
+  showDeleteEngagementDialog.value = false
+  engagementToDelete.value = null
+}
+
 const nextOfKin = computed(() => profile.value?.next_of_kin_name ? {
   name: profile.value.next_of_kin_name,
   relation: profile.value.next_of_kin_relationship,
@@ -83,6 +124,17 @@ const initials = computed(() => {
   const name = displayName.value.replace(/^Customer\s+/i, '')
   return name.slice(0, 2).toUpperCase() || 'CU'
 })
+
+function handleEngagementLogged(payload) {
+  const entry = recordAction({
+    type: payload.type || 'Engagement',
+    customerId: customerId.value,
+    customerName: displayName.value,
+    detail: payload.notes || 'Engagement logged by RM.',
+    meta: payload
+  })
+  actionLog.value = [entry, ...actionLog.value]
+}
 
 const clientTier = computed(() => {
   const code = customer.value.segmentCode
@@ -444,9 +496,9 @@ const historyEntries = computed(() => {
 
 const historyTypes = computed(() => [...new Set(historyEntries.value.map((h) => h.title))])
 
-const filteredHistory = computed(() =>
-  historyFilter.value ? historyEntries.value.filter((h) => h.title === historyFilter.value) : historyEntries.value
-)
+const filteredHistory = computed(() => {
+  return historyEntries.value.slice(0, 3)
+})
 
 const coreBankingUrl = computed(() =>
   `https://corebanking.absa.local/customer/${encodeURIComponent(customerId.value)}`
@@ -714,7 +766,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
         <div>
           <h3 class="text-sm font-bold text-absa-inspire">URGENT: Account approaching 10-year dormancy (BOZ Transfer Rule)</h3>
           <p class="text-xs text-absa-enrich mt-1">This account has been inactive for {{ features?.days_since_last_txn }} days. Funds are at risk of being transferred to BOZ in <span class="font-bold">{{ bozRemainingText }}</span>. Immediate client contact is required to prevent deposit loss.</p>
-          <button @click="showEngagementModal = true" class="mt-2 bg-transparent text-red-600 border border-red-600 hover:bg-red-50 px-3 py-1.5 text-[10px] font-mono font-bold rounded-none uppercase tracking-widest transition-all">Log Outreach</button>
+          <button @click="engagementToEdit = null; showEngagementModal = true" class="mt-2 bg-transparent text-red-600 border border-red-600 hover:bg-red-50 px-3 py-1.5 text-[10px] font-mono font-bold rounded-none uppercase tracking-widest transition-all">Log Outreach</button>
         </div>
       </div>
       <div class="mb-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
@@ -1060,8 +1112,15 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
               >
                 Next of Kin
               </button>
+              <button
+                class="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all"
+                :class="activeTab === 'performance' ? 'text-absa-passion border-b-2 border-absa-passion' : 'text-gray-500 hover:text-gray-700'"
+                @click="activeTab = 'performance'"
+              >
+                Performance
+              </button>
             <div class="ml-auto flex items-center gap-2">
-              <button class="bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all flex items-center gap-1" @click="showEngagementModal = true">
+              <button class="bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-none transition-all flex items-center gap-1" @click="engagementToEdit = null; showEngagementModal = true">
                 <span class="material-symbols-outlined text-[14px]">add</span>
                 Log Engagement
               </button>
@@ -1070,25 +1129,37 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
           <!-- Interaction History Tab -->
           <div v-if="activeTab === 'interactions'" class="flex-1">
-            <div class="flex items-center justify-between mb-4">
-              <select v-model="historyFilter" class="border border-gray-200 rounded-none px-2 py-1 text-[10px] font-mono font-bold uppercase text-gray-600 bg-white outline-none focus:border-absa-passion ml-auto">
-                <option value="">All</option>
-                <option v-for="t in historyTypes" :key="t" :value="t">{{ t }}</option>
-              </select>
+            <div class="flex items-center justify-end mb-4">
+              <button @click="showAllHistoryModal = true" class="border border-gray-200 rounded-none px-3 py-1.5 text-[10px] font-mono font-bold uppercase text-gray-600 bg-white outline-none hover:border-absa-passion hover:text-absa-passion transition-colors">
+                View All
+              </button>
             </div>
             <div v-if="filteredHistory.length" class="space-y-4 max-h-[280px] overflow-y-auto pr-1">
-              <div v-for="h in filteredHistory" :key="h.id" class="flex gap-3">
-                <div class="flex flex-col items-center pt-1">
-                  <div class="w-2 h-2 rounded-none" :style="{ background: tierColor('power') }"></div>
-                  <div class="w-[1px] flex-1 bg-gray-200 mt-1"></div>
-                </div>
-                <div class="pb-1 min-w-0">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="text-xs font-bold text-absa-enrich">{{ h.title }}</span>
-                    <span class="text-[10px] text-gray-400">{{ fmtDate(h.at) }}</span>
+              <div v-for="h in filteredHistory" :key="h.id" class="flex gap-3 group relative">
+                  <div class="flex flex-col items-center pt-1 shrink-0">
+                    <div class="w-2 h-2 rounded-none" :style="{ background: tierColor('power') }"></div>
+                    <div class="w-[1px] flex-1 bg-gray-200 mt-1"></div>
                   </div>
-                  <p class="text-[11px] text-gray-500 mt-0.5">{{ h.detail }}</p>
-                  <span v-if="h.actor" class="text-[10px] text-gray-400 block uppercase tracking-wide mt-1">RM: {{ h.actor }}</span>
+                  <div class="pb-1 min-w-0 flex-1">
+                    <div class="flex items-start justify-between">
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <span class="text-xs font-bold text-absa-enrich">{{ h.title }}</span>
+                          <span class="text-[10px] text-gray-400">{{ fmtDate(h.at) }}</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 mt-0.5">{{ h.detail }}</p>
+                        <span v-if="h.actor" class="text-[10px] text-gray-400 block uppercase tracking-wide mt-1">RM: {{ h.actor }}</span>
+                      </div>
+                      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        
+                        <button @click="editEngagement(h)" class="p-1 text-gray-400 hover:text-absa-passion transition-colors" title="Edit">
+                          <span class="material-symbols-outlined text-[14px]">edit</span>
+                        </button>
+                        <button @click="promptDeleteEngagement(h)" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                          <span class="material-symbols-outlined text-[14px]">delete</span>
+                        </button>
+                      </div>
+                    </div>
                   <div v-if="h.meta && (h.meta.outcome || h.meta.dormancy_reason || h.meta.cross_sell_details || h.meta.branch_to_visit)" class="mt-2 grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] border-t border-gray-100 pt-2">
                     <div v-if="h.meta.outcome"><span class="font-bold text-gray-500">Outcome:</span> {{ h.meta.outcome }}</div>
                     <div v-if="h.meta.dormancy_reason"><span class="font-bold text-gray-500">Reason:</span> {{ h.meta.dormancy_reason }}</div>
@@ -1102,11 +1173,6 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
               </div>
             </div>
             <p v-else class="text-xs text-gray-500">No actions logged for this customer yet.</p>
-            <PostEngagementPerformance 
-              v-if="filteredHistory.length" 
-              :customerId="customerId" 
-              :engagementDate="filteredHistory[0].at" 
-            />
           </div>
 
           
@@ -1190,7 +1256,20 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
                 <p class="mt-1 text-sm font-bold font-mono text-absa-enrich">{{ nextOfKin.phone }}</p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-500">No Next of Kin data available.</p>
+            <p v-else class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">No Next of Kin data available.</p>
+          </div>
+
+          <!-- Performance Tab -->
+          <div v-if="activeTab === 'performance'" class="flex-1 pt-4">
+            <PostEngagementPerformance 
+              v-if="filteredHistory.length" 
+              :customerId="customerId" 
+              :engagementDate="filteredHistory[0].at" 
+            />
+            <div v-else class="text-center py-8">
+              <span class="material-symbols-outlined text-4xl text-gray-300 mb-2">monitoring</span>
+              <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">No engagements logged yet</p>
+            </div>
           </div>
           </div>
         </section>
@@ -1232,18 +1311,29 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
       :open="showEngagementModal"
       :customerId="customerId"
       :customerName="displayName"
-      @close="showEngagementModal = false"
-      @logged="(payload) => {
-        // Record locally so it shows on the UI immediately
-        const entry = recordAction({
-          type: payload.type || 'Engagement',
-          customerId: customerId,
-          customerName: displayName,
-          detail: payload.notes || 'Engagement logged by RM.',
-          meta: payload
-        })
-        actionLog.value = [entry, ...actionLog.value]
-      }"
+      :existingEntry="engagementToEdit"
+      @close="showEngagementModal = false; engagementToEdit = null;"
+      @logged="payload => engagementToEdit ? handleEngagementUpdated(payload) : handleEngagementLogged(payload)"
+    />
+
+    <AllHistoryModal
+      :open="showAllHistoryModal"
+      :history="historyEntries"
+      :customerId="customerId"
+      :customerName="displayName"
+      @close="showAllHistoryModal = false"
+      @edit="h => { showAllHistoryModal = false; editEngagement(h); }"
+      @delete="h => { showAllHistoryModal = false; promptDeleteEngagement(h); }"
+    />
+
+    <ConfirmDialog
+      :open="showDeleteEngagementDialog"
+      title="Delete Engagement"
+      message="Are you sure you want to delete this engagement log?"
+      confirmText="DELETE"
+      confirmColor="bg-absa-passion hover:bg-absa-power"
+      @close="showDeleteEngagementDialog = false"
+      @confirm="confirmDeleteEngagement"
     />
     </div>
   </div>

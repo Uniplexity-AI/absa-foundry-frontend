@@ -216,10 +216,25 @@ export async function hydrateLogFromServer(limit = 50) {
     if (!res.ok) return getActionLog()
     const rows = await res.json()
     if (!Array.isArray(rows) || !rows.length) return getActionLog()
+    
     const log = read(LOG_KEY, [])
-    const seen = new Set(log.map((l) => l.serverId || l.id))
+    
+    const isDuplicate = (r) => {
+      // 1. Exact match (if a previous run mapped the server ID)
+      if (log.some(l => l.serverId === r.id || l.id === r.id)) return true;
+      // 2. Semantic heuristic match (prevents duplicates after page reload before the server ID is known locally)
+      const rTime = new Date(r.created_at || r.at || new Date()).getTime();
+      return log.some(l => {
+        if (l.type !== r.action_type || l.customerId !== r.customer_id) return false;
+        if ((l.detail || '') !== (r.detail || '')) return false;
+        // Consider it the same if the timestamps are within 15 seconds of each other
+        const lTime = new Date(l.at).getTime();
+        return Math.abs(lTime - rTime) < 15000;
+      });
+    };
+
     const serverEntries = rows
-      .filter((r) => !seen.has(r.id))
+      .filter((r) => !isDuplicate(r))
       .map((r) => ({
         serverId: r.id,
         type: r.action_type,
@@ -229,8 +244,9 @@ export async function hydrateLogFromServer(limit = 50) {
         actor: r.actor || 'RM',
         at: r.created_at || new Date().toISOString(),
       }))
+    
     if (serverEntries.length) {
-      write(LOG_KEY, [...serverEntries, ...log].slice(0, 100))
+      write(LOG_KEY, [...serverEntries, ...log].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 100))
     }
     return read(LOG_KEY, [])
   } catch {
@@ -350,4 +366,39 @@ export async function hydrateActionsTakenFromServer(customerId) {
   const list = mergeServerForms(getLocalActionsTaken(customerId), rows, 'ACTION_RECORDED')
   write(actionKey(customerId), list)
   return list
+}
+
+
+export function deleteAction(id) {
+  const log = read(LOG_KEY, [])
+  const idx = log.findIndex(x => x.id === id || x.serverId === id)
+  if (idx >= 0) {
+    const item = log.splice(idx, 1)[0]
+    write(LOG_KEY, log)
+    if (SYNC_ENABLED && item.serverId) {
+      fetch(`${ACTIONS_ENDPOINT}/log/${item.serverId}`, { method: 'DELETE', headers: authHeaders() }).catch(()=>{})
+    }
+  }
+}
+
+export function updateAction(id, payload) {
+  const log = read(LOG_KEY, [])
+  const idx = log.findIndex(x => x.id === id || x.serverId === id)
+  if (idx >= 0) {
+    log[idx] = { ...log[idx], ...payload, type: payload.type || log[idx].type, detail: payload.detail || log[idx].detail, meta: payload.meta || log[idx].meta }
+    write(LOG_KEY, log)
+    if (SYNC_ENABLED && log[idx].serverId) {
+      fetch(`${ACTIONS_ENDPOINT}/log/${log[idx].serverId}`, {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          customer_id: log[idx].customerId,
+          action_type: log[idx].type,
+          detail: log[idx].detail,
+          meta: log[idx].meta,
+          actor: log[idx].actor
+        })
+      }).catch(()=>{})
+    }
+  }
 }

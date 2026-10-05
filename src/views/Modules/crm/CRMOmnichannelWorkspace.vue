@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCrmStore } from '../../../stores/crmStore'
 import {
   Phone, Mail, MessageSquare, Plus, Search, UserCircle, Bell, Video,
@@ -8,6 +8,10 @@ import {
 } from 'lucide-vue-next'
 
 const crmStore = useCrmStore()
+
+onMounted(() => {
+  crmStore.initializeQueue()
+})
 
 const selectedTab = ref('active_queue')
 

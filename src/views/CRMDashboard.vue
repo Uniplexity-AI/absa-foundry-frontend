@@ -174,7 +174,7 @@ const kpis = ref({
             </div>
 
             <!-- Card 5 -->
-            <div class="bg-white border border-gray-200 shadow-sm hover:border-absa-passion hover:shadow-md transition flex flex-col items-center justify-center p-6 text-center group cursor-pointer">
+            <router-link to="/dashboard/crm/forms" class="bg-white border border-gray-200 shadow-sm hover:border-absa-passion hover:shadow-md transition flex flex-col items-center justify-center p-6 text-center group cursor-pointer">
               <div class="w-12 h-12 bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-[#FDE8EC] transition">
                 <FileText :size="20" class="text-gray-400 group-hover:text-absa-passion transition"/>
               </div>
@@ -185,7 +185,7 @@ const kpis = ref({
               <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1 group-hover:text-absa-passion transition">
                 Open &rarr;
               </span>
-            </div>
+            </router-link>
 
           </div>
         </div>

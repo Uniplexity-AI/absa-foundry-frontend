@@ -1,16 +1,45 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useCustomerStore } from './customerStore'
+import { fetchCustomerProfile } from '@/services/customerProfileApi'
 
 export const useCrmStore = defineStore('crm', () => {
   // Phase 4: Mock Backend Integration Prep
 
-  const incomingQueue = ref([
-    { id: 'I-9921', channel: 'voice', customer: '0977 123 456', accountTier: 'Gold / High Value', waitTime: '12s', intent: 'Account Enquiry' },
-    { id: 'I-9922', channel: 'whatsapp', customer: '+260 96 111222', accountTier: 'Standard', waitTime: '45s', intent: 'Card Block' },
-    { id: 'I-9923', channel: 'facebook', customer: 'John Banda', accountTier: 'Unknown', waitTime: '2m 10s', intent: 'Complaint' },
-  ])
+  const incomingQueue = ref([])
 
   const activeCustomers = ref([])
+
+  async function initializeQueue() {
+    if (incomingQueue.value.length > 0) return
+    const customerStore = useCustomerStore()
+    
+    // Fallback if not loaded
+    if (!customerStore.customers || customerStore.customers.length === 0) {
+      await customerStore.fetchPortfolio()
+    }
+    
+    // Pick first 3
+    const seed = customerStore.customers.slice(0, 3)
+    if (seed.length === 0) return // No customers available
+
+    const channels = ['voice', 'whatsapp', 'facebook']
+    const intents = ['Account Enquiry', 'Card Block', 'Complaint']
+    const waitTimes = ['12s', '45s', '2m 10s']
+
+    incomingQueue.value = seed.map((c, i) => {
+      return {
+        id: `I-992${i + 1}`,
+        channel: channels[i % channels.length],
+        customer: c.fullName, // Display real name
+        customerId: c.customerId, 
+        accountTier: c.marketSegment || 'Standard',
+        waitTime: waitTimes[i % waitTimes.length],
+        intent: intents[i % intents.length]
+      }
+    })
+  }
+
 
   // FR-D-005, FR-O-004: Business Hours Enforcement
   const isAfterHours = computed(() => {
@@ -22,13 +51,9 @@ export const useCrmStore = defineStore('crm', () => {
     const item = incomingQueue.value.find(i => i.id === interactionId)
     if (!item) return
 
-    // Simulate API call to backend/Finesse
-    // await api.post('/api/crm/interactions/accept', { id: interactionId })
-
     incomingQueue.value = incomingQueue.value.filter(i => i.id !== interactionId)
     activeCustomers.value.forEach(c => c.active = false)
     
-    // FR-B-001: Bot context handoff for digital channels
     const botTranscript = ['whatsapp', 'facebook'].includes(item.channel)
       ? [
           { sender: 'bot', text: 'Hello! I am ABSA FAQ Bot. How can I help?' },
@@ -37,12 +62,25 @@ export const useCrmStore = defineStore('crm', () => {
         ]
       : []
 
+    // Fetch actual profile to get phone and other details
+    let phone = 'N/A'
+    try {
+      if (item.customerId) {
+        const profile = await fetchCustomerProfile(item.customerId)
+        if (profile && profile.mobile_number) {
+          phone = profile.mobile_number
+        }
+      }
+    } catch(e) {
+      console.warn('Failed to load profile for omnichannel:', e)
+    }
+
     activeCustomers.value.push({
-      id: `CUST-${Math.floor(Math.random() * 1000)}`,
+      id: item.customerId || `CUST-${Math.floor(Math.random() * 1000)}`,
       name: item.customer,
       channel: item.channel,
       active: true,
-      phone: item.channel === 'voice' ? item.customer : 'N/A',
+      phone: phone,
       tier: item.accountTier,
       openTickets: Math.floor(Math.random() * 3),
       history: 'Screen-pop triggered from queue.',
@@ -69,6 +107,7 @@ export const useCrmStore = defineStore('crm', () => {
     incomingQueue,
     activeCustomers,
     isAfterHours,
+    initializeQueue,
     acceptInteraction,
     dispatchSms,
     createTicket

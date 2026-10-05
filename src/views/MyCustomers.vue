@@ -30,6 +30,10 @@ import LoadCustomerDataModal from '@/components/ingest/LoadCustomerDataModal.vue
 import AddCustomerModal from '@/components/ingest/AddCustomerModal.vue'
 import EditCustomerModal from '@/components/ingest/EditCustomerModal.vue'
 
+import { useCurrency } from '@/composables/useCurrency'
+import { getActionLog } from '@/utils/absaActions'
+import PromiseToFundModal from '@/components/crm/PromiseToFundModal.vue'
+
 defineOptions({ name: 'MyCustomers' })
 
 const PAGE_SIZE = 25
@@ -39,10 +43,17 @@ const router = useRouter()
 const customerStore = useCustomerStore()
 const predictionStore = usePredictionStore()
 const snapshotStore = useSnapshotStore()
+const { formatCurrency } = useCurrency()
 
 // Data loading is limited to the roles the gateway's ingest matrix allows.
 const LOAD_ROLES = ['ADMIN', 'RELATIONSHIP_MANAGER', 'OPERATIONS']
 const showLoadData = ref(false)
+
+const showPromiseToFund = ref(false)
+const ptfEngagements = computed(() => {
+  return getActionLog().filter(e => e.meta && (e.meta.isPromise === true || e.meta.isPromise === 'true' || e.meta.outcome === 'Promised to Fund'))
+})
+
 const showAddCustomer = ref(false)
 const showEditCustomer = ref(false)
 const editingCustomer = ref(null)
@@ -174,7 +185,7 @@ function clvOf(c) {
 
 function clvLabel(c) {
   const v = clvOf(c)
-  return v == null ? '—' : v.toLocaleString()
+  return v == null ? '—' : formatCurrency(v)
 }
 
 /** Rank of that CLV within the snapshot cohort, for percentile-labelled cells. */
@@ -566,13 +577,13 @@ onMounted(async () => {
           <span class="material-symbols-outlined text-[18px]">download</span>
           Export CSV
         </button>
-        <router-link
-          to="/dashboard/portfolio"
-          class="px-4 py-2 bg-white text-absa-enrich border border-gray-300 rounded-sm flex items-center gap-2 hover:bg-gray-50 transition-colors text-xs font-semibold"
-        >
-          <span class="material-symbols-outlined text-[18px]">insights</span>
-          Predictive Ledger
-        </router-link>
+                  <button
+            @click="showPromiseToFund = true"
+            class="px-4 py-2 bg-absa-passion text-white border border-absa-passion rounded-none flex items-center gap-2 hover:bg-absa-power transition-colors text-[10px] font-mono font-bold uppercase tracking-widest shadow-none"
+          >
+            <span class="material-symbols-outlined text-[14px]">lab_profile</span>
+            Promise to Fund Report
+          </button>
       </div>
     </div>
 
@@ -877,5 +888,10 @@ onMounted(async () => {
         </div>
       </template>
     </ConfirmDialog>
+    <PromiseToFundModal
+      :open="showPromiseToFund"
+      :engagements="ptfEngagements"
+      @close="showPromiseToFund = false"
+    />
   </div>
 </template>

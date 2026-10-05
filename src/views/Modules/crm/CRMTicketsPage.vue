@@ -1,11 +1,17 @@
 <script setup>
 import { ref } from 'vue'
+import FaqUploadModal from './FaqUploadModal.vue'
+import FaqViewModal from './FaqViewModal.vue'
 import {
   Layers, Search, Filter, Plus, ArrowLeft,
-  CheckCircle, AlertTriangle, Clock, MessageSquare, Phone
+  CheckCircle, AlertTriangle, Clock, MessageSquare, Phone, Upload
 } from 'lucide-vue-next'
 
 const showNewCaseModal = ref(false)
+
+const showFaqUploadModal = ref(false)
+const showFaqViewModal = ref(false)
+
 const selectedTicket = ref(null)
 const mockTickets = ref([
   { id: 'CASE-4892', type: 'Complaint', customer: '0977 123 456', status: 'Open', priority: 'High', channel: 'Voice', sla: 'At Risk', created: '2026-09-28' },
@@ -38,6 +44,17 @@ const mockTickets = ref([
         
         <div class="flex gap-2">
           <button class="px-3 py-1.5 bg-transparent border border-gray-300 text-gray-600 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion hover:text-absa-passion transition flex items-center gap-2"><Filter :size="12"/> Filter</button>
+          
+          <!-- Bot FAQ Upload Modal Trigger -->
+          <button @click="showFaqViewModal = true" class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion hover:text-absa-passion transition flex items-center gap-2">
+            <span class="material-symbols-outlined text-[12px]">visibility</span>
+            View FAQs
+          </button>
+          <button @click="showFaqUploadModal = true" class="px-3 py-1.5 bg-gray-50 border border-gray-300 text-gray-700 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion hover:text-absa-passion transition flex items-center gap-2">
+            <Upload :size="12" /> 
+            Upload FAQs
+          </button>
+
           <button @click="showNewCaseModal = true" class="px-3 py-1.5 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-2"><Plus :size="12"/> New Case</button>
         </div>
       </div>
@@ -224,6 +241,8 @@ const mockTickets = ref([
       </Teleport>
     </div>
   </div>
+  <FaqUploadModal :open="showFaqUploadModal" @close="showFaqUploadModal = false" />
+  <FaqViewModal v-if="showFaqViewModal" @close="showFaqViewModal = false" />
 </template>
 
 
@@ -236,3 +255,5 @@ const mockTickets = ref([
   background-size: 38px 38px;
 }
 </style>
+
+

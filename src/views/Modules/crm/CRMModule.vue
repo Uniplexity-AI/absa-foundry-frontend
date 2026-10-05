@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   TrendingUp, Clock, AlertTriangle, Activity, 
   Users, BarChart2, Briefcase, CheckCircle,
@@ -7,6 +8,13 @@ import {
 } from 'lucide-vue-next'
 
 // Mock Data for KPIs (Call Centre FRD metrics)
+const router = useRouter()
+
+function openForms() {
+  console.log('Navigating to Digital Forms page: /dashboard/crm/forms')
+  router.push('/dashboard/crm/forms')
+}
+
 const kpis = ref({
   serviceLevel: '82.4',
   avgSpeedAnswer: '18',
@@ -174,7 +182,7 @@ const kpis = ref({
             </router-link>
 
             <!-- Card 5 -->
-            <div class="bg-white border border-gray-200 p-8 hover:shadow-lg hover:border-absa-passion transition-all group cursor-pointer relative overflow-hidden flex flex-col">
+            <div @click="openForms" class="bg-white border border-gray-200 p-8 hover:shadow-lg hover:border-absa-passion transition-all group cursor-pointer relative overflow-hidden flex flex-col">
               <div class="w-12 h-12 text-gray-400 flex items-center justify-start mb-6 group-hover:scale-110 transition-transform">
                 <FileText :size="20" class="text-gray-400 "/>
               </div>

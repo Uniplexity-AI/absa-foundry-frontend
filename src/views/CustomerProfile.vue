@@ -712,9 +712,8 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 </script>
 
 <template>
-  <div class="w-full min-h-screen pt-6 px-6 pb-12 font-sans relative text-gray-900 bg-transparent">
-    <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
+  <div class="w-full min-h-screen pt-6 px-6 pb-12 font-sans relative text-gray-900 absa-mesh">
+    <div class="absolute inset-0 z-0 pointer-events-none dotted-pattern opacity-30"></div>
     <div class="relative z-10 w-full">
     <!-- The master record could not be read. Without this the identity panel
          silently falls back to snapshot data and a saved edit looks ignored. -->
@@ -1353,3 +1352,4 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
   opacity: 0.04;
 }
 </style>
+

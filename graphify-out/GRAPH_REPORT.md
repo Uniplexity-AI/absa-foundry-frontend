@@ -1,16 +1,16 @@
 # Graph Report - absa-foundry-frontend  (2026-10-05)
 
 ## Corpus Check
-- 544 files · ~612,391 words
+- 556 files · ~613,332 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 7510 nodes · 9479 edges · 565 communities (475 shown, 90 thin omitted)
+- 7522 nodes · 9479 edges · 578 communities (487 shown, 91 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 472 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `af65949f`
+- Built from commit: `1ab135d1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -58,7 +58,7 @@
 - useSettingsModules
 - LinkedDocumentsWidget.vue
 - Alerting System
-- goToModule
+- showToast
 - moduleCards.js
 - customerAdminApi.js
 - CRMLeadsPage.vue
@@ -256,7 +256,7 @@
 - TelemetryComparisonService
 - Modal.vue
 - InvoiceCreationModal.vue
-- showToast
+- fetchPipelineData
 - ui/index.js
 - ContactDetailModal.vue
 - handleDrop
@@ -435,9 +435,10 @@
 - requestRetrain
 - ViewEngagementModal.vue
 - modelsStore.js
-- openDetailsModal
+- CRMOmnichannelWorkspace.vue
 - body-parser
 - cancelMeetingForm
+- useCRMQuickAccessStore
 
 ## God Nodes (most connected - your core abstractions)
 1. `useCRMModule()` - 242 edges
@@ -466,7 +467,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (565 total, 90 thin omitted)
+## Communities (578 total, 91 thin omitted)
 
 ### Community 0 - "useCRMModule"
 Cohesion: 0.02
@@ -675,9 +676,9 @@ Nodes (24): updateDocument(), cameraInputRef, closeDeleteConfirm(), confirmDelet
 Cohesion: 0.06
 Nodes (30): Alert Fatigue Prevention, Alert Rule Configuration, Alerting System, Appendices, Architecture Overview, Conclusion, Configuring Escalation Chains, Core Components (+22 more)
 
-### Community 43 - "goToModule"
-Cohesion: 0.15
-Nodes (18): useCRMQuickAccessStore, updateLinkedRecordLocation(), cancelMeetingAction(), closeMeetingModal(), completeMeetingAction(), deleteMeeting(), deleteMeetingRecord(), getRecordNameById() (+10 more)
+### Community 43 - "showToast"
+Cohesion: 0.10
+Nodes (27): updateLinkedRecordLocation(), addCustomStage(), addParticipant(), bulkExport(), cancelMeetingAction(), closeAddStageModal(), closeMeetingModal(), completeMeetingAction() (+19 more)
 
 ### Community 44 - "moduleCards.js"
 Cohesion: 0.20
@@ -828,8 +829,8 @@ Cohesion: 0.08
 Nodes (20): getNotifications(), markAllNotificationsRead(), markNotificationRead(), scanCrmNotifications(), activeTab, filteredNotifications, filterType, handleNotifClick() (+12 more)
 
 ### Community 78 - "TakeAction.vue"
-Cohesion: 0.05
-Nodes (38): EXCLUDED_MARKET_SEGMENTS, formatMarketSegment(), isFrontendVisibleMarketSegment(), MARKET_SEGMENT_OPTIONS, MARKET_SEGMENTS, OTHER_MARKET_SEGMENT, resolveMarketSegment(), fetchCustomerProfile() (+30 more)
+Cohesion: 0.08
+Nodes (25): EXCLUDED_MARKET_SEGMENTS, formatMarketSegment(), isFrontendVisibleMarketSegment(), MARKET_SEGMENT_OPTIONS, MARKET_SEGMENTS, OTHER_MARKET_SEGMENT, resolveMarketSegment(), api (+17 more)
 
 ### Community 79 - "calcMeetingDistance"
 Cohesion: 0.29
@@ -1100,8 +1101,8 @@ Cohesion: 0.10
 Nodes (20): Alerting System: Channels, Escalation, and Incident Response, Appendices, Architecture Overview, Batch Execution Detail: Validation and Investigation, Conclusion, Configuration Management for Extraction Specs, Core Components, Custom Metric Definitions (+12 more)
 
 ### Community 146 - "loadLeads"
-Cohesion: 0.10
-Nodes (24): logAudit(), applyAdvancedFilters(), applyQuickFilter(), applySourceFilter(), applyStageFilter(), applyTouchFilter(), bulkAssign(), bulkDelete() (+16 more)
+Cohesion: 0.12
+Nodes (21): logAudit(), applyAdvancedFilters(), applyQuickFilter(), applySourceFilter(), applyStageFilter(), applyTouchFilter(), bulkAssign(), bulkDelete() (+13 more)
 
 ### Community 147 - "logActivity"
 Cohesion: 0.20
@@ -1116,8 +1117,8 @@ Cohesion: 0.14
 Nodes (11): createRole(), errorMsg, fetchRoles(), handleCreateRole(), loading, roleForm, roles, router (+3 more)
 
 ### Community 150 - "error"
-Cohesion: 0.15
-Nodes (18): addUser(), availableRoles, closeCreateModal(), closeDeleteBranchModal(), confirmDelete(), confirmDeleteBranch(), createSubAccount(), deleteSubAccount() (+10 more)
+Cohesion: 0.13
+Nodes (21): addUser(), availableRoles, closeCreateModal(), closeDeleteBranchModal(), confirmDelete(), confirmDeleteBranch(), createSubAccount(), deleteSubAccount() (+13 more)
 
 ### Community 151 - "ingestApi.js"
 Cohesion: 0.38
@@ -1469,9 +1470,9 @@ Nodes (9): dialogRef, emit, focusableSelectors, focusInitialElement(), getFocusa
 Cohesion: 0.17
 Nodes (15): createInvoiceReference(), checkModuleSubscription(), checkingAccess, checkSubscription(), close(), createReference(), emit, { getTenantId } (+7 more)
 
-### Community 241 - "showToast"
-Cohesion: 0.11
-Nodes (22): addCustomStage(), addParticipant(), autoAssignLeads(), bulkChangeStage(), bulkExport(), closeAddStageModal(), convertLead(), deleteCommunication() (+14 more)
+### Community 241 - "fetchPipelineData"
+Cohesion: 0.20
+Nodes (12): autoAssignLeads(), editMeeting(), fetchPipelineData(), fetchStats(), fetchTeamPerformance(), formatDateTimeForInput(), handleBulkImportComplete(), handleLeadConverted() (+4 more)
 
 ### Community 242 - "ui/index.js"
 Cohesion: 0.11
@@ -1482,8 +1483,8 @@ Cohesion: 0.14
 Nodes (9): activeTab, activities, emit, { getTenantId }, hasAddress, loadActivities(), loadingActivities, props (+1 more)
 
 ### Community 244 - "handleDrop"
-Cohesion: 0.17
-Nodes (12): capitalize(), editRecord(), getStageName(), handleDrop(), kpiLeadsByStage(), kpiStageValue(), onDrop(), onTouchEnd() (+4 more)
+Cohesion: 0.14
+Nodes (14): bulkChangeStage(), capitalize(), convertLead(), editRecord(), getStageName(), handleDrop(), kpiLeadsByStage(), kpiStageValue() (+6 more)
 
 ### Community 245 - "_check_exports.mjs"
 Cohesion: 0.22
@@ -1849,24 +1850,24 @@ Nodes (3): listeners, off(), on()
 Cohesion: 0.50
 Nodes (4): baselineSignature(), triggerRetrainAction(), refreshAllData(), requestRetrain()
 
-### Community 492 - "openDetailsModal"
-Cohesion: 0.67
-Nodes (3): fetchAssignedModules(), fetchAvailableModules(), openDetailsModal()
+### Community 492 - "CRMOmnichannelWorkspace.vue"
+Cohesion: 0.14
+Nodes (13): fetchCustomerProfile(), _headers(), useCrmStore, acceptInteraction(), crmStore, currentCustomer, selectedTab, showEscalationModal (+5 more)
 
 ## Knowledge Gaps
 - **4574 isolated node(s):** `fs`, `content`, `ignoreDeprecations`, `baseUrl`, `paths` (+4569 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **90 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **91 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `decodeJWT()` connect `decodeJWT` to `useCurrency.js`, `AccountDetailModal.vue`, `LeadDetailModal.vue`, `AccountsView.vue`, `useCRMModule`, `SubAccountModule.vue`, `LeadsView.vue`, `MyCustomers.vue`, `DocumentEditModal.vue`, `useSettingsBase.js`, `BulkUploadLeadsModal.vue`, `CustomerProfile.vue`, `DocumentsView.vue`, `AiModule.vue`, `modules_api.js`, `DocumentQuickViewModal.vue`, `BranchSelector.vue`, `AccountFormModal.vue`, `loadActivities`, `ContactsView.vue`, `ProfileModule.vue`, `DashboardLayout.vue`, `Models.vue`, `DealsView.vue`, `DealFormModal.vue`, `LinkedDocumentsWidget.vue`, `LeadConversionModal.vue`, `DocumentAttachModal.vue`, `BulkUploadAccountsModal.vue`, `CRMModule.js`, `useSettingsApprovals`, `DealDetailModal.vue`, `DocumentDetailModal.vue`, `useSettingsModules.js`, `useSettingsBase`, `DocumentUploadModal.vue`, `NotificationBell.vue`, `InvoiceCreationModal.vue`, `ContactDetailModal.vue`, `ContactFormModal.vue`, `DocumentShareModal.vue`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `useCRMModule()` connect `useCRMModule` to `initLeadMap`, `AccountsView.vue`, `crm_api.js`, `router/index.js`, `CRMCallsPage.vue`, `useSettingsBase.js`, `CRMPipelinePage.vue`, `loadLeads`, `CRMMeetingsPage.vue`, `CRMAcquisitionPage.vue`, `CRMMeetingModal.vue`, `validateData`, `loadVisits`, `goToModule`, `CRMLeadsPage.vue`, `decodeJWT`, `addPendingLeadDocument`, `startCallTimer`, `CRMModule.js`, `saveCallOutcome`, `getRecordSubtitle`, `useSettingsBase`, `CRMEmailModal.vue`, `showToast`, `handleDrop`, `ContactFormModal.vue`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `useSettingsApprovals()` connect `useSettingsApprovals` to `useSettingsBase`, `decodeJWT`?**
-  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `useCRMModule()` connect `useCRMModule` to `initLeadMap`, `AccountsView.vue`, `crm_api.js`, `router/index.js`, `CRMCallsPage.vue`, `useSettingsBase.js`, `CRMPipelinePage.vue`, `loadLeads`, `CRMMeetingsPage.vue`, `CRMAcquisitionPage.vue`, `CRMMeetingModal.vue`, `validateData`, `loadVisits`, `showToast`, `CRMLeadsPage.vue`, `useCRMQuickAccessStore`, `decodeJWT`, `addPendingLeadDocument`, `startCallTimer`, `CRMModule.js`, `saveCallOutcome`, `getRecordSubtitle`, `useSettingsBase`, `CRMEmailModal.vue`, `fetchPipelineData`, `handleDrop`, `ContactFormModal.vue`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `useSettingsBase()` connect `useSettingsBase` to `useSettingsEmail`, `useSettingsRoles`, `auth.js`, `useSettingsNotifications`, `useSettingsModules`, `useSettingsGoals`, `useSettingsBase.js`, `modules_api.js`, `useSettingsModules.js`, `decodeJWT`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Are the 202 inferred relationships involving `useCRMModule()` (e.g. with `addCustomStage()` and `addParticipant()`) actually correct?**
   _`useCRMModule()` has 202 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `fs`, `content`, `ignoreDeprecations` to the rest of the system?**

@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>absa-foundry-frontend — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 7510 nodes, 9479 edges, 565 communities. Commit: af65949</p>
+<p class="subtitle">Generated from graphify knowledge graph: 7522 nodes, 9479 edges, 578 communities. Commit: 1ab135d</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -100,9 +100,9 @@ flowchart LR
     class CLI_SKILLS_9964CBB8 module;
     INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>195 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>1442 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>1424 nodes</small>")
     class SERVE_API_35EC8E86 module;
-    SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>308 nodes</small>")
+    SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>309 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
     TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>42 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
@@ -116,10 +116,10 @@ flowchart LR
     class ACCOUNTSVIEW_VUE_A9506722 module;
     USESETTINGSBASE_5134DBB0("useSettingsBase<br/><small>63 nodes</small>")
     class USESETTINGSBASE_5134DBB0 module;
-    OTHER_D0941E68("Other<br/><small>4787 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>4816 nodes</small>")
     class OTHER_D0941E68 module;
-    SERVE_API_35EC8E86 -->|contains x222| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x191| SERVE_API_35EC8E86
+    SERVE_API_35EC8E86 -->|contains x225| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x193| SERVE_API_35EC8E86
     USECRMMODULE_61828D9C -->|indirect call x111| OTHER_D0941E68
     OTHER_D0941E68 -->|imports x65| CLI_SKILLS_9964CBB8
     USESETTINGSBASE_5134DBB0 -->|imports x39| OTHER_D0941E68
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>3</td><td><code>493, 535</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 305, 307, 349, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>1</td><td><code>503</code></td></tr><tr><td>Outputs &amp; Docs</td><td>46</td><td><code>142, 169, 367, 368, 502</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>63</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>195</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491, 501, 523, 562</code></td></tr><tr><td>Serving API</td><td>1442</td><td><code>18, 5, 8, 4, 10, 20, 78, 24, 38, 334, 266, 31, 35, 41, 49, 76, 61, 70, 64, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 306, 136, 137, 138, 159, 161, 167, 22, 191, 240, 149, 238, 6, 285, 229, 256, 272, 278, 57, 313, 309, 329, 386, 395, 412, 302, 450, 496, 497, 498, 505, 518, 521, 525, 534, 554</code></td></tr><tr><td>Security &amp; Global Graph</td><td>308</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215, 543, 553</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>42</td><td><code>242, 255, 289, 352, 411</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountDetailModal.vue</td><td>105</td><td><code>1</code></td></tr><tr><td>LeadDetailModal.vue</td><td>75</td><td><code>2</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>useSettingsBase</td><td>63</td><td><code>220</code></td></tr><tr><td>Other</td><td>4787</td><td><code>7, 21, 176, 33, 14, 19, 12, 15, 13, 16, 66, 67, 39, 26, 25, 27, 32, 29, 30, 17, 34, 28, 196, 37, 46, 58, 257, 42, 248, 48, 68, 128, 50, 40, 52, 53, 54, 56, 60, 62, 65, 71, 72, 75, 80, 92, 146, 197, 260, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 241, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 130, 131, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 148, 152, 154, 155, 173, 9, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 175, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 43, 55, 150, 200, 201, 203, 204, 205, 206, 209, 210, 36, 208, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 271, 223, 224, 225, 226, 227, 230, 233, 234, 267, 228, 235, 250, 284, 45, 147, 236, 243, 251, 151, 249, 282, 299, 174, 244, 254, 44, 106, 231, 239, 253, 258, 262, 269, 275, 303, 11, 277, 279, 280, 245, 281, 283, 296, 310, 454, 270, 286, 287, 290, 291, 292, 294, 268, 288, 295, 304, 318, 319, 347, 357, 79, 298, 312, 321, 325, 462, 47, 198, 293, 316, 322, 324, 326, 328, 332, 346, 453, 330, 331, 336, 337, 338, 339, 340, 461, 463, 464, 468, 323, 333, 343, 348, 460, 469, 470, 492, 232, 327, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 466, 467, 494, 261, 314, 317, 335, 341, 342, 344, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 495, 499, 500, 504, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 519, 520, 522, 524, 526, 527, 528, 529, 530, 531, 532, 533, 536, 537, 538, 539, 540, 541, 542, 544, 545, 546, 547, 548, 549, 550, 551, 552, 555, 556, 557, 558, 559, 560, 561, 563, 564</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>3</td><td><code>493, 535</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 305, 307, 349, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>1</td><td><code>503</code></td></tr><tr><td>Outputs &amp; Docs</td><td>46</td><td><code>142, 169, 367, 368, 502</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>63</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>195</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491, 501, 523, 562</code></td></tr><tr><td>Serving API</td><td>1424</td><td><code>18, 5, 8, 4, 10, 20, 24, 38, 334, 266, 31, 35, 41, 78, 49, 76, 61, 70, 64, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 306, 136, 137, 138, 159, 161, 167, 22, 191, 240, 149, 238, 6, 285, 229, 256, 272, 278, 57, 313, 309, 329, 386, 395, 412, 302, 450, 496, 497, 498, 505, 518, 521, 525, 534, 554</code></td></tr><tr><td>Security &amp; Global Graph</td><td>309</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215, 543, 553, 576</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>42</td><td><code>242, 255, 289, 352, 411</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountDetailModal.vue</td><td>105</td><td><code>1</code></td></tr><tr><td>LeadDetailModal.vue</td><td>75</td><td><code>2</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>useSettingsBase</td><td>63</td><td><code>220</code></td></tr><tr><td>Other</td><td>4816</td><td><code>7, 21, 176, 33, 14, 19, 12, 15, 13, 16, 66, 67, 39, 26, 25, 27, 32, 29, 30, 17, 34, 28, 196, 37, 46, 58, 257, 42, 248, 48, 68, 128, 43, 50, 40, 52, 53, 54, 56, 60, 62, 65, 71, 72, 75, 80, 92, 197, 260, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 130, 131, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 146, 148, 150, 152, 154, 155, 173, 9, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 175, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 55, 200, 201, 203, 204, 205, 206, 209, 210, 36, 492, 208, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 271, 223, 224, 225, 226, 227, 230, 233, 234, 267, 228, 235, 250, 284, 45, 147, 236, 243, 244, 251, 151, 249, 282, 299, 174, 241, 254, 44, 106, 231, 239, 253, 258, 262, 269, 275, 303, 11, 277, 279, 280, 245, 281, 283, 296, 310, 454, 270, 286, 287, 290, 291, 292, 294, 268, 288, 295, 304, 318, 319, 347, 357, 79, 298, 312, 321, 325, 462, 47, 198, 293, 316, 322, 324, 326, 328, 332, 346, 453, 330, 331, 336, 337, 338, 339, 340, 461, 463, 464, 468, 323, 333, 343, 348, 460, 469, 470, 565, 232, 327, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 466, 467, 494, 261, 314, 317, 335, 341, 342, 344, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 495, 499, 500, 504, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 519, 520, 522, 524, 526, 527, 528, 529, 530, 531, 532, 533, 536, 537, 538, 539, 540, 541, 542, 544, 545, 546, 547, 548, 549, 550, 551, 552, 555, 556, 557, 558, 559, 560, 561, 563, 564, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 577</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>7510 nodes · 9479 edges · 565 communities (475 shown, 90 thin omitted)</li>
+      <li>7522 nodes · 9479 edges · 578 communities (487 shown, 91 thin omitted)</li>
       <li>Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 472 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useCRMModule()` - 242 edges</li>
@@ -1675,12 +1675,12 @@ flowchart LR
 
 <!-- ====== 8. Serving API ====== -->
 <h2 id="serve-api">8. Serving API</h2>
-<p>Serving API groups implementation around views, crm, qoder, repowiki, mostly in src/services/crm_api.js, src/views/CustomerProfile.vue, src/views/CustomerDetail.vue. This section covers 1442 nodes and 1820 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around views, crm, qoder, repowiki, mostly in src/services/crm_api.js, src/views/CustomerProfile.vue, src/views/CustomerDetail.vue. This section covers 1424 nodes and 1790 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (1442 nodes, 1820 edges)
+    %% Section: Serving API (1424 nodes, 1790 edges)
     subgraph serve_api_src_services_telemetry_comparison_api_e4e6ddda["src/services/telemetry_comparison_api.js"]
         src_services_telemetry_comparison_api_telemetryc_feee5b40("TelemetryComparisonService<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_70367f3d("getMachineMetrics()<br/><small>src/services/telemetry_comparison_api.js</small>")
@@ -1715,7 +1715,7 @@ flowchart LR
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_bd71a1f4
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_6a6b7d37
     src_services_telemetry_comparison_api_telemetryc_0cff7dbc -->|calls| src_services_telemetry_comparison_api_telemetryc_da656d92
-    %% Omitted for readability: 1424 nodes, 0 edges
+    %% Omitted for readability: 1406 nodes, 0 edges
     class src_services_telemetry_comparison_api_telemetryc_feee5b40 klass;
     class src_services_telemetry_comparison_api_telemetryc_70367f3d function;
     class src_services_telemetry_comparison_api_telemetryc_be0034e3 function;
@@ -2014,26 +2014,22 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1201, calls x363, indirect call x93, imports x73. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1186, calls x360, indirect call x92, imports x68. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 9. Security & Global Graph ====== -->
 <h2 id="security-global">9. Security &amp; Global Graph</h2>
-<p>Security &amp; Global Graph groups implementation around security, architecture, qoder, repowiki, mostly in Architecture &amp; Design/Security Architecture/Audit Logging.md, content/Security Considerations/Security Considerations.md, content/Security Considerations/Role-Based Access Control (RBAC).md. This section covers 308 nodes and 292 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Security &amp; Global Graph groups implementation around security, architecture, qoder, repowiki, mostly in Architecture &amp; Design/Security Architecture/Audit Logging.md, content/Security Considerations/Security Considerations.md, content/Security Considerations/Role-Based Access Control (RBAC).md. This section covers 309 nodes and 292 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Security &amp; Global Graph (308 nodes, 292 edges)
+    %% Section: Security &amp; Global Graph (309 nodes, 292 edges)
     subgraph security_global_Architecture_Design_Security_Arc_24bca499["Architecture &amp; Design/Security Architecture/PWA Security.md"]
         qoder_repowiki_en_content_architecture_design_se_75690ead("PWA Security<br/><small>Architecture &amp; Design/Security Architecture/PWA Security.md</small>")
         qoder_repowiki_en_content_architecture_design_se_e0f799e2("Detailed Component Analysis<br/><small>Architecture &amp; Design/Security Architecture/PWA Security.md</small>")
-    end
-    subgraph security_global_content_Security_Considerations_1138354c["content/Security Considerations/Security Considerations.md"]
-        qoder_repowiki_en_content_security_consideration_fd84d0a6("Security Considerations<br/><small>content/Security Considerations/Security Considerations.md</small>")
-        qoder_repowiki_en_content_security_consideration_30f90dbe("Detailed Component Analysis<br/><small>content/Security Considerations/Security Considerations.md</small>")
     end
     qoder_repowiki_en_content_architecture_design_se_662f7069("Audit Logging<br/><small>Architecture &amp; Design/Security Architecture/Audit Logging.md</small>")
     qoder_repowiki_en_content_architecture_design_se_b5ee9e30("Authentication Flow<br/><small>Architecture &amp; Design/Security Architecture/Authentication Flow.md</small>")
@@ -2046,16 +2042,15 @@ flowchart LR
     qoder_repowiki_en_content_security_consideration_8390481b("Authentication Security<br/><small>content/Security Considerations/Authentication Security.md</small>")
     qoder_repowiki_en_content_security_consideration_a2585c46("Input Validation &amp; Sanitization<br/><small>content/Security Considerations/Input Validation &amp; Sanitization.md</small>")
     qoder_repowiki_en_content_security_consideration_95e5f610("Role-Based Access Control (RBAC)<br/><small>content/Security Considerations/Role-Based Access Control (RBAC).md</small>")
+    qoder_repowiki_en_content_security_consideration_fd84d0a6("Security Considerations<br/><small>content/Security Considerations/Security Considerations.md</small>")
     qoder_repowiki_en_content_security_consideration_13293f32("Security Monitoring &amp; Audit<br/><small>content/Security Considerations/Security Monitoring &amp; Audit.md</small>")
+    fix_my_customers_safe_aa8ee10b("fix_my_customers_safe.py")
     patch_my_customers_safe_a811c067("patch_my_customers_safe.py")
     patch_repo_c34d9577("patch_repo.py")
-    qoder_repowiki_en_content_security_consideration_fd84d0a6 -->|contains| qoder_repowiki_en_content_security_consideration_30f90dbe
     qoder_repowiki_en_content_architecture_design_se_75690ead -->|contains| qoder_repowiki_en_content_architecture_design_se_e0f799e2
-    %% Omitted for readability: 290 nodes, 0 edges
+    %% Omitted for readability: 291 nodes, 0 edges
     class qoder_repowiki_en_content_architecture_design_se_75690ead concept;
     class qoder_repowiki_en_content_architecture_design_se_e0f799e2 concept;
-    class qoder_repowiki_en_content_security_consideration_fd84d0a6 concept;
-    class qoder_repowiki_en_content_security_consideration_30f90dbe concept;
     class qoder_repowiki_en_content_architecture_design_se_662f7069 concept;
     class qoder_repowiki_en_content_architecture_design_se_b5ee9e30 concept;
     class qoder_repowiki_en_content_architecture_design_se_e5253bb4 concept;
@@ -2067,7 +2062,9 @@ flowchart LR
     class qoder_repowiki_en_content_security_consideration_8390481b concept;
     class qoder_repowiki_en_content_security_consideration_a2585c46 concept;
     class qoder_repowiki_en_content_security_consideration_95e5f610 concept;
+    class qoder_repowiki_en_content_security_consideration_fd84d0a6 concept;
     class qoder_repowiki_en_content_security_consideration_13293f32 concept;
+    class fix_my_customers_safe_aa8ee10b module;
     class patch_my_customers_safe_a811c067 module;
     class patch_repo_c34d9577 module;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
@@ -4389,12 +4386,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, crm/components/LeadsView.vue, Modules/aiagents/Models.vue. This section covers 4787 nodes and 5416 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, crm/components/LeadsView.vue, Modules/aiagents/Models.vue. This section covers 4816 nodes and 5441 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (4787 nodes, 5416 edges)
+    %% Section: Other (4816 nodes, 5441 edges)
     subgraph other_src_utils_pwaManager_js_c8f1bf9b["src/utils/pwaManager.js"]
         src_utils_pwamanager_pwamanager_a606e8c5("PWAManager<br/><small>src/utils/pwaManager.js</small>")
         src_utils_pwamanager_pwamanager_checkandshowprom_6203035d("checkAndShowPrompt()<br/><small>src/utils/pwaManager.js</small>")
@@ -4435,7 +4432,7 @@ flowchart LR
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstallsuccess_f8a69fff
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstalldismiss_c54c22cc
     src_composables_settings_usesettingsbase_7bed58ee -->|imports| src_composables_userbac_7fc51b41
-    %% Omitted for readability: 4769 nodes, 0 edges
+    %% Omitted for readability: 4798 nodes, 0 edges
     class src_utils_pwamanager_pwamanager_a606e8c5 klass;
     class src_utils_pwamanager_pwamanager_checkandshowprom_6203035d function;
     class src_utils_pwamanager_pwamanager_showprompt_a204623a function;
@@ -4734,7 +4731,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x4013, calls x934, imports x152, indirect call x136. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x4028, calls x937, imports x155, imports x139. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4745,10 +4742,10 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>7510</td></tr>
+      <tr><td>Nodes</td><td>7522</td></tr>
       <tr><td>Edges</td><td>9479</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>565</td></tr>
+      <tr><td>Communities</td><td>578</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
@@ -4764,7 +4761,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>absa-foundry-frontend — Architecture Documentation</p>
-  <p>Generated: 2026-10-05 12:17 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-10-05 15:13 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

@@ -525,7 +525,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full pt-6 px-6 pb-8">
+  <div class="w-full pt-6 px-6 pb-8 absa-mesh relative min-h-screen">
+    <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30 z-0"></div>
+    <div class="relative z-10 w-full">
     <!-- Page header -->
     <div class="mb-6 pb-4 border-b border-gray-300 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
       <div>
@@ -893,5 +895,6 @@ onMounted(async () => {
       :engagements="ptfEngagements"
       @close="showPromiseToFund = false"
     />
+  </div>
   </div>
 </template>

@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/router/index.js": {
-    "mtime": 1791228013.3969538,
-    "seen": 1791272870.5880322,
-    "ast_hash": "52aef16a48e777c307f5b86e60ae0035",
+    "mtime": 1791146301.3933606,
+    "seen": 1791202622.8797376,
+    "ast_hash": "84832df0bfbdf97340dc25dabd0cb800",
     "semantic_hash": ""
   },
   "src/services/api.js": {
@@ -624,8 +624,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1791272831.5166516,
-    "seen": 1791272870.5880322,
+    "mtime": 1791213056.9194088,
+    "seen": 1791213193.7228029,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },
@@ -768,9 +768,9 @@
     "semantic_hash": "edbca872b234a00e23431362918e2f49"
   },
   "src/views/Modules/crm/CRMModule.vue": {
-    "mtime": 1791233705.1491745,
-    "seen": 1791272870.5880322,
-    "ast_hash": "ee0b990eb89c2d47d29066b3ec831439",
+    "mtime": 1791146608.3061378,
+    "seen": 1791202622.8797376,
+    "ast_hash": "5e59a964934396cdbd8131d9f0b087f3",
     "semantic_hash": ""
   },
   "src/views/Modules/crm/CRMPipelinePage.vue": {
@@ -1020,9 +1020,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/datapipeline/EtlPipeline.vue": {
-    "mtime": 1791272764.6270943,
-    "seen": 1791272870.5880322,
-    "ast_hash": "b185f23e64721748bece40c716111a92",
+    "mtime": 1790776313.0294335,
+    "seen": 1790849267.9792829,
+    "ast_hash": "e874b29f1c55f580428c2e52bbb019bf",
     "semantic_hash": ""
   },
   "src/views/Modules/intelligence/BalanceForecast.vue": {
@@ -1074,9 +1074,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/settings/UserManagement.vue": {
-    "mtime": 1791271548.3768795,
-    "seen": 1791272870.5880322,
-    "ast_hash": "79b4a478a64e27388d5d4de9ce77e721",
+    "mtime": 1790168999.7204528,
+    "seen": 1790673067.5344594,
+    "ast_hash": "b129843b01a73dae3bade9347ca421d6",
     "semantic_hash": ""
   },
   "src/views/Modules/settings/components/SettingsAiAgents.vue": {
@@ -2652,9 +2652,9 @@
     "semantic_hash": ""
   },
   "src/components/crm/EngagementModal.vue": {
-    "mtime": 1791228144.3326528,
-    "seen": 1791272870.5870311,
-    "ast_hash": "e9a932947debe7788dc5a1810344580c",
+    "mtime": 1791132957.1601698,
+    "seen": 1791202622.8797376,
+    "ast_hash": "922e379c857f0fcfc324f6574aa1fb62",
     "semantic_hash": ""
   },
   "src/components/crm/PostEngagementPerformance.vue": {
@@ -2832,9 +2832,9 @@
     "semantic_hash": ""
   },
   "src/views/CRMDashboard.vue": {
-    "mtime": 1791233705.1511748,
-    "seen": 1791272870.5880322,
-    "ast_hash": "404d2b878b77c357ca0616794b81af99",
+    "mtime": 1791146139.2074268,
+    "seen": 1791202622.8797376,
+    "ast_hash": "f451dbe627f310636dc94b8872169def",
     "semantic_hash": ""
   },
   "src/views/Modules/crm/CRMAnalyticsDashboard.vue": {
@@ -2844,9 +2844,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/crm/CRMOmnichannelWorkspace.vue": {
-    "mtime": 1791234313.145353,
-    "seen": 1791272870.5880322,
-    "ast_hash": "433721f5432e85095c7f2b6b19f0bca0",
+    "mtime": 1791144971.7613134,
+    "seen": 1791202622.8797376,
+    "ast_hash": "32e6726c46482af15e27fafb0c350475",
     "semantic_hash": ""
   },
   "src/views/Modules/crm/CRMTicketsPage.vue": {
@@ -2952,9 +2952,9 @@
     "semantic_hash": ""
   },
   "fix_kpi.py": {
-    "mtime": 1791233212.4496522,
-    "seen": 1791272870.5870311,
-    "ast_hash": "f780bd0630d89256428ac7f817fa286f",
+    "mtime": 1791141786.6663518,
+    "seen": 1791202622.878728,
+    "ast_hash": "7f9c3f14d1ccf13895712569a8d009e4",
     "semantic_hash": ""
   },
   "fix_kpi_crush.py": {
@@ -3387,174 +3387,6 @@
     "mtime": 1791213085.3336456,
     "seen": 1791213193.7228029,
     "ast_hash": "5093e7c97f0e79d8bc4fb87dd4d74454",
-    "semantic_hash": ""
-  },
-  "add_action_vifs.py": {
-    "mtime": 1791235006.1023476,
-    "seen": 1791272870.5870311,
-    "ast_hash": "f596199553844039ed48857e03a12305",
-    "semantic_hash": ""
-  },
-  "add_actions.py": {
-    "mtime": 1791234990.132937,
-    "seen": 1791272870.5870311,
-    "ast_hash": "8f1919ac3a792678331aa255185e4604",
-    "semantic_hash": ""
-  },
-  "add_dnd.py": {
-    "mtime": 1791235020.023149,
-    "seen": 1791272870.5870311,
-    "ast_hash": "57741259c216ec99c3c31582cd72c2e2",
-    "semantic_hash": ""
-  },
-  "check_bs4.py": {
-    "mtime": 1791266663.7213156,
-    "seen": 1791272870.5870311,
-    "ast_hash": "ae37c2673e84f4616fd6564eecc7bea2",
-    "semantic_hash": ""
-  },
-  "check_tags.py": {
-    "mtime": 1791266623.8865893,
-    "seen": 1791272870.5870311,
-    "ast_hash": "6e58bc9d70f5e0728d16c9571039cd4f",
-    "semantic_hash": ""
-  },
-  "debug_tags.py": {
-    "mtime": 1791266756.7900355,
-    "seen": 1791272870.5870311,
-    "ast_hash": "3dfc5a3b7b48e99fa9beb5dab1e82c11",
-    "semantic_hash": ""
-  },
-  "fix_calendar_filter.py": {
-    "mtime": 1791231327.4509854,
-    "seen": 1791272870.5870311,
-    "ast_hash": "5516b24d818ce11d6bf825ad1e350340",
-    "semantic_hash": ""
-  },
-  "fix_calendar_grid.py": {
-    "mtime": 1791230983.1480134,
-    "seen": 1791272870.5870311,
-    "ast_hash": "5a3f63a6795a6cd965384d85ea44da9d",
-    "semantic_hash": ""
-  },
-  "fix_calendar_size.py": {
-    "mtime": 1791231770.2432716,
-    "seen": 1791272870.5870311,
-    "ast_hash": "4608273fc805c512c5e61327fe3c396a",
-    "semantic_hash": ""
-  },
-  "fix_card_ui.py": {
-    "mtime": 1791232179.4204879,
-    "seen": 1791272870.5870311,
-    "ast_hash": "93324c6cd9b44577bc960591345904a8",
-    "semantic_hash": ""
-  },
-  "fix_crm_module_figures.py": {
-    "mtime": 1791233453.2131176,
-    "seen": 1791272870.5870311,
-    "ast_hash": "399327f59f867d00f0e4f8a9c496cb0a",
-    "semantic_hash": ""
-  },
-  "fix_dashboard.py": {
-    "mtime": 1791233220.8150473,
-    "seen": 1791272870.5870311,
-    "ast_hash": "dedc3856fb4b388b662378ead57ac8a2",
-    "semantic_hash": ""
-  },
-  "fix_dupes.py": {
-    "mtime": 1791266175.089257,
-    "seen": 1791272870.5870311,
-    "ast_hash": "55a5eb637f2d7a2a8c2930a63396c5c2",
-    "semantic_hash": ""
-  },
-  "fix_engagement_modal.py": {
-    "mtime": 1791228144.1301124,
-    "seen": 1791272870.5870311,
-    "ast_hash": "3e59bf256de1f6ea01f9a5f7f87285df",
-    "semantic_hash": ""
-  },
-  "fix_icons.py": {
-    "mtime": 1791233599.0078254,
-    "seen": 1791272870.5870311,
-    "ast_hash": "377c8d247ee0f3ac0ecee036c2e7d3f5",
-    "semantic_hash": ""
-  },
-  "fix_kanban_width.py": {
-    "mtime": 1791232039.5804381,
-    "seen": 1791272870.5870311,
-    "ast_hash": "f756694d0f8a9c190e7d0dde08550036",
-    "semantic_hash": ""
-  },
-  "fix_kpi_font.py": {
-    "mtime": 1791233400.1966717,
-    "seen": 1791272870.5870311,
-    "ast_hash": "b1f48d6110af3dd83a80e08be0623980",
-    "semantic_hash": ""
-  },
-  "fix_kpi_text.py": {
-    "mtime": 1791233705.066176,
-    "seen": 1791272870.5870311,
-    "ast_hash": "e320e572bcf8b01be48d0a06ea0739f5",
-    "semantic_hash": ""
-  },
-  "fix_list_ui.py": {
-    "mtime": 1791232295.1223044,
-    "seen": 1791272870.5870311,
-    "ast_hash": "738f8f68dab169be345184704933ac0b",
-    "semantic_hash": ""
-  },
-  "fix_red.py": {
-    "mtime": 1791231916.2795544,
-    "seen": 1791272870.5870311,
-    "ast_hash": "2d854258ba809ab719b61e3f49abfebb",
-    "semantic_hash": ""
-  },
-  "fix_toggles.py": {
-    "mtime": 1791230557.5673287,
-    "seen": 1791272870.5870311,
-    "ast_hash": "c206acdfa31935b5087360d51f8ec5d0",
-    "semantic_hash": ""
-  },
-  "fix_toggles2.py": {
-    "mtime": 1791230599.0930178,
-    "seen": 1791272870.5870311,
-    "ast_hash": "79e623c35c9d86cbc0b939f369038be2",
-    "semantic_hash": ""
-  },
-  "fix_toggles_size.py": {
-    "mtime": 1791230836.049734,
-    "seen": 1791272870.5870311,
-    "ast_hash": "2f6408c219281960a5f4ecbb2fcd7558",
-    "semantic_hash": ""
-  },
-  "fix_views.py": {
-    "mtime": 1791231304.069369,
-    "seen": 1791272870.5870311,
-    "ast_hash": "5004229f27f19190a18bfa3e5774d759",
-    "semantic_hash": ""
-  },
-  "fix_workspace_buttons.py": {
-    "mtime": 1791234313.057465,
-    "seen": 1791272870.5870311,
-    "ast_hash": "27509e197d630b7bade34c3d1d760b65",
-    "semantic_hash": ""
-  },
-  "src/views/Modules/crm/CRMCalendarPage.vue": {
-    "mtime": 1791235020.1219988,
-    "seen": 1791272870.5880322,
-    "ast_hash": "1117bfb50369204775d4ddcd43f8bc32",
-    "semantic_hash": ""
-  },
-  "test_div.py": {
-    "mtime": 1791266825.076187,
-    "seen": 1791272870.5880322,
-    "ast_hash": "07a5c376e9abd5418cb9174cc04476f4",
-    "semantic_hash": ""
-  },
-  "trace.py": {
-    "mtime": 1791266790.0780914,
-    "seen": 1791272870.5880322,
-    "ast_hash": "64258d1bacefa0ed168e3cf99e9d7f12",
     "semantic_hash": ""
   }
 }

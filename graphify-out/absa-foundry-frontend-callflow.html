@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>absa-foundry-frontend — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 7522 nodes, 9479 edges, 578 communities. Commit: 1ab135d</p>
+<p class="subtitle">Generated from graphify knowledge graph: 7595 nodes, 9531 edges, 594 communities. Commit: 771bf82</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -73,10 +73,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#serve-api">Serving API</a>
     <a href="#security-global">Security &amp; Global Graph</a>
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
-    <a href="#usecrmmodule">useCRMModule</a>
     <a href="#accountdetailmodal-vue">AccountDetailModal.vue</a>
-    <a href="#leaddetailmodal-vue">LeadDetailModal.vue</a>
+    <a href="#usecrmmodule">useCRMModule</a>
     <a href="#accountsview-vue">AccountsView.vue</a>
+    <a href="#leadsview-vue">LeadsView.vue</a>
     <a href="#usesettingsbase">useSettingsBase</a>
     <a href="#other">Other</a>
 </div>
@@ -96,39 +96,39 @@ flowchart LR
     class ANALYSIS_CLUSTERING_C79796DA module;
     OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>46 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
-    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>63 nodes</small>")
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>62 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
     INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>195 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>1424 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>1607 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>309 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>42 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>48 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
+    ACCOUNTDETAILMODAL_VUE_645D977D("AccountDetailModal.vue<br/><small>129 nodes</small>")
+    class ACCOUNTDETAILMODAL_VUE_645D977D module;
     USECRMMODULE_61828D9C("useCRMModule<br/><small>108 nodes</small>")
     class USECRMMODULE_61828D9C module;
-    ACCOUNTDETAILMODAL_VUE_645D977D("AccountDetailModal.vue<br/><small>105 nodes</small>")
-    class ACCOUNTDETAILMODAL_VUE_645D977D module;
-    LEADDETAILMODAL_VUE_88B3F02F("LeadDetailModal.vue<br/><small>75 nodes</small>")
-    class LEADDETAILMODAL_VUE_88B3F02F module;
     ACCOUNTSVIEW_VUE_A9506722("AccountsView.vue<br/><small>70 nodes</small>")
     class ACCOUNTSVIEW_VUE_A9506722 module;
-    USESETTINGSBASE_5134DBB0("useSettingsBase<br/><small>63 nodes</small>")
+    LEADSVIEW_VUE_10F58956("LeadsView.vue<br/><small>62 nodes</small>")
+    class LEADSVIEW_VUE_10F58956 module;
+    USESETTINGSBASE_5134DBB0("useSettingsBase<br/><small>61 nodes</small>")
     class USESETTINGSBASE_5134DBB0 module;
-    OTHER_D0941E68("Other<br/><small>4816 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>4692 nodes</small>")
     class OTHER_D0941E68 module;
-    SERVE_API_35EC8E86 -->|contains x225| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x193| SERVE_API_35EC8E86
-    USECRMMODULE_61828D9C -->|indirect call x111| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x65| CLI_SKILLS_9964CBB8
-    USESETTINGSBASE_5134DBB0 -->|imports x39| OTHER_D0941E68
-    LEADDETAILMODAL_VUE_88B3F02F -->|contains x39| OTHER_D0941E68
+    SERVE_API_35EC8E86 -->|contains x227| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x186| SERVE_API_35EC8E86
+    USECRMMODULE_61828D9C -->|indirect call x112| OTHER_D0941E68
+    OTHER_D0941E68 -->|imports x64| CLI_SKILLS_9964CBB8
+    USESETTINGSBASE_5134DBB0 -->|imports x35| OTHER_D0941E68
+    SERVE_API_35EC8E86 -->|imports x33| CLI_SKILLS_9964CBB8
     INGEST_CACHE_UPDATE_FF457338 -->|calls x29| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x29| CLI_SKILLS_9964CBB8
-    ACCOUNTDETAILMODAL_VUE_645D977D -->|contains x27| SERVE_API_35EC8E86
     ACCOUNTSVIEW_VUE_A9506722 -->|contains x25| OTHER_D0941E68
-    OTHER_D0941E68 -->|imports x14| USESETTINGSBASE_5134DBB0
+    LEADSVIEW_VUE_10F58956 -->|contains x25| OTHER_D0941E68
+    ACCOUNTDETAILMODAL_VUE_645D977D -->|calls x24| SERVE_API_35EC8E86
+    OTHER_D0941E68 -->|imports x15| USESETTINGSBASE_5134DBB0
     TESTS_FIXTURES_B84B1DCC -->|re exports x12| OTHER_D0941E68
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>3</td><td><code>493, 535</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 305, 307, 349, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>1</td><td><code>503</code></td></tr><tr><td>Outputs &amp; Docs</td><td>46</td><td><code>142, 169, 367, 368, 502</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>63</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>195</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491, 501, 523, 562</code></td></tr><tr><td>Serving API</td><td>1424</td><td><code>18, 5, 8, 4, 10, 20, 24, 38, 334, 266, 31, 35, 41, 78, 49, 76, 61, 70, 64, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 306, 136, 137, 138, 159, 161, 167, 22, 191, 240, 149, 238, 6, 285, 229, 256, 272, 278, 57, 313, 309, 329, 386, 395, 412, 302, 450, 496, 497, 498, 505, 518, 521, 525, 534, 554</code></td></tr><tr><td>Security &amp; Global Graph</td><td>309</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215, 543, 553, 576</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>42</td><td><code>242, 255, 289, 352, 411</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountDetailModal.vue</td><td>105</td><td><code>1</code></td></tr><tr><td>LeadDetailModal.vue</td><td>75</td><td><code>2</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>useSettingsBase</td><td>63</td><td><code>220</code></td></tr><tr><td>Other</td><td>4816</td><td><code>7, 21, 176, 33, 14, 19, 12, 15, 13, 16, 66, 67, 39, 26, 25, 27, 32, 29, 30, 17, 34, 28, 196, 37, 46, 58, 257, 42, 248, 48, 68, 128, 43, 50, 40, 52, 53, 54, 56, 60, 62, 65, 71, 72, 75, 80, 92, 197, 260, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 130, 131, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 146, 148, 150, 152, 154, 155, 173, 9, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 175, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 55, 200, 201, 203, 204, 205, 206, 209, 210, 36, 492, 208, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 271, 223, 224, 225, 226, 227, 230, 233, 234, 267, 228, 235, 250, 284, 45, 147, 236, 243, 244, 251, 151, 249, 282, 299, 174, 241, 254, 44, 106, 231, 239, 253, 258, 262, 269, 275, 303, 11, 277, 279, 280, 245, 281, 283, 296, 310, 454, 270, 286, 287, 290, 291, 292, 294, 268, 288, 295, 304, 318, 319, 347, 357, 79, 298, 312, 321, 325, 462, 47, 198, 293, 316, 322, 324, 326, 328, 332, 346, 453, 330, 331, 336, 337, 338, 339, 340, 461, 463, 464, 468, 323, 333, 343, 348, 460, 469, 470, 565, 232, 327, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 466, 467, 494, 261, 314, 317, 335, 341, 342, 344, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 495, 499, 500, 504, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 519, 520, 522, 524, 526, 527, 528, 529, 530, 531, 532, 533, 536, 537, 538, 539, 540, 541, 542, 544, 545, 546, 547, 548, 549, 550, 551, 552, 555, 556, 557, 558, 559, 560, 561, 563, 564, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 577</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>3</td><td><code>493, 535</code></td></tr><tr><td>Graph Build</td><td>202</td><td><code>168, 246, 308, 263, 264, 265, 237, 259, 273, 274, 297, 300, 303, 305, 307, 350, 351, 355, 358, 359, 360, 361, 362, 363, 364, 365, 366, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 387, 388, 389, 390, 391, 393, 396, 397, 398, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 413, 414, 415, 77</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>1</td><td><code>503</code></td></tr><tr><td>Outputs &amp; Docs</td><td>46</td><td><code>142, 169, 367, 368, 502</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>62</td><td><code>63, 247, 301</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>195</td><td><code>23, 51, 252, 94, 190, 276, 311, 320, 465, 392, 315, 345, 488, 489, 490, 491, 501, 523, 562</code></td></tr><tr><td>Serving API</td><td>1607</td><td><code>2, 5, 18, 10, 8, 39, 4, 38, 40, 20, 31, 266, 35, 334, 41, 49, 61, 64, 70, 83, 87, 89, 100, 96, 98, 99, 111, 112, 121, 129, 22, 136, 137, 138, 159, 161, 167, 191, 240, 149, 238, 6, 229, 256, 272, 313, 306, 173, 309, 57, 78, 329, 386, 395, 412, 302, 450, 496, 497, 498, 505, 518, 521, 525, 534, 554</code></td></tr><tr><td>Security &amp; Global Graph</td><td>309</td><td><code>59, 69, 73, 74, 82, 97, 113, 114, 153, 172, 187, 202, 207, 215, 543, 553, 576</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>48</td><td><code>242, 255, 289, 147, 352, 411</code></td></tr><tr><td>AccountDetailModal.vue</td><td>129</td><td><code>1</code></td></tr><tr><td>useCRMModule</td><td>108</td><td><code>0</code></td></tr><tr><td>AccountsView.vue</td><td>70</td><td><code>3</code></td></tr><tr><td>LeadsView.vue</td><td>62</td><td><code>7</code></td></tr><tr><td>useSettingsBase</td><td>61</td><td><code>220</code></td></tr><tr><td>Other</td><td>4692</td><td><code>21, 176, 257, 33, 14, 19, 12, 15, 25, 13, 16, 66, 67, 26, 27, 32, 17, 24, 29, 30, 34, 28, 196, 46, 42, 248, 48, 68, 43, 50, 37, 52, 53, 54, 56, 60, 62, 65, 260, 71, 72, 75, 76, 80, 92, 197, 209, 81, 84, 85, 86, 88, 90, 91, 93, 95, 101, 102, 103, 104, 105, 107, 108, 11, 109, 110, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 130, 131, 132, 133, 134, 135, 139, 140, 141, 143, 144, 145, 146, 148, 150, 152, 154, 155, 36, 9, 156, 157, 158, 160, 162, 163, 164, 165, 166, 170, 171, 177, 178, 179, 180, 175, 181, 182, 183, 184, 185, 186, 188, 189, 192, 193, 194, 195, 199, 55, 200, 201, 203, 204, 205, 206, 208, 210, 492, 211, 212, 213, 214, 216, 217, 218, 219, 221, 222, 271, 223, 224, 225, 226, 227, 230, 233, 234, 267, 228, 235, 236, 250, 284, 243, 244, 251, 151, 231, 249, 282, 299, 128, 174, 241, 254, 106, 239, 253, 258, 262, 269, 275, 277, 279, 280, 44, 245, 281, 283, 296, 310, 454, 286, 287, 290, 291, 292, 294, 268, 295, 304, 318, 319, 357, 45, 58, 312, 321, 325, 462, 47, 79, 198, 293, 316, 322, 324, 326, 328, 332, 346, 270, 330, 331, 336, 337, 338, 339, 340, 464, 468, 278, 285, 288, 298, 323, 333, 343, 348, 469, 470, 565, 232, 327, 347, 394, 417, 418, 428, 429, 455, 456, 457, 458, 459, 460, 261, 314, 317, 335, 341, 342, 344, 349, 353, 354, 356, 381, 399, 416, 419, 420, 421, 422, 423, 424, 425, 426, 427, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 451, 452, 453, 461, 463, 466, 467, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 494, 495, 499, 500, 504, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 519, 520, 522, 524, 526, 527, 528, 529, 530, 531, 532, 533, 536, 537, 538, 539, 540, 541, 542, 544, 545, 546, 547, 548, 549, 550, 551, 552, 555, 556, 557, 558, 559, 560, 561, 563, 564, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>7522 nodes · 9479 edges · 578 communities (487 shown, 91 thin omitted)</li>
+      <li>7595 nodes · 9531 edges · 594 communities (499 shown, 95 thin omitted)</li>
       <li>Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 472 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useCRMModule()` - 242 edges</li>
@@ -264,7 +264,7 @@ flowchart LR
     package_dependencies_docx_3a6922bb("docx<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94("dotenv<br/><small>package.json</small>")
     dotenv_4de95cba("dotenv<br/><small>package.json</small>")
-    package_json_axios_2cf3d864("axios<br/><small>package.json</small>")
+    barcode_detector_edc5badc("barcode-detector<br/><small>package.json</small>")
     package_dependencies_fontsource_hanken_grotesk_4bfbddaa("@fontsource/hanken-grotesk<br/><small>package.json</small>")
     fontsource_hanken_grotesk_1295e363("@fontsource/hanken-grotesk<br/><small>package.json</small>")
     package_dependencies_jspdf_autotable_491bc723("jspdf-autotable<br/><small>package.json</small>")
@@ -275,7 +275,7 @@ flowchart LR
     lucide_vue_next_86a81b15("lucide-vue-next<br/><small>package.json</small>")
     package_dependencies_vue_chartjs_aaef91e3("vue-chartjs<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94 -->|imports| dotenv_4de95cba
-    package_dependencies_axios_18638368 -->|imports| package_json_axios_2cf3d864
+    package_dependencies_barcode_detector_91658496 -->|imports| barcode_detector_edc5badc
     package_dependencies_fontsource_hanken_grotesk_4bfbddaa -->|imports| fontsource_hanken_grotesk_1295e363
     package_dependencies_jspdf_autotable_491bc723 -->|imports| package_json_jspdf_autotable_6dd90634
     package_dependencies_lucide_react_17f0074f -->|imports| lucide_react_0d541e45
@@ -289,7 +289,7 @@ flowchart LR
     class package_dependencies_docx_3a6922bb function;
     class package_dependencies_dotenv_27698e94 function;
     class dotenv_4de95cba function;
-    class package_json_axios_2cf3d864 function;
+    class barcode_detector_edc5badc function;
     class package_dependencies_fontsource_hanken_grotesk_4bfbddaa function;
     class fontsource_hanken_grotesk_1295e363 function;
     class package_dependencies_jspdf_autotable_491bc723 function;
@@ -490,11 +490,11 @@ flowchart LR
 </tr>
 <tr>
   <td>22</td>
-  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>axios</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td>axios node in package.json.</td>
+  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td>barcode-detector node in package.json.</td>
 </tr>
 <tr>
   <td>23</td>
@@ -546,19 +546,19 @@ flowchart LR
 </tr>
 <tr>
   <td>29</td>
+  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td>No direct outbound edge</td>
+  <td>barcode-detector node in package.json.</td>
+</tr>
+<tr>
+  <td>30</td>
   <td><code>@fontsource/hanken-grotesk</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>@fontsource/hanken-grotesk</code><br><small style="color:var(--muted)">package.json</small></td>
   <td>No direct outbound edge</td>
   <td>@fontsource/hanken-grotesk node in package.json.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>lucide-react</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>lucide-react</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td>No direct outbound edge</td>
-  <td>lucide-react node in package.json.</td>
 </tr>
 </table>
 
@@ -970,12 +970,12 @@ flowchart LR
 
 <!-- ====== 6. CLI & Skill Installers ====== -->
 <h2 id="cli-skills">6. CLI &amp; Skill Installers</h2>
-<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 63 nodes and 84 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>CLI &amp; Skill Installers groups implementation around skills, dashboard, colour, brand, mostly in .ai/skills/rm-dashboard-colour-mapping.md, .ai/skills/absa-brand-colour.md, src/App.vue. This section covers 62 nodes and 82 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: CLI &amp; Skill Installers (63 nodes, 84 edges)
+    %% Section: CLI &amp; Skill Installers (62 nodes, 82 edges)
     subgraph cli_skills_src_App_vue_6c3541eb["src/App.vue"]
         src_app_46efd68e("App.vue")
         src_app_startautohidetimer_43305554("startAutoHideTimer()<br/><small>src/App.vue</small>")
@@ -994,11 +994,11 @@ flowchart LR
     end
     src_views_modules_aiagents_models_canretrain_47a18331("canRetrain<br/><small>Modules/aiagents/Models.vue</small>")
     src_components_layouts_dashboardlayout_handlelog_d19d0bb9("handleLogout()<br/><small>components/layouts/DashboardLayout.vue</small>")
-    src_composables_settings_usesettingsapprovals_1cc3358a("useSettingsApprovals.js")
     src_config_devflags_ensuredevauthsession_908c9cfa("ensureDevAuthSession()<br/><small>src/config/devFlags.js</small>")
     src_config_usepreferences_d4ca4e13("usePreferences.js")
     src_main_3231ff52("main.js")
     src_services_decodejwt_decodejwt_639458ba("decodeJWT()<br/><small>src/services/decodeJWT.js</small>")
+    src_services_notification_api_5f9f2cf8("notification_api.js")
     src_views_customerprofile_candelete_8470694a("canDelete<br/><small>src/views/CustomerProfile.vue</small>")
     src_app_checkandredirectifauthenticated_63e62923 -->|calls| src_services_decodejwt_decodejwt_639458ba
     src_app_dismissinstall_91debf6f -->|calls| src_app_clearautohidetimer_87ac30a2
@@ -1014,11 +1014,11 @@ flowchart LR
     src_views_mycustomers_canloaddata_c1968af7 -->|calls| src_services_decodejwt_decodejwt_639458ba
     src_app_46efd68e -->|imports| src_services_decodejwt_decodejwt_639458ba
     src_app_46efd68e -->|imports| src_config_usepreferences_d4ca4e13
-    src_composables_settings_usesettingsapprovals_1cc3358a -->|imports| src_services_decodejwt_decodejwt_639458ba
     src_config_useaudit_ee385add -->|imports| src_services_decodejwt_decodejwt_639458ba
     src_config_usepreferences_d4ca4e13 -->|imports| src_services_decodejwt_decodejwt_639458ba
     src_main_3231ff52 -->|imports| src_app_46efd68e
-    %% Omitted for readability: 45 nodes, 0 edges
+    src_services_notification_api_5f9f2cf8 -->|imports| src_services_decodejwt_decodejwt_639458ba
+    %% Omitted for readability: 44 nodes, 0 edges
     class src_app_46efd68e ui;
     class src_app_startautohidetimer_43305554 ui;
     class src_app_checkandredirectifauthenticated_63e62923 ui;
@@ -1031,11 +1031,11 @@ flowchart LR
     class src_views_mycustomers_canloaddata_c1968af7 ui;
     class src_views_modules_aiagents_models_canretrain_47a18331 ui;
     class src_components_layouts_dashboardlayout_handlelog_d19d0bb9 ui;
-    class src_composables_settings_usesettingsapprovals_1cc3358a ui;
     class src_config_devflags_ensuredevauthsession_908c9cfa function;
     class src_config_usepreferences_d4ca4e13 ui;
     class src_main_3231ff52 module;
     class src_services_decodejwt_decodejwt_639458ba function;
+    class src_services_notification_api_5f9f2cf8 api;
     class src_views_customerprofile_candelete_8470694a ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -1212,14 +1212,6 @@ flowchart LR
 </tr>
 <tr>
   <td>20</td>
-  <td><code>useSettingsApprovals.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsApprovals.js</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
-  <td>useSettingsApprovals.js node in composables/settings/useSettingsApprovals.js.</td>
-</tr>
-<tr>
-  <td>21</td>
   <td><code>devFlags.js</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1227,7 +1219,7 @@ flowchart LR
   <td>devFlags.js node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>21</td>
   <td><code>DEV_AUTH_PAYLOAD</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
@@ -1235,7 +1227,7 @@ flowchart LR
   <td>DEV_AUTH_PAYLOAD node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>22</td>
   <td><code>DEV_BYPASS</code><br><small style="color:var(--muted)">src/config/devFlags.js</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>index.js</code><br><small style="color:var(--muted)">src/router/index.js</small><br>+3 more</td>
@@ -1243,7 +1235,7 @@ flowchart LR
   <td>DEV_BYPASS node in src/config/devFlags.js.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>23</td>
   <td><code>useAudit.js</code><br><small style="color:var(--muted)">src/config/useAudit.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>useSettingsBase.js</code><br><small style="color:var(--muted)">composables/settings/useSettingsBase.js</small></td>
@@ -1251,7 +1243,7 @@ flowchart LR
   <td>useAudit.js node in src/config/useAudit.js.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>24</td>
   <td><code>usePreferences.js</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>CRMModule.js</code><br><small style="color:var(--muted)">crm/composables/CRMModule.js</small><br><code>LeadDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
@@ -1259,7 +1251,7 @@ flowchart LR
   <td>usePreferences.js node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>25</td>
   <td><code>preferences</code><br><small style="color:var(--muted)">src/config/usePreferences.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1267,7 +1259,7 @@ flowchart LR
   <td>preferences node in src/config/usePreferences.js.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>26</td>
   <td><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1275,7 +1267,7 @@ flowchart LR
   <td>main.js node in src/main.js.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>27</td>
   <td><code>app</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1283,7 +1275,7 @@ flowchart LR
   <td>app node in src/main.js.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>28</td>
   <td><code>pinia</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1291,12 +1283,20 @@ flowchart LR
   <td>pinia node in src/main.js.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>29</td>
   <td><code>router</code><br><small style="color:var(--muted)">src/router/index.js</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>App.vue</code><br><small style="color:var(--muted)">src/App.vue</small><br><code>main.js</code><br><small style="color:var(--muted)">src/main.js</small></td>
   <td>No direct outbound edge</td>
   <td>router node in src/router/index.js.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AccountDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>AccountFormModal.vue</code><br><small style="color:var(--muted)">crm/components/AccountFormModal.vue</small><br><code>AccountsView.vue</code><br><small style="color:var(--muted)">crm/components/AccountsView.vue</small><br>+40 more</td>
+  <td><code>DEV_AUTH_PAYLOAD</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br><code>DEV_BYPASS</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br><code>devFlags.js</code><br><small style="color:var(--muted)">src/config/devFlags.js</small><br>+1 more</td>
+  <td>decodeJWT.js node in src/services/decodeJWT.js.</td>
 </tr>
 </table>
 
@@ -1317,7 +1317,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x46, imports x14, calls x12, imports x11. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x46, imports x13, calls x12, imports x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -1675,12 +1675,12 @@ flowchart LR
 
 <!-- ====== 8. Serving API ====== -->
 <h2 id="serve-api">8. Serving API</h2>
-<p>Serving API groups implementation around views, crm, qoder, repowiki, mostly in src/services/crm_api.js, src/views/CustomerProfile.vue, src/views/CustomerDetail.vue. This section covers 1424 nodes and 1790 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around views, crm, qoder, repowiki, mostly in crm/components/LeadDetailModal.vue, src/services/crm_api.js, src/views/CustomerProfile.vue. This section covers 1607 nodes and 2080 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (1424 nodes, 1790 edges)
+    %% Section: Serving API (1607 nodes, 2080 edges)
     subgraph serve_api_src_services_telemetry_comparison_api_e4e6ddda["src/services/telemetry_comparison_api.js"]
         src_services_telemetry_comparison_api_telemetryc_feee5b40("TelemetryComparisonService<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_70367f3d("getMachineMetrics()<br/><small>src/services/telemetry_comparison_api.js</small>")
@@ -1691,18 +1691,21 @@ flowchart LR
         src_services_telemetry_comparison_api_telemetryc_0cff7dbc("calculateCorrelationMetrics()<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_da656d92("calculatePearsonCorrelation()<br/><small>src/services/telemetry_comparison_api.js</small>")
         src_services_telemetry_comparison_api_telemetryc_ee114c4a("getRealTimeTelemetry()<br/><small>src/services/telemetry_comparison_api.js</small>")
-        src_services_telemetry_comparison_api_telemetryc_3b3b3262("getImageAnalysisHistory()<br/><small>src/services/telemetry_comparison_api.js</small>")
-        src_services_telemetry_comparison_api_telemetryc_bd71a1f4("getVarianceAnalysis()<br/><small>src/services/telemetry_comparison_api.js</small>")
-        src_services_telemetry_comparison_api_telemetryc_6a6b7d37("exportComparisonData()<br/><small>src/services/telemetry_comparison_api.js</small>")
     end
-    subgraph serve_api_src_views_MyCustomers_vue_ce0302a1["src/views/MyCustomers.vue"]
-        src_views_mycustomers_618d83ab("MyCustomers.vue")
-        src_views_mycustomers_churncolor_45bf15fb("churnColor()<br/><small>src/views/MyCustomers.vue</small>")
+    subgraph serve_api_trace_py_75b277ce["trace.py"]
+        trace_tagbalancer_682a9049("TagBalancer<br/><small>trace.py</small>")
+        trace_tagbalancer_handle_endtag_3dc24ffe("handle_endtag()<br/><small>trace.py</small>")
+        trace_tagbalancer_init_e8f382dc("__init__()<br/><small>trace.py</small>")
+        trace_tagbalancer_handle_starttag_587cfce7("handle_starttag()<br/><small>trace.py</small>")
     end
-    src_views_modules_crm_crmacquisitionpage_fc29aae8("CRMAcquisitionPage.vue")
-    src_views_modules_crm_components_accountdetailmo_0768be68("exportReport()<br/><small>crm/components/AccountDetailModal.vue</small>")
+    src_views_modules_managers_branchmanagerdashboar_2c5fc4c6("BranchManagerDashboard.vue")
+    src_composables_settings_usesettingsmodules_be15250a("useSettingsModules.js")
     src_views_customerdetail_9a83761f("CustomerDetail.vue")
     src_views_customerprofile_f8c995ed("CustomerProfile.vue")
+    src_views_mycustomers_618d83ab("MyCustomers.vue")
+    trace_tagbalancer_682a9049 -->|method| trace_tagbalancer_handle_endtag_3dc24ffe
+    trace_tagbalancer_682a9049 -->|method| trace_tagbalancer_init_e8f382dc
+    trace_tagbalancer_682a9049 -->|method| trace_tagbalancer_handle_starttag_587cfce7
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_70367f3d
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_be0034e3
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_cc3c33f5
@@ -1711,11 +1714,8 @@ flowchart LR
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_0cff7dbc
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_da656d92
     src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_ee114c4a
-    src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_3b3b3262
-    src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_bd71a1f4
-    src_services_telemetry_comparison_api_telemetryc_feee5b40 -->|method| src_services_telemetry_comparison_api_telemetryc_6a6b7d37
     src_services_telemetry_comparison_api_telemetryc_0cff7dbc -->|calls| src_services_telemetry_comparison_api_telemetryc_da656d92
-    %% Omitted for readability: 1406 nodes, 0 edges
+    %% Omitted for readability: 1589 nodes, 0 edges
     class src_services_telemetry_comparison_api_telemetryc_feee5b40 klass;
     class src_services_telemetry_comparison_api_telemetryc_70367f3d function;
     class src_services_telemetry_comparison_api_telemetryc_be0034e3 function;
@@ -1725,15 +1725,15 @@ flowchart LR
     class src_services_telemetry_comparison_api_telemetryc_0cff7dbc function;
     class src_services_telemetry_comparison_api_telemetryc_da656d92 function;
     class src_services_telemetry_comparison_api_telemetryc_ee114c4a function;
-    class src_services_telemetry_comparison_api_telemetryc_3b3b3262 function;
-    class src_services_telemetry_comparison_api_telemetryc_bd71a1f4 function;
-    class src_services_telemetry_comparison_api_telemetryc_6a6b7d37 function;
-    class src_views_mycustomers_618d83ab ui;
-    class src_views_mycustomers_churncolor_45bf15fb ui;
-    class src_views_modules_crm_crmacquisitionpage_fc29aae8 ui;
-    class src_views_modules_crm_components_accountdetailmo_0768be68 ui;
+    class trace_tagbalancer_682a9049 klass;
+    class trace_tagbalancer_handle_endtag_3dc24ffe function;
+    class trace_tagbalancer_init_e8f382dc function;
+    class trace_tagbalancer_handle_starttag_587cfce7 function;
+    class src_views_modules_managers_branchmanagerdashboar_2c5fc4c6 ui;
+    class src_composables_settings_usesettingsmodules_be15250a ui;
     class src_views_customerdetail_9a83761f ui;
     class src_views_customerprofile_f8c995ed ui;
+    class src_views_mycustomers_618d83ab ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1757,243 +1757,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>askDelete()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>askDelete() node in src/views/CustomerProfile.vue.</td>
+  <td><code>createLeadNote()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>addNote()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>commitStagedChanges()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br>+1 more</td>
+  <td><code>_handleRes()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>_headers()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>createLeadNote() node in src/services/crm_api.js.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>cancelDelete()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cancelDelete() node in src/views/CustomerProfile.vue.</td>
+  <td><code>updateLead()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>addContact()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>bulkArchive()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small><br><code>bulkRestore()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small><br>+11 more</td>
+  <td><code>_handleRes()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>_headers()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>updateLead() node in src/services/crm_api.js.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>detailText()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>addContact()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>riskDrivers</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>detailText() node in src/views/CustomerProfile.vue.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>leadPayload()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>logActivity()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>updateLead()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>addContact() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>editEngagement()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>addNote()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>editEngagement() node in src/views/CustomerProfile.vue.</td>
+  <td><code>createLeadNote()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>loadActivities()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>loadNotes()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+1 more</td>
+  <td>addNote() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>fmtDate()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>applyCacAdjust()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>tenureSub</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>fmtDate() node in src/views/CustomerProfile.vue.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>applyCacAdjust() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>handleEngagementLogged()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>applyManualLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>recordAction()</code><br><small style="color:var(--muted)">src/utils/absaActions.js</small></td>
-  <td>handleEngagementLogged() node in src/views/CustomerProfile.vue.</td>
+  <td><code>calcMeetingDistance()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>applyManualLocation() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>prettify()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>calcMeetingDistance()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>accountSub</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small><br><code>historyEntries</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small><br><code>riskDrivers</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>applyManualLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>saveLeadLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>selectLeadLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+3 more</td>
   <td>No direct outbound edge</td>
-  <td>prettify() node in src/views/CustomerProfile.vue.</td>
+  <td>calcMeetingDistance() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>promptDeleteEngagement()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>calcMeetingDistanceStatic()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>formatMeetingDistance()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>Builds structured prompts for model calls.</td>
+  <td>calcMeetingDistanceStatic() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>CustomerProfile.vue</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>cancelConfirm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>absaActions.js</code><br><small style="color:var(--muted)">src/utils/absaActions.js</small><br><code>absaExport.js</code><br><small style="color:var(--muted)">src/utils/absaExport.js</small><br><code>AllHistoryModal.vue</code><br><small style="color:var(--muted)">components/crm/AllHistoryModal.vue</small><br>+32 more</td>
-  <td>CustomerProfile.vue node in src/views/CustomerProfile.vue.</td>
+  <td>No direct outbound edge</td>
+  <td>cancelConfirm() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>accountNumber</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>cancelMeetingForm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>accountNumber node in src/views/CustomerProfile.vue.</td>
+  <td><code>saveMeeting()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td><code>emptyMeeting()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>cancelMeetingForm() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>accountSub</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>commitStagedChanges()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>prettify()</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td>accountSub node in src/views/CustomerProfile.vue.</td>
+  <td><code>createLeadNote()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>loadActivities()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>loadNotes()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+2 more</td>
+  <td>commitStagedChanges() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>actionLog</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>deleteActivity()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>actionLog node in src/views/CustomerProfile.vue.</td>
+  <td><code>deleteLeadActivity()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>showConfirmDialog()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>deleteActivity() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>activeTab</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>deleteNote()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>activeTab node in src/views/CustomerProfile.vue.</td>
+  <td><code>deleteLeadNote()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>logActivity()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>showConfirmDialog()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>deleteNote() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>ageText</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>editMeeting()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ageText node in src/views/CustomerProfile.vue.</td>
+  <td><code>toDatetimeLocal()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>editMeeting() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>api</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td><span class="tag tag-endpoint">API</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>emptyMeeting()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cancelMeetingForm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>api node in src/views/CustomerProfile.vue.</td>
+  <td>emptyMeeting() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>assignedRmSub</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>executeConfirm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>assignedRmSub node in src/views/CustomerProfile.vue.</td>
+  <td>executeConfirm() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>bozAlert</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>bozAlert node in src/views/CustomerProfile.vue.</td>
+  <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>formatFileSize()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br>+5 more</td>
+  <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>bozRemainingDays</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>jspdfCell()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>bozRemainingDays node in src/views/CustomerProfile.vue.</td>
+  <td>jspdfCell() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>bozRemainingText</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>jspdfSection()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>bozRemainingText node in src/views/CustomerProfile.vue.</td>
+  <td>jspdfSection() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>churnProbability</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>jspdfTable()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>churnProbability node in src/views/CustomerProfile.vue.</td>
+  <td>jspdfTable() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>clientTier</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
-  <td><span class="tag tag-cmd">Entry</span></td>
+  <td><code>formatActivityType()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>clientTier node in src/views/CustomerProfile.vue.</td>
+  <td>formatActivityType() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>clvPercentile</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>_origCall()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>clvPercentile node in src/views/CustomerProfile.vue.</td>
+  <td>formatDate() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>components</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>formatFileSize()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>components node in src/views/CustomerProfile.vue.</td>
+  <td>formatFileSize() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>computedAt</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>formatMeetingDistance()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>computedAt node in src/views/CustomerProfile.vue.</td>
+  <td><code>calcMeetingDistanceStatic()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
+  <td>formatMeetingDistance() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>confirmOpen</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>formatStage()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>confirmOpen node in src/views/CustomerProfile.vue.</td>
+  <td>formatStage() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>coreBankingUrl</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>getActivityColorClass()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>coreBankingUrl node in src/views/CustomerProfile.vue.</td>
+  <td>getActivityColorClass() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>customer</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>getActivityLucideIcon()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>customer node in src/views/CustomerProfile.vue.</td>
+  <td>getActivityLucideIcon() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>customerId</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>getAssignedUserRole()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>customerId node in src/views/CustomerProfile.vue.</td>
+  <td>getAssignedUserRole() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>customerStore</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>getPriorityColor()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>customerStore node in src/views/CustomerProfile.vue.</td>
+  <td>getPriorityColor() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>deleteReason</code><br><small style="color:var(--muted)">src/views/CustomerProfile.vue</small></td>
+  <td><code>getStageDotClass()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>deleteReason node in src/views/CustomerProfile.vue.</td>
+  <td>getStageDotClass() node in crm/components/LeadDetailModal.vue.</td>
 </tr>
 </table>
 
@@ -2002,19 +2002,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/services/crm_api.js</code></td><td>87 nodes</td></tr>
-<tr><td><code>src/views/CustomerProfile.vue</code></td><td>76 nodes</td></tr>
+      <tr><td><code>crm/components/LeadDetailModal.vue</code></td><td>119 nodes</td></tr>
+<tr><td><code>src/services/crm_api.js</code></td><td>88 nodes</td></tr>
+<tr><td><code>src/views/CustomerProfile.vue</code></td><td>78 nodes</td></tr>
 <tr><td><code>src/views/CustomerDetail.vue</code></td><td>72 nodes</td></tr>
+<tr><td><code>src/views/MyCustomers.vue</code></td><td>71 nodes</td></tr>
 <tr><td><code>Modules/settings/SubAccountModule.vue</code></td><td>68 nodes</td></tr>
-<tr><td><code>src/views/MyCustomers.vue</code></td><td>65 nodes</td></tr>
 <tr><td><code>crm/components/DocumentsView.vue</code></td><td>49 nodes</td></tr>
-<tr><td><code>Modules/crm/CRMAcquisitionPage.vue</code></td><td>37 nodes</td></tr>
-<tr><td><code>en/content/Troubleshooting &amp; Maintenance.md</code></td><td>35 nodes</td></tr>
+<tr><td><code>Modules/managers/BranchManagerDashboard.vue</code></td><td>45 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1186, calls x360, indirect call x92, imports x68. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1355, calls x413, indirect call x114, imports x84. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2354,65 +2354,65 @@ flowchart LR
 
 <!-- ====== 10. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">10. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around components, composables, usebulkselectjs, tests, mostly in src/composables/useBulkSelect.js, components/ui/BackButton.vue, components/ui/PageHeader.vue. This section covers 42 nodes and 40 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around components, test, composables, usebulkselectjs, mostly in src/composables/useBulkSelect.js, components/ui/BackButton.vue, test_div.py. This section covers 48 nodes and 46 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (42 nodes, 40 edges)
+    %% Section: Tests &amp; Fixtures (48 nodes, 46 edges)
     subgraph tests_fixtures_src_composables_useBulkSelect_js_efd5ab13["src/composables/useBulkSelect.js"]
         src_composables_usebulkselect_usebulkselect_togg_2f950faa("toggleSelectAll()<br/><small>src/composables/useBulkSelect.js</small>")
         src_composables_usebulkselect_usebulkselect_isal_9a2e764c("isAllPageSelected()<br/><small>src/composables/useBulkSelect.js</small>")
         src_composables_usebulkselect_usebulkselect_d577bc68("useBulkSelect()<br/><small>src/composables/useBulkSelect.js</small>")
         src_composables_usebulkselect_e81231e1("useBulkSelect.js")
     end
-    subgraph tests_fixtures_components_tests_BackButton_spec_a8534b98["components/__tests__/BackButton.spec.js"]
-        src_components_tests_backbutton_spec_ad12f47d("BackButton.spec.js")
-        src_components_tests_backbutton_spec_mockback_374f399e("mockBack<br/><small>components/__tests__/BackButton.spec.js</small>")
-        src_components_tests_backbutton_spec_mockpush_57cd3089("mockPush<br/><small>components/__tests__/BackButton.spec.js</small>")
+    subgraph tests_fixtures_test_div_py_f1f8868b["test_div.py"]
+        test_div_tagbalancer_597fcdd2("TagBalancer<br/><small>test_div.py</small>")
+        test_div_tagbalancer_handle_endtag_d0f2207c("handle_endtag()<br/><small>test_div.py</small>")
+        test_div_tagbalancer_init_09c53279("__init__()<br/><small>test_div.py</small>")
+        test_div_tagbalancer_handle_starttag_32e9ad2d("handle_starttag()<br/><small>test_div.py</small>")
     end
-    subgraph tests_fixtures_components_ui_AbsaButton_vue_dc45f7b8["components/ui/AbsaButton.vue"]
-        src_components_ui_absabutton_fe908300("AbsaButton.vue")
-        src_components_ui_absabutton_buttonclasses_a6dc21ed("buttonClasses<br/><small>components/ui/AbsaButton.vue</small>")
+    subgraph tests_fixtures_components_ui_KpiSection_vue_fb8d0d9a["components/ui/KpiSection.vue"]
+        src_components_ui_kpisection_togglekpis_286972f5("toggleKpis()<br/><small>components/ui/KpiSection.vue</small>")
+        src_components_ui_kpisection_emit_54ffca07("emit<br/><small>components/ui/KpiSection.vue</small>")
     end
-    subgraph tests_fixtures_package_json_2ed39c94["package.json"]
-        package_devdependencies_vue_test_utils_c8f33d06("@vue/test-utils<br/><small>package.json</small>")
-        vue_test_utils_baf810f0("@vue/test-utils<br/><small>package.json</small>")
-    end
+    src_components_tests_backbutton_spec_ad12f47d("BackButton.spec.js")
     src_components_tests_bulkactionsbar_spec_273f49b6("BulkActionsBar.spec.js")
     src_components_tests_selectallcheckbox_spec_74630a75("SelectAllCheckbox.spec.js")
-    src_components_ui_backbutton_5c73886f("BackButton.vue")
     src_components_ui_bulkactionsbar_ccc4fd13("BulkActionsBar.vue")
     src_components_ui_selectallcheckbox_1a2ab997("SelectAllCheckbox.vue")
     src_composables_tests_usebulkselect_spec_cb22d055("useBulkSelect.spec.js")
     src_views_modules_crm_components_leadsview_toggl_29122c5e("toggleSelectAllManual()<br/><small>crm/components/LeadsView.vue</small>")
+    package_devdependencies_vue_test_utils_c8f33d06("@vue/test-utils<br/><small>package.json</small>")
+    test_div_tagbalancer_597fcdd2 -->|method| test_div_tagbalancer_handle_endtag_d0f2207c
+    test_div_tagbalancer_597fcdd2 -->|method| test_div_tagbalancer_init_09c53279
+    test_div_tagbalancer_597fcdd2 -->|method| test_div_tagbalancer_handle_starttag_32e9ad2d
+    src_components_ui_kpisection_togglekpis_286972f5 -->|calls| src_components_ui_kpisection_emit_54ffca07
     src_composables_usebulkselect_usebulkselect_togg_2f950faa -->|calls| src_composables_usebulkselect_usebulkselect_isal_9a2e764c
     src_views_modules_crm_components_leadsview_toggl_29122c5e -->|calls| src_composables_usebulkselect_usebulkselect_togg_2f950faa
     src_components_tests_bulkactionsbar_spec_273f49b6 -->|imports| src_components_ui_bulkactionsbar_ccc4fd13
     src_components_tests_selectallcheckbox_spec_74630a75 -->|imports| src_components_ui_selectallcheckbox_1a2ab997
     src_composables_tests_usebulkselect_spec_cb22d055 -->|imports| src_composables_usebulkselect_usebulkselect_d577bc68
     src_composables_tests_usebulkselect_spec_cb22d055 -->|imports| src_composables_usebulkselect_e81231e1
-    src_components_tests_backbutton_spec_ad12f47d -->|imports| src_components_ui_backbutton_5c73886f
-    package_devdependencies_vue_test_utils_c8f33d06 -->|imports| vue_test_utils_baf810f0
-    %% Omitted for readability: 24 nodes, 0 edges
+    %% Omitted for readability: 30 nodes, 0 edges
     class src_composables_usebulkselect_usebulkselect_togg_2f950faa function;
     class src_composables_usebulkselect_usebulkselect_isal_9a2e764c function;
     class src_composables_usebulkselect_usebulkselect_d577bc68 ui;
     class src_composables_usebulkselect_e81231e1 ui;
+    class test_div_tagbalancer_597fcdd2 test;
+    class test_div_tagbalancer_handle_endtag_d0f2207c test;
+    class test_div_tagbalancer_init_09c53279 test;
+    class test_div_tagbalancer_handle_starttag_32e9ad2d test;
+    class src_components_ui_kpisection_togglekpis_286972f5 ui;
+    class src_components_ui_kpisection_emit_54ffca07 ui;
     class src_components_tests_backbutton_spec_ad12f47d test;
-    class src_components_tests_backbutton_spec_mockback_374f399e test;
-    class src_components_tests_backbutton_spec_mockpush_57cd3089 test;
-    class src_components_ui_absabutton_fe908300 ui;
-    class src_components_ui_absabutton_buttonclasses_a6dc21ed async;
-    class package_devdependencies_vue_test_utils_c8f33d06 function;
-    class vue_test_utils_baf810f0 function;
     class src_components_tests_bulkactionsbar_spec_273f49b6 test;
     class src_components_tests_selectallcheckbox_spec_74630a75 test;
-    class src_components_ui_backbutton_5c73886f ui;
     class src_components_ui_bulkactionsbar_ccc4fd13 ui;
     class src_components_ui_selectallcheckbox_1a2ab997 ui;
     class src_composables_tests_usebulkselect_spec_cb22d055 test;
     class src_views_modules_crm_components_leadsview_toggl_29122c5e ui;
+    class package_devdependencies_vue_test_utils_c8f33d06 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2436,6 +2436,14 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>toggleKpis()</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td>toggleKpis() node in components/ui/KpiSection.vue.</td>
+</tr>
+<tr>
+  <td>2</td>
   <td><code>handleBack()</code><br><small style="color:var(--muted)">components/ui/PageHeader.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2443,7 +2451,7 @@ flowchart LR
   <td>handleBack() node in components/ui/PageHeader.vue.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>3</td>
   <td><code>BulkActionsBar.spec.js</code><br><small style="color:var(--muted)">components/__tests__/BulkActionsBar.spec.js</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -2451,7 +2459,7 @@ flowchart LR
   <td>BulkActionsBar.spec.js node in components/__tests__/BulkActionsBar.spec.js.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>4</td>
   <td><code>SelectAllCheckbox.spec.js</code><br><small style="color:var(--muted)">components/__tests__/SelectAllCheckbox.spec.js</small></td>
   <td><span class="tag tag-func">Test</span></td>
   <td>External entry / no inbound edge</td>
@@ -2459,39 +2467,7 @@ flowchart LR
   <td>SelectAllCheckbox.spec.js node in components/__tests__/SelectAllCheckbox.spec.js.</td>
 </tr>
 <tr>
-  <td>4</td>
-  <td><code>AbsaButton.vue</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>AbsaButton.vue node in components/ui/AbsaButton.vue.</td>
-</tr>
-<tr>
   <td>5</td>
-  <td><code>buttonClasses</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>buttonClasses node in components/ui/AbsaButton.vue.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>props node in components/ui/AbsaButton.vue.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>sizeClasses</code><br><small style="color:var(--muted)">components/ui/AbsaButton.vue</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>sizeClasses node in components/ui/AbsaButton.vue.</td>
-</tr>
-<tr>
-  <td>8</td>
   <td><code>AbsaStatCard.vue</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2499,7 +2475,7 @@ flowchart LR
   <td>AbsaStatCard.vue node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>6</td>
   <td><code>formattedValue</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2507,7 +2483,7 @@ flowchart LR
   <td>formattedValue node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>7</td>
   <td><code>props</code><br><small style="color:var(--muted)">components/ui/AbsaStatCard.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2515,7 +2491,7 @@ flowchart LR
   <td>props node in components/ui/AbsaStatCard.vue.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>8</td>
   <td><code>ArchiveBrowser.vue</code><br><small style="color:var(--muted)">components/ui/ArchiveBrowser.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2523,7 +2499,7 @@ flowchart LR
   <td>ArchiveBrowser.vue node in components/ui/ArchiveBrowser.vue.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>9</td>
   <td><code>BulkActionsBar.vue</code><br><small style="color:var(--muted)">components/ui/BulkActionsBar.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>BulkActionsBar.spec.js</code><br><small style="color:var(--muted)">components/__tests__/BulkActionsBar.spec.js</small></td>
@@ -2531,7 +2507,7 @@ flowchart LR
   <td>BulkActionsBar.vue node in components/ui/BulkActionsBar.vue.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>10</td>
   <td><code>EmptyState.vue</code><br><small style="color:var(--muted)">components/ui/EmptyState.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2539,12 +2515,36 @@ flowchart LR
   <td>EmptyState.vue node in components/ui/EmptyState.vue.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>11</td>
   <td><code>ui/index.js</code><br><small style="color:var(--muted)">components/ui/index.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td><code>CRMAccountsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMAccountsPage.vue</small><br><code>CRMAcquisitionPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMAcquisitionPage.vue</small><br><code>CRMCallsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMCallsPage.vue</small><br>+12 more</td>
   <td>No direct outbound edge</td>
   <td>ui/index.js node in components/ui/index.js.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>KpiSection.vue</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>KpiSection.vue node in components/ui/KpiSection.vue.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>toggleKpis()</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>emit node in components/ui/KpiSection.vue.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>props</code><br><small style="color:var(--muted)">components/ui/KpiSection.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>props node in components/ui/KpiSection.vue.</td>
 </tr>
 <tr>
   <td>15</td>
@@ -2683,23 +2683,370 @@ flowchart LR
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>src/composables/useBulkSelect.js</code></td><td>9 nodes</td></tr>
 <tr><td><code>components/ui/BackButton.vue</code></td><td>5 nodes</td></tr>
-<tr><td><code>components/ui/AbsaButton.vue</code></td><td>4 nodes</td></tr>
+<tr><td><code>test_div.py</code></td><td>5 nodes</td></tr>
+<tr><td><code>components/ui/KpiSection.vue</code></td><td>4 nodes</td></tr>
 <tr><td><code>components/ui/PageHeader.vue</code></td><td>4 nodes</td></tr>
 <tr><td><code>components/__tests__/BackButton.spec.js</code></td><td>3 nodes</td></tr>
 <tr><td><code>components/ui/AbsaStatCard.vue</code></td><td>3 nodes</td></tr>
 <tr><td><code>package.json</code></td><td>2 nodes</td></tr>
-<tr><td><code>composables/__tests__/useBulkSelect.spec.js</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x17, re exports x8, indirect call x7, imports x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x18, re exports x8, indirect call x7, imports x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
-<!-- ====== 11. useCRMModule ====== -->
-<h2 id="usecrmmodule">11. useCRMModule</h2>
+<!-- ====== 11. AccountDetailModal.vue ====== -->
+<h2 id="accountdetailmodal-vue">11. AccountDetailModal.vue</h2>
+<p>AccountDetailModal.vue groups implementation around crm, views, modules, components, mostly in crm/components/AccountDetailModal.vue, src/services/crm_api.js, crm/components/DealFormModal.vue. This section covers 129 nodes and 161 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: AccountDetailModal.vue (129 nodes, 161 edges)
+    subgraph accountdetailmodal_vue_crm_components_AccountDet_c97a62eb["crm/components/AccountDetailModal.vue"]
+        src_views_modules_crm_components_accountdetailmo_0768be68("exportReport()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_be69ba7e("linkLeadAsContact()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_a15f2b83("saveAccountCallNote()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_ac14b394("saveCac()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_b94dcdbc("unlinkContact()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_d5958434("deleteNote()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_7edd7153("archiveDeal()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_c8129c9b("close()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_5c764f28("emit<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_cabaf0ec("deleteActivity()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_074cb6ae("showConfirmDialog()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_2a7e69f8("logActivity()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_b7bf5aac("loadActivities()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_1d4a7d8f("loadDeals()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_43bffa7b("loadMeetings()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_57a68d87("formatCurrency()<br/><small>crm/components/AccountDetailModal.vue</small>")
+        src_views_modules_crm_components_accountdetailmo_0dbb7b8c("formatDate()<br/><small>crm/components/AccountDetailModal.vue</small>")
+    end
+    src_services_crm_api_updatedeal_a8745cf9("updateDeal()<br/><small>src/services/crm_api.js</small>")
+    src_views_modules_crm_components_accountdetailmo_7edd7153 -->|calls| src_services_crm_api_updatedeal_a8745cf9
+    src_views_modules_crm_components_accountdetailmo_c8129c9b -->|calls| src_views_modules_crm_components_accountdetailmo_5c764f28
+    src_views_modules_crm_components_accountdetailmo_cabaf0ec -->|calls| src_views_modules_crm_components_accountdetailmo_074cb6ae
+    src_views_modules_crm_components_accountdetailmo_d5958434 -->|calls| src_views_modules_crm_components_accountdetailmo_074cb6ae
+    src_views_modules_crm_components_accountdetailmo_d5958434 -->|calls| src_views_modules_crm_components_accountdetailmo_2a7e69f8
+    src_views_modules_crm_components_accountdetailmo_0768be68 -->|calls| src_views_modules_crm_components_accountdetailmo_b7bf5aac
+    src_views_modules_crm_components_accountdetailmo_0768be68 -->|calls| src_views_modules_crm_components_accountdetailmo_1d4a7d8f
+    src_views_modules_crm_components_accountdetailmo_0768be68 -->|calls| src_views_modules_crm_components_accountdetailmo_43bffa7b
+    src_views_modules_crm_components_accountdetailmo_0768be68 -->|calls| src_views_modules_crm_components_accountdetailmo_57a68d87
+    src_views_modules_crm_components_accountdetailmo_0768be68 -->|calls| src_views_modules_crm_components_accountdetailmo_0dbb7b8c
+    src_views_modules_crm_components_accountdetailmo_be69ba7e -->|calls| src_views_modules_crm_components_accountdetailmo_2a7e69f8
+    src_views_modules_crm_components_accountdetailmo_be69ba7e -->|calls| src_views_modules_crm_components_accountdetailmo_b7bf5aac
+    src_views_modules_crm_components_accountdetailmo_2a7e69f8 -->|calls| src_views_modules_crm_components_accountdetailmo_b7bf5aac
+    src_views_modules_crm_components_accountdetailmo_a15f2b83 -->|calls| src_views_modules_crm_components_accountdetailmo_2a7e69f8
+    src_views_modules_crm_components_accountdetailmo_a15f2b83 -->|calls| src_views_modules_crm_components_accountdetailmo_b7bf5aac
+    src_views_modules_crm_components_accountdetailmo_ac14b394 -->|calls| src_views_modules_crm_components_accountdetailmo_57a68d87
+    src_views_modules_crm_components_accountdetailmo_ac14b394 -->|calls| src_views_modules_crm_components_accountdetailmo_2a7e69f8
+    src_views_modules_crm_components_accountdetailmo_ac14b394 -->|calls| src_views_modules_crm_components_accountdetailmo_5c764f28
+    src_views_modules_crm_components_accountdetailmo_b94dcdbc -->|calls| src_views_modules_crm_components_accountdetailmo_2a7e69f8
+    src_views_modules_crm_components_accountdetailmo_b94dcdbc -->|calls| src_views_modules_crm_components_accountdetailmo_b7bf5aac
+    %% Omitted for readability: 111 nodes, 0 edges
+    class src_views_modules_crm_components_accountdetailmo_0768be68 ui;
+    class src_views_modules_crm_components_accountdetailmo_be69ba7e ui;
+    class src_views_modules_crm_components_accountdetailmo_a15f2b83 ui;
+    class src_views_modules_crm_components_accountdetailmo_ac14b394 ui;
+    class src_views_modules_crm_components_accountdetailmo_b94dcdbc ui;
+    class src_views_modules_crm_components_accountdetailmo_d5958434 ui;
+    class src_views_modules_crm_components_accountdetailmo_7edd7153 ui;
+    class src_views_modules_crm_components_accountdetailmo_c8129c9b ui;
+    class src_views_modules_crm_components_accountdetailmo_5c764f28 ui;
+    class src_views_modules_crm_components_accountdetailmo_cabaf0ec ui;
+    class src_views_modules_crm_components_accountdetailmo_074cb6ae ui;
+    class src_views_modules_crm_components_accountdetailmo_2a7e69f8 ui;
+    class src_views_modules_crm_components_accountdetailmo_b7bf5aac ui;
+    class src_views_modules_crm_components_accountdetailmo_1d4a7d8f ui;
+    class src_views_modules_crm_components_accountdetailmo_43bffa7b ui;
+    class src_views_modules_crm_components_accountdetailmo_57a68d87 ui;
+    class src_views_modules_crm_components_accountdetailmo_0dbb7b8c ui;
+    class src_services_crm_api_updatedeal_a8745cf9 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>archiveDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>handleSubmit()</code><br><small style="color:var(--muted)">crm/components/DealFormModal.vue</small><br>+2 more</td>
+  <td><code>_handleRes()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>_headers()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>updateDeal() node in src/services/crm_api.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>addCallTalkingPoint()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>addCallTalkingPoint() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>adjustCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>adjustCac() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>archiveDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>archiveDeal() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>cancelConfirm()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>cancelConfirm() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>cancelEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>saveEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>cancelEditDeal() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>cancelEditNote()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>cancelEditNote() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>close()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>close() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>closeCallDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>saveAccountCallNote()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>closeCallDialog() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>closeWhatsAppDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>proceedWithWhatsApp()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>closeWhatsAppDialog() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>dealAssigneesDisplay()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dealAssigneesDisplay() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>debouncedContactSearch()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>debouncedContactSearch() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>deleteActivity()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>deleteAccountActivity()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>showConfirmDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>deleteActivity() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>deleteNote()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>logActivity()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>showConfirmDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>updateAccount()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
+  <td>deleteNote() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>editMeeting()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>editMeeting() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>executeConfirm()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>executeConfirm() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>getDocuments()</code><br><small style="color:var(--muted)">src/services/documents_api.js</small><br>+3 more</td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>formatFileSize()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatFileSize() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>jspdfCell()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>jspdfCell() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>jspdfSection()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>jspdfSection() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>jspdfTable()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>jspdfTable() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>toTitleCase()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>toTitleCase() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>formatActivityType()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatActivityType() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>formatCurrency() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>No direct outbound edge</td>
+  <td>formatDate() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>getActivityColorClass()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getActivityColorClass() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>getActivityLucideIcon()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getActivityLucideIcon() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>getInitials()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getInitials() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>handleDelete()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>handleDelete() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>handleEdit()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
+  <td>handleEdit() node in crm/components/AccountDetailModal.vue.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>crm/components/AccountDetailModal.vue</code></td><td>127 nodes</td></tr>
+<tr><td><code>src/services/crm_api.js</code></td><td>1 nodes</td></tr>
+<tr><td><code>crm/components/DealFormModal.vue</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x126, calls x35. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 12. useCRMModule ====== -->
+<h2 id="usecrmmodule">12. useCRMModule</h2>
 <p>useCRMModule groups implementation around views, modules, crm, composables, mostly in crm/composables/CRMModule.js. This section covers 108 nodes and 110 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -3024,683 +3371,8 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. AccountDetailModal.vue ====== -->
-<h2 id="accountdetailmodal-vue">12. AccountDetailModal.vue</h2>
-<p>AccountDetailModal.vue groups implementation around crm, accountdetailmodalvue, views, modules, mostly in crm/components/AccountDetailModal.vue, src/services/crm_api.js. This section covers 105 nodes and 112 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: AccountDetailModal.vue (105 nodes, 112 edges)
-    subgraph accountdetailmodal_vue_crm_components_AccountDet_c97a62eb["crm/components/AccountDetailModal.vue"]
-        src_views_modules_crm_components_accountdetailmo_ca96a444("saveEditDeal()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_7edd7153("archiveDeal()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_c8129c9b("close()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_f466eb7f("handleDelete()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_54637a12("handleEdit()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_25935281("openCallDialog()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_5c764f28("emit<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_423a7acd("resetCallTalkingPoints()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_061e11fa("proceedWithWhatsApp()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_7d78cda4("closeWhatsAppDialog()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_38964978("cancelEditDeal()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_fb231984("updateDealStage()<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_323199bb("AccountDetailModal.vue")
-        src_views_modules_crm_components_accountdetailmo_d7619109("PIPELINE_STAGES<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_de4aba03("accountNotes<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_fdc10ae9("activeTab<br/><small>crm/components/AccountDetailModal.vue</small>")
-        src_views_modules_crm_components_accountdetailmo_32e44d49("activities<br/><small>crm/components/AccountDetailModal.vue</small>")
-    end
-    src_services_crm_api_updatedeal_a8745cf9("updateDeal()<br/><small>src/services/crm_api.js</small>")
-    src_views_modules_crm_components_accountdetailmo_7edd7153 -->|calls| src_services_crm_api_updatedeal_a8745cf9
-    src_views_modules_crm_components_accountdetailmo_c8129c9b -->|calls| src_views_modules_crm_components_accountdetailmo_5c764f28
-    src_views_modules_crm_components_accountdetailmo_f466eb7f -->|calls| src_views_modules_crm_components_accountdetailmo_5c764f28
-    src_views_modules_crm_components_accountdetailmo_54637a12 -->|calls| src_views_modules_crm_components_accountdetailmo_5c764f28
-    src_views_modules_crm_components_accountdetailmo_25935281 -->|calls| src_views_modules_crm_components_accountdetailmo_423a7acd
-    src_views_modules_crm_components_accountdetailmo_061e11fa -->|calls| src_views_modules_crm_components_accountdetailmo_7d78cda4
-    src_views_modules_crm_components_accountdetailmo_ca96a444 -->|calls| src_services_crm_api_updatedeal_a8745cf9
-    src_views_modules_crm_components_accountdetailmo_ca96a444 -->|calls| src_views_modules_crm_components_accountdetailmo_38964978
-    src_views_modules_crm_components_accountdetailmo_fb231984 -->|calls| src_services_crm_api_updatedeal_a8745cf9
-    %% Omitted for readability: 87 nodes, 0 edges
-    class src_views_modules_crm_components_accountdetailmo_ca96a444 ui;
-    class src_views_modules_crm_components_accountdetailmo_7edd7153 ui;
-    class src_views_modules_crm_components_accountdetailmo_c8129c9b ui;
-    class src_views_modules_crm_components_accountdetailmo_f466eb7f ui;
-    class src_views_modules_crm_components_accountdetailmo_54637a12 ui;
-    class src_views_modules_crm_components_accountdetailmo_25935281 ui;
-    class src_views_modules_crm_components_accountdetailmo_5c764f28 ui;
-    class src_views_modules_crm_components_accountdetailmo_423a7acd ui;
-    class src_views_modules_crm_components_accountdetailmo_061e11fa ui;
-    class src_views_modules_crm_components_accountdetailmo_7d78cda4 ui;
-    class src_views_modules_crm_components_accountdetailmo_38964978 ui;
-    class src_views_modules_crm_components_accountdetailmo_fb231984 ui;
-    class src_views_modules_crm_components_accountdetailmo_323199bb ui;
-    class src_views_modules_crm_components_accountdetailmo_d7619109 ui;
-    class src_views_modules_crm_components_accountdetailmo_de4aba03 ui;
-    class src_views_modules_crm_components_accountdetailmo_fdc10ae9 ui;
-    class src_views_modules_crm_components_accountdetailmo_32e44d49 ui;
-    class src_services_crm_api_updatedeal_a8745cf9 function;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>archiveDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>handleSubmit()</code><br><small style="color:var(--muted)">crm/components/DealFormModal.vue</small><br>+2 more</td>
-  <td><code>_handleRes()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>_headers()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>updateDeal() node in src/services/crm_api.js.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>addCallTalkingPoint()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>addCallTalkingPoint() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>adjustCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>adjustCac() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>archiveDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>archiveDeal() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>cancelConfirm()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cancelConfirm() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>cancelEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>saveEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>cancelEditDeal() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>cancelEditNote()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cancelEditNote() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>close()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>close() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>closeWhatsAppDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>proceedWithWhatsApp()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>closeWhatsAppDialog() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>dealAssigneesDisplay()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>dealAssigneesDisplay() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>debouncedContactSearch()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>debouncedContactSearch() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>editMeeting()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>editMeeting() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>executeConfirm()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>executeConfirm() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>formatActivityType()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>formatActivityType() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>getActivityColorClass()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getActivityColorClass() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>getActivityLucideIcon()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getActivityLucideIcon() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>getInitials()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getInitials() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>handleDelete()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>handleDelete() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>handleEdit()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>emit</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>handleEdit() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>openCallDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>resetCallTalkingPoints()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>openCallDialog() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>openWhatsAppDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>openWhatsAppDialog() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>proceedWithWhatsApp()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>closeWhatsAppDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>logActivity()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>proceedWithWhatsApp() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>resetCallTalkingPoints()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>openCallDialog()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td>No direct outbound edge</td>
-  <td>resetCallTalkingPoints() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>saveEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>cancelEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>saveEditDeal() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>stageBadgeClass()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageBadgeClass() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>stageBarClass()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageBarClass() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>startEditDeal()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>startEditDeal() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>startEditNote()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>startEditNote() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>toggleAssignee()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>toggleAssignee() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>updateDealStage()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>updateDeal()</code><br><small style="color:var(--muted)">src/services/crm_api.js</small></td>
-  <td>updateDealStage() node in crm/components/AccountDetailModal.vue.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>crm/components/AccountDetailModal.vue</code></td><td>104 nodes</td></tr>
-<tr><td><code>src/services/crm_api.js</code></td><td>1 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x103, calls x9. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 13. LeadDetailModal.vue ====== -->
-<h2 id="leaddetailmodal-vue">13. LeadDetailModal.vue</h2>
-<p>LeadDetailModal.vue groups implementation around leaddetailmodalvue, views, modules, crm, mostly in crm/components/LeadDetailModal.vue. This section covers 75 nodes and 74 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: LeadDetailModal.vue (75 nodes, 74 edges)
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e("LeadDetailModal.vue")
-    src_views_modules_crm_components_leaddetailmodal_307bb648("cacAdjustAmount<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_e70c342b("showWhatsAppDialog<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_74c504c1("whatsAppMessage<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_3335ba0f("showExportMenu<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_85c8fad6("stageList<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_dec3a301("leadAgeDays<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_6e29c557("currentStageIdx<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_8fe07a0d("stageProgressPct<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_0c2a27cd("getStageDotClass()<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_cf70aa99("_origWhatsapp()<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_b4e3b379("newContact<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_0cafc2a2("showContactForm<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_daaf09a2("contacts<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_fd7c553f("tabs<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_eb0e6abe("initLeadMap()<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_1cec58b7("formatActivityType()<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_7cb0927c("getPriorityColor()<br/><small>crm/components/LeadDetailModal.vue</small>")
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_307bb648
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_e70c342b
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_74c504c1
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_3335ba0f
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_85c8fad6
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_dec3a301
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_6e29c557
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_8fe07a0d
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_0c2a27cd
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_cf70aa99
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_b4e3b379
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_0cafc2a2
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_daaf09a2
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_fd7c553f
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_eb0e6abe
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_1cec58b7
-    src_views_modules_crm_components_leaddetailmodal_31f5ef6e -->|contains| src_views_modules_crm_components_leaddetailmodal_7cb0927c
-    %% Omitted for readability: 57 nodes, 0 edges
-    class src_views_modules_crm_components_leaddetailmodal_31f5ef6e ui;
-    class src_views_modules_crm_components_leaddetailmodal_307bb648 ui;
-    class src_views_modules_crm_components_leaddetailmodal_e70c342b ui;
-    class src_views_modules_crm_components_leaddetailmodal_74c504c1 ui;
-    class src_views_modules_crm_components_leaddetailmodal_3335ba0f ui;
-    class src_views_modules_crm_components_leaddetailmodal_85c8fad6 ui;
-    class src_views_modules_crm_components_leaddetailmodal_dec3a301 ui;
-    class src_views_modules_crm_components_leaddetailmodal_6e29c557 ui;
-    class src_views_modules_crm_components_leaddetailmodal_8fe07a0d ui;
-    class src_views_modules_crm_components_leaddetailmodal_0c2a27cd ui;
-    class src_views_modules_crm_components_leaddetailmodal_cf70aa99 ui;
-    class src_views_modules_crm_components_leaddetailmodal_b4e3b379 ui;
-    class src_views_modules_crm_components_leaddetailmodal_0cafc2a2 ui;
-    class src_views_modules_crm_components_leaddetailmodal_daaf09a2 ui;
-    class src_views_modules_crm_components_leaddetailmodal_fd7c553f ui;
-    class src_views_modules_crm_components_leaddetailmodal_eb0e6abe ui;
-    class src_views_modules_crm_components_leaddetailmodal_1cec58b7 ui;
-    class src_views_modules_crm_components_leaddetailmodal_7cb0927c ui;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>cancelConfirm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cancelConfirm() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>executeConfirm()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>executeConfirm() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>formatActivityType()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>formatActivityType() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>getActivityColorClass()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getActivityColorClass() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>getActivityLucideIcon()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getActivityLucideIcon() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>getAssignedUserRole()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getAssignedUserRole() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>getPriorityColor()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getPriorityColor() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>getStageDotClass()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getStageDotClass() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>getUserInitials()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getUserInitials() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>initLeadMap()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>initLeadMap() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>openDirections()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>openDirections() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>_origWhatsapp()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>_origWhatsapp() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>searchLeadLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>searchLeadLocation() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>searchMeetingLocation()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>searchMeetingLocation() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>stageCameraCapture()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageCameraCapture() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>stageCameraClick()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-cmd">Entry</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageCameraClick() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>stageFileSelect()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageFileSelect() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>stageNote()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>stageNote() node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>LeadDetailModal.vue</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>CRMLeadsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMLeadsPage.vue</small><br><code>CRMPipelinePage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMPipelinePage.vue</small></td>
-  <td><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br><code>decodeJWT.js</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+8 more</td>
-  <td>LeadDetailModal.vue node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>activeTab</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>activeTab node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>activities</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>activities node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>cacAdjustAmount</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cacAdjustAmount node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>cacSaved</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cacSaved node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>cameraInputRef</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cameraInputRef node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>{ canAssign, initializeRBAC }</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>{ canAssign, initializeRBAC } node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>canAssignCrm</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>canAssignCrm node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>confirmDanger</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>confirmDanger node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>confirmMessage</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>confirmMessage node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>confirmTitle</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>confirmTitle node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>contacts</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>contacts node in crm/components/LeadDetailModal.vue.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>crm/components/LeadDetailModal.vue</code></td><td>75 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x74. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 14. AccountsView.vue ====== -->
-<h2 id="accountsview-vue">14. AccountsView.vue</h2>
+<!-- ====== 13. AccountsView.vue ====== -->
+<h2 id="accountsview-vue">13. AccountsView.vue</h2>
 <p>AccountsView.vue groups implementation around accountsviewvue, views, modules, crm, mostly in crm/components/AccountsView.vue. This section covers 70 nodes and 71 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -4024,14 +3696,354 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 15. useSettingsBase ====== -->
-<h2 id="usesettingsbase">15. useSettingsBase</h2>
-<p>useSettingsBase groups implementation around settings, composables, views, modules, mostly in composables/settings/useSettingsBranding.js, composables/settings/useSettingsProfile.js, composables/settings/useSettingsCurrency.js. This section covers 63 nodes and 89 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. LeadsView.vue ====== -->
+<h2 id="leadsview-vue">14. LeadsView.vue</h2>
+<p>LeadsView.vue groups implementation around leadsviewvue, views, modules, crm, mostly in crm/components/LeadsView.vue. This section covers 62 nodes and 61 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: useSettingsBase (63 nodes, 89 edges)
+    %% Section: LeadsView.vue (62 nodes, 61 edges)
+    src_views_modules_crm_components_leadsview_b5721ea8("LeadsView.vue")
+    src_views_modules_crm_components_leadsview_forma_75309784("formatCurrency<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_gette_8efee883("getTenantId<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_uisto_15ed4cce("uiStore<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_route_1cf0ce53("route<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_props_2ed57bff("props<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_leads_bc19c5e6("leads<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_total_c0a81089("totalLeads<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_leads_0a9a65de("leadStats<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_loadi_864d46b7("loading<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_issta_a22422fb("isStatsVisible<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_page_ac053323("page<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_perpa_83b45c95("perPage<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_searc_6d12ab64("searchTerm<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_leadq_cd103a30("leadQuickFilter<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_touch_35637f50("touchFilter<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_stage_fc62c435("stageFilter<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_assig_f8d74443("assigneeFilter<br/><small>crm/components/LeadsView.vue</small>")
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_forma_75309784
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_gette_8efee883
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_uisto_15ed4cce
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_route_1cf0ce53
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_props_2ed57bff
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_leads_bc19c5e6
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_total_c0a81089
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_leads_0a9a65de
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_loadi_864d46b7
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_issta_a22422fb
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_page_ac053323
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_perpa_83b45c95
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_searc_6d12ab64
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_leadq_cd103a30
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_touch_35637f50
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_stage_fc62c435
+    src_views_modules_crm_components_leadsview_b5721ea8 -->|contains| src_views_modules_crm_components_leadsview_assig_f8d74443
+    %% Omitted for readability: 44 nodes, 0 edges
+    class src_views_modules_crm_components_leadsview_b5721ea8 ui;
+    class src_views_modules_crm_components_leadsview_forma_75309784 ui;
+    class src_views_modules_crm_components_leadsview_gette_8efee883 ui;
+    class src_views_modules_crm_components_leadsview_uisto_15ed4cce ui;
+    class src_views_modules_crm_components_leadsview_route_1cf0ce53 api;
+    class src_views_modules_crm_components_leadsview_props_2ed57bff ui;
+    class src_views_modules_crm_components_leadsview_leads_bc19c5e6 ui;
+    class src_views_modules_crm_components_leadsview_total_c0a81089 ui;
+    class src_views_modules_crm_components_leadsview_leads_0a9a65de ui;
+    class src_views_modules_crm_components_leadsview_loadi_864d46b7 ui;
+    class src_views_modules_crm_components_leadsview_issta_a22422fb ui;
+    class src_views_modules_crm_components_leadsview_page_ac053323 ui;
+    class src_views_modules_crm_components_leadsview_perpa_83b45c95 ui;
+    class src_views_modules_crm_components_leadsview_searc_6d12ab64 ui;
+    class src_views_modules_crm_components_leadsview_leadq_cd103a30 ui;
+    class src_views_modules_crm_components_leadsview_touch_35637f50 ui;
+    class src_views_modules_crm_components_leadsview_stage_fc62c435 ui;
+    class src_views_modules_crm_components_leadsview_assig_f8d74443 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>deleteSelectedExcelRows()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>deleteSelectedExcelRows() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatDate() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>getExcelVal()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getExcelVal() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>getInitialsName()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getInitialsName() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>getLeadPriorityClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getLeadPriorityClass() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>getLeadsByPriorityCount()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getLeadsByPriorityCount() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>getPriorityBadgeClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getPriorityBadgeClass() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>getStageBadgeClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getStageBadgeClass() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>getUserInitials()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>getUserInitials() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>processExtractRows()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>processExtractRows() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>setExcelVal()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>setExcelVal() node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>LeadsView.vue</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>CRMLeadsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMLeadsPage.vue</small></td>
+  <td><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>crmEvents.js</code><br><small style="color:var(--muted)">src/events/crmEvents.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+11 more</td>
+  <td>LeadsView.vue node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>activeFiltersCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>activeFiltersCount node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>assigneeFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assigneeFilter node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>autoAssignLoading</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>autoAssignLoading node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>availableStages</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>availableStages node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>dateFromFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dateFromFilter node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>dateToFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dateToFilter node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>excelChanges</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>excelChanges node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>extractRowCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>extractRowCount node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>extractText</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>extractText node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>filteredLeadsCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>filteredLeadsCount node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>filteredTenantUsers</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>filteredTenantUsers node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>{ formatCurrency }</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>{ formatCurrency } node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>{ getTenantId }</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>{ getTenantId } node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>groupFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>groupFilter node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>hasAnyFilters</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>hasAnyFilters node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>isExcelEditing</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>isExcelEditing node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>isStatsVisible</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>isStatsVisible node in crm/components/LeadsView.vue.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>leadQuickFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>leadQuickFilter node in crm/components/LeadsView.vue.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>crm/components/LeadsView.vue</code></td><td>62 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x61. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 15. useSettingsBase ====== -->
+<h2 id="usesettingsbase">15. useSettingsBase</h2>
+<p>useSettingsBase groups implementation around settings, composables, views, modules, mostly in composables/settings/useSettingsBranding.js, composables/settings/useSettingsProfile.js, composables/settings/useSettingsCurrency.js. This section covers 61 nodes and 84 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: useSettingsBase (61 nodes, 84 edges)
     subgraph usesettingsbase_composables_settings_useSettings_a73513f8["composables/settings/useSettingsProfile.js"]
         src_composables_settings_usesettingsprofile_uses_fad0d80f("useSettingsProfile()<br/><small>composables/settings/useSettingsProfile.js</small>")
         src_composables_settings_usesettingsprofile_uses_e285bdcc("fetchTenantDetailsForSettings()<br/><small>composables/settings/useSettingsProfile.js</small>")
@@ -4059,9 +4071,9 @@ flowchart LR
         src_composables_settings_usesettingsintegrations_15de872f("useSettingsIntegrations.js")
     end
     src_composables_settings_usesettingsbase_usesett_ca42ec41("useSettingsBase()<br/><small>composables/settings/useSettingsBase.js</small>")
-    src_composables_settings_usesettingsemail_34c3a0cd("useSettingsEmail.js")
-    src_composables_settings_usesettingsgoals_23ad7d35("useSettingsGoals.js")
+    src_composables_settings_usesettingsnotification_50a03f32("useSettingsNotifications.js")
     src_composables_usecurrency_usecurrency_3ae0b97e("useCurrency()<br/><small>src/composables/useCurrency.js</small>")
+    src_utils_excel_xlsxcompat_05c82c29("XLSXCompat<br/><small>src/utils/excel.js</small>")
     src_composables_settings_usesettingsaiagents_use_273384fe -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
     src_composables_settings_usesettingsaudit_useset_47c61187 -->|calls| src_composables_settings_usesettingsbase_usesett_ca42ec41
     src_composables_settings_usesettingsbase_usesett_ca42ec41 -->|calls| src_composables_usecurrency_usecurrency_3ae0b97e
@@ -4077,10 +4089,10 @@ flowchart LR
     src_composables_settings_usesettingsbranding_a8afe89d -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
     src_composables_settings_usesettingscurrency_00f74192 -->|imports| src_composables_usecurrency_usecurrency_3ae0b97e
     src_composables_settings_usesettingscurrency_00f74192 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsemail_34c3a0cd -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    src_composables_settings_usesettingsgoals_23ad7d35 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
     src_composables_settings_usesettingsintegrations_15de872f -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
-    %% Omitted for readability: 45 nodes, 0 edges
+    src_composables_settings_usesettingsnotification_50a03f32 -->|imports| src_utils_excel_xlsxcompat_05c82c29
+    src_composables_settings_usesettingsnotification_50a03f32 -->|imports| src_composables_settings_usesettingsbase_usesett_ca42ec41
+    %% Omitted for readability: 43 nodes, 0 edges
     class src_composables_settings_usesettingsprofile_uses_fad0d80f ui;
     class src_composables_settings_usesettingsprofile_uses_e285bdcc function;
     class src_composables_settings_usesettingsprofile_uses_1187b58b function;
@@ -4096,9 +4108,9 @@ flowchart LR
     class src_composables_settings_usesettingsintegrations_cee28d8a ui;
     class src_composables_settings_usesettingsintegrations_15de872f ui;
     class src_composables_settings_usesettingsbase_usesett_ca42ec41 ui;
-    class src_composables_settings_usesettingsemail_34c3a0cd ui;
-    class src_composables_settings_usesettingsgoals_23ad7d35 ui;
+    class src_composables_settings_usesettingsnotification_50a03f32 ui;
     class src_composables_usecurrency_usecurrency_3ae0b97e ui;
+    class src_utils_excel_xlsxcompat_05c82c29 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4374,24 +4386,24 @@ flowchart LR
 <tr><td><code>composables/settings/useSettingsBase.js</code></td><td>4 nodes</td></tr>
 <tr><td><code>composables/settings/useSettingsAiAgents.js</code></td><td>3 nodes</td></tr>
 <tr><td><code>composables/settings/useSettingsAudit.js</code></td><td>3 nodes</td></tr>
-<tr><td><code>composables/settings/useSettingsEmail.js</code></td><td>2 nodes</td></tr>
+<tr><td><code>settings/components/SettingsAiAgents.vue</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x21, indirect call x20, contains x20, re exports x18. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: indirect call x20, imports x20, contains x19, re exports x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, crm/components/LeadsView.vue, Modules/aiagents/Models.vue. This section covers 4816 nodes and 5441 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around qoder, repowiki, content, views, mostly in crm/composables/CRMModule.js, Modules/aiagents/Models.vue, Modules/aiagents/AiModule.vue. This section covers 4692 nodes and 5195 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (4816 nodes, 5441 edges)
+    %% Section: Other (4692 nodes, 5195 edges)
     subgraph other_src_utils_pwaManager_js_c8f1bf9b["src/utils/pwaManager.js"]
         src_utils_pwamanager_pwamanager_a606e8c5("PWAManager<br/><small>src/utils/pwaManager.js</small>")
         src_utils_pwamanager_pwamanager_checkandshowprom_6203035d("checkAndShowPrompt()<br/><small>src/utils/pwaManager.js</small>")
@@ -4432,7 +4444,7 @@ flowchart LR
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstallsuccess_f8a69fff
     src_utils_pwamanager_pwamanager_install_1a5fb45d -->|calls| src_utils_pwamanager_pwamanager_oninstalldismiss_c54c22cc
     src_composables_settings_usesettingsbase_7bed58ee -->|imports| src_composables_userbac_7fc51b41
-    %% Omitted for readability: 4798 nodes, 0 edges
+    %% Omitted for readability: 4674 nodes, 0 edges
     class src_utils_pwamanager_pwamanager_a606e8c5 klass;
     class src_utils_pwamanager_pwamanager_checkandshowprom_6203035d function;
     class src_utils_pwamanager_pwamanager_showprompt_a204623a function;
@@ -4474,243 +4486,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>deleteSelectedExcelRows()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>addHighlight()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>deleteSelectedExcelRows() node in crm/components/LeadsView.vue.</td>
+  <td>addHighlight() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>formatDate()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>clearHighlights()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>formatDate() node in crm/components/LeadsView.vue.</td>
+  <td>clearHighlights() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>getExcelVal()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>copyToClipboard()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getExcelVal() node in crm/components/LeadsView.vue.</td>
+  <td>copyToClipboard() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>getInitialsName()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getInitialsName() node in crm/components/LeadsView.vue.</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>createConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>getLeadPriorityClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>deleteConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getLeadPriorityClass() node in crm/components/LeadsView.vue.</td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>deleteConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>getLeadsByPriorityCount()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>downloadEditedReport()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getLeadsByPriorityCount() node in crm/components/LeadsView.vue.</td>
+  <td>downloadEditedReport() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>getPriorityBadgeClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>downloadReport()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>getPriorityBadgeClass() node in crm/components/LeadsView.vue.</td>
+  <td>downloadReport() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>getStageBadgeClass()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>getStageBadgeClass() node in crm/components/LeadsView.vue.</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>addHighlight()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>clearHighlights()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>findByText()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>executeDemoActions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>getUserInitials()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>deleteConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>saveMessagesToConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>getUserInitials() node in crm/components/LeadsView.vue.</td>
+  <td>fetchConversations() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>processExtractRows()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
-  <td><span class="tag tag-async">Async</span></td>
+  <td><code>fetchSuggestions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>processExtractRows() node in crm/components/LeadsView.vue.</td>
+  <td>fetchSuggestions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>setExcelVal()</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>findByText()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>setExcelVal() node in crm/components/LeadsView.vue.</td>
+  <td>findByText() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>LeadsView.vue</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>formatDate()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>CRMLeadsPage.vue</code><br><small style="color:var(--muted)">Modules/crm/CRMLeadsPage.vue</small></td>
-  <td><code>crm_api.js</code><br><small style="color:var(--muted)">src/services/crm_api.js</small><br><code>crmEvents.js</code><br><small style="color:var(--muted)">src/events/crmEvents.js</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+11 more</td>
-  <td>LeadsView.vue node in crm/components/LeadsView.vue.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>formatDate() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>activeFiltersCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>getSuggestionIcon()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>activeFiltersCount node in crm/components/LeadsView.vue.</td>
+  <td>getSuggestionIcon() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>assigneeFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>handleNewLine()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>assigneeFilter node in crm/components/LeadsView.vue.</td>
+  <td><code>resizeTextarea()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>handleNewLine() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>autoAssignLoading</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>loadChatHistory()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>autoAssignLoading node in crm/components/LeadsView.vue.</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>availableStages</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>loadConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>availableStages node in crm/components/LeadsView.vue.</td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>loadConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>dateFromFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>parseDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>dateFromFilter node in crm/components/LeadsView.vue.</td>
+  <td>parseDemoActions() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>dateToFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>resizeTextarea()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>handleNewLine()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>dateToFilter node in crm/components/LeadsView.vue.</td>
+  <td>resizeTextarea() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>excelChanges</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>saveMessagesToConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>excelChanges node in crm/components/LeadsView.vue.</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>fetchConversations()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>saveMessagesToConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>extractRowCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>loadConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>startNewConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td>No direct outbound edge</td>
-  <td>extractRowCount node in crm/components/LeadsView.vue.</td>
+  <td>scrollToBottom() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>extractText</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>extractText node in crm/components/LeadsView.vue.</td>
+  <td><code>setMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td><code>createConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>executeDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br><code>parseDemoActions()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small><br>+2 more</td>
+  <td>sendMessage() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>filteredLeadsCount</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>setMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>filteredLeadsCount node in crm/components/LeadsView.vue.</td>
+  <td><code>sendMessage()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>setMessage() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>filteredTenantUsers</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>startNewConversation()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>filteredTenantUsers node in crm/components/LeadsView.vue.</td>
+  <td><code>scrollToBottom()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
+  <td>startNewConversation() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>{ formatCurrency }</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>togglePanel()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>{ formatCurrency } node in crm/components/LeadsView.vue.</td>
+  <td>togglePanel() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>{ getTenantId }</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>viewSummary()</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>{ getTenantId } node in crm/components/LeadsView.vue.</td>
+  <td>viewSummary() node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>groupFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>AiModule.vue</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>groupFilter node in crm/components/LeadsView.vue.</td>
+  <td><code>api.js</code><br><small style="color:var(--muted)">src/services/api.js</small><br><code>ChatSidebar.vue</code><br><small style="color:var(--muted)">aiagents/components/ChatSidebar.vue</small><br><code>decodeJWT()</code><br><small style="color:var(--muted)">src/services/decodeJWT.js</small><br>+3 more</td>
+  <td>AiModule.vue node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>hasAnyFilters</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>activePanel</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>hasAnyFilters node in crm/components/LeadsView.vue.</td>
+  <td>activePanel node in Modules/aiagents/AiModule.vue.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>isExcelEditing</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>chatContainer</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>isExcelEditing node in crm/components/LeadsView.vue.</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>isStatsVisible</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>chatHistory</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>isStatsVisible node in crm/components/LeadsView.vue.</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>leadQuickFilter</code><br><small style="color:var(--muted)">crm/components/LeadsView.vue</small></td>
+  <td><code>chatMessages</code><br><small style="color:var(--muted)">Modules/aiagents/AiModule.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>leadQuickFilter node in crm/components/LeadsView.vue.</td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
 </table>
 
@@ -4719,19 +4731,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>crm/composables/CRMModule.js</code></td><td>110 nodes</td></tr>
-<tr><td><code>crm/components/LeadsView.vue</code></td><td>83 nodes</td></tr>
+      <tr><td><code>crm/composables/CRMModule.js</code></td><td>111 nodes</td></tr>
 <tr><td><code>Modules/aiagents/Models.vue</code></td><td>68 nodes</td></tr>
 <tr><td><code>Modules/aiagents/AiModule.vue</code></td><td>64 nodes</td></tr>
 <tr><td><code>crm/components/CRMAnalyticsModal.vue</code></td><td>59 nodes</td></tr>
 <tr><td><code>Modules/settings/ProfileModule.vue</code></td><td>57 nodes</td></tr>
 <tr><td><code>Modules/crm/CRMMeetingsPage.vue</code></td><td>53 nodes</td></tr>
 <tr><td><code>Modules/crm/CRMPipelinePage.vue</code></td><td>51 nodes</td></tr>
+<tr><td><code>crm/components/BulkUploadLeadsModal.vue</code></td><td>48 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x4028, calls x937, imports x155, imports x139. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x3931, calls x842, imports x142, imports x120. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4742,17 +4754,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>7522</td></tr>
-      <tr><td>Edges</td><td>9479</td></tr>
+      <tr><td>Nodes</td><td>7595</td></tr>
+      <tr><td>Edges</td><td>9531</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>578</td></tr>
+      <tr><td>Communities</td><td>594</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>9007</td></tr>
+      <tr><td>EXTRACTED</td><td>9059</td></tr>
       <tr><td>INFERRED</td><td>472</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -4761,7 +4773,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>absa-foundry-frontend — Architecture Documentation</p>
-  <p>Generated: 2026-10-05 15:13 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-10-06 07:47 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

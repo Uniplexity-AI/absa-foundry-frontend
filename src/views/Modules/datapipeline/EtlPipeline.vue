@@ -35,80 +35,107 @@
 
     <!-- ═══ Pipeline Runner Modal ═══ -->
     <Teleport to="body">
-      <div v-if="showRunModal" class="pr-overlay" @click.self="closeRunModal">
-        <div class="pr-modal">
-          <!-- Modal Header -->
-          <div class="pr-modal__header">
-            <div>
-              <h2 class="pr-modal__title">Run AI Pipeline</h2>
-              <p class="pr-modal__sub">Runs Feature Engine → State Engine → Predictions in sequence for the selected date.</p>
-            </div>
-            <button class="pr-modal__close" @click="closeRunModal" :disabled="isRunning">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
+  <div v-if="showRunModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md" @click.self="closeRunModal">
+    <div class="bg-white rounded-none w-full max-w-xl overflow-hidden shadow-2xl relative border border-gray-200">
+      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30"></div>
+      
+      <!-- Header -->
+      <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
+        <div class="flex items-center gap-2">
+          <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+          <h3 class="text-xs  font-bold uppercase tracking-widest text-gray-900">Run AI Pipeline</h3>
+        </div>
+        <button @click="closeRunModal" :disabled="isRunning" class="text-gray-400 hover:text-absa-passion transition-colors disabled:opacity-50">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-          <!-- Date Picker -->
-          <div class="pr-modal__date-row">
-            <label class="pr-modal__label">As-of Date</label>
+      <!-- Body -->
+      <div class="p-5 space-y-5 relative z-10 bg-white/50">
+        <div class="text-[10px]  text-gray-500 uppercase tracking-widest leading-relaxed">
+          Runs Feature Engine ? State Engine ? Predictions in sequence for the selected date.
+        </div>
+
+        <div>
+          <label class="block text-[10px]  font-bold uppercase tracking-widest text-gray-900 mb-1.5">As-of Date</label>
+          <div class="flex items-center gap-3">
             <input
               v-model="runDate"
               type="date"
-              class="pr-modal__date-input"
+              class="border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10  font-bold text-gray-700"
               :disabled="isRunning"
               :max="todayStr"
             />
-            <span class="pr-modal__date-hint">Defaults to today. Predictions are keyed by this date.</span>
-          </div>
-
-          <!-- Steps -->
-          <div class="pr-modal__steps">
-            <div
-              v-for="step in pipelineSteps"
-              :key="step.id"
-              class="pr-step"
-              :class="`pr-step--${step.status}`"
-            >
-              <div class="pr-step__icon">
-                <!-- idle -->
-                <svg v-if="step.status === 'idle'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg>
-                <!-- running -->
-                <svg v-else-if="step.status === 'running'" class="pr-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                <!-- done -->
-                <svg v-else-if="step.status === 'done'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <!-- error -->
-                <svg v-else-if="step.status === 'error'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              </div>
-              <div class="pr-step__body">
-                <div class="pr-step__name">{{ step.label }}</div>
-                <div class="pr-step__detail" v-if="step.detail">{{ step.detail }}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Overall Result -->
-          <div v-if="runResult" class="pr-modal__result" :class="runResult.ok ? 'pr-modal__result--ok' : 'pr-modal__result--err'">
-            <svg v-if="runResult.ok" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            {{ runResult.message }}
-          </div>
-
-          <!-- Actions -->
-          <div class="pr-modal__actions">
-            <button class="absa-etl__btn absa-etl__btn--outline" @click="closeRunModal" :disabled="isRunning">Cancel</button>
-            <button
-              class="absa-etl__btn absa-etl__btn--primary"
-              @click="startPipeline"
-              :disabled="isRunning || !!runResult?.ok"
-            >
-              <svg v-if="!isRunning" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              <svg v-else class="pr-spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-              {{ isRunning ? 'Running…' : runResult?.ok ? 'Done' : 'Run Pipeline' }}
-            </button>
+            <span class="text-[9px]  text-gray-400 uppercase tracking-widest hidden sm:inline">Defaults to today. Predictions are keyed by this date.</span>
           </div>
         </div>
+
+        <div class="space-y-2">
+          <div
+            v-for="(step, index) in pipelineSteps"
+            :key="step.id"
+            class="flex items-center gap-3 px-4 py-3 border border-gray-200 bg-white relative z-10 transition-colors"
+            :class="{
+              'border-absa-passion shadow-[0_0_0_1px_rgba(220,0,55,1)]': step.status === 'running',
+              'border-green-500': step.status === 'done',
+              'border-red-500': step.status === 'error',
+              'opacity-60': step.status === 'idle'
+            }"
+          >
+            <div class="flex-shrink-0 w-6 h-6 rounded-none flex items-center justify-center border"
+              :class="{
+                'border-gray-300 text-gray-400': step.status === 'idle',
+                'border-absa-passion text-absa-passion bg-red-50': step.status === 'running',
+                'border-green-500 text-green-500 bg-green-50': step.status === 'done',
+                'border-red-500 text-red-500 bg-red-50': step.status === 'error',
+              }"
+            >
+              <!-- idle -->
+              <span class="text-[10px]  font-bold" v-if="step.status === 'idle'">{{ index + 1 }}</span>
+              <!-- running -->
+              <i v-else-if="step.status === 'running'" class="fas fa-circle-notch fa-spin text-[10px]"></i>
+              <!-- done -->
+              <i v-else-if="step.status === 'done'" class="fas fa-check text-[10px]"></i>
+              <!-- error -->
+              <i v-else-if="step.status === 'error'" class="fas fa-times text-[10px]"></i>
+            </div>
+            
+            <div class="flex-1 min-w-0">
+              <div class="text-[10px]  font-bold uppercase tracking-widest"
+                :class="{
+                  'text-gray-900': step.status !== 'idle' && step.status !== 'error',
+                  'text-gray-500': step.status === 'idle',
+                  'text-red-600': step.status === 'error'
+                }"
+              >{{ step.label }}</div>
+              <div class="text-[9px]  text-gray-400 mt-0.5 truncate" v-if="step.detail">{{ step.detail }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="runResult" class="flex items-center gap-2 px-4 py-3 border text-[10px]  font-bold uppercase tracking-widest"
+          :class="runResult.ok ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'"
+        >
+          <i class="fas" :class="runResult.ok ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+          {{ runResult.message }}
+        </div>
       </div>
-    </Teleport>
+
+      <!-- Footer -->
+      <div class="px-5 py-4 border-t border-gray-200 bg-white relative z-10 flex justify-end gap-3">
+        <button @click="closeRunModal" :disabled="isRunning" class="px-4 py-2.5 text-[10px]  font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900 transition-colors">
+          Cancel
+        </button>
+        <button @click="startPipeline" :disabled="isRunning || !!runResult?.ok" class="flex items-center gap-2 px-6 py-2.5 bg-absa-passion text-white text-[10px]  font-bold rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors disabled:opacity-50">
+          <i v-if="!isRunning" class="fas fa-play text-[9px]"></i>
+          <i v-else class="fas fa-circle-notch fa-spin text-[9px]"></i>
+          {{ isRunning ? 'Running...' : 'Run Pipeline' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</Teleport>
 
 
     <!-- Historical Extraction Progress -->
@@ -474,7 +501,7 @@ async function startPipeline() {
     {
       id: 'extraction',
       label: 'Data Extraction',
-      call: () => api.post('/api/etl/trigger', { config_name: 'customer_360.yaml', sync: true }),
+      call: () => api.post('/api/etl/trigger', { config_name: 'customer_360.yaml', sync: true, source_type: 'denodo', snapshot: date, force: true, run_models: 'shared,churn,clv,lifecycle,balance' }),
       summary: (d) => `Extraction triggered (Config: ${d?.config_name ?? 'customer_360.yaml'})`,
     },
     {
@@ -548,7 +575,7 @@ onMounted(() => {
 .absa-etl__breadcrumb {
   display: flex; align-items: center; gap: 6px;
   font-size: 0.7rem; font-weight: 600; color: #9CA3AF;
-  margin-bottom: 14px; font-family: 'Space Mono', monospace;
+  margin-bottom: 14px; 
 }
 .absa-etl__breadcrumb-current { color: #BE0F2C; }
 
@@ -558,13 +585,13 @@ onMounted(() => {
   margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
 }
 .absa-etl__title { font-size: 1.5rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
-.absa-etl__subtitle { font-size: 0.725rem; color: #9CA3AF; margin: 0; font-family: 'Space Mono', monospace; }
+.absa-etl__subtitle { text-transform: uppercase; font-weight: 900; font-size: 0.6rem; letter-spacing: 0.05em; font-size: 0.725rem; color: #9CA3AF; margin: 0;  }
 
 .absa-etl__header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.absa-etl__btn {
+.absa-etl__btn { text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.65rem;
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 6px; font-size: 0.7rem;
-  font-weight: 700; cursor: pointer; transition: all 150ms ease;
+  padding: 8px 16px; border-radius: 2px; text-transform: uppercase; font-size: 0.7rem;
+  font-weight: 900; cursor: pointer; transition: all 150ms ease;
   border: 1px solid #E8E8EC; background: #FFF; color: #4B5563;
   font-family: 'Montserrat', system-ui, sans-serif; white-space: nowrap;
 }
@@ -578,9 +605,9 @@ onMounted(() => {
 
 /* Health Cards */
 .absa-etl__health-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.absa-etl__health-card { padding: 20px; }
+.absa-etl__health-card { padding: 20px; border-radius: 0 !important; }
 .absa-etl__health-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.absa-etl__health-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.absa-etl__health-icon { width: 38px; height: 38px; border-radius: 0; display: flex; align-items: center; justify-content: center; }
 .absa-etl__health-icon--green { background: #DCFCE7; color: #16A34A; }
 .absa-etl__health-icon--blue { background: #DBEAFE; color: #2563EB; }
 .absa-etl__health-icon--amber { background: #FEF3C7; color: #D97706; }
@@ -589,17 +616,17 @@ onMounted(() => {
 .absa-etl__health-dot--green { background: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
 .absa-etl__health-dot--amber { background: #F59E0B; box-shadow: 0 0 0 3px rgba(245,158,11,0.2); }
 
-.absa-etl__health-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.absa-etl__health-label {  font-size: 0.6rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
 .absa-etl__health-value { font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 2px; }
 .absa-etl__health-value--green { color: #16A34A; }
 .absa-etl__health-value--amber { color: #D97706; }
-.absa-etl__health-stat { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #9CA3AF; }
+.absa-etl__health-stat {  font-size: 0.6rem; color: #9CA3AF; }
 
 /* Quality Chart */
 .absa-etl__quality { margin-bottom: 24px; }
 .absa-etl__quality-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.absa-etl__quality-title { font-size: 0.9rem; font-weight: 800; color: #111827; margin: 0 0 2px 0; }
-.absa-etl__quality-sub { font-size: 0.675rem; color: #9CA3AF; margin: 0; font-family: 'Space Mono', monospace; }
+.absa-etl__quality-title { font-size: 0.9rem; font-weight: 900; color: #111827; margin: 0 0 2px 0; }
+.absa-etl__quality-sub { font-size: 0.675rem; color: #9CA3AF; margin: 0;  }
 .absa-etl__quality-sub strong { color: #111827; }
 .absa-etl__quality-legend { }
 .absa-etl__legend-label { display: flex; align-items: center; gap: 6px; font-size: 0.65rem; font-weight: 600; color: #6B7280; }
@@ -611,38 +638,38 @@ onMounted(() => {
 /* Section */
 .absa-etl__section { margin-bottom: 24px; }
 .absa-etl__section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.absa-etl__section-title { font-size: 0.9rem; font-weight: 800; color: #111827; margin: 0; }
-.absa-etl__section-period { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 700; color: #BE0F2C; background: #FDE8EC; padding: 3px 10px; border-radius: 999px; }
+.absa-etl__section-title { font-size: 0.9rem; font-weight: 900; color: #111827; margin: 0; }
+.absa-etl__section-period {  font-size: 0.575rem; font-weight: 900; color: #BE0F2C; background: #FDE8EC; padding: 3px 10px; border-radius: 2px; text-transform: uppercase; }
 
 /* Table */
-.absa-etl__table-wrap { background: #FFF; border: 1px solid #E8E8EC; border-radius: 12px; overflow: hidden; }
+.absa-etl__table-wrap { background: #FFF; border: 1px solid #E8E8EC; border-radius: 0; overflow: hidden; }
 .absa-etl__table { width: 100%; border-collapse: collapse; font-size: 0.725rem; }
-.absa-etl__table th { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 800; color: #9CA3AF; letter-spacing: 0.06em; text-align: left; padding: 12px 20px; }
+.absa-etl__table th {  font-size: 0.575rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.06em; text-align: left; padding: 12px 20px;  text-transform: uppercase;}
 .absa-etl__table td { padding: 13px 20px; border-bottom: 1px solid #F3F4F6; vertical-align: middle; }
 .absa-etl__table tbody tr:hover { background: #F9FAFB; }
-.absa-etl__table-val { font-weight: 700; color: #111827; }
-.absa-etl__table-mono { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #6B7280; }
-.absa-etl__run-id { font-weight: 800; color: #BE0F2C; font-family: 'Space Mono', monospace; font-size: 0.675rem; }
+.absa-etl__table-val { font-weight: 900; color: #111827; }
+.absa-etl__table-mono {  font-size: 0.6rem; color: #6B7280; }
+.absa-etl__run-id { font-weight: 900; color: #BE0F2C;  font-size: 0.675rem; }
 
 /* Row stats */
 .absa-etl__rows { display: flex; align-items: center; gap: 4px; }
-.absa-etl__row-stat { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; color: #6B7280; }
+.absa-etl__row-stat {  font-size: 0.6rem; font-weight: 900; color: #6B7280; }
 .absa-etl__row-stat--green { color: #16A34A; }
 .absa-etl__row-stat--red { color: #DC2626; }
 .absa-etl__row-sep { color: #D1D5DB; font-size: 0.6rem; }
 
 /* Quality cell */
 .absa-etl__quality-cell { display: flex; align-items: center; gap: 8px; }
-.absa-etl__quality-bar { width: 60px; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
-.absa-etl__quality-fill { height: 100%; border-radius: 3px; }
+.absa-etl__quality-bar { width: 60px; height: 6px; background: #E5E7EB; border-radius: 0; overflow: hidden; }
+.absa-etl__quality-fill { height: 100%; border-radius: 0; }
 .absa-etl__quality-fill--good { background: #16A34A; }
 .absa-etl__quality-fill--warning { background: #F59E0B; }
-.absa-etl__quality-val { font-weight: 800; font-size: 0.7rem; }
+.absa-etl__quality-val { font-weight: 900; font-size: 0.7rem; }
 .absa-etl__quality-val--good { color: #16A34A; }
 .absa-etl__quality-val--warning { color: #D97706; }
 
 /* Status */
-.absa-etl__status { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.04em; padding: 4px 12px; border-radius: 6px; }
+.absa-etl__status { display: inline-flex; align-items: center; gap: 6px;  font-size: 0.6rem; font-weight: 900; letter-spacing: 0.04em; padding: 4px 12px; border-radius: 2px; text-transform: uppercase; }
 .absa-etl__status-dot { width: 6px; height: 6px; border-radius: 50%; }
 .absa-etl__status--completed { background: #DCFCE7; color: #16A34A; }
 .absa-etl__status--running { background: #DBEAFE; color: #2563EB; }
@@ -653,9 +680,9 @@ onMounted(() => {
 @keyframes statusPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* Pagination */
-.absa-etl__pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #F3F4F6; font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #9CA3AF; }
+.absa-etl__pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #F3F4F6;  font-size: 0.6rem; color: #9CA3AF; }
 .absa-etl__page-btns { display: flex; gap: 4px; }
-.absa-etl__page-btns button { min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E8EC; border-radius: 6px; background: #FFF; color: #4B5563; font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; cursor: pointer; transition: all 150ms ease; }
+.absa-etl__page-btns button { min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E8EC; border-radius: 2px; text-transform: uppercase; background: #FFF; color: #4B5563;  font-size: 0.6rem; font-weight: 900; cursor: pointer; transition: all 150ms ease; }
 .absa-etl__page-btns button:hover { border-color: #BE0F2C; color: #BE0F2C; }
 .absa-etl__page-btns button:disabled { opacity: 0.35; cursor: not-allowed; }
 .absa-etl__page-btn--active { background: #BE0F2C !important; color: #FFF !important; border-color: #BE0F2C !important; }
@@ -663,14 +690,14 @@ onMounted(() => {
 /* Bottom Stats */
 .absa-etl__stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .absa-etl__stat-card { padding: 20px; }
-.absa-etl__stat-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.absa-etl__stat-icon { width: 36px; height: 36px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
 .absa-etl__stat-icon--blue { background: #DBEAFE; color: #2563EB; }
 .absa-etl__stat-icon--green { background: #DCFCE7; color: #16A34A; }
 .absa-etl__stat-icon--amber { background: #FEF3C7; color: #D97706; }
 .absa-etl__stat-icon--red { background: #FEE2E2; color: #DC2626; }
 .absa-etl__stat-value { font-size: 1.25rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; margin-bottom: 2px; }
-.absa-etl__stat-label { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 700; color: #9CA3AF; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
-.absa-etl__stat-trend { font-family: 'Space Mono', monospace; font-size: 0.575rem; font-weight: 800; }
+.absa-etl__stat-label {  font-size: 0.575rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+.absa-etl__stat-trend {  font-size: 0.575rem; font-weight: 900; }
 .absa-etl__stat-trend--up { color: #16A34A; }
 .absa-etl__stat-trend--neutral { color: #6B7280; }
 .absa-etl__stat-trend--warn { color: #DC2626; }
@@ -700,26 +727,26 @@ onMounted(() => {
 
 .pr-modal__header { display: flex; justify-content: space-between; align-items: flex-start; }
 .pr-modal__title { font-size: 1.05rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
-.pr-modal__sub { font-size: 0.675rem; color: #9CA3AF; margin: 0; font-family: 'Space Mono', monospace; line-height: 1.5; }
+.pr-modal__sub { font-size: 0.675rem; color: #9CA3AF; margin: 0;  line-height: 1.5; }
 .pr-modal__close {
   width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
-  border: 1px solid #E8E8EC; border-radius: 8px; background: #FFF; color: #6B7280;
+  border: 1px solid #E8E8EC; border-radius: 0; background: #FFF; color: #6B7280;
   cursor: pointer; flex-shrink: 0; margin-left: 12px; transition: all 150ms ease;
 }
 .pr-modal__close:hover { border-color: #BE0F2C; color: #BE0F2C; }
 .pr-modal__close:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .pr-modal__date-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.pr-modal__label { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 800; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.pr-modal__label {  font-size: 0.6rem; font-weight: 900; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
 .pr-modal__date-input {
   padding: 7px 10px; border: 1px solid #E8E8EC; border-radius: 7px;
-  font-size: 0.75rem; font-family: 'Space Mono', monospace; font-weight: 700;
+  font-size: 0.75rem;  font-weight: 900;
   color: #111827; background: #F9FAFB; outline: none; cursor: pointer;
   transition: border-color 150ms ease;
 }
 .pr-modal__date-input:focus { border-color: #BE0F2C; }
 .pr-modal__date-input:disabled { opacity: 0.5; cursor: not-allowed; }
-.pr-modal__date-hint { font-size: 0.6rem; color: #9CA3AF; font-family: 'Space Mono', monospace; }
+.pr-modal__date-hint { font-size: 0.6rem; color: #9CA3AF;  }
 
 /* Steps */
 .pr-modal__steps { display: flex; flex-direction: column; gap: 10px; }
@@ -743,16 +770,16 @@ onMounted(() => {
 .pr-step--error   .pr-step__icon { background: #FEE2E2; color: #DC2626; }
 
 .pr-step__body { flex: 1; min-width: 0; }
-.pr-step__name { font-size: 0.775rem; font-weight: 800; color: #111827; margin-bottom: 2px; }
+.pr-step__name { font-size: 0.775rem; font-weight: 900; color: #111827; margin-bottom: 2px; }
 .pr-step--idle .pr-step__name { color: #6B7280; }
-.pr-step__detail { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #6B7280; }
+.pr-step__detail {  font-size: 0.6rem; color: #6B7280; }
 .pr-step--error .pr-step__detail { color: #DC2626; }
 
 /* Result banner */
 .pr-modal__result {
   display: flex; align-items: center; gap: 8px;
   padding: 12px 14px; border-radius: 10px;
-  font-size: 0.7rem; font-weight: 700; font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; font-weight: 900; 
 }
 .pr-modal__result--ok  { background: #F0FDF4; color: #16A34A; border: 1px solid #86EFAC; }
 .pr-modal__result--err { background: #FEF2F2; color: #DC2626; border: 1px solid #FCA5A5; }
@@ -766,7 +793,7 @@ onMounted(() => {
 
 .absa-etl__progress-container {
   background: white;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 16px 20px;
   margin-bottom: 20px;
   border: 1px solid #E5E7EB;
@@ -783,7 +810,7 @@ onMounted(() => {
   width: 100%;
   height: 8px;
   background-color: #F3F4F6;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: hidden;
 }
 .absa-etl__progress-fill {
@@ -798,6 +825,16 @@ onMounted(() => {
   font-size: 0.85rem;
 }
 </style>
+
+
+
+
+
+
+
+
+
+
 
 
 

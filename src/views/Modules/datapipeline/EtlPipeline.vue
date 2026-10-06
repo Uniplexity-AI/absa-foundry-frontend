@@ -129,16 +129,92 @@ const isRunning = ref(false)
 const runDate = ref(todayStr)
 const runResult = ref(null)
 
+// ── Per-step elapsed timers ──
+const stepTimers = ref({})
+const stepIntervals = {}
+
+function startStepTimer(stepId) {
+  stepTimers.value[stepId] = 0
+  stepIntervals[stepId] = setInterval(() => {
+    stepTimers.value[stepId] = (stepTimers.value[stepId] || 0) + 1
+  }, 1000)
+}
+
+function stopStepTimer(stepId) {
+  if (stepIntervals[stepId]) {
+    clearInterval(stepIntervals[stepId])
+    delete stepIntervals[stepId]
+  }
+}
+
+function formatElapsed(seconds) {
+  if (seconds === undefined || seconds === null) return ''
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return m > 0 ? `${m}m ${s}s` : `${s}s`
+}
+
+// ── Extraction sub-step progress bar ──
+const EXTRACTION_SUB_STEPS = [
+  { key: 'connecting',  label: 'Connecting to Denodo / Hadoop' },
+  { key: 'streaming',   label: 'Streaming rows from source'    },
+  { key: 'validating',  label: 'Validating & transforming'     },
+  { key: 'loading',     label: 'Loading into PostgreSQL'       },
+  { key: 'ml_features', label: 'Building ML feature tables'    },
+]
+const extractionSubStep = ref(0)
+const liveRowsLoaded = ref(null)
+let extractionPollInterval = null
+
+function startExtractionPoll() {
+  extractionSubStep.value = 0
+  liveRowsLoaded.value = null
+  let tick = 0
+
+  extractionPollInterval = setInterval(async () => {
+    tick++
+    // Auto-advance sub-step every ~10s through first phases
+    if (extractionSubStep.value < 3 && tick % 5 === 0) {
+      extractionSubStep.value = Math.min(extractionSubStep.value + 1, 3)
+    }
+    // Poll live row counts from the audit table
+    try {
+      const { data } = await api.get('/api/etl/runs?limit=1')
+      const latest = data?.runs?.[0] || data?.[0]
+      if (latest) {
+        const loaded = latest.rowsLoaded ?? latest.rows_loaded ?? null
+        if (loaded !== null && loaded > 0) {
+          liveRowsLoaded.value = loaded
+          extractionSubStep.value = Math.max(extractionSubStep.value, 2)
+        }
+      }
+    } catch (_) { /* silently ignore */ }
+  }, 2000)
+}
+
+function stopExtractionPoll(success) {
+  if (extractionPollInterval) {
+    clearInterval(extractionPollInterval)
+    extractionPollInterval = null
+  }
+  if (success) extractionSubStep.value = EXTRACTION_SUB_STEPS.length - 1
+}
+
 const pipelineSteps = ref([
-    { id: 'extraction',  label: '1 A Data Extraction', detail: '', status: 'idle' },
-    { id: 'features',    label: '2 A Feature Engine',  detail: '', status: 'idle' },
-    { id: 'states',      label: '3 A State Engine',    detail: '', status: 'idle' },
-    { id: 'predictions', label: '4 A Prediction Batch', detail: '', status: 'idle' },
-  ])
+  { id: 'extraction',  label: '1 — Data Extraction',  detail: '', status: 'idle' },
+  { id: 'features',    label: '2 — Feature Engine',   detail: '', status: 'idle' },
+  { id: 'states',      label: '3 — State Engine',     detail: '', status: 'idle' },
+  { id: 'predictions', label: '4 — Prediction Batch', detail: '', status: 'idle' },
+])
 
 function resetSteps() {
   pipelineSteps.value.forEach(s => { s.status = 'idle'; s.detail = '' })
   runResult.value = null
+  stepTimers.value = {}
+  Object.keys(stepIntervals).forEach(k => { clearInterval(stepIntervals[k]); delete stepIntervals[k] })
+  stopExtractionPoll(false)
+  extractionSubStep.value = 0
+  liveRowsLoaded.value = null
 }
 
 function openPipelineRunner() {
@@ -161,8 +237,15 @@ async function startPipeline() {
     {
       id: 'extraction',
       label: 'Data Extraction',
-      call: () => api.post('/api/etl/trigger', { config_name: 'customer_360.yaml', sync: true, source_type: 'denodo', snapshot: date, force: true, run_models: 'shared,churn,clv,lifecycle,balance' }),
-      summary: (d) => `Extraction triggered (Config: ${d?.config_name ?? 'customer_360.yaml'})`,
+      call: () => api.post('/api/etl/trigger', {
+        config_name: 'customer_360.yaml',
+        sync: true,
+        source_type: 'denodo',
+        snapshot: date,
+        force: true,
+        run_models: 'shared,churn,clv,lifecycle,balance',
+      }),
+      summary: (d) => `Extraction complete — ${liveRowsLoaded.value !== null ? liveRowsLoaded.value.toLocaleString() + ' rows loaded' : 'Config: ' + (d?.config_name ?? 'customer_360.yaml')}`,
     },
     {
       id: 'features',
@@ -189,11 +272,18 @@ async function startPipeline() {
     const step = pipelineSteps.value.find(s => s.id === cfg.id)
     step.status = 'running'
     step.detail = 'In progress…'
+    startStepTimer(cfg.id)
+    if (cfg.id === 'extraction') startExtractionPoll()
+
     try {
       const { data } = await cfg.call()
+      stopStepTimer(cfg.id)
+      if (cfg.id === 'extraction') stopExtractionPoll(true)
       step.status = 'done'
       step.detail = cfg.summary(data)
     } catch (e) {
+      stopStepTimer(cfg.id)
+      if (cfg.id === 'extraction') stopExtractionPoll(false)
       step.status = 'error'
       step.detail = e?.response?.data?.detail || e.message || 'Request failed'
       allOk = false
@@ -205,7 +295,6 @@ async function startPipeline() {
 
   if (allOk) {
     runResult.value = { ok: true, message: `Pipeline complete for ${date}. Snapshot selector updated.` }
-    // Refresh snapshot dates so the new date appears in the selector immediately
     await snapshotStore.fetchAvailable()
     snapshotStore.setDate(date)
     store.loadDashboard()
@@ -376,7 +465,6 @@ onMounted(() => {
                   </td>
                   <td class="px-4 py-3">
                     <div class="text-[11px] font-black text-gray-900 uppercase">{{ run.batchId }}</div>
-                    
                   </td>
                   <td class="px-4 py-3">
                     <div class="text-[10px] font-black text-gray-900 uppercase">{{ run.duration }}</div>
@@ -417,7 +505,7 @@ onMounted(() => {
       <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
         <div class="flex items-center gap-2">
           <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
-          <h3 class="text-xs  font-bold uppercase tracking-widest text-gray-900">Run AI Pipeline</h3>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gray-900">Run AI Pipeline</h3>
         </div>
         <button @click="closeRunModal" :disabled="isRunning" class="text-gray-400 hover:text-absa-passion transition-colors disabled:opacity-50">
           <i class="fas fa-times"></i>
@@ -426,29 +514,30 @@ onMounted(() => {
 
       <!-- Body -->
       <div class="p-5 space-y-5 relative z-10 bg-white/50">
-        <div class="text-[10px]  text-gray-500 uppercase tracking-widest leading-relaxed">
-          Runs Feature Engine ? State Engine ? Predictions in sequence for the selected date.
+        <div class="text-[10px] text-gray-500 uppercase tracking-widest leading-relaxed">
+          Runs Feature Engine → State Engine → Predictions in sequence for the selected date.
         </div>
 
         <div>
-          <label class="block text-[10px]  font-bold uppercase tracking-widest text-gray-900 mb-1.5">As-of Date</label>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-900 mb-1.5">As-of Date</label>
           <div class="flex items-center gap-3">
             <input
               v-model="runDate"
               type="date"
-              class="border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10  font-bold text-gray-700"
+              class="border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10 font-bold text-gray-700"
               :disabled="isRunning"
               :max="todayStr"
             />
-            <span class="text-[9px]  text-gray-400 uppercase tracking-widest hidden sm:inline">Defaults to today. Predictions are keyed by this date.</span>
+            <span class="text-[9px] text-gray-400 uppercase tracking-widest hidden sm:inline">Defaults to today. Predictions are keyed by this date.</span>
           </div>
         </div>
 
+        <!-- Pipeline Steps -->
         <div class="space-y-2">
           <div
             v-for="(step, index) in pipelineSteps"
             :key="step.id"
-            class="flex items-center gap-3 px-4 py-3 border border-gray-200 bg-white relative z-10 transition-colors"
+            class="border border-gray-200 bg-white relative z-10 transition-colors overflow-hidden"
             :class="{
               'border-absa-passion shadow-[0_0_0_1px_rgba(220,0,55,1)]': step.status === 'running',
               'border-green-500': step.status === 'done',
@@ -456,38 +545,83 @@ onMounted(() => {
               'opacity-60': step.status === 'idle'
             }"
           >
-            <div class="flex-shrink-0 w-6 h-6 rounded-none flex items-center justify-center border"
-              :class="{
-                'border-gray-300 text-gray-400': step.status === 'idle',
-                'border-absa-passion text-absa-passion bg-red-50': step.status === 'running',
-                'border-green-500 text-green-500 bg-green-50': step.status === 'done',
-                'border-red-500 text-red-500 bg-red-50': step.status === 'error',
-              }"
-            >
-              <!-- idle -->
-              <span class="text-[10px]  font-bold" v-if="step.status === 'idle'">{{ index + 1 }}</span>
-              <!-- running -->
-              <i v-else-if="step.status === 'running'" class="fas fa-circle-notch fa-spin text-[10px]"></i>
-              <!-- done -->
-              <i v-else-if="step.status === 'done'" class="fas fa-check text-[10px]"></i>
-              <!-- error -->
-              <i v-else-if="step.status === 'error'" class="fas fa-times text-[10px]"></i>
-            </div>
-            
-            <div class="flex-1 min-w-0">
-              <div class="text-[10px]  font-bold uppercase tracking-widest"
+            <!-- Main step row -->
+            <div class="flex items-center gap-3 px-4 py-3">
+              <div class="flex-shrink-0 w-6 h-6 rounded-none flex items-center justify-center border"
                 :class="{
-                  'text-gray-900': step.status !== 'idle' && step.status !== 'error',
-                  'text-gray-500': step.status === 'idle',
-                  'text-red-600': step.status === 'error'
+                  'border-gray-300 text-gray-400': step.status === 'idle',
+                  'border-absa-passion text-absa-passion bg-red-50': step.status === 'running',
+                  'border-green-500 text-green-500 bg-green-50': step.status === 'done',
+                  'border-red-500 text-red-500 bg-red-50': step.status === 'error',
                 }"
-              >{{ step.label }}</div>
-              <div class="text-[9px]  text-gray-400 mt-0.5 truncate" v-if="step.detail">{{ step.detail }}</div>
+              >
+                <span class="text-[10px] font-bold" v-if="step.status === 'idle'">{{ index + 1 }}</span>
+                <i v-else-if="step.status === 'running'" class="fas fa-circle-notch fa-spin text-[10px]"></i>
+                <i v-else-if="step.status === 'done'" class="fas fa-check text-[10px]"></i>
+                <i v-else-if="step.status === 'error'" class="fas fa-times text-[10px]"></i>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] font-bold uppercase tracking-widest"
+                  :class="{
+                    'text-gray-900': step.status !== 'idle' && step.status !== 'error',
+                    'text-gray-500': step.status === 'idle',
+                    'text-red-600': step.status === 'error'
+                  }"
+                >{{ step.label }}</div>
+                <div class="text-[9px] text-gray-400 mt-0.5 truncate" v-if="step.detail">{{ step.detail }}</div>
+              </div>
+
+              <!-- Elapsed timer -->
+              <div v-if="step.status === 'running' || (step.status === 'done' && stepTimers[step.id] !== undefined)"
+                class="flex-shrink-0 text-[9px] font-black uppercase tracking-widest tabular-nums"
+                :class="step.status === 'running' ? 'text-absa-passion' : 'text-gray-400'"
+              >
+                <i v-if="step.status === 'running'" class="fas fa-clock mr-1"></i>
+                {{ formatElapsed(stepTimers[step.id]) }}
+              </div>
+            </div>
+
+            <!-- Extraction sub-step progress — shown only when extraction is running -->
+            <div v-if="step.id === 'extraction' && step.status === 'running'" class="border-t border-gray-100 px-4 pb-3 pt-2 bg-gray-50 space-y-2">
+              <!-- Sub-step labels -->
+              <div class="flex items-center gap-2 flex-wrap">
+                <div
+                  v-for="(sub, si) in EXTRACTION_SUB_STEPS"
+                  :key="sub.key"
+                  class="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest"
+                  :class="{
+                    'text-absa-passion': si === extractionSubStep,
+                    'text-green-600': si < extractionSubStep,
+                    'text-gray-300': si > extractionSubStep,
+                  }"
+                >
+                  <i v-if="si < extractionSubStep" class="fas fa-check"></i>
+                  <i v-else-if="si === extractionSubStep" class="fas fa-circle-notch fa-spin"></i>
+                  <i v-else class="fas fa-circle" style="font-size:4px"></i>
+                  {{ sub.label }}
+                  <span v-if="si < EXTRACTION_SUB_STEPS.length - 1" class="text-gray-200 mx-0.5">›</span>
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div class="w-full h-1.5 bg-gray-200 overflow-hidden">
+                <div
+                  class="h-full bg-absa-passion transition-all duration-700"
+                  :style="{ width: ((extractionSubStep / (EXTRACTION_SUB_STEPS.length - 1)) * 100) + '%' }"
+                ></div>
+              </div>
+
+              <!-- Live row count -->
+              <div v-if="liveRowsLoaded !== null" class="text-[9px] font-black text-gray-500 uppercase tracking-widest">
+                <i class="fas fa-database mr-1"></i>
+                {{ liveRowsLoaded.toLocaleString() }} rows loaded so far…
+              </div>
             </div>
           </div>
         </div>
 
-        <div v-if="runResult" class="flex items-center gap-2 px-4 py-3 border text-[10px]  font-bold uppercase tracking-widest"
+        <div v-if="runResult" class="flex items-center gap-2 px-4 py-3 border text-[10px] font-bold uppercase tracking-widest"
           :class="runResult.ok ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'"
         >
           <i class="fas" :class="runResult.ok ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
@@ -497,10 +631,10 @@ onMounted(() => {
 
       <!-- Footer -->
       <div class="px-5 py-4 border-t border-gray-200 bg-white relative z-10 flex justify-end gap-3">
-        <button @click="closeRunModal" :disabled="isRunning" class="px-4 py-2.5 text-[10px]  font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900 transition-colors">
+        <button @click="closeRunModal" :disabled="isRunning" class="px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900 transition-colors">
           Cancel
         </button>
-        <button @click="startPipeline" :disabled="isRunning || !!runResult?.ok" class="flex items-center gap-2 px-6 py-2.5 bg-absa-passion text-white text-[10px]  font-bold rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors disabled:opacity-50">
+        <button @click="startPipeline" :disabled="isRunning || !!runResult?.ok" class="flex items-center gap-2 px-6 py-2.5 bg-absa-passion text-white text-[10px] font-bold rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors disabled:opacity-50">
           <i v-if="!isRunning" class="fas fa-play text-[9px]"></i>
           <i v-else class="fas fa-circle-notch fa-spin text-[9px]"></i>
           {{ isRunning ? 'Running...' : 'Run Pipeline' }}
@@ -528,5 +662,3 @@ onMounted(() => {
   background-size: 40px 40px;
 }
 </style>
-
-

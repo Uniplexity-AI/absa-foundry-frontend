@@ -1,7 +1,7 @@
 # Graph Report - absa-foundry-frontend  (2026-10-06)
 
 ## Corpus Check
-- 584 files · ~622,226 words
+- 584 files · ~620,644 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `771bf821`
+- Built from commit: `46ca9cfa`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -358,7 +358,7 @@
 - @fontsource/roboto
 - autoprefixer
 - auth.js
-- chart.js
+- barcode-detector
 - compression
 - idb
 - js-yaml
@@ -1468,7 +1468,7 @@ Nodes (4): files, missing, SRC, unresolved
 
 ### Community 246 - "dependencies"
 Cohesion: 0.13
-Nodes (15): barcode-detector, @fontsource/hanken-grotesk, lucide-react, lucide-vue-next, dependencies, barcode-detector, @fontsource/hanken-grotesk, jspdf-autotable (+7 more)
+Nodes (15): chart.js, @fontsource/hanken-grotesk, lucide-react, lucide-vue-next, dependencies, chart.js, @fontsource/hanken-grotesk, jspdf-autotable (+7 more)
 
 ### Community 247 - "Skill: RM Dashboard — Colour Mapping Spec"
 Cohesion: 0.14

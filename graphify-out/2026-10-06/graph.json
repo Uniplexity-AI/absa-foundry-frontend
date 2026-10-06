@@ -6093,7 +6093,7 @@
       "file_type": "code",
       "norm_label": "closerunmodal()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L489"
+      "source_location": "L149"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_fetchextractionprogress",
@@ -6105,7 +6105,7 @@
       "file_type": "code",
       "norm_label": "fetchextractionprogress()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L355"
+      "source_location": "L15"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_openpipelinerunner",
@@ -6117,7 +6117,7 @@
       "file_type": "code",
       "norm_label": "openpipelinerunner()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L484"
+      "source_location": "L144"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_resetsteps",
@@ -6129,7 +6129,7 @@
       "file_type": "code",
       "norm_label": "resetsteps()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L479"
+      "source_location": "L139"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_startpipeline",
@@ -6141,7 +6141,7 @@
       "file_type": "code",
       "norm_label": "startpipeline()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L494"
+      "source_location": "L154"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_triggerhistoricalextraction",
@@ -6153,7 +6153,7 @@
       "file_type": "code",
       "norm_label": "triggerhistoricalextraction()",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L376"
+      "source_location": "L36"
     },
     {
       "id": "src_utils_formatting_formatcurrency",
@@ -47201,7 +47201,7 @@
       "file_type": "code",
       "norm_label": "api",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L395"
+      "source_location": "L55"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_avgquality",
@@ -47212,7 +47212,7 @@
       "file_type": "code",
       "norm_label": "avgquality",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L435"
+      "source_location": "L95"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_executionhistory",
@@ -47223,7 +47223,7 @@
       "file_type": "code",
       "norm_label": "executionhistory",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L442"
+      "source_location": "L102"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_extractionprogress",
@@ -47234,7 +47234,7 @@
       "file_type": "code",
       "norm_label": "extractionprogress",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L352"
+      "source_location": "L12"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_failedretries",
@@ -47245,7 +47245,7 @@
       "file_type": "code",
       "norm_label": "failedretries",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L461"
+      "source_location": "L121"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_gatewaystatus",
@@ -47256,7 +47256,7 @@
       "file_type": "code",
       "norm_label": "gatewaystatus",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L405"
+      "source_location": "L65"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_gatewayuptime",
@@ -47267,7 +47267,7 @@
       "file_type": "code",
       "norm_label": "gatewayuptime",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L411"
+      "source_location": "L71"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_isextracting",
@@ -47278,7 +47278,7 @@
       "file_type": "code",
       "norm_label": "isextracting",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L351"
+      "source_location": "L11"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_isrunning",
@@ -47289,7 +47289,7 @@
       "file_type": "code",
       "norm_label": "isrunning",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L468"
+      "source_location": "L128"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_loading",
@@ -47300,7 +47300,7 @@
       "file_type": "code",
       "norm_label": "loading",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L393"
+      "source_location": "L53"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_pglatency",
@@ -47311,7 +47311,7 @@
       "file_type": "code",
       "norm_label": "pglatency",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L406"
+      "source_location": "L66"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_pgstatus",
@@ -47322,7 +47322,7 @@
       "file_type": "code",
       "norm_label": "pgstatus",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L403"
+      "source_location": "L63"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_pipelinesteps",
@@ -47333,7 +47333,7 @@
       "file_type": "code",
       "norm_label": "pipelinesteps",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L472"
+      "source_location": "L132"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_qualityarea",
@@ -47344,7 +47344,7 @@
       "file_type": "code",
       "norm_label": "qualityarea",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L427"
+      "source_location": "L87"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_qualityline",
@@ -47355,7 +47355,7 @@
       "file_type": "code",
       "norm_label": "qualityline",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L420"
+      "source_location": "L80"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_qualitypoints",
@@ -47366,7 +47366,7 @@
       "file_type": "code",
       "norm_label": "qualitypoints",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L418"
+      "source_location": "L78"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_qualitytrend",
@@ -47377,7 +47377,7 @@
       "file_type": "code",
       "norm_label": "qualitytrend",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L417"
+      "source_location": "L77"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_redismemory",
@@ -47388,7 +47388,7 @@
       "file_type": "code",
       "norm_label": "redismemory",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L410"
+      "source_location": "L70"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_redisstatus",
@@ -47399,7 +47399,7 @@
       "file_type": "code",
       "norm_label": "redisstatus",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L404"
+      "source_location": "L64"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_rundate",
@@ -47410,7 +47410,7 @@
       "file_type": "code",
       "norm_label": "rundate",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L469"
+      "source_location": "L129"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_runresult",
@@ -47421,7 +47421,7 @@
       "file_type": "code",
       "norm_label": "runresult",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L470"
+      "source_location": "L130"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_showrunmodal",
@@ -47432,7 +47432,7 @@
       "file_type": "code",
       "norm_label": "showrunmodal",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L467"
+      "source_location": "L127"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_snapshotstore",
@@ -47443,7 +47443,7 @@
       "file_type": "code",
       "norm_label": "snapshotstore",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L392"
+      "source_location": "L52"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_store",
@@ -47454,7 +47454,7 @@
       "file_type": "code",
       "norm_label": "store",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L349"
+      "source_location": "L9"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_todaystr",
@@ -47465,7 +47465,7 @@
       "file_type": "code",
       "norm_label": "todaystr",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L466"
+      "source_location": "L126"
     },
     {
       "id": "src_views_modules_datapipeline_etlpipeline_totalruns",
@@ -47476,7 +47476,7 @@
       "file_type": "code",
       "norm_label": "totalruns",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L460"
+      "source_location": "L120"
     },
     {
       "id": "src_utils_formatting",
@@ -56417,15 +56417,15 @@
       "source_location": "L13"
     },
     {
-      "id": "package_dependencies_barcode_detector",
-      "label": "barcode-detector",
+      "id": "package_dependencies_chart_js",
+      "label": "chart.js",
       "_origin": "ast",
       "community": 246,
       "community_name": "dependencies",
       "file_type": "code",
-      "norm_label": "barcode-detector",
+      "norm_label": "chart.js",
       "source_file": "package.json",
-      "source_location": "L30"
+      "source_location": "L32"
     },
     {
       "id": "package_dependencies_fontsource_hanken_grotesk",
@@ -56494,15 +56494,15 @@
       "source_location": "L27"
     },
     {
-      "id": "barcode_detector",
-      "label": "barcode-detector",
+      "id": "chart_js",
+      "label": "chart.js",
       "_origin": "ast",
       "community": 246,
       "community_name": "dependencies",
       "file_type": "concept",
-      "norm_label": "barcode-detector",
+      "norm_label": "chart.js",
       "source_file": "package.json",
-      "source_location": "L30"
+      "source_location": "L32"
     },
     {
       "id": "fontsource_hanken_grotesk",
@@ -67461,26 +67461,26 @@
       "source_location": "L1"
     },
     {
-      "id": "package_dependencies_chart_js",
-      "label": "chart.js",
+      "id": "package_dependencies_barcode_detector",
+      "label": "barcode-detector",
       "_origin": "ast",
       "community": 358,
-      "community_name": "chart.js",
+      "community_name": "barcode-detector",
       "file_type": "code",
-      "norm_label": "chart.js",
+      "norm_label": "barcode-detector",
       "source_file": "package.json",
-      "source_location": "L32"
+      "source_location": "L30"
     },
     {
-      "id": "chart_js",
-      "label": "chart.js",
+      "id": "barcode_detector",
+      "label": "barcode-detector",
       "_origin": "ast",
       "community": 358,
-      "community_name": "chart.js",
+      "community_name": "barcode-detector",
       "file_type": "concept",
-      "norm_label": "chart.js",
+      "norm_label": "barcode-detector",
       "source_file": "package.json",
-      "source_location": "L32"
+      "source_location": "L30"
     },
     {
       "id": "package_dependencies_compression",
@@ -104243,7 +104243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L485",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -104255,7 +104255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L497",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -112259,7 +112259,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L345",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -112271,7 +112271,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L346",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -112283,7 +112283,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L347",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -117887,7 +117887,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L344",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -117899,7 +117899,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L345",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -117911,7 +117911,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L346",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -117923,7 +117923,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L347",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -183228,13 +183228,13 @@
     },
     {
       "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_store",
+      "target": "src_views_modules_datapipeline_etlpipeline_executionhistory",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L349",
+      "source_location": "L102",
       "weight": 1.0
     },
     {
@@ -183245,7 +183245,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L351",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -183256,194 +183256,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L352",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_fetchextractionprogress",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L355",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_triggerhistoricalextraction",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L376",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_snapshotstore",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L392",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_loading",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L393",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_api",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L395",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_pgstatus",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L403",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_redisstatus",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L404",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_gatewaystatus",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L405",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_pglatency",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L406",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_redismemory",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L410",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_gatewayuptime",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L411",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_qualitytrend",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L417",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_qualitypoints",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L418",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_qualityline",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L420",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_qualityarea",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L427",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_avgquality",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L435",
-      "weight": 1.0
-    },
-    {
-      "source": "src_views_modules_datapipeline_etlpipeline",
-      "target": "src_views_modules_datapipeline_etlpipeline_executionhistory",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L442",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -183454,7 +183267,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L460",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -183465,7 +183278,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L461",
+      "source_location": "L121",
       "weight": 1.0
     },
     {
@@ -183476,7 +183289,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L466",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -183487,7 +183300,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L467",
+      "source_location": "L127",
       "weight": 1.0
     },
     {
@@ -183498,7 +183311,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L468",
+      "source_location": "L128",
       "weight": 1.0
     },
     {
@@ -183509,7 +183322,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L469",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -183520,7 +183333,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L470",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -183531,7 +183344,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L472",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -183542,7 +183355,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L479",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -183553,7 +183366,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L484",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -183564,7 +183377,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L489",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_fetchextractionprogress",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -183575,7 +183399,183 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L494",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_triggerhistoricalextraction",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_snapshotstore",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_loading",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_api",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_pgstatus",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_redisstatus",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_gatewaystatus",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_pglatency",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_redismemory",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_gatewayuptime",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_qualitytrend",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_qualitypoints",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_qualityline",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_qualityarea",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_store",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_modules_datapipeline_etlpipeline",
+      "target": "src_views_modules_datapipeline_etlpipeline_avgquality",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -190905,7 +190905,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "src/views/Modules/datapipeline/EtlPipeline.vue",
-      "source_location": "L383",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -196466,5 +196466,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "771bf8215cb032cde7d4a2d8fd42678e06399982"
+  "built_at_commit": "46ca9cfaace7a940e7ece7bcef0df159574798df"
 }

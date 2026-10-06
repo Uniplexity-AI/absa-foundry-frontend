@@ -1,13 +1,21 @@
-repo_path = r'c:\Users\ADMIN\Desktop\uniplexity-ai\ABSA\absa-foundry-frontend\src\components\crm\PromiseToFundModal.vue'
-with open(repo_path, 'r', encoding='utf-8') as f:
+import re
+filepath = 'src/views/Modules/crm/CRMModule.vue'
+with open(filepath, 'r', encoding='utf-8') as f:
     content = f.read()
 
-# Replace hardcoded animate-fade-in-up with conditional
-content = content.replace(
-    'class="bg-white border border-gray-200 px-6 py-4 min-w-[240px] shadow-sm relative group overflow-hidden animate-fade-in-up"',
-    'class="bg-white border border-gray-200 px-6 py-4 min-w-[240px] shadow-sm relative group overflow-hidden" :class="isExportingPdf ? \'\' : \'animate-fade-in-up\'"'
-)
+# 1. Remove the grey stripes from regular KPI cards
+content = content.replace(" border-l-4 border-l-gray-200", "")
+content = content.replace(" hover:border-l-absa-passion", "")
 
-with open(repo_path, 'w', encoding='utf-8') as f:
+# 2. Remove the red stripe from the Analytics KPI card
+content = content.replace(" border-l-4 border-l-[#b3002d]", "")
+
+# 3. Change the font of the KPI numbers to font-mono (the same as the calendar)
+# The text classes look like: class="text-2xl font-black text-absa-passion tracking-tight"
+# Let's replace 'text-2xl font-black' with 'text-2xl font-mono font-black' everywhere in the KPI sections
+content = content.replace("text-2xl font-black", "text-2xl font-mono font-black")
+
+with open(filepath, 'w', encoding='utf-8') as f:
     f.write(content)
-print("done fixing kpi animation")
+
+print("CRMModule.vue updated.")

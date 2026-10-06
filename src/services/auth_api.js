@@ -113,6 +113,27 @@ export default {
     const { data } = await apiClient.post('/admin/roles', payload)
     return data
   },
+
+  async listBranches() {
+    const { data } = await apiClient.get('/admin/branches')
+    return data
+  },
+
+  async createBranch(payload) {
+    const { data } = await apiClient.post('/admin/branches', payload)
+    return data
+  },
+
+  async updateBranch(branchCode, payload) {
+    const { data } = await apiClient.patch('/admin/branches/' + branchCode, payload)
+    return data
+  },
+
+  async deleteBranch(branchCode) {
+    const { data } = await apiClient.delete('/admin/branches/' + branchCode)
+    return data
+  },
+
 }
 
 // ── Password reset helpers (no auth needed) ────────────────────────────────

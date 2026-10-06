@@ -17,10 +17,10 @@
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
-          <button class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+          <button @click="showBranchModal = true; newBranch = {branch_code: '', name: '', location: '', phone: '', email: ''}" class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
             <i class="fas fa-store"></i> Add Branch
           </button>
-          <button class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+          <button @click="showBranchModal = true; newBranch = {branch_code: '', name: '', location: '', phone: '', email: ''}" class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
             <i class="fas fa-cog"></i> Manage Branches
           </button>
           <button @click="showCreateModal = true" class="h-9 px-5 bg-absa-passion text-white text-[10px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 hover:bg-[#b3002d] cursor-pointer">
@@ -132,10 +132,10 @@
             <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[8px]"></i>
           </div>
           <div class="flex items-center border border-gray-200 overflow-hidden bg-gray-50">
-            <button class="h-9 px-3 text-[10px] font-mono font-bold uppercase transition-colors flex items-center gap-1.5 cursor-pointer bg-absa-passion text-white">
+            <button @click="viewMode = 'cards'" :class="viewMode === 'cards' ? 'bg-absa-passion text-white' : 'text-gray-500 hover:text-absa-passion hover:bg-white'" class="h-9 px-3 text-[10px] font-mono font-bold uppercase transition-colors flex items-center gap-1.5 cursor-pointer">
               <i class="fas fa-th"></i>
             </button>
-            <button class="h-9 px-3 text-[10px] font-mono font-bold uppercase transition-colors flex items-center gap-1.5 border-l border-gray-200 cursor-pointer text-gray-500 hover:text-absa-passion hover:bg-white">
+            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'bg-absa-passion text-white' : 'text-gray-500 hover:text-absa-passion hover:bg-white'" class="h-9 px-3 text-[10px] font-mono font-bold uppercase transition-colors flex items-center gap-1.5 border-l border-gray-200 cursor-pointer">
               <i class="fas fa-list"></i>
             </button>
           </div>
@@ -146,14 +146,75 @@
         </div>
       </div>
 
-      <!-- Table View -->
-      <div class="relative z-10 bg-white border border-gray-200 overflow-hidden">
+      
+      <!-- -- CARD VIEW -- -->
+      <div v-if="viewMode === 'cards'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 relative z-10">
+        <div v-for="(u, index) in filteredUsers" :key="u.user_id" 
+             class="group bg-white border border-gray-200 p-5 transition-colors duration-200 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px] hover:border-absa-passion">
+          
+          <div class="absolute top-0 right-0 max-w-[65%] py-1 px-3 text-right leading-[1.15] bg-white border-b border-l border-gray-200 text-[9px] font-mono font-black text-gray-500 uppercase tracking-wider group-hover:bg-absa-passion group-hover:text-white group-hover:border-absa-passion transition-colors z-20">
+            {{ (u.roles || []).join(', ') || 'USER' }}
+          </div>
+  
+          <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="h-12 w-12 shrink-0 flex items-center justify-center bg-red-50 text-absa-passion font-mono font-black text-xl group-hover:bg-absa-passion group-hover:text-white transition-colors">
+                {{ (u.display_name || u.username || '?').charAt(0).toUpperCase() }}
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-black text-[11px] text-gray-900 group-hover:text-absa-passion transition-colors truncate uppercase tracking-tight">{{ u.display_name || u.username }}</h3>
+                <p class="text-[10px] font-mono font-bold text-gray-400 truncate mt-0.5 lowercase">{{ u.email }}</p>
+              </div>
+            </div>
+  
+            <div class="space-y-3 pb-4">
+              <div class="flex items-center justify-between text-[11px] border-b border-gray-200 pb-2">
+                <span class="text-gray-400 font-mono uppercase tracking-widest text-[9px] font-bold">Branch</span>
+                <span class="text-gray-900 font-bold text-right break-words leading-tight max-w-[60%] uppercase">{{ getBranchName(u.branch_code) }}</span>
+              </div>
+              <div class="flex items-center justify-between text-[11px] border-b border-gray-200 pb-2">
+                <span class="text-gray-400 font-mono uppercase tracking-widest text-[9px] font-bold">Dept</span>
+                <span class="px-1.5 py-0.5 bg-blue-50/70 border border-blue-200 text-blue-800 text-[8px] font-mono font-bold uppercase truncate max-w-[60%]">
+                  {{ u.department || 'N/A' }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="text-gray-400 font-mono uppercase tracking-widest text-[9px] font-bold">Status</span>
+                <span :class="u.is_active ? 'text-green-600' : 'text-gray-400'" class="flex items-center gap-1.5 uppercase font-mono font-bold text-[10px]">
+                  <span class="w-1.5 h-1.5 rounded-full" :class="u.is_active ? 'bg-green-500 animate-pulse' : 'bg-gray-300'"></span>
+                  {{ u.is_active ? 'Active' : 'Offline' }}
+                </span>
+              </div>
+            </div>
+          </div>
+  
+          <div class="flex items-center gap-2 pt-4 border-t border-gray-200 relative z-10">
+             <button @click.stop="toggleUserStatus(u)" class="flex-1 h-9 flex items-center justify-center gap-2 text-white transition-colors text-[10px] font-mono font-bold uppercase tracking-widest cursor-pointer" :class="u.is_active ? 'bg-orange-500 hover:bg-orange-600' : 'bg-green-600 hover:bg-green-700'">
+               <i class="fas" :class="u.is_active ? 'fa-ban' : 'fa-check'"></i> {{ u.is_active ? 'Disable' : 'Enable' }}
+             </button>
+             <button @click.stop="openEditUser(u)" class="w-9 h-9 shrink-0 flex items-center justify-center text-gray-400 border border-gray-200 transition-colors cursor-pointer hover:text-absa-passion hover:border-absa-passion" title="Edit user">
+                <i class="fas fa-edit text-xs"></i>
+             </button>
+             <button @click.stop="deleteUser(u)" class="w-9 h-9 shrink-0 flex items-center justify-center text-gray-400 border border-gray-200 transition-colors cursor-pointer hover:text-red-600 hover:border-red-600" title="Delete">
+                <i class="fas fa-trash-alt text-xs"></i>
+             </button>
+          </div>
+        </div>
+        <!-- Empty state -->
+        <div v-if="filteredUsers.length === 0" class="col-span-full text-center py-16 border border-dashed border-gray-200 bg-gray-50">
+          <i class="fas fa-users-slash text-gray-300 text-4xl mb-4"></i>
+          <p class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">No users match current filters</p>
+        </div>
+      </div>
+
+      <div v-else-if="viewMode === 'list'" class="relative z-10 bg-white border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead class="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">User</th>
                 <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Roles</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Branch</th>
                 <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Status</th>
                 <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Last Login</th>
                 <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest text-right">Actions</th>
@@ -285,8 +346,82 @@ const showCreateModal = ref(false)
 const showEditModal = ref(false)
 const saving = ref(false)
 
-const createForm = ref({ username: '', email: '', display_name: '', password: '', role: '' })
-const editForm = ref({ user_id: null, role: '' })
+
+const viewMode = ref('cards')
+const branches = ref([])
+const showBranchModal = ref(false)
+const showManageBranchesModal = ref(false)
+const showEditBranchModal = ref(false)
+const newBranch = ref({branch_code: '', name: '', location: '', phone: '', email: ''})
+const editBranchData = ref({})
+
+const fetchBranches = async () => {
+  try {
+    branches.value = await authApi.listBranches()
+  } catch (err) {
+    console.error('Failed to fetch branches', err)
+  }
+}
+
+const getBranchName = (code) => {
+  if (!code) return 'N/A'
+  const b = branches.value.find(x => x.branch_code === code)
+  return b ? b.name : code
+}
+
+const createBranch = async () => {
+  saving.value = true
+  try {
+    await authApi.createBranch(newBranch.value)
+    showBranchModal.value = false
+    await fetchBranches()
+  } catch (err) {
+    alert(err.message || 'Failed to create branch')
+  } finally {
+    saving.value = false
+  }
+}
+
+const handleEditBranch = (b) => {
+  editBranchData.value = {...b}
+  showEditBranchModal.value = true
+}
+
+const updateBranch = async () => {
+  saving.value = true
+  try {
+    await authApi.updateBranch(editBranchData.value.branch_code, editBranchData.value)
+    showEditBranchModal.value = false
+    await fetchBranches()
+  } catch (err) {
+    alert(err.message || 'Failed to update branch')
+  } finally {
+    saving.value = false
+  }
+}
+
+const deleteBranch = async (b) => {
+  if (!confirm('Are you sure you want to permanently delete branch: ' + b.name + '?')) return
+  try {
+    await authApi.deleteBranch(b.branch_code)
+    await fetchBranches()
+  } catch (err) {
+    alert(err.message || 'Failed to delete branch')
+  }
+}
+
+const toggleBranchStatus = async (b) => {
+  try {
+    const newStatus = b.status === 'active' ? 'inactive' : 'active'
+    await authApi.updateBranch(b.branch_code, { status: newStatus })
+    await fetchBranches()
+  } catch (err) {
+    alert(err.message || 'Failed to update status')
+  }
+}
+
+const createForm = ref({ username: '', email: '', display_name: '', password: '', role: '', branch_code: '' })
+const editForm = ref({ user_id: null, role: '', branch_code: '' })
 
 const fetchUsers = async () => {
   try {
@@ -331,10 +466,10 @@ const handleCreateUser = async () => {
       email: createForm.value.email,
       display_name: createForm.value.display_name,
       password: createForm.value.password,
-      roles: [createForm.value.role]
+      roles: [createForm.value.role], branch_code: createForm.value.branch_code
     })
     showCreateModal.value = false
-    createForm.value = { username: '', email: '', display_name: '', password: '', role: '' }
+    createForm.value = { username: '', email: '', display_name: '', password: '', role: '', branch_code: '' }
     await fetchUsers()
   } catch (err) {
     alert(err.message || 'Failed to create user')
@@ -344,7 +479,7 @@ const handleCreateUser = async () => {
 }
 
 const openEditUser = (u) => {
-  editForm.value = { user_id: u.user_id, role: (u.roles || [])[0] || '' }
+  editForm.value = { user_id: u.user_id, role: (u.roles || [])[0] || '', branch_code: u.branch_code || '' }
   showEditModal.value = true
 }
 
@@ -352,7 +487,7 @@ const handleEditUser = async () => {
   saving.value = true
   try {
     await authApi.updateUser(editForm.value.user_id, {
-      roles: [editForm.value.role]
+      roles: [editForm.value.role], branch_code: editForm.value.branch_code
     })
     showEditModal.value = false
     await fetchUsers()
@@ -413,6 +548,8 @@ onMounted(() => {
   background-size: 40px 40px;
 }
 </style>
+
+
 
 
 

@@ -117,7 +117,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
                   {{ item.accountTier }}
                 </span>
               </div>
-              <button @click="acceptInteraction(item)" class="w-full py-1.5 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none  transition flex items-center justify-center gap-2">
+              <button @click="acceptInteraction(item)" class="w-full py-1.5 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase tracking-widest rounded-none  transition flex items-center justify-center gap-2">
                 Accept <ArrowRightCircle :size="12"/>
               </button>
             </div>
@@ -158,7 +158,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
              <div class="flex gap-2">
                <button class="px-3 py-1 bg-transparent text-gray-300 border border-gray-500 hover:bg-gray-800 text-[10px] font-mono font-bold uppercase rounded-none ">Hold</button>
                <button class="px-3 py-1 bg-transparent text-gray-300 border border-gray-500 hover:bg-gray-800 text-[10px] font-mono font-bold uppercase rounded-none ">Transfer</button>
-               <button class="px-3 py-1 bg-transparent text-red-400 border border-red-500 hover:bg-red-500/20 text-[10px] font-mono font-bold uppercase rounded-none ">Release</button>
+               <button class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-red-500 hover:text-red-500 text-[10px] font-mono font-bold uppercase rounded-none ">Release</button>
              </div>
           </div>
 
@@ -173,7 +173,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
                 <button @click="showEscalationModal = true" class="px-3 py-1 bg-transparent text-orange-500 border border-orange-500 text-[9px] font-mono font-bold uppercase rounded-none hover:bg-orange-50 transition">Escalate</button>
                 
                 <button @click="showSmsModal = true" class="px-3 py-1 bg-transparent text-gray-700 border border-gray-300 hover:border-gray-500 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-1"><MessageSquare :size="10"/> SMS Gateway</button>
-                <button @click="showWrapUpModal = true" class="px-3 py-1 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase rounded-none  transition">Wrap-Up Call</button>
+                <button @click="showWrapUpModal = true" class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase rounded-none  transition">Wrap-Up Call</button>
               </div>
             </div>
             <!-- Screen Pop Main Info -->
@@ -187,7 +187,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
                  </div>
                </div>
                <div class="text-right">
-                 <div class="inline-block px-2 py-1 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase tracking-widest rounded-none mb-1">
+                 <div class="inline-block px-2 py-1 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase tracking-widest rounded-none mb-1">
                    {{ currentCustomer.tier }} Tier
                  </div>
                  <div class="text-[10px] font-mono text-gray-500">Open Tickets: <span class="font-bold text-orange-500">{{ currentCustomer.openTickets }}</span></div>
@@ -260,7 +260,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
           </div>
           <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
             <button @click="showTicketModal = false" class="px-4 py-2 border border-gray-200 text-gray-600 text-[10px] font-bold uppercase rounded-none">Cancel</button>
-            <button @click="showTicketModal = false" class="px-4 py-2 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-bold uppercase rounded-none ">Generate Ticket</button>
+            <button @click="showTicketModal = false" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none ">Generate Ticket</button>
           </div>
         </div>
       </div>
@@ -273,7 +273,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
             <button @click="showTemplateModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="14"/></button>
           </div>
           <div class="p-4 bg-gray-50 border-b border-gray-100 flex gap-2">
-             <button class="px-3 py-1 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase rounded-none">Holding (>=2 Days)</button>
+             <button class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase rounded-none">Holding (>=2 Days)</button>
              <button class="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion">Resolution</button>
           </div>
           <div class="p-6 space-y-3 font-mono text-xs">
@@ -312,7 +312,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
           <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end">
             
                 <button @click="showSmsModal = true" class="px-3 py-1 bg-transparent text-gray-700 border border-gray-300 hover:border-gray-500 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-1"><MessageSquare :size="10"/> SMS Gateway</button>
-                <button @click="showWrapUpModal = false" class="px-6 py-2 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-bold uppercase rounded-none ">Complete Wrap-Up</button>
+                <button @click="showWrapUpModal = false" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none ">Complete Wrap-Up</button>
           </div>
         </div>
       </div>
@@ -339,7 +339,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
             </div>
           </div>
           <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-            <button @click="handleSendSms" class="px-6 py-2 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-bold uppercase rounded-none flex items-center gap-2">Send SMS <Send :size="12"/></button>
+            <button @click="handleSendSms" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none flex items-center gap-2">Send SMS <Send :size="12"/></button>
           </div>
         </div>
       </div>

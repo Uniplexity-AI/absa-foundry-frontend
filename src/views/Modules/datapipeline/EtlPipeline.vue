@@ -1,343 +1,3 @@
-<template>
-  <div class="absa-etl">
-    <div class="absa-etl__content">
-    <!-- Breadcrumb -->
-    <div class="absa-etl__breadcrumb">
-      <span>Home</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span>Operations</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      <span class="absa-etl__breadcrumb-current">ETL Execution Logs</span>
-    </div>
-
-    <!-- Header -->
-    <div class="absa-etl__header">
-      <div>
-        <h1 class="absa-etl__title">Data Pipeline Health</h1>
-        <p class="absa-etl__subtitle">Monitoring ingestion, transformation, and quality across all data sources</p>
-      </div>
-      <div class="absa-etl__header-right">
-        <button class="absa-etl__btn absa-etl__btn--outline" @click="triggerHistoricalExtraction" :disabled="isExtracting">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          {{ isExtracting ? 'Extracting...' : 'Extract Historical Training Data' }}
-        </button>
-        <button class="absa-etl__btn absa-etl__btn--outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export Logs
-        </button>
-        <button class="absa-etl__btn absa-etl__btn--primary" @click="openPipelineRunner">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Trigger Manual Run
-        </button>
-      </div>
-    </div>
-
-
-    <!-- ═══ Pipeline Runner Modal ═══ -->
-    <Teleport to="body">
-  <div v-if="showRunModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md" @click.self="closeRunModal">
-    <div class="bg-white rounded-none w-full max-w-xl overflow-hidden shadow-2xl relative border border-gray-200">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30"></div>
-      
-      <!-- Header -->
-      <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
-        <div class="flex items-center gap-2">
-          <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
-          <h3 class="text-xs  font-bold uppercase tracking-widest text-gray-900">Run AI Pipeline</h3>
-        </div>
-        <button @click="closeRunModal" :disabled="isRunning" class="text-gray-400 hover:text-absa-passion transition-colors disabled:opacity-50">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-
-      <!-- Body -->
-      <div class="p-5 space-y-5 relative z-10 bg-white/50">
-        <div class="text-[10px]  text-gray-500 uppercase tracking-widest leading-relaxed">
-          Runs Feature Engine ? State Engine ? Predictions in sequence for the selected date.
-        </div>
-
-        <div>
-          <label class="block text-[10px]  font-bold uppercase tracking-widest text-gray-900 mb-1.5">As-of Date</label>
-          <div class="flex items-center gap-3">
-            <input
-              v-model="runDate"
-              type="date"
-              class="border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10  font-bold text-gray-700"
-              :disabled="isRunning"
-              :max="todayStr"
-            />
-            <span class="text-[9px]  text-gray-400 uppercase tracking-widest hidden sm:inline">Defaults to today. Predictions are keyed by this date.</span>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <div
-            v-for="(step, index) in pipelineSteps"
-            :key="step.id"
-            class="flex items-center gap-3 px-4 py-3 border border-gray-200 bg-white relative z-10 transition-colors"
-            :class="{
-              'border-absa-passion shadow-[0_0_0_1px_rgba(220,0,55,1)]': step.status === 'running',
-              'border-green-500': step.status === 'done',
-              'border-red-500': step.status === 'error',
-              'opacity-60': step.status === 'idle'
-            }"
-          >
-            <div class="flex-shrink-0 w-6 h-6 rounded-none flex items-center justify-center border"
-              :class="{
-                'border-gray-300 text-gray-400': step.status === 'idle',
-                'border-absa-passion text-absa-passion bg-red-50': step.status === 'running',
-                'border-green-500 text-green-500 bg-green-50': step.status === 'done',
-                'border-red-500 text-red-500 bg-red-50': step.status === 'error',
-              }"
-            >
-              <!-- idle -->
-              <span class="text-[10px]  font-bold" v-if="step.status === 'idle'">{{ index + 1 }}</span>
-              <!-- running -->
-              <i v-else-if="step.status === 'running'" class="fas fa-circle-notch fa-spin text-[10px]"></i>
-              <!-- done -->
-              <i v-else-if="step.status === 'done'" class="fas fa-check text-[10px]"></i>
-              <!-- error -->
-              <i v-else-if="step.status === 'error'" class="fas fa-times text-[10px]"></i>
-            </div>
-            
-            <div class="flex-1 min-w-0">
-              <div class="text-[10px]  font-bold uppercase tracking-widest"
-                :class="{
-                  'text-gray-900': step.status !== 'idle' && step.status !== 'error',
-                  'text-gray-500': step.status === 'idle',
-                  'text-red-600': step.status === 'error'
-                }"
-              >{{ step.label }}</div>
-              <div class="text-[9px]  text-gray-400 mt-0.5 truncate" v-if="step.detail">{{ step.detail }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="runResult" class="flex items-center gap-2 px-4 py-3 border text-[10px]  font-bold uppercase tracking-widest"
-          :class="runResult.ok ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'"
-        >
-          <i class="fas" :class="runResult.ok ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
-          {{ runResult.message }}
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="px-5 py-4 border-t border-gray-200 bg-white relative z-10 flex justify-end gap-3">
-        <button @click="closeRunModal" :disabled="isRunning" class="px-4 py-2.5 text-[10px]  font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900 transition-colors">
-          Cancel
-        </button>
-        <button @click="startPipeline" :disabled="isRunning || !!runResult?.ok" class="flex items-center gap-2 px-6 py-2.5 bg-absa-passion text-white text-[10px]  font-bold rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors disabled:opacity-50">
-          <i v-if="!isRunning" class="fas fa-play text-[9px]"></i>
-          <i v-else class="fas fa-circle-notch fa-spin text-[9px]"></i>
-          {{ isRunning ? 'Running...' : 'Run Pipeline' }}
-        </button>
-      </div>
-
-    </div>
-  </div>
-</Teleport>
-
-
-    <!-- Historical Extraction Progress -->
-    <div v-if="extractionProgress && extractionProgress.status !== 'idle'" class="absa-etl__progress-container">
-      <div class="absa-etl__progress-header">
-        <span><strong>Historical Extraction</strong> <span v-if="extractionProgress.status === 'running'">- Processing {{ extractionProgress.current_date }}</span></span>
-        <span>{{ Math.round((extractionProgress.current / extractionProgress.total) * 100) || 0 }}% ({{ extractionProgress.current }} / {{ extractionProgress.total }} Months)</span>
-      </div>
-      <div class="absa-etl__progress-track">
-        <div class="absa-etl__progress-fill" :style="{ width: ((extractionProgress.current / extractionProgress.total) * 100) + '%' }"></div>
-      </div>
-      <div v-if="extractionProgress.status === 'completed'" class="absa-etl__progress-complete">
-        Historical Extraction Completed Successfully!
-      </div>
-    </div>
-
-    <!-- ═══ System Health Cards ═══ -->
-    <LoadingSkeleton v-if="loading" type="stats" />
-    <LoadingSkeleton v-if="loading" type="table" :count="4" />
-    <template v-else>
-    <div class="absa-etl__health-grid">
-      <div class="absa-metric-bg absa-etl__health-card">
-        <div class="absa-etl__health-top">
-          <div class="absa-etl__health-icon absa-etl__health-icon--green">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-          </div>
-          <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
-        </div>
-        <div class="absa-etl__health-label">PostgreSQL Cluster</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">{{ pgStatus }}</div>
-        <div class="absa-etl__health-stat">Avg Duration: {{ pgLatency }}</div>
-      </div>
-
-      <div class="absa-metric-bg absa-etl__health-card">
-        <div class="absa-etl__health-top">
-          <div class="absa-etl__health-icon absa-etl__health-icon--blue">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <span class="absa-etl__health-dot absa-etl__health-dot--green"></span>
-        </div>
-        <div class="absa-etl__health-label">Redis Cache</div>
-        <div class="absa-etl__health-value absa-etl__health-value--green">{{ redisStatus }}</div>
-        <div class="absa-etl__health-stat">Memory: {{ redisMemory }}</div>
-      </div>
-
-      <div class="absa-metric-bg absa-etl__health-card">
-        <div class="absa-etl__health-top">
-          <div class="absa-etl__health-icon absa-etl__health-icon--amber">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </div>
-          <span class="absa-etl__health-dot absa-etl__health-dot--amber"></span>
-        </div>
-        <div class="absa-etl__health-label">API Gateway</div>
-        <div class="absa-etl__health-value absa-etl__health-value--amber">{{ gatewayStatus }}</div>
-        <div class="absa-etl__health-stat">Uptime: {{ gatewayUptime }}</div>
-      </div>
-    </div>
-
-    <!-- ═══ Quality Score Trend ═══ -->
-    <div class="absa-chart-container absa-etl__quality">
-      <div class="absa-etl__quality-header">
-        <div>
-          <h3 class="absa-etl__quality-title">Quality Score Trend</h3>
-          <p class="absa-etl__quality-sub">Data Integrity Score: <strong>{{ avgQuality }}</strong> &bull; {{ qualityTrend.length }} data points</p>
-        </div>
-        <div class="absa-etl__quality-legend">
-          <span class="absa-etl__legend-label">
-            <span class="absa-etl__legend-dot absa-etl__legend-dot--maroon"></span> Quality Score
-          </span>
-        </div>
-      </div>
-      <div class="absa-etl__quality-chart">
-        <svg viewBox="0 0 800 160" preserveAspectRatio="none" class="absa-etl__quality-svg">
-          <defs>
-            <linearGradient id="qualityGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(190,15,44,0.25)"/>
-              <stop offset="100%" stop-color="rgba(190,15,44,0.02)"/>
-            </linearGradient>
-          </defs>
-          <!-- Grid -->
-          <line v-for="i in 4" :key="'g'+i" x1="0" :y1="i*40" x2="800" :y2="i*40" stroke="#F3F4F6" stroke-width="1"/>
-          <!-- Area -->
-          <polygon :points="qualityArea" fill="url(#qualityGrad)"/>
-          <!-- Line -->
-          <polyline :points="qualityLine" fill="none" stroke="#BE0F2C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Threshold line -->
-          <line x1="0" y1="30" x2="800" y2="30" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,4"/>
-          <text x="805" y="34" fill="#F59E0B" font-size="10" font-family="monospace">90%</text>
-        </svg>
-      </div>
-    </div>
-
-    <!-- ═══ Execution History ═══ -->
-    <div class="absa-etl__section">
-      <div class="absa-etl__section-header">
-        <h3 class="absa-etl__section-title">Execution History</h3>
-        <span class="absa-etl__section-period">Today</span>
-      </div>
-      <div class="absa-etl__table-wrap">
-        <table class="absa-etl__table">
-          <thead class="absa-table-header">
-            <tr>
-              <th>Run ID</th>
-              <th>Batch ID</th>
-              <th>Duration</th>
-              <th>Rows Recv / Valid / Loaded / Rejected</th>
-              <th>Quality Score</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="run in executionHistory" :key="run.id">
-              <td class="absa-etl__run-id">{{ run.runId }}</td>
-              <td class="absa-etl__table-mono">{{ run.batchId }}</td>
-              <td class="absa-etl__table-val">{{ run.duration }}</td>
-              <td>
-                <div class="absa-etl__rows">
-                  <span class="absa-etl__row-stat">{{ run.rowsReceived }}</span>
-                  <span class="absa-etl__row-sep">/</span>
-                  <span class="absa-etl__row-stat absa-etl__row-stat--green">{{ run.rowsValid }}</span>
-                  <span class="absa-etl__row-sep">/</span>
-                  <span class="absa-etl__row-stat">{{ run.rowsLoaded }}</span>
-                  <span class="absa-etl__row-sep">/</span>
-                  <span class="absa-etl__row-stat absa-etl__row-stat--red" v-if="run.rowsRejected > 0">{{ run.rowsRejected }}</span>
-                  <span class="absa-etl__row-stat" v-else>0</span>
-                </div>
-              </td>
-              <td>
-                <div class="absa-etl__quality-cell">
-                  <div class="absa-etl__quality-bar">
-                    <div class="absa-etl__quality-fill" :class="'absa-etl__quality-fill--' + run.qualityClass" :style="{ width: run.qualityScore + '%' }"></div>
-                  </div>
-                  <span class="absa-etl__quality-val" :class="'absa-etl__quality-val--' + run.qualityClass">{{ run.qualityScore }}%</span>
-                </div>
-              </td>
-              <td>
-                <span class="absa-etl__status" :class="'absa-etl__status--' + run.statusClass">
-                  <span class="absa-etl__status-dot" :class="'absa-etl__status-dot--' + run.statusClass"></span>
-                  {{ run.status }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="absa-etl__pagination">
-        <span>Showing {{ executionHistory.length }} executions</span>
-        <div class="absa-etl__page-btns">
-          <button disabled><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button class="absa-etl__page-btn--active">1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>...</button>
-          <button>2211</button>
-          <button><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ Bottom Stats ═══ -->
-    <div class="absa-etl__stats-grid">
-      <div class="absa-metric-bg absa-etl__stat-card">
-        <div class="absa-etl__stat-icon absa-etl__stat-icon--blue">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
-        </div>
-        <div class="absa-etl__stat-value">{{ totalRuns }}</div>
-        <div class="absa-etl__stat-label">Total Runs</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">{{ executionHistory.length }} shown</div>
-      </div>
-
-      <div class="absa-metric-bg absa-etl__stat-card">
-        <div class="absa-etl__stat-icon absa-etl__stat-icon--green">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        </div>
-        <div class="absa-etl__stat-value">{{ avgQuality }}</div>
-        <div class="absa-etl__stat-label">Average Quality</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">{{ qualityTrend.length }} runs tracked</div>
-      </div>
-
-      <div class="absa-metric-bg absa-etl__stat-card">
-        <div class="absa-etl__stat-icon absa-etl__stat-icon--amber">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </div>
-        <div class="absa-etl__stat-value">{{ failedRetries }}</div>
-        <div class="absa-etl__stat-label">Failed Retries</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">Last 24h</div>
-      </div>
-
-      <div class="absa-metric-bg absa-etl__stat-card">
-        <div class="absa-etl__stat-icon absa-etl__stat-icon--red">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div class="absa-etl__stat-value">{{ pgLatency }}</div>
-        <div class="absa-etl__stat-label">Avg Query Latency</div>
-        <div class="absa-etl__stat-trend absa-etl__stat-trend--neutral">PostgreSQL</div>
-      </div>
-    </div>
-    </template>
-  </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
@@ -559,286 +219,314 @@ onMounted(() => {
 })
 </script>
 
+<template>
+  <div class="min-h-screen bg-gray-50 flex flex-col font-sans relative text-gray-900">
+    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
+
+    <header class="bg-white border-b border-gray-200 shrink-0 relative z-0">
+      <div class="max-w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+          <div>
+            <h1 class="text-2xl font-black text-gray-900 uppercase tracking-tight">Data Pipeline Health</h1>
+            <p class="text-[10px] font-mono text-gray-400 uppercase tracking-widest mt-1">Monitoring ingestion, transformation, and quality across all data sources</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button @click="triggerHistoricalExtraction" :disabled="isExtracting" class="h-9 px-4 bg-white border border-gray-200 text-gray-500 transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest cursor-pointer hover:border-absa-passion hover:text-absa-passion disabled:opacity-50">
+              <i class="fas" :class="isExtracting ? 'fa-circle-notch fa-spin' : 'fa-history'"></i>
+              {{ isExtracting ? 'Extracting...' : 'Extract Historical Data' }}
+            </button>
+            <button class="h-9 px-4 bg-white border border-gray-200 text-gray-500 transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest cursor-pointer hover:border-absa-passion hover:text-absa-passion">
+              <i class="fas fa-file-export"></i>
+              Export Logs
+            </button>
+            <button @click="openPipelineRunner" class="h-9 px-5 bg-absa-passion text-white text-[10px] font-black uppercase tracking-widest transition-colors flex items-center gap-2 hover:bg-absa-power cursor-pointer">
+              <i class="fas fa-play"></i>
+              Trigger Manual Run
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-1 max-w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 relative z-0 space-y-8 pb-20">
+      
+      <div v-if="extractionProgress && extractionProgress.status !== 'idle'" class="bg-white border border-gray-200 p-6 relative group overflow-hidden dot-pattern">
+        <div class="relative z-10 flex flex-col gap-4">
+          <div class="flex justify-between items-center">
+            <div class="text-[10px] font-black uppercase tracking-widest text-gray-900">
+              Historical Extraction
+              <span v-if="extractionProgress.status === 'running'" class="text-gray-400 ml-2">- Processing {{ extractionProgress.current_date }}</span>
+            </div>
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+              {{ Math.round((extractionProgress.current / extractionProgress.total) * 100) || 0 }}% ({{ extractionProgress.current }} / {{ extractionProgress.total }} Months)
+            </div>
+          </div>
+          <div class="w-full h-2 bg-gray-100 overflow-hidden relative">
+            <div class="absolute inset-y-0 left-0 bg-absa-passion transition-all duration-300" :style="{ width: ((extractionProgress.current / extractionProgress.total) * 100) + '%' }"></div>
+          </div>
+          <div v-if="extractionProgress.status === 'completed'" class="text-[10px] font-black text-green-600 uppercase tracking-widest">
+            Historical Extraction Completed Successfully!
+          </div>
+        </div>
+      </div>
+
+      <LoadingSkeleton v-if="loading" type="stats" />
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- PostgreSQL -->
+        <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
+          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">PostgreSQL</div>
+          <div class="flex justify-between items-start mb-6 relative z-10">
+            <div class="text-gray-400"><i class="fas fa-database text-lg"></i></div>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]"></span>
+          </div>
+          <div class="relative z-10 mt-auto">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cluster Status</p>
+            <div class="flex items-end gap-3 mt-1">
+              <span class="text-3xl font-black tracking-tighter" :class="pgStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ pgStatus }}</span>
+            </div>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Avg Duration: {{ pgLatency }}</p>
+          </div>
+        </div>
+
+        <!-- Redis -->
+        <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
+          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">Redis Cache</div>
+          <div class="flex justify-between items-start mb-6 relative z-10">
+            <div class="text-gray-400"><i class="fas fa-bolt text-lg"></i></div>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]"></span>
+          </div>
+          <div class="relative z-10 mt-auto">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cache Status</p>
+            <div class="flex items-end gap-3 mt-1">
+              <span class="text-3xl font-black tracking-tighter" :class="redisStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ redisStatus }}</span>
+            </div>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Memory: {{ redisMemory }}</p>
+          </div>
+        </div>
+
+        <!-- API Gateway -->
+        <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
+          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">API Gateway</div>
+          <div class="flex justify-between items-start mb-6 relative z-10">
+            <div class="text-gray-400"><i class="fas fa-network-wired text-lg"></i></div>
+            <span class="w-2.5 h-2.5 rounded-full" :class="gatewayStatus === 'Operational' ? 'bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]' : 'bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.2)]'"></span>
+          </div>
+          <div class="relative z-10 mt-auto">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Gateway Status</p>
+            <div class="flex items-end gap-3 mt-1">
+              <span class="text-3xl font-black tracking-tighter" :class="gatewayStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ gatewayStatus }}</span>
+            </div>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Uptime: {{ gatewayUptime }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-3 border border-gray-200 flex flex-col relative z-0">
+        <div class="flex justify-between items-center p-3 border-b border-gray-100">
+          <div>
+            <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight">Quality Score Trend</h3>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Data Integrity Score: <strong class="text-gray-900">{{ avgQuality }}</strong> &bull; {{ qualityTrend.length }} data points</p>
+          </div>
+        </div>
+        <div class="h-[160px] w-full pt-4 px-2">
+          <svg viewBox="0 0 800 160" preserveAspectRatio="none" class="w-full h-full">
+            <defs>
+              <linearGradient id="qualityGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(220,0,55,0.25)"/>
+                <stop offset="100%" stop-color="rgba(220,0,55,0.02)"/>
+              </linearGradient>
+            </defs>
+            <line v-for="i in 4" :key="'g'+i" x1="0" :y1="i*40" x2="800" :y2="i*40" stroke="#F3F4F6" stroke-width="1"/>
+            <polygon :points="qualityArea" fill="url(#qualityGrad)"/>
+            <polyline :points="qualityLine" fill="none" stroke="#DC0037" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="0" y1="30" x2="800" y2="30" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <text x="805" y="34" fill="#F59E0B" font-size="10" font-family="monospace">90%</text>
+          </svg>
+        </div>
+      </div>
+
+      <div>
+        <div class="bg-white p-3 border border-gray-200 flex flex-col md:flex-row gap-3 items-center justify-between relative z-0 transition-colors hover:border-absa-passion border-b-0">
+          <div class="flex items-center gap-3">
+             <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight ml-2">Execution History</h3>
+             <span class="px-2 py-0.5 bg-red-50 text-absa-passion border border-red-100 text-[9px] font-black uppercase tracking-widest">Today</span>
+          </div>
+        </div>
+
+        <div class="relative z-0 bg-white border border-gray-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Run ID</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Batch ID</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Duration</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Rows R/V/L/R</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest">Quality</th>
+                  <th class="px-4 py-3 text-[9px] font-black text-gray-500 uppercase tracking-widest text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr v-for="run in executionHistory" :key="run.id" class="hover:bg-gray-50 transition-colors group">
+                  <td class="px-4 py-3">
+                    <div class="text-[11px] font-black text-absa-passion uppercase">{{ run.id }}</div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="text-[11px] font-black text-gray-900 uppercase">{{ run.batchId }}</div>
+                    
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="text-[10px] font-black text-gray-900 uppercase">{{ run.duration }}</div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-1.5 text-[10px] font-black text-gray-500 uppercase">
+                      <span class="text-gray-900">{{ run.rowsReceived }}</span> <span class="text-gray-300">/</span>
+                      <span class="text-green-600">{{ run.rowsValid }}</span> <span class="text-gray-300">/</span>
+                      <span class="text-blue-600">{{ run.rowsLoaded }}</span> <span class="text-gray-300">/</span>
+                      <span class="text-red-600">{{ run.rowsRejected }}</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="text-[11px] font-black uppercase" :class="run.qualityScore >= 90 ? 'text-green-600' : 'text-amber-600'">
+                      {{ run.qualityScore }}%
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 border text-[9px] font-black uppercase tracking-widest"
+                      :class="run.status === 'SUCCESS' ? 'text-green-600 bg-green-50 border-green-200' : run.status === 'FAILED' ? 'text-red-600 bg-red-50 border-red-200' : 'text-amber-600 bg-amber-50 border-amber-200'">
+                      {{ run.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <Teleport to="body">
+  <div v-if="showRunModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md" @click.self="closeRunModal">
+    <div class="bg-white rounded-none w-full max-w-xl overflow-hidden shadow-2xl relative border border-gray-200">
+      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30"></div>
+      
+      <!-- Header -->
+      <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
+        <div class="flex items-center gap-2">
+          <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
+          <h3 class="text-xs  font-bold uppercase tracking-widest text-gray-900">Run AI Pipeline</h3>
+        </div>
+        <button @click="closeRunModal" :disabled="isRunning" class="text-gray-400 hover:text-absa-passion transition-colors disabled:opacity-50">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-5 space-y-5 relative z-10 bg-white/50">
+        <div class="text-[10px]  text-gray-500 uppercase tracking-widest leading-relaxed">
+          Runs Feature Engine ? State Engine ? Predictions in sequence for the selected date.
+        </div>
+
+        <div>
+          <label class="block text-[10px]  font-bold uppercase tracking-widest text-gray-900 mb-1.5">As-of Date</label>
+          <div class="flex items-center gap-3">
+            <input
+              v-model="runDate"
+              type="date"
+              class="border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10  font-bold text-gray-700"
+              :disabled="isRunning"
+              :max="todayStr"
+            />
+            <span class="text-[9px]  text-gray-400 uppercase tracking-widest hidden sm:inline">Defaults to today. Predictions are keyed by this date.</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div
+            v-for="(step, index) in pipelineSteps"
+            :key="step.id"
+            class="flex items-center gap-3 px-4 py-3 border border-gray-200 bg-white relative z-10 transition-colors"
+            :class="{
+              'border-absa-passion shadow-[0_0_0_1px_rgba(220,0,55,1)]': step.status === 'running',
+              'border-green-500': step.status === 'done',
+              'border-red-500': step.status === 'error',
+              'opacity-60': step.status === 'idle'
+            }"
+          >
+            <div class="flex-shrink-0 w-6 h-6 rounded-none flex items-center justify-center border"
+              :class="{
+                'border-gray-300 text-gray-400': step.status === 'idle',
+                'border-absa-passion text-absa-passion bg-red-50': step.status === 'running',
+                'border-green-500 text-green-500 bg-green-50': step.status === 'done',
+                'border-red-500 text-red-500 bg-red-50': step.status === 'error',
+              }"
+            >
+              <!-- idle -->
+              <span class="text-[10px]  font-bold" v-if="step.status === 'idle'">{{ index + 1 }}</span>
+              <!-- running -->
+              <i v-else-if="step.status === 'running'" class="fas fa-circle-notch fa-spin text-[10px]"></i>
+              <!-- done -->
+              <i v-else-if="step.status === 'done'" class="fas fa-check text-[10px]"></i>
+              <!-- error -->
+              <i v-else-if="step.status === 'error'" class="fas fa-times text-[10px]"></i>
+            </div>
+            
+            <div class="flex-1 min-w-0">
+              <div class="text-[10px]  font-bold uppercase tracking-widest"
+                :class="{
+                  'text-gray-900': step.status !== 'idle' && step.status !== 'error',
+                  'text-gray-500': step.status === 'idle',
+                  'text-red-600': step.status === 'error'
+                }"
+              >{{ step.label }}</div>
+              <div class="text-[9px]  text-gray-400 mt-0.5 truncate" v-if="step.detail">{{ step.detail }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="runResult" class="flex items-center gap-2 px-4 py-3 border text-[10px]  font-bold uppercase tracking-widest"
+          :class="runResult.ok ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'"
+        >
+          <i class="fas" :class="runResult.ok ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+          {{ runResult.message }}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-5 py-4 border-t border-gray-200 bg-white relative z-10 flex justify-end gap-3">
+        <button @click="closeRunModal" :disabled="isRunning" class="px-4 py-2.5 text-[10px]  font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900 transition-colors">
+          Cancel
+        </button>
+        <button @click="startPipeline" :disabled="isRunning || !!runResult?.ok" class="flex items-center gap-2 px-6 py-2.5 bg-absa-passion text-white text-[10px]  font-bold rounded-none uppercase tracking-widest shadow-none hover:bg-absa-power transition-colors disabled:opacity-50">
+          <i v-if="!isRunning" class="fas fa-play text-[9px]"></i>
+          <i v-else class="fas fa-circle-notch fa-spin text-[9px]"></i>
+          {{ isRunning ? 'Running...' : 'Run Pipeline' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</Teleport>
+    
+  </div>
+</template>
+
 <style scoped>
-/* ═══ ETL Pipeline Health ═══ */
-.absa-etl__content {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-  flex: 1;
+.dot-pattern {
+  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
-.absa-etl__breadcrumb {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 600; color: #9CA3AF;
-  margin-bottom: 14px; 
-}
-.absa-etl__breadcrumb-current { color: #BE0F2C; }
-
-/* Header */
-.absa-etl__header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
-}
-.absa-etl__title { font-size: 1.5rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
-.absa-etl__subtitle { text-transform: uppercase; font-weight: 900; font-size: 0.6rem; letter-spacing: 0.05em; font-size: 0.725rem; color: #9CA3AF; margin: 0;  }
-
-.absa-etl__header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.absa-etl__btn { text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.65rem;
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: 2px; text-transform: uppercase; font-size: 0.7rem;
-  font-weight: 900; cursor: pointer; transition: all 150ms ease;
-  border: 1px solid #E8E8EC; background: #FFF; color: #4B5563;
-  font-family: 'Montserrat', system-ui, sans-serif; white-space: nowrap;
-}
-.absa-etl__btn:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-etl__btn--primary { background: #BE0F2C; color: #FFF; border-color: transparent; }
-.absa-etl__btn--primary:hover { background: #A01028; color: #FFF; border-color: transparent; }
-.absa-etl__btn--primary:hover { opacity: 0.9; color: #FFF; }
-.absa-etl__btn--outline { background: #FFF; }
-
-
-
-/* Health Cards */
-.absa-etl__health-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.absa-etl__health-card { padding: 20px; border-radius: 0 !important; }
-.absa-etl__health-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-.absa-etl__health-icon { width: 38px; height: 38px; border-radius: 0; display: flex; align-items: center; justify-content: center; }
-.absa-etl__health-icon--green { background: #DCFCE7; color: #16A34A; }
-.absa-etl__health-icon--blue { background: #DBEAFE; color: #2563EB; }
-.absa-etl__health-icon--amber { background: #FEF3C7; color: #D97706; }
-
-.absa-etl__health-dot { width: 10px; height: 10px; border-radius: 50%; }
-.absa-etl__health-dot--green { background: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
-.absa-etl__health-dot--amber { background: #F59E0B; box-shadow: 0 0 0 3px rgba(245,158,11,0.2); }
-
-.absa-etl__health-label {  font-size: 0.6rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
-.absa-etl__health-value { font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 2px; }
-.absa-etl__health-value--green { color: #16A34A; }
-.absa-etl__health-value--amber { color: #D97706; }
-.absa-etl__health-stat {  font-size: 0.6rem; color: #9CA3AF; }
-
-/* Quality Chart */
-.absa-etl__quality { margin-bottom: 24px; }
-.absa-etl__quality-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.absa-etl__quality-title { font-size: 0.9rem; font-weight: 900; color: #111827; margin: 0 0 2px 0; }
-.absa-etl__quality-sub { font-size: 0.675rem; color: #9CA3AF; margin: 0;  }
-.absa-etl__quality-sub strong { color: #111827; }
-.absa-etl__quality-legend { }
-.absa-etl__legend-label { display: flex; align-items: center; gap: 6px; font-size: 0.65rem; font-weight: 600; color: #6B7280; }
-.absa-etl__legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-.absa-etl__legend-dot--maroon { background: #BE0F2C; }
-.absa-etl__quality-chart { height: 160px; }
-.absa-etl__quality-svg { width: 100%; height: 100%; }
-
-/* Section */
-.absa-etl__section { margin-bottom: 24px; }
-.absa-etl__section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.absa-etl__section-title { font-size: 0.9rem; font-weight: 900; color: #111827; margin: 0; }
-.absa-etl__section-period {  font-size: 0.575rem; font-weight: 900; color: #BE0F2C; background: #FDE8EC; padding: 3px 10px; border-radius: 2px; text-transform: uppercase; }
-
-/* Table */
-.absa-etl__table-wrap { background: #FFF; border: 1px solid #E8E8EC; border-radius: 0; overflow: hidden; }
-.absa-etl__table { width: 100%; border-collapse: collapse; font-size: 0.725rem; }
-.absa-etl__table th {  font-size: 0.575rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.06em; text-align: left; padding: 12px 20px;  text-transform: uppercase;}
-.absa-etl__table td { padding: 13px 20px; border-bottom: 1px solid #F3F4F6; vertical-align: middle; }
-.absa-etl__table tbody tr:hover { background: #F9FAFB; }
-.absa-etl__table-val { font-weight: 900; color: #111827; }
-.absa-etl__table-mono {  font-size: 0.6rem; color: #6B7280; }
-.absa-etl__run-id { font-weight: 900; color: #BE0F2C;  font-size: 0.675rem; }
-
-/* Row stats */
-.absa-etl__rows { display: flex; align-items: center; gap: 4px; }
-.absa-etl__row-stat {  font-size: 0.6rem; font-weight: 900; color: #6B7280; }
-.absa-etl__row-stat--green { color: #16A34A; }
-.absa-etl__row-stat--red { color: #DC2626; }
-.absa-etl__row-sep { color: #D1D5DB; font-size: 0.6rem; }
-
-/* Quality cell */
-.absa-etl__quality-cell { display: flex; align-items: center; gap: 8px; }
-.absa-etl__quality-bar { width: 60px; height: 6px; background: #E5E7EB; border-radius: 0; overflow: hidden; }
-.absa-etl__quality-fill { height: 100%; border-radius: 0; }
-.absa-etl__quality-fill--good { background: #16A34A; }
-.absa-etl__quality-fill--warning { background: #F59E0B; }
-.absa-etl__quality-val { font-weight: 900; font-size: 0.7rem; }
-.absa-etl__quality-val--good { color: #16A34A; }
-.absa-etl__quality-val--warning { color: #D97706; }
-
-/* Status */
-.absa-etl__status { display: inline-flex; align-items: center; gap: 6px;  font-size: 0.6rem; font-weight: 900; letter-spacing: 0.04em; padding: 4px 12px; border-radius: 2px; text-transform: uppercase; }
-.absa-etl__status-dot { width: 6px; height: 6px; border-radius: 50%; }
-.absa-etl__status--completed { background: #DCFCE7; color: #16A34A; }
-.absa-etl__status--running { background: #DBEAFE; color: #2563EB; }
-.absa-etl__status--failed { background: #FEE2E2; color: #DC2626; }
-.absa-etl__status-dot--completed { background: #16A34A; }
-.absa-etl__status-dot--running { background: #2563EB; animation: statusPulse 1.5s ease-in-out infinite; }
-.absa-etl__status-dot--failed { background: #DC2626; }
-@keyframes statusPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* Pagination */
-.absa-etl__pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #F3F4F6;  font-size: 0.6rem; color: #9CA3AF; }
-.absa-etl__page-btns { display: flex; gap: 4px; }
-.absa-etl__page-btns button { min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #E8E8EC; border-radius: 2px; text-transform: uppercase; background: #FFF; color: #4B5563;  font-size: 0.6rem; font-weight: 900; cursor: pointer; transition: all 150ms ease; }
-.absa-etl__page-btns button:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.absa-etl__page-btns button:disabled { opacity: 0.35; cursor: not-allowed; }
-.absa-etl__page-btn--active { background: #BE0F2C !important; color: #FFF !important; border-color: #BE0F2C !important; }
-
-/* Bottom Stats */
-.absa-etl__stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.absa-etl__stat-card { padding: 20px; }
-.absa-etl__stat-icon { width: 36px; height: 36px; border-radius: 0; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-.absa-etl__stat-icon--blue { background: #DBEAFE; color: #2563EB; }
-.absa-etl__stat-icon--green { background: #DCFCE7; color: #16A34A; }
-.absa-etl__stat-icon--amber { background: #FEF3C7; color: #D97706; }
-.absa-etl__stat-icon--red { background: #FEE2E2; color: #DC2626; }
-.absa-etl__stat-value { font-size: 1.25rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; margin-bottom: 2px; }
-.absa-etl__stat-label {  font-size: 0.575rem; font-weight: 900; color: #9CA3AF; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
-.absa-etl__stat-trend {  font-size: 0.575rem; font-weight: 900; }
-.absa-etl__stat-trend--up { color: #16A34A; }
-.absa-etl__stat-trend--neutral { color: #6B7280; }
-.absa-etl__stat-trend--warn { color: #DC2626; }
-
-/* Responsive */
-@media (max-width: 1200px) { .absa-etl__health-grid { grid-template-columns: repeat(2,1fr); } .absa-etl__stats-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 768px) { .absa-etl__health-grid,.absa-etl__stats-grid { grid-template-columns: 1fr; } .absa-etl__header { flex-direction: column; } }
-
-/* ═══ Pipeline Runner Modal ═══ */
-.pr-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: rgba(0,0,0,0.45);
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(4px);
-  animation: prFadeIn 150ms ease;
-}
-@keyframes prFadeIn { from { opacity: 0 } to { opacity: 1 } }
-
-.pr-modal {
-  background: #FFF; border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-  width: 440px; max-width: calc(100vw - 32px);
-  padding: 28px; display: flex; flex-direction: column; gap: 20px;
-  animation: prSlideUp 180ms ease;
-}
-@keyframes prSlideUp { from { transform: translateY(12px); opacity: 0 } to { transform: none; opacity: 1 } }
-
-.pr-modal__header { display: flex; justify-content: space-between; align-items: flex-start; }
-.pr-modal__title { font-size: 1.05rem; font-weight: 900; color: #111827; margin: 0 0 4px 0; letter-spacing: -0.02em; }
-.pr-modal__sub { font-size: 0.675rem; color: #9CA3AF; margin: 0;  line-height: 1.5; }
-.pr-modal__close {
-  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
-  border: 1px solid #E8E8EC; border-radius: 0; background: #FFF; color: #6B7280;
-  cursor: pointer; flex-shrink: 0; margin-left: 12px; transition: all 150ms ease;
-}
-.pr-modal__close:hover { border-color: #BE0F2C; color: #BE0F2C; }
-.pr-modal__close:disabled { opacity: 0.35; cursor: not-allowed; }
-
-.pr-modal__date-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.pr-modal__label {  font-size: 0.6rem; font-weight: 900; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
-.pr-modal__date-input {
-  padding: 7px 10px; border: 1px solid #E8E8EC; border-radius: 7px;
-  font-size: 0.75rem;  font-weight: 900;
-  color: #111827; background: #F9FAFB; outline: none; cursor: pointer;
-  transition: border-color 150ms ease;
-}
-.pr-modal__date-input:focus { border-color: #BE0F2C; }
-.pr-modal__date-input:disabled { opacity: 0.5; cursor: not-allowed; }
-.pr-modal__date-hint { font-size: 0.6rem; color: #9CA3AF;  }
-
-/* Steps */
-.pr-modal__steps { display: flex; flex-direction: column; gap: 10px; }
-
-.pr-step {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 14px; border-radius: 10px; border: 1px solid #E8E8EC;
-  background: #F9FAFB; transition: all 180ms ease;
-}
-.pr-step--running { border-color: #93C5FD; background: #EFF6FF; }
-.pr-step--done    { border-color: #86EFAC; background: #F0FDF4; }
-.pr-step--error   { border-color: #FCA5A5; background: #FEF2F2; }
-
-.pr-step__icon {
-  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
-  border-radius: 50%; flex-shrink: 0; margin-top: 1px;
-}
-.pr-step--idle    .pr-step__icon { background: #E5E7EB; color: #9CA3AF; }
-.pr-step--running .pr-step__icon { background: #DBEAFE; color: #2563EB; }
-.pr-step--done    .pr-step__icon { background: #DCFCE7; color: #16A34A; }
-.pr-step--error   .pr-step__icon { background: #FEE2E2; color: #DC2626; }
-
-.pr-step__body { flex: 1; min-width: 0; }
-.pr-step__name { font-size: 0.775rem; font-weight: 900; color: #111827; margin-bottom: 2px; }
-.pr-step--idle .pr-step__name { color: #6B7280; }
-.pr-step__detail {  font-size: 0.6rem; color: #6B7280; }
-.pr-step--error .pr-step__detail { color: #DC2626; }
-
-/* Result banner */
-.pr-modal__result {
-  display: flex; align-items: center; gap: 8px;
-  padding: 12px 14px; border-radius: 10px;
-  font-size: 0.7rem; font-weight: 900; 
-}
-.pr-modal__result--ok  { background: #F0FDF4; color: #16A34A; border: 1px solid #86EFAC; }
-.pr-modal__result--err { background: #FEF2F2; color: #DC2626; border: 1px solid #FCA5A5; }
-
-/* Actions */
-.pr-modal__actions { display: flex; justify-content: flex-end; gap: 10px; }
-
-/* Spinner animation */
-.pr-spin { animation: prSpin 900ms linear infinite; }
-@keyframes prSpin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
-
-.absa-etl__progress-container {
-  background: white;
-  border-radius: 0;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  border: 1px solid #E5E7EB;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-.absa-etl__progress-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-  color: #374151;
-}
-.absa-etl__progress-track {
-  width: 100%;
-  height: 8px;
-  background-color: #F3F4F6;
-  border-radius: 0;
-  overflow: hidden;
-}
-.absa-etl__progress-fill {
-  height: 100%;
-  background-color: #BE0F2C;
-  transition: width 0.3s ease;
-}
-.absa-etl__progress-complete {
-  margin-top: 10px;
-  color: #10B981;
-  font-weight: 500;
-  font-size: 0.85rem;
+.mesh-background {
+  background-color: #fcfcfc;
+  background-image:
+    linear-gradient(#f0f0f0 1px, transparent 1px),
+    linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

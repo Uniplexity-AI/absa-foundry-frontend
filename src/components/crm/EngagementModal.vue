@@ -25,6 +25,7 @@ const customerFeedback = ref('')
 const isPromise = ref(false)
 const expectedAmount = ref('')
 const expectedDate = ref('')
+const followUpDate = ref('')
 const loading = ref(false)
 
 watch(() => props.open, (newOpen) => {
@@ -43,6 +44,7 @@ watch(() => props.open, (newOpen) => {
       isPromise.value = !!e.meta?.isPromise
       expectedAmount.value = e.meta?.expectedAmount || ''
       expectedDate.value = e.meta?.expectedDate || ''
+      followUpDate.value = e.meta?.followUpDate || ''
     } else {
       type.value = 'Call'
       notes.value = ''
@@ -56,6 +58,7 @@ watch(() => props.open, (newOpen) => {
       isPromise.value = false
       expectedAmount.value = ''
       expectedDate.value = ''
+      followUpDate.value = ''
     }
   }
 })
@@ -153,9 +156,18 @@ async function submit() {
               <option>Poor</option>
             </select>
           </div>
-          <div>
+          <div class="col-span-1">
             <label class="block text-[10px] font-mono font-bold uppercase tracking-widest text-gray-900 mb-1.5">Recommendation</label>
-            <input v-model="recommendation" :disabled="readonly" type="text" class="w-full border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10" placeholder="e.g. Follow up in 2 weeks">
+            <div class="flex gap-2">
+              <select v-model="recommendation" :disabled="readonly" class="w-full border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10">
+                <option value="">-- Select --</option>
+                <option>Schedule Follow Up</option>
+                <option>Send Product Details</option>
+                <option>Escalate to RM</option>
+                <option>No Action Required</option>
+              </select>
+              <input v-if="recommendation === 'Schedule Follow Up'" v-model="followUpDate" :disabled="readonly" type="date" class="w-full border border-gray-300 rounded-none px-3 py-2 text-xs focus:ring-1 focus:ring-absa-passion outline-none bg-white relative z-10" title="Follow Up Date">
+            </div>
           </div>
         </div>
 

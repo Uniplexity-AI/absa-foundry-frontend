@@ -4,15 +4,15 @@ import { useRouter } from 'vue-router'
 import {
   TrendingUp, Clock, AlertTriangle, Activity, 
   Users, BarChart2, Briefcase, CheckCircle,
-  PhoneCall, Users as CustomersIcon, Layers, PieChart, FileText, Calendar
+  PhoneCall, Users as CustomersIcon, Layers, PieChart, Calendar
 } from 'lucide-vue-next'
 
 // Mock Data for KPIs (Call Centre FRD metrics)
 const router = useRouter()
 
 function openForms() {
-  console.log('Navigating to Digital Forms page: /dashboard/crm/forms')
-  router.push('/dashboard/crm/forms')
+  console.log('Navigating to Calendar & Activities page: /dashboard/crm/calendar')
+  router.push('/dashboard/crm/calendar')
 }
 
 const kpis = ref({
@@ -45,34 +45,34 @@ const kpis = ref({
           <!-- Row 1 KPIs -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <!-- Card 1 -->
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
-                <div class="p-2 border border-green-100 bg-green-50 text-green-500"><TrendingUp :size="18"/></div>
-                <span class="text-[9px] text-green-600 font-mono font-bold uppercase">Target 80%</span>
+                <div class="text-absa-passion"><TrendingUp :size="18"/></div>
+                <span class="text-xs text-absa-passion font-medium">Target 80%</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Service_Level</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Service Level</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 2 -->
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
-                <div class="p-2 border border-blue-100 bg-blue-50 text-blue-500"><Clock :size="18"/></div>
-                <span class="text-[9px] text-blue-600 font-mono font-bold uppercase">Avg Time</span>
+                <div class="text-blue-500"><Clock :size="18"/></div>
+                <span class="text-xs text-blue-600 font-medium">Avg Time</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Speed_To_Answer</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Speed to Answer</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
             </div>
             <!-- Card 3 -->
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
-                <div class="p-2 border border-orange-100 bg-orange-50 text-orange-500"><AlertTriangle :size="18"/></div>
-                <span class="text-[9px] text-orange-600 font-mono font-bold uppercase">Critical</span>
+                <div class="text-orange-500"><AlertTriangle :size="18"/></div>
+                <span class="text-xs text-orange-600 font-medium">Critical</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Abandon_Rate</h5>
-              <p class="text-3xl font-bold font-display text-orange-500 tracking-tight">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Abandon Rate</h5>
+              <p class="text-2xl font-black text-orange-500 tracking-tight">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 4 (Analytics Highlight) -->
-              <router-link to="/dashboard/crm/analytics" class="bg-absa-passion border border-absa-passion border-l-4 border-l-[#b3002d] shadow-sm p-4 relative group hover:bg-[#b3002d] transition cursor-pointer flex flex-col justify-between">
+              <router-link to="/dashboard/crm/analytics" class="bg-absa-passion border border-absa-passion shadow-sm p-4 relative group hover:bg-[#b3002d] transition cursor-pointer flex flex-col justify-between">
               <div class="flex items-center justify-between mb-3">
                 <div class="p-2 border border-white/20 bg-white/10 text-white"><BarChart2 :size="18"/></div>
                 <span class="text-[9px] text-white font-mono font-bold uppercase tracking-widest opacity-80">Analytics</span>
@@ -86,37 +86,37 @@ const kpis = ref({
 
           <!-- Row 2 KPIs -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
                 <div class="text-gray-400"><Activity :size="18"/></div>
-                <span class="text-[9px] text-gray-400 font-mono font-bold uppercase">+120 Today</span>
+                <span class="text-xs text-gray-400 font-medium">+120 Today</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Interactions</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.totalInteractions }}</p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Interactions</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.totalInteractions }}</p>
             </div>
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
                 <div class="text-gray-400"><Users :size="18"/></div>
-                <span class="text-[9px] text-gray-400 font-mono font-bold uppercase">24 Act.</span>
+                <span class="text-xs text-gray-400 font-medium">24 Act.</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Active_Agents</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.activeAgents }}</p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Active Agents</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.activeAgents }}</p>
             </div>
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
                 <div class="text-gray-400"><Briefcase :size="18"/></div>
-                <span class="text-[9px] text-gray-400 font-mono font-bold uppercase">12 Open</span>
+                <span class="text-xs text-gray-400 font-medium">12 Open</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Escalations</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.escalations }}</p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Escalations</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.escalations }}</p>
             </div>
-            <div class="bg-white border border-gray-200 border-l-4 border-l-gray-200 shadow-sm p-4 relative group hover:border-absa-passion hover:border-l-absa-passion transition cursor-pointer">
+            <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
                 <div class="text-gray-400"><CheckCircle :size="18"/></div>
-                <span class="text-[9px] text-gray-400 font-mono font-bold uppercase">76% FCR</span>
+                <span class="text-xs text-gray-400 font-medium">76% FCR</span>
               </div>
-              <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Avg_Handle_Time</h5>
-              <p class="text-3xl font-bold font-display text-absa-passion tracking-tight">{{ kpis.avgHandleTime }}</p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Avg Handle Time</h5>
+              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgHandleTime }}</p>
             </div>
           </div>
         </div>
@@ -184,11 +184,11 @@ const kpis = ref({
             <!-- Card 5 -->
             <div @click="openForms" class="bg-white border border-gray-200 p-8 hover:shadow-lg hover:border-absa-passion transition-all group cursor-pointer relative overflow-hidden flex flex-col">
               <div class="w-12 h-12 text-gray-400 flex items-center justify-start mb-6 group-hover:scale-110 transition-transform">
-                <FileText :size="20" class="text-gray-400 "/>
+                <Calendar :size="20" class="text-gray-400 "/>
               </div>
-              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">Digital Forms</h3>
+              <h3 class="text-sm font-bold text-gray-900 tracking-tight mb-2">Calendar & Activities</h3>
               <p class="text-xs text-gray-500 mb-6 leading-relaxed">
-                Templates &diams; Responses &diams; Sign-Offs
+                Events &diams; Tasks &diams; Follow-ups
               </p>
               <span class="text-xs font-bold text-gray-400 group-hover:text-absa-passion flex items-center gap-2 tracking-widest mt-auto">
                 Open &rarr;
@@ -216,3 +216,7 @@ const kpis = ref({
 <!-- clear ebusy -->
 
 <!-- clear ebusy -->
+
+
+
+

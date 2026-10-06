@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>absa-foundry-frontend — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 7595 nodes, 9531 edges, 594 communities. Commit: 771bf82</p>
+<p class="subtitle">Generated from graphify knowledge graph: 7595 nodes, 9531 edges, 594 communities. Commit: 46ca9cf</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -264,7 +264,7 @@ flowchart LR
     package_dependencies_docx_3a6922bb("docx<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94("dotenv<br/><small>package.json</small>")
     dotenv_4de95cba("dotenv<br/><small>package.json</small>")
-    barcode_detector_edc5badc("barcode-detector<br/><small>package.json</small>")
+    chart_js_5fd7890b("chart.js<br/><small>package.json</small>")
     package_dependencies_fontsource_hanken_grotesk_4bfbddaa("@fontsource/hanken-grotesk<br/><small>package.json</small>")
     fontsource_hanken_grotesk_1295e363("@fontsource/hanken-grotesk<br/><small>package.json</small>")
     package_dependencies_jspdf_autotable_491bc723("jspdf-autotable<br/><small>package.json</small>")
@@ -275,7 +275,7 @@ flowchart LR
     lucide_vue_next_86a81b15("lucide-vue-next<br/><small>package.json</small>")
     package_dependencies_vue_chartjs_aaef91e3("vue-chartjs<br/><small>package.json</small>")
     package_dependencies_dotenv_27698e94 -->|imports| dotenv_4de95cba
-    package_dependencies_barcode_detector_91658496 -->|imports| barcode_detector_edc5badc
+    package_dependencies_chart_js_404d6786 -->|imports| chart_js_5fd7890b
     package_dependencies_fontsource_hanken_grotesk_4bfbddaa -->|imports| fontsource_hanken_grotesk_1295e363
     package_dependencies_jspdf_autotable_491bc723 -->|imports| package_json_jspdf_autotable_6dd90634
     package_dependencies_lucide_react_17f0074f -->|imports| lucide_react_0d541e45
@@ -289,7 +289,7 @@ flowchart LR
     class package_dependencies_docx_3a6922bb function;
     class package_dependencies_dotenv_27698e94 function;
     class dotenv_4de95cba function;
-    class barcode_detector_edc5badc function;
+    class chart_js_5fd7890b module;
     class package_dependencies_fontsource_hanken_grotesk_4bfbddaa function;
     class fontsource_hanken_grotesk_1295e363 function;
     class package_dependencies_jspdf_autotable_491bc723 function;
@@ -490,11 +490,11 @@ flowchart LR
 </tr>
 <tr>
   <td>22</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>chart.js</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td>barcode-detector node in package.json.</td>
+  <td><code>chart.js</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td>chart.js node in package.json.</td>
 </tr>
 <tr>
   <td>23</td>
@@ -546,11 +546,11 @@ flowchart LR
 </tr>
 <tr>
   <td>29</td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>barcode-detector</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><code>chart.js</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>chart.js</code><br><small style="color:var(--muted)">package.json</small></td>
   <td>No direct outbound edge</td>
-  <td>barcode-detector node in package.json.</td>
+  <td>chart.js node in package.json.</td>
 </tr>
 <tr>
   <td>30</td>
@@ -2974,7 +2974,7 @@ flowchart LR
   <td>24</td>
   <td><code>formatCurrency()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br>+1 more</td>
+  <td><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br><code>exportReport()</code><br><small style="color:var(--muted)">crm/components/LeadDetailModal.vue</small><br><code>saveCac()</code><br><small style="color:var(--muted)">crm/components/AccountDetailModal.vue</small><br>+1 more</td>
   <td>No direct outbound edge</td>
   <td>formatCurrency() node in crm/components/AccountDetailModal.vue.</td>
 </tr>
@@ -4773,7 +4773,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>absa-foundry-frontend — Architecture Documentation</p>
-  <p>Generated: 2026-10-06 07:47 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-10-06 09:31 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

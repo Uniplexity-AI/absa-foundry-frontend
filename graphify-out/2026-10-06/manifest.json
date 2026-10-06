@@ -486,9 +486,9 @@
     "semantic_hash": "983860e9c94bd8affce1c20d7ef87663"
   },
   "src/services/auth_api.js": {
-    "mtime": 1790243538.2093086,
-    "seen": 1790673067.5334601,
-    "ast_hash": "317cc08701e13e1345351bc844239bf5",
+    "mtime": 1791282545.1926105,
+    "seen": 1791285465.1174457,
+    "ast_hash": "f6bd3971c73c401dba9edbca0a1abc64",
     "semantic_hash": ""
   },
   "src/services/crm_api.js": {
@@ -624,8 +624,8 @@
     "semantic_hash": "ddec0c68141922069d44fc944d8fbf2f"
   },
   "src/sw.js": {
-    "mtime": 1791279445.807172,
-    "seen": 1791279565.0360498,
+    "mtime": 1791294642.7951941,
+    "seen": 1791294789.2085145,
     "ast_hash": "02efc6e4b14331ffc38674636b0353db",
     "semantic_hash": "02efc6e4b14331ffc38674636b0353db"
   },
@@ -1020,9 +1020,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/datapipeline/EtlPipeline.vue": {
-    "mtime": 1791273621.476573,
-    "seen": 1791279098.5343406,
-    "ast_hash": "87d224cceffd573b074a9da1abf1ea92",
+    "mtime": 1791294398.6404037,
+    "seen": 1791294466.7393878,
+    "ast_hash": "bb4c982aec0d31d9fc1aa3d616c03504",
     "semantic_hash": ""
   },
   "src/views/Modules/intelligence/BalanceForecast.vue": {
@@ -1074,9 +1074,9 @@
     "semantic_hash": ""
   },
   "src/views/Modules/settings/UserManagement.vue": {
-    "mtime": 1791271548.3768795,
-    "seen": 1791272870.5880322,
-    "ast_hash": "79b4a478a64e27388d5d4de9ce77e721",
+    "mtime": 1791282398.7129865,
+    "seen": 1791285465.1174457,
+    "ast_hash": "50ed180c0ec815d36578aa719f60659c",
     "semantic_hash": ""
   },
   "src/views/Modules/settings/components/SettingsAiAgents.vue": {
@@ -3555,6 +3555,36 @@
     "mtime": 1791266790.0780914,
     "seen": 1791272870.5880322,
     "ast_hash": "64258d1bacefa0ed168e3cf99e9d7f12",
+    "semantic_hash": ""
+  },
+  "fix_auth_api.py": {
+    "mtime": 1791282545.1222463,
+    "seen": 1791285465.116447,
+    "ast_hash": "e68add89d92f8b49cfc68a638d4ae11f",
+    "semantic_hash": ""
+  },
+  "replace_table_branch.py": {
+    "mtime": 1791282365.2933633,
+    "seen": 1791285465.1174457,
+    "ast_hash": "1504d9e7c635ad76cec915f89d7932ef",
+    "semantic_hash": ""
+  },
+  "replace_user_forms.py": {
+    "mtime": 1791282273.8038206,
+    "seen": 1791285465.1174457,
+    "ast_hash": "dd85711b976212edbe2984ab3b669990",
+    "semantic_hash": ""
+  },
+  "replace_user_forms2.py": {
+    "mtime": 1791282283.8343053,
+    "seen": 1791285465.1174457,
+    "ast_hash": "40106e4f2513c0a2f170ec5a16613176",
+    "semantic_hash": ""
+  },
+  "replace_user_management.py": {
+    "mtime": 1791282249.9366891,
+    "seen": 1791285465.1174457,
+    "ast_hash": "f443871f5685ae1ab31c5b0700fdf30f",
     "semantic_hash": ""
   }
 }

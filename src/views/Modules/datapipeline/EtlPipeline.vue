@@ -12,6 +12,60 @@ const isExtracting = ref(false)
 const extractionProgress = ref(null)
 let progressInterval = null
 
+let manualRunPollInterval = null
+
+const fetchManualRunStatus = async () => {
+  try {
+    const { data } = await api.get('/api/etl/manual-run-status');
+    if (data && data.status !== 'idle') {
+      if (!showRunModal.value && (data.status === 'running' || data.status === 'started')) {
+        showRunModal.value = true;
+      }
+      isRunning.value = data.status === 'running' || data.status === 'started';
+      
+      pipelineSteps.value.forEach((s, idx) => {
+        const stepNum = idx + 1;
+        if (data.step > stepNum) {
+          s.status = 'done';
+          const res = data.results.find(r => r.step === stepNum);
+          s.detail = res ? res.message : '';
+          stopStepTimer(s.id);
+        } else if (data.step === stepNum) {
+          s.status = data.status === 'error' ? 'error' : 'running';
+          if (data.status === 'error') {
+            s.detail = data.error_message || 'Pipeline failed';
+            stopStepTimer(s.id);
+          } else {
+            if (!stepIntervals[s.id]) startStepTimer(s.id);
+          }
+        } else {
+          s.status = 'idle';
+          s.detail = '';
+          stopStepTimer(s.id);
+        }
+      });
+      
+      if (data.step === 1 && (data.status === 'running' || data.status === 'started')) {
+        if (!extractionPollInterval) startExtractionPoll();
+      } else {
+        if (extractionPollInterval) stopExtractionPoll(data.step > 1);
+      }
+
+      if (!isRunning.value && manualRunPollInterval) {
+        clearInterval(manualRunPollInterval);
+        manualRunPollInterval = null;
+        runResult.value = { 
+            ok: data.status === 'completed', 
+            message: data.status === 'completed' ? 'Pipeline completed successfully across all models.' : 'Pipeline stopped at error.' 
+        };
+      }
+    }
+  } catch (err) {
+    console.error('Failed to fetch manual run status', err);
+  }
+}
+
+
 const fetchExtractionProgress = async () => {
   try {
     const { data } = await api.get('/features/extract-historical/status');
@@ -31,6 +85,8 @@ const fetchExtractionProgress = async () => {
 onMounted(() => {
   fetchExtractionProgress();
   progressInterval = setInterval(fetchExtractionProgress, 2000);
+    fetchManualRunStatus();
+    manualRunPollInterval = setInterval(fetchManualRunStatus, 2000);
 });
 
 const triggerHistoricalExtraction = async () => {
@@ -41,6 +97,8 @@ const triggerHistoricalExtraction = async () => {
     await api.post('/features/extract-historical');
     if (!progressInterval) {
       progressInterval = setInterval(fetchExtractionProgress, 2000);
+    fetchManualRunStatus();
+    manualRunPollInterval = setInterval(fetchManualRunStatus, 2000);
     }
   } catch (err) {
     console.error('Failed to start historical extraction', err);
@@ -232,74 +290,16 @@ async function startPipeline() {
   isRunning.value = true
   resetSteps()
   const date = runDate.value
-
-  const stepConfigs = [
-    {
-      id: 'extraction',
-      label: 'Data Extraction',
-      call: () => api.post('/api/etl/trigger', {
-        config_name: 'customer_360.yaml',
-        sync: true,
-        source_type: 'denodo',
-        snapshot: date,
-        force: true,
-        run_models: 'shared,churn,clv,lifecycle,balance',
-      }),
-      summary: (d) => `Extraction complete — ${liveRowsLoaded.value !== null ? liveRowsLoaded.value.toLocaleString() + ' rows loaded' : 'Config: ' + (d?.config_name ?? 'customer_360.yaml')}`,
-    },
-    {
-      id: 'features',
-      label: 'Feature Engine',
-      call: () => api.post('/features/compute-batch', null, { params: { as_of_date: date } }),
-      summary: (d) => `${d?.customers_processed ?? d?.rows_processed ?? '?'} customers processed`,
-    },
-    {
-      id: 'states',
-      label: 'State Engine',
-      call: () => api.post('/api/v1/customers/compute-states', null, { params: { as_of_date: date } }),
-      summary: (d) => `${d?.customers_processed ?? '?'} classified, ${d?.states_upserted ?? '?'} upserted`,
-    },
-    {
-      id: 'predictions',
-      label: 'Prediction Batch',
-      call: () => api.post('/api/v1/predictions/batch', null, { params: { as_of_date: date } }),
-      summary: (d) => `${d?.customers_scored ?? '?'} customers scored`,
-    },
-  ]
-
-  let allOk = true
-  for (const cfg of stepConfigs) {
-    const step = pipelineSteps.value.find(s => s.id === cfg.id)
-    step.status = 'running'
-    step.detail = 'In progress…'
-    startStepTimer(cfg.id)
-    if (cfg.id === 'extraction') startExtractionPoll()
-
-    try {
-      const { data } = await cfg.call()
-      stopStepTimer(cfg.id)
-      if (cfg.id === 'extraction') stopExtractionPoll(true)
-      step.status = 'done'
-      step.detail = cfg.summary(data)
-    } catch (e) {
-      stopStepTimer(cfg.id)
-      if (cfg.id === 'extraction') stopExtractionPoll(false)
-      step.status = 'error'
-      step.detail = e?.response?.data?.detail || e.message || 'Request failed'
-      allOk = false
-      break
-    }
-  }
-
-  isRunning.value = false
-
-  if (allOk) {
-    runResult.value = { ok: true, message: `Pipeline complete for ${date}. Snapshot selector updated.` }
-    await snapshotStore.fetchAvailable()
-    snapshotStore.setDate(date)
-    store.loadDashboard()
-  } else {
-    runResult.value = { ok: false, message: 'Pipeline stopped at error above. Fix the issue and re-run.' }
+  
+  try {
+      await api.post(`/api/etl/trigger-manual-run?snapshot=${date}`);
+      if (!manualRunPollInterval) {
+          manualRunPollInterval = setInterval(fetchManualRunStatus, 2000);
+      }
+  } catch (err) {
+      console.error(err);
+      isRunning.value = false;
+      alert('Failed to start manual pipeline');
   }
 }
 

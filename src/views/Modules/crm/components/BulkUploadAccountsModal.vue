@@ -2,8 +2,7 @@
   <Teleport to="body">
     <div v-if="modelValue" class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[100000] p-4">
       <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-4xl overflow-hidden max-h-[90vh] flex flex-col border border-gray-200 relative">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 z-10 bg-white">
           <div class="flex items-center gap-3">
@@ -125,9 +124,9 @@
             <CheckCircle :size="48" class="mx-auto text-emerald-500" />
             <h3 class="text-lg font-black text-gray-900 uppercase tracking-tight">Import Complete</h3>
             <div class="flex justify-center gap-8">
-              <div><p class="text-2xl font-black text-green-600">{{ importStats.new }}</p><p class="text-[8px] font-mono text-gray-500">Imported</p></div>
-              <div><p class="text-2xl font-black text-amber-600">{{ importStats.skip }}</p><p class="text-[8px] font-mono text-gray-500">Duplicates Skipped</p></div>
-              <div><p class="text-2xl font-black text-red-600">{{ importStats.errors }}</p><p class="text-[8px] font-mono text-gray-500">Errors</p></div>
+              <div><p class="text-2xl font-black tracking-tight text-status-success">{{ importStats.new }}</p><p class="text-[8px] font-mono text-gray-500">Imported</p></div>
+              <div><p class="text-2xl font-black tracking-tight text-orange-500">{{ importStats.skip }}</p><p class="text-[8px] font-mono text-gray-500">Duplicates Skipped</p></div>
+              <div><p class="text-2xl font-black tracking-tight text-gray-900">{{ importStats.errors }}</p><p class="text-[8px] font-mono text-gray-500">Errors</p></div>
             </div>
           </div>
         </div>

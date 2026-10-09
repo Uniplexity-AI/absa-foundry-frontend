@@ -3,23 +3,20 @@
   <Teleport to="body">
     <div v-if="modelValue" class="fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm bg-black/40">
       <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-6xl h-full sm:h-auto sm:max-h-[92vh] overflow-hidden flex flex-col border border-gray-200 rounded-none relative">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Modal Header -->
         <div class="flex items-center justify-between px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-100 bg-white/50 backdrop-blur-md sticky top-0 z-20">
           <div class="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
             <div class="w-1.5 h-8 bg-[#2F2E8B]"></div>
             <div class="flex-1 min-w-0 flex items-center gap-2 sm:gap-4">
-              <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 border border-gray-100 flex items-center justify-center text-lg sm:text-2xl font-mono font-black text-[#2F2E8B] shadow-inner shrink-0 uppercase tracking-tighter">
-                {{ getInitials(account?.name) }}
+              <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 border border-gray-100 flex items-center justify-center shadow-inner shrink-0 text-2xl font-black tracking-tight text-gray-900">{{ getInitials(account?.name) }}
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2 mb-1">
                   <span class="text-[10px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] truncate">Account_Node // Corporate_Registry</span>
                   <span v-if="account?.id" class="hidden sm:inline text-[8px] font-mono font-bold text-[#2F2E8B] bg-blue-50 px-1.5 py-0.5 uppercase tracking-widest border border-blue-100">ID:{{ account.id.substring(0, 8) }}</span>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-gray-900 uppercase tracking-tight font-outfit truncate">
-                  {{ account?.name || 'NAMELESS_ACCOUNT' }}
+                <h3 class="truncate text-2xl font-black tracking-tight text-gray-900">{{ account?.name || 'NAMELESS_ACCOUNT' }}
                   <span v-if="account?.industry" class="text-gray-300 font-mono font-normal mx-2 hidden sm:inline">//</span>
                   <span v-if="account?.industry" class="hidden sm:inline text-gray-400 text-lg font-mono font-bold uppercase tracking-widest">{{ account.industry }}</span>
                 </h3>
@@ -96,8 +93,7 @@
 
         <!-- Modal Body (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar relative">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          
+                    
           <!-- Tab Content -->
           <div class="relative z-10 space-y-12 animate-in fade-in duration-500">
             
@@ -254,7 +250,7 @@
                     <div class="flex items-end gap-4 mb-4">
                       <div class="text-left shrink-0">
                         <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Current CMA</div>
-                        <div class="text-2xl font-mono font-black text-gray-900">{{ formatCurrency(localCac) }}</div>
+                        <div class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(localCac) }}</div>
                       </div>
                       <div class="flex-1">
                         <label class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest block mb-1">New Value (ZMW)</label>
@@ -286,8 +282,7 @@
 
               <!-- System Metadata -->
               <div class="bg-gray-50/80 border border-gray-200 p-6 pt-8 mt-12 relative overflow-hidden">
-                 <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-                 <h5 class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Registry_Execution_Metadata</h5>
+                                  <h5 class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Registry_Execution_Metadata</h5>
                  <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                    <div>
                      <span class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest block mb-1">Entity_Initialize</span>
@@ -405,9 +400,8 @@
               <!-- Deal Stats -->
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-[#2F2E8B] p-5 relative overflow-hidden">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.05]"></div>
-                  <div class="text-[8px] font-mono font-bold text-blue-300 uppercase tracking-widest mb-1 relative z-10">Total_Deals</div>
-                  <div class="text-2xl font-mono font-black text-white relative z-10">{{ dealStats.total }}</div>
+                                    <div class="text-[8px] font-mono font-bold text-blue-300 uppercase tracking-widest mb-1 relative z-10">Total_Deals</div>
+                  <div class="relative z-10 text-2xl font-black tracking-tight text-gray-900">{{ dealStats.total }}</div>
                 </div>
                 <div class="bg-gray-50 border border-gray-100 p-5">
                   <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Pipeline_Value</div>
@@ -975,7 +969,7 @@
         <!-- Footer Control Bar -->
         <div class="px-4 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-2 sticky bottom-0 z-20">
           <div class="flex items-center gap-2">
-             <button @click="handleDelete" class="px-4 py-2 border border-red-200 text-red-500 hover:bg-red-50 text-[10px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5">
+             <button v-permission="['crm', 'delete']" @click="handleDelete" class="px-4 py-2 border border-red-200 text-red-500 hover:bg-red-50 text-[10px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5">
                <Trash2 :size="13" /> DELETE
              </button>
              <button @click="$emit('archive', account); close()" class="px-4 py-2 border border-amber-200 text-amber-600 hover:bg-amber-50 text-[10px] font-mono font-black uppercase tracking-widest transition-all flex items-center gap-1.5">

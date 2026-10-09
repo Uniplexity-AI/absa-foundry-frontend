@@ -78,8 +78,7 @@
         >
           <div class="space-y-4 pb-12">
             <div v-if="!filteredCommunications || filteredCommunications.length === 0" class="bg-white border border-gray-100 p-20 text-center relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-              <div class="relative z-10">
+                            <div class="relative z-10">
                 <i class="fab fa-whatsapp text-gray-100 text-8xl mb-6"></i>
                 <h4 class="text-xl font-black text-gray-300 font-display uppercase tracking-tight">V0 LOGS // EMPTY</h4>
                 <p class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mt-2">No encrypted communication fragments detected in current matrix.</p>
@@ -246,13 +245,7 @@ onMounted(async () => {
   animation: scale-in 0.2s ease-out;
 }
 
-.mesh-background {
-  background-color: #ffffff;
-  background-image: 
-      linear-gradient(rgba(47, 46, 139, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(47, 46, 139, 0.08) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
+
 
 .dotted-pattern {
   background-image: radial-gradient(rgba(47, 46, 139, 0.2) 1px, transparent 1px);

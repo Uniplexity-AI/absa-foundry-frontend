@@ -86,11 +86,11 @@
           <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Accessible Pages</span>
           <div class="mt-2 p-4 bg-gray-50 border border-gray-100 rounded-sm max-h-[40vh] overflow-y-auto">
             <ul class="space-y-2">
-              <li v-for="page in getAccessiblePages(selectedRole.role_name)" :key="page" class="text-xs font-semibold text-absa-enrich flex items-start gap-2">
+              <li v-for="page in getAccessiblePages(selectedRole)" :key="page" class="text-xs font-semibold text-absa-enrich flex items-start gap-2">
                 <span class="material-symbols-outlined text-[16px] text-absa-passion mt-0.5">check_circle</span>
                 {{ page }}
               </li>
-              <li v-if="getAccessiblePages(selectedRole.role_name).length === 0" class="text-xs text-gray-400 italic">
+              <li v-if="getAccessiblePages(selectedRole).length === 0" class="text-xs text-gray-400 italic">
                 No UI pages explicitly assigned.
               </li>
             </ul>
@@ -147,6 +147,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { DEFAULT_ROLE_PERMISSIONS } from '@/stores/auth'
 import authApi from '@/services/auth_api'
 import { useAuthStore } from '@/stores/auth'
 
@@ -167,20 +168,58 @@ const closeRoleDetails = () => {
   selectedRole.value = null
 }
 
-const getAccessiblePages = (roleName) => {
+const actualModules = [
+  { id: 'crm', name: 'CRM & SALES', features: [{ id: 'workspace', name: 'WORKSPACE' }, { id: 'customers', name: 'MY CUSTOMERS' }, { id: 'tickets', name: 'TICKETS & CASES' }, { id: 'analytics', name: 'CRM ANALYTICS' }, { id: 'calendar', name: 'CALENDAR & ACTIVITIES' }] },
+  { id: 'etl-pipeline', name: 'DATA PIPELINE', features: [{ id: 'pipeline', name: 'ETL PIPELINE' }, { id: 'history', name: 'ETL RUN HISTORY' }, { id: 'config', name: 'ETL CONFIG MANAGER' }] },
+  { id: 'intelligence', name: 'INTELLIGENCE & AI', features: [{ id: 'cv', name: 'CUSTOMER VALUE' }, { id: 'lifecycle', name: 'LIFECYCLE PREDICTION' }, { id: 'forecast', name: 'BALANCE FORECAST' }, { id: 'outcomes', name: 'BUSINESS OUTCOMES' }, { id: 'models', name: 'MODEL PERFORMANCE' }] },
+  { id: 'operations', name: 'OPERATIONS', features: [{ id: 'portfolio', name: 'PORTFOLIO OVERVIEW' }, { id: 'branch', name: 'BRANCH MANAGER' }] },
+  { id: 'settings', name: 'SETTINGS & ADMIN', features: [{ id: 'settings', name: 'PLATFORM SETTINGS' }, { id: 'users', name: 'USER MANAGEMENT' }, { id: 'subaccounts', name: 'SUB ACCOUNTS' }] }
+]
+
+const getAccessiblePages = (role) => {
   const routes = router.getRoutes()
   const pages = new Set()
+  const rolePerms = (role.permissions && Object.keys(role.permissions).length > 0) 
+    ? role.permissions 
+    : (DEFAULT_ROLE_PERMISSIONS[role.role_name || role] || {})
   
-  routes.forEach(route => {
-    if (route.meta && route.meta.requiresRoles && route.meta.requiresRoles.includes(roleName)) {
-      if (route.meta.title) {
-        pages.add(route.meta.title)
-      } else if (route.name) {
-        pages.add(route.name)
-      }
+  let hasGranularFeatures = false
+
+  Object.keys(rolePerms).forEach(modId => {
+    const mod = actualModules.find(m => m.id === modId)
+    if (mod) {
+      rolePerms[modId].forEach(featId => {
+        const feat = mod.features.find(f => f.id === featId)
+        if (feat) {
+          pages.add(feat.name)
+          hasGranularFeatures = true
+        }
+      })
     }
   })
-  
+
+  if (!hasGranularFeatures) {
+    const roleName = role.role_name || role
+    routes.forEach(route => {
+      let hasAccess = false
+      if (route.meta && route.meta.requiredPermissions) {
+        hasAccess = route.meta.requiredPermissions.every(p => {
+          return rolePerms[p.entity] && rolePerms[p.entity].includes(p.action)
+        })
+      } else if (route.meta && route.meta.requiresRoles) {
+        hasAccess = route.meta.requiresRoles.includes(roleName)
+      }
+
+      if (hasAccess) {
+        if (route.meta.title) {
+          pages.add(route.meta.title)
+        } else if (route.name) {
+          pages.add(route.name)
+        }
+      }
+    })
+  }
+
   return Array.from(pages).sort()
 }
 

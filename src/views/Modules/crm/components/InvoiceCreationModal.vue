@@ -1,8 +1,7 @@
 <template>
   <div v-if="modelValue" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-none shadow-2xl max-w-4xl w-full overflow-hidden animate-scale-in border border-gray-200 relative">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <!-- Header -->
+            <!-- Header -->
       <div class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-6 flex items-center justify-between relative z-10">
         <div class="flex items-center gap-3">
           <div class="w-1.5 h-6 bg-[#2F2E8B]"></div>
@@ -77,8 +76,7 @@
               </p>
               
               <div class="bg-gray-50/50 border border-gray-100 p-6 relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-                <div class="flex items-start gap-3 relative z-10">
+                                <div class="flex items-start gap-3 relative z-10">
                   <i class="fas fa-info-circle text-[#2F2E8B] mt-1"></i>
                   <div class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest leading-relaxed">
                     <p class="text-gray-900 mb-1">Automated Referencing</p>
@@ -90,8 +88,7 @@
 
             <!-- Right: Features List -->
             <div class="bg-gray-50/50 p-6 border border-gray-100 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-              <h5 class="text-[10px] font-mono font-black text-gray-900 uppercase tracking-widest mb-4 flex items-center gap-2 relative z-10">
+                            <h5 class="text-[10px] font-mono font-black text-gray-900 uppercase tracking-widest mb-4 flex items-center gap-2 relative z-10">
                 <i class="fas fa-check-circle text-[#2F2E8B]"></i>
                 Module Capabilities:
               </h5>
@@ -111,8 +108,7 @@
           <!-- Link Mode Form -->
           <div v-else class="space-y-6">
             <div class="bg-blue-50/30 border border-blue-100 p-6 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                 <div>
                   <label class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-2">Asset Type</label>
                   <select v-model="referenceForm.category" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-none text-sm font-mono focus:border-[#2F2E8B] focus:ring-0">

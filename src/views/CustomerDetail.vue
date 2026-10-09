@@ -99,8 +99,7 @@
       <!-- ═══ Customer Profile Header ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
         <!-- dotted overlay -->
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                <div class="relative flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div class="flex items-start gap-4">
             <div class="w-14 h-14 rounded-none flex items-center justify-center text-white text-xl font-bold shrink-0 border border-white/20" :style="{ background: STATE_COLORS[state] || '#7f1d1d' }">
               {{ initials }}
@@ -156,7 +155,7 @@
             <InfoDot :label="'Combined health score from churn risk, customer value and behavioural engagement.'" />
           </div>
           <div class="flex items-baseline gap-1">
-            <span class="text-2xl font-bold font-mono text-absa-enrich">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span>
+            <span class="text-2xl font-black tracking-tight text-gray-900">{{ healthScore != null ? healthScore.toFixed(1) : '—' }}</span>
             <span class="text-xs text-gray-500">/ 100</span>
           </div>
           <div class="pp-track mt-3"><div class="pp-fill" :style="{ width: (healthScore || 0) + '%', background: healthColor }"></div></div>
@@ -169,7 +168,7 @@
             <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Churn Probability</h3>
             <InfoDot :label="'Probability the customer will churn within the prediction horizon, from the XGBoost churn model.'" />
           </div>
-          <span class="text-2xl font-bold font-mono text-absa-enrich">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span>
+          <span class="text-2xl font-black tracking-tight text-gray-900">{{ churnProb != null ? Math.round(churnProb * 100) + '%' : '—' }}</span>
           <p class="text-xs font-bold mt-2" :style="{ color: churnColor }">{{ churnLabel }}</p>
           <a href="#why-predictions" class="text-[10px] font-mono font-bold uppercase tracking-widest text-absa-passion hover:text-absa-power mt-2 inline-block">Why?</a>
         </div>
@@ -180,7 +179,7 @@
             <h3 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">Customer Lifetime Value</h3>
             <InfoDot :label="'Predicted 12-month net revenue in ZMW, from the CLV LightGBM model — an estimate, not guaranteed future revenue.'" />
           </div>
-          <span class="text-2xl font-bold font-mono text-absa-enrich">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</span>
+          <span class="text-2xl font-black tracking-tight text-gray-900">{{ clvValue != null ? formatCurrency(clvValue) : '—' }}</span>
           <p class="text-xs text-gray-500 mt-2">
             Predicted 12-month net revenue
             <span v-if="clvPercentileOrdinal"> · {{ clvPercentileOrdinal }} percentile</span>
@@ -198,8 +197,7 @@
 
       <!-- ═══ Why These Predictions ═══ -->
       <div id="why-predictions" class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative mb-4">
+                <div class="relative mb-4">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Why These Predictions?</h2>
@@ -253,8 +251,7 @@
 
       <!-- ═══ Lifecycle Journey ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 mb-5">
+                <div class="relative z-10 mb-5">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Lifecycle Journey</h2>
@@ -294,7 +291,7 @@
               <p class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 mb-2">{{ h }}-day</p>
               <template v-if="horizonForecast[h]?.stage">
                 <StatePill :state="horizonForecast[h].stage" />
-                <p class="text-2xl font-bold font-mono text-gray-900 mt-2">{{ Math.round(horizonForecast[h].confidence * 100) }}%</p>
+                <p class="mt-2 text-2xl font-black tracking-tight text-gray-900">{{ Math.round(horizonForecast[h].confidence * 100) }}%</p>
                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-mono">confidence</p>
                 <p v-if="runnerUp(h)" class="text-[10px] text-gray-400 mt-1 font-mono">
                   vs {{ runnerUp(h).stage }} {{ Math.round(runnerUp(h).prob * 100) }}%
@@ -308,8 +305,7 @@
 
       <!-- ═══ Activity Timeline ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 mb-5">
+                <div class="relative z-10 mb-5">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Activity Timeline</h2>
@@ -328,8 +324,7 @@
 
       <!-- ═══ Customer Behaviour ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 mb-5">
+                <div class="relative z-10 mb-5">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Behaviour</h2>
@@ -352,8 +347,7 @@
       <!-- ═══ Risk & Opportunity ═══ -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-4 mb-6">
         <div class="bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Risk Signals</h3>
+                    <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Risk Signals</h3>
           <div v-if="riskCodes.length" class="relative z-10 space-y-3">
             <div v-for="r in riskCodes" :key="r.code" class="border-l-4 pl-3" :style="{ borderColor: severityColor(r.severity) }">
               <div class="flex items-center justify-between">
@@ -366,8 +360,7 @@
           <p v-else class="relative z-10 text-[10px] font-mono text-gray-400 uppercase tracking-widest">No risk signals detected.</p>
         </div>
         <div class="bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Opportunity Signals</h3>
+                    <h3 class="relative z-10 text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Opportunity Signals</h3>
           <div v-if="opportunityCodes.length" class="relative z-10 space-y-3">
             <div v-for="r in opportunityCodes" :key="r.code" class="border-l-4 pl-3 border-[#16a34a]">
               <span class="text-xs font-bold text-gray-900 uppercase tracking-wide">{{ codeLabel(r.code) }}</span>
@@ -380,8 +373,7 @@
 
       <!-- ═══ Recommended Actions ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 mb-5">
+                <div class="relative z-10 mb-5">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Recommended Actions</h2>
@@ -407,11 +399,10 @@
       <!-- ═══ Prediction Confidence + Data Used ═══ -->
       <div class="grid grid-cols-12 gap-4 md:gap-4 mb-6">
         <div class="col-span-12 lg:col-span-5 bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="relative z-10">
+                    <div class="relative z-10">
             <h2 class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 mb-4">Prediction Confidence</h2>
             <div class="flex items-baseline gap-2 mb-3">
-              <span class="text-2xl font-bold font-mono text-gray-900">{{ modelConfidence }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ modelConfidence }}</span>
               <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Confidence</span>
             </div>
             <ul class="space-y-2 text-xs">
@@ -425,8 +416,7 @@
         </div>
 
         <div class="col-span-12 lg:col-span-7 bg-white border border-gray-200 shadow-sm p-4 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="relative z-10">
+                    <div class="relative z-10">
             <details open>
               <summary class="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400 cursor-pointer list-none flex items-center justify-between">
                 Data Used for Prediction
@@ -445,8 +435,7 @@
 
       <!-- ═══ Prediction History ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 p-4 border-b border-gray-200">
+                <div class="relative z-10 p-4 border-b border-gray-200">
           <div class="flex items-center gap-2 mb-1">
             <div class="w-1 h-3.5 bg-absa-passion shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Prediction History</h2>
@@ -474,8 +463,7 @@
 
       <!-- ═══ Customer Alerts ═══ -->
       <div v-if="alertCodes.length" class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 flex items-center justify-between mb-4">
+                <div class="relative z-10 flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
             <div class="w-1 h-3.5 bg-[#DC0037] shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Alerts</h2>
@@ -492,8 +480,7 @@
 
       <!-- ═══ Customer Information ═══ -->
       <div class="bg-white border border-gray-200 shadow-sm p-5 mb-6 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10 mb-4">
+                <div class="relative z-10 mb-4">
           <div class="flex items-center gap-2">
             <div class="w-1 h-3.5 bg-gray-400 shrink-0"></div>
             <h2 class="text-xs font-mono font-bold uppercase tracking-widest text-gray-900">Customer Information</h2>
@@ -1065,11 +1052,7 @@ onMounted(async () => {
 .pp-current-state {
   box-shadow: 0 0 0 2px rgba(220, 0, 55, 0.15);
 }
-.mesh-background {
-  background-color: #fafafa;
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 24px 24px;
-}
+
 .dotted-pattern {
   background-image: radial-gradient(circle, #000 1px, transparent 1px);
   background-size: 16px 16px;

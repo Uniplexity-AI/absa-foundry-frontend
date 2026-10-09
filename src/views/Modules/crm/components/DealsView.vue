@@ -37,8 +37,7 @@
       <!-- Quick Stats Cards -->
       <div class="flex gap-4">
         <div class="bg-white border border-gray-200 hover:border-[#2F2E8B] transition-all duration-300 relative overflow-hidden group">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          <div class="px-4 py-2 relative z-10 w-32">
+                    <div class="px-4 py-2 relative z-10 w-32">
             <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">Total_Value</div>
             <div class="text-xl font-black text-[#2F2E8B] tracking-tighter group-hover:scale-110 transition-transform origin-left truncate">{{ formatCurrency(stats.totalValue) }}</div>
             <div class="absolute right-2 bottom-2 text-blue-100 group-hover:text-blue-200 transition-colors">
@@ -47,8 +46,7 @@
           </div>
         </div>
         <div class="bg-white border border-gray-200 hover:border-purple-500 transition-all duration-300 relative overflow-hidden group">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          <div class="px-4 py-2 relative z-10 w-32">
+                    <div class="px-4 py-2 relative z-10 w-32">
             <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">Weighted_Value</div>
             <div class="text-xl font-black text-purple-600 tracking-tighter group-hover:scale-110 transition-transform origin-left truncate">{{ formatCurrency(stats.weightedValue) }}</div>
             <div class="absolute right-2 bottom-2 text-purple-100 group-hover:text-purple-200 transition-colors">
@@ -57,8 +55,7 @@
           </div>
         </div>
         <div class="bg-white border border-gray-200 hover:border-green-500 transition-all duration-300 relative overflow-hidden group">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          <div class="px-4 py-2 relative z-10 w-32">
+                    <div class="px-4 py-2 relative z-10 w-32">
             <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">Win_Rate</div>
             <div class="text-xl font-black text-green-600 tracking-tighter group-hover:scale-110 transition-transform origin-left">{{ stats.winRate }}%</div>
             <div class="absolute right-2 bottom-2 text-green-100 group-hover:text-green-200 transition-colors">
@@ -138,8 +135,7 @@
         @click="viewDeal(deal)"
         class="group bg-white border border-gray-200 hover:border-[#2F2E8B] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col h-full rounded-sm"
       >
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Card Header -->
         <div class="p-4 border-b border-gray-100 relative z-10 flex-1">
           <div class="flex justify-between items-start mb-3">
@@ -207,8 +203,7 @@
 
     <!-- List View -->
     <div v-else-if="viewMode === 'list' && deals.length > 0" class="bg-white border border-gray-200 overflow-hidden rounded-sm relative">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.01]"></div>
-      <div class="overflow-x-auto relative z-10">
+            <div class="overflow-x-auto relative z-10">
         <table class="min-w-full divide-y divide-gray-100">
           <thead>
             <tr class="bg-gray-50/50">
@@ -295,8 +290,7 @@
 
     <!-- Empty State -->
     <div v-else-if="!loading && deals.length === 0" class="bg-white border border-gray-100 p-16 text-center relative overflow-hidden rounded-sm">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col items-center">
+            <div class="relative z-10 flex flex-col items-center">
         <div class="w-16 h-16 bg-gray-50 border border-gray-100 rounded-sm flex items-center justify-center mb-6 shadow-none">
           <Inbox :size="32" class="text-gray-200" />
         </div>
@@ -369,8 +363,7 @@
     <!-- Delete Confirmation Modal (Tech Grid) -->
     <div v-if="showDeleteConfirm" class="fixed inset-0 bg-[#0B0B1E]/60 backdrop-blur-md flex items-center justify-center z-[100] p-4 font-mono uppercase tracking-widest">
       <div class="bg-white border border-gray-200 shadow-2xl max-w-sm w-full relative overflow-hidden rounded-sm animate-scale-in">
-        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-        <div class="h-1 w-full bg-red-600 relative z-10"></div>
+                <div class="h-1 w-full bg-red-600 relative z-10"></div>
         
         <div class="p-6 relative z-10 text-center">
           <div class="w-12 h-12 bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-4 rounded-sm">

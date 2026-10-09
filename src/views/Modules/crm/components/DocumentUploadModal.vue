@@ -1,8 +1,7 @@
 <template>
   <div v-if="modelValue" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-none shadow-2xl max-w-2xl w-full overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto border border-gray-200 relative">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <!-- Header -->
+            <!-- Header -->
       <div class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-6 sticky top-0 z-10 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-1.5 h-6 bg-[#2F2E8B]"></div>
@@ -38,8 +37,7 @@
             </button>
           </div>
           <div v-else class="flex items-center justify-between bg-white border border-gray-100 p-4 rounded-none shadow-none relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.1] pointer-events-none"></div>
-            <div class="relative z-10 flex items-center gap-3">
+                        <div class="relative z-10 flex items-center gap-3">
               <i :class="getFileIcon(selectedFile.type)" class="text-3xl text-[#2F2E8B]"></i>
               <div class="text-left">
                 <p class="font-black text-gray-900 font-display uppercase tracking-tight text-sm">{{ selectedFile.name }}</p>

@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100] shadow-none">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -357,8 +356,7 @@
 
           <!-- Modal Body (Scrollable) -->
           <div class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar relative">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            
+                        
             <form @submit.prevent="submitLead" class="space-y-6 sm:space-y-8 relative z-10">
 
               <!-- COMPACT QUICK-ADD (new leads, before expand) -->
@@ -435,7 +433,7 @@
                     placeholder="Notes (optional)"></textarea>
                 </div>
                 <div class="text-center pt-1">
-                  <button type="button" @click="showExpandedLeadForm = true"
+                  <button v-permission="['crm', 'write']" type="button" @click="showExpandedLeadForm = true"
                     class="text-xs text-gray-400 hover:text-[#2F2E8B] font-medium transition-colors inline-flex items-center gap-1">
                     <ChevronDown :size="12" />
                     More fields
@@ -799,8 +797,7 @@
         <div class="bg-white rounded-none shadow-2xl w-full max-w-md border border-gray-100 flex flex-col overflow-hidden animate-modal-in">
           <div class="h-1.5 bg-[#2F2E8B]"></div>
           <div class="flex items-center justify-between p-6 border-b border-gray-100 relative overflow-hidden">
-             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-50"></div>
-             <div class="relative z-10">
+                          <div class="relative z-10">
                 <span class="text-[10px] font-mono font-black text-gray-400 uppercase tracking-widest leading-none">Config // Structure</span>
                 <h3 class="text-xl font-black text-gray-900 uppercase font-outfit tracking-tight">Add Stage</h3>
              </div>

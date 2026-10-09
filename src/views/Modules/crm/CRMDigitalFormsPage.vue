@@ -15,8 +15,7 @@ const templates = ref([
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-hidden">
     <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm shrink-0">
       <div class="px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -79,8 +78,7 @@ const templates = ref([
 
       <!-- Main Content Area -->
       <div class="flex-1 bg-white border border-gray-200 shadow-sm flex flex-col relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        
+                
         <div class="p-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between relative z-10">
           <div class="relative">
             <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" :size="14" />

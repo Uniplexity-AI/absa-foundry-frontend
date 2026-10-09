@@ -2,15 +2,13 @@
   <Teleport to="body">
     <div v-if="modelValue && contact" class="fixed inset-0 z-[100] flex items-center justify-center p-2 md:p-4 backdrop-blur-sm bg-black/40 px-4">
       <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col border border-gray-200 rounded-none relative">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Modal Header -->
         <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-white/50 backdrop-blur-md sticky top-0 z-20">
           <div class="flex items-center gap-4 flex-1 min-w-0">
             <div class="w-1.5 h-8 bg-[#2F2E8B]"></div>
             <div class="flex-1 min-w-0 flex items-center gap-4">
-              <div class="w-16 h-16 bg-gray-50 border border-gray-100 flex items-center justify-center text-2xl font-mono font-black text-[#2F2E8B] shadow-inner shrink-0 uppercase tracking-tighter">
-                {{ getInitials(contact) }}
+              <div class="w-16 h-16 bg-gray-50 border border-gray-100 flex items-center justify-center shadow-inner shrink-0 text-2xl font-black tracking-tight text-gray-900">{{ getInitials(contact) }}
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2 mb-1">
@@ -28,7 +26,7 @@
           </div>
           
           <div class="flex items-center gap-2">
-            <button @click="$emit('edit', contact)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-none group" title="Modify State">
+            <button v-permission="['crm', 'edit']" @click="$emit('edit', contact)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-none group" title="Modify State">
               <Edit :size="18" class="group-hover:scale-110 transition-transform" />
             </button>
             <button @click="$emit('update:modelValue', false)" class="w-10 h-10 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all shadow-none group">
@@ -78,8 +76,7 @@
 
         <!-- Modal Body (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-8 custom-scrollbar relative">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          
+                    
           <!-- Tab Content -->
           <div class="relative z-10 space-y-12 animate-in fade-in duration-500">
             
@@ -167,8 +164,7 @@
 
               <!-- Meta Diagnostics -->
               <div class="bg-gray-50 border border-gray-200 p-6 pt-8 mt-12 relative overflow-hidden">
-                 <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-                 <h5 class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Identity_Registry_Metadata</h5>
+                                  <h5 class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Identity_Registry_Metadata</h5>
                  <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                    <div>
                      <span class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-widest block mb-1">Entity_Initialize</span>
@@ -207,8 +203,7 @@
                           </div>
                        </div>
                        <div class="flex-1 bg-white border border-gray-100 p-6 transition-all hover:border-[#2F2E8B]/30 hover:shadow-xl hover:shadow-blue-500/5 relative overflow-hidden group">
-                          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-0 group-hover:opacity-[0.02] transition-opacity"></div>
-                          <div class="flex items-start justify-between relative z-10">
+                                                    <div class="flex items-start justify-between relative z-10">
                              <div>
                                 <div class="flex items-center gap-3 mb-2">
                                    <span class="text-[10px] font-mono font-black text-[#2F2E8B] uppercase tracking-widest border-b border-[#2F2E8B]/10">{{ activity.type }}</span>
@@ -232,8 +227,7 @@
             <!-- RELATED TAB -->
             <div v-if="activeTab === 'related'" class="space-y-6">
                <div v-if="contact.accountId" class="bg-gray-900 border border-gray-800 p-8 relative overflow-hidden group">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.05]"></div>
-                  <div class="relative z-10">
+                                    <div class="relative z-10">
                      <div class="flex items-center gap-3 mb-6">
                         <div class="w-1.5 h-6 bg-[#2F2E8B]"></div>
                         <h4 class="text-[11px] font-mono font-black text-gray-400 uppercase tracking-widest">Parent_Entity_Node</h4>
@@ -281,7 +275,7 @@
              <button @click="$emit('update:modelValue', false)" class="px-6 py-2.5 border border-gray-100 text-gray-400 hover:text-gray-900 hover:bg-white text-[10px] font-mono font-black uppercase tracking-widest transition-all">
                ABORT_VIEW
              </button>
-             <button @click="$emit('edit', contact)" class="px-8 py-2.5 bg-[#2F2E8B] text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-[#3D2F88] transition-all flex items-center gap-2 shadow-lg shadow-[#2F2E8B]/20">
+             <button v-permission="['crm', 'edit']" @click="$emit('edit', contact)" class="px-8 py-2.5 bg-[#2F2E8B] text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-[#3D2F88] transition-all flex items-center gap-2 shadow-lg shadow-[#2F2E8B]/20">
                <Edit :size="14" /> MODIFY_STATE
              </button>
           </div>

@@ -37,7 +37,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Documents</p>
-            <h4 class="text-2xl font-black text-gray-900 font-display mt-1">{{ stats.total_documents || 0 }}</h4>
+            <h4 class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ stats.total_documents || 0 }}</h4>
           </div>
           <div class="bg-gray-50 group-hover:bg-blue-50 p-3 rounded-none transition-colors border border-transparent group-hover:border-blue-100">
             <i class="fas fa-file-alt text-gray-300 group-hover:text-[#2F2E8B] text-xl transition-colors"></i>
@@ -49,7 +49,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Views</p>
-            <h4 class="text-2xl font-black text-gray-900 font-display mt-1">{{ stats.total_views || 0 }}</h4>
+            <h4 class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ stats.total_views || 0 }}</h4>
           </div>
           <div class="bg-gray-50 group-hover:bg-purple-50 p-3 rounded-none transition-colors border border-transparent group-hover:border-purple-100">
             <i class="fas fa-eye text-gray-300 group-hover:text-purple-500 text-xl transition-colors"></i>
@@ -61,7 +61,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Total Downloads</p>
-            <h4 class="text-2xl font-black text-gray-900 font-display mt-1">{{ stats.total_downloads || 0 }}</h4>
+            <h4 class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ stats.total_downloads || 0 }}</h4>
           </div>
           <div class="bg-gray-50 group-hover:bg-green-50 p-3 rounded-none transition-colors border border-transparent group-hover:border-green-100">
             <i class="fas fa-download text-gray-300 group-hover:text-green-500 text-xl transition-colors"></i>
@@ -73,7 +73,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Folders</p>
-            <h4 class="text-2xl font-black text-gray-900 font-display mt-1">{{ folders.length }}</h4>
+            <h4 class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ folders.length }}</h4>
           </div>
           <div class="bg-gray-50 group-hover:bg-yellow-50 p-3 rounded-none transition-colors border border-transparent group-hover:border-yellow-100">
             <i class="fas fa-folder text-gray-300 group-hover:text-yellow-500 text-xl transition-colors"></i>
@@ -171,8 +171,7 @@
       >
         <!-- File Icon Header -->
         <div class="bg-gray-50/50 border-b border-gray-100 p-8 flex items-center justify-center relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-          <div class="absolute top-3 right-3 z-10">
+                    <div class="absolute top-3 right-3 z-10">
             <span :class="getCategoryBadgeClass(doc.category)" class="px-2 py-1 rounded-none text-[8px] font-black font-mono uppercase tracking-widest border bg-white">
               {{ doc.category || 'other' }}
             </span>
@@ -316,8 +315,7 @@
 
     <!-- Empty State -->
     <div v-else-if="!loading && documents.length === 0" class="bg-white border border-gray-100 p-12 text-center rounded-none shadow-none relative overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <div class="relative z-10">
+            <div class="relative z-10">
         <div class="w-16 h-16 bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-6">
           <i class="fas fa-file-alt text-2xl text-gray-200"></i>
         </div>
@@ -737,13 +735,7 @@ onMounted(() => {
   animation: scale-in 0.2s ease-out;
 }
 
-.mesh-background {
-  background-color: #ffffff;
-  background-image: 
-      linear-gradient(rgba(47, 46, 139, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(47, 46, 139, 0.08) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
+
 
 .dotted-pattern {
   background-image: radial-gradient(rgba(47, 46, 139, 0.2) 1px, transparent 1px);

@@ -67,8 +67,7 @@ const agentAbandonment = ref([
 
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-auto">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-20 shadow-sm shrink-0">
       <div class="px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -178,11 +177,5 @@ const agentAbandonment = ref([
 </template>
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 </style>

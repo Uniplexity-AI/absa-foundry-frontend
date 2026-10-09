@@ -153,8 +153,7 @@
             <div class="grid grid-cols-2 gap-2">
               <!-- Total -->
               <div class="relative overflow-hidden bg-gradient-to-br from-[#2F2E8B] to-[#1f1e6b] text-white rounded-sm group transition-all shadow-none">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.08] pointer-events-none"></div>
-                <div class="relative z-10 px-3 py-2">
+                                <div class="relative z-10 px-3 py-2">
                   <div class="flex items-center justify-between mb-0.5">
                     <span class="text-[7px] font-mono font-bold text-white/60 uppercase tracking-[0.2em]">Total_Leads</span>
                     <Users :size="10" class="text-white/40" />
@@ -166,8 +165,7 @@
 
               <!-- Hot -->
               <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-red-400 transition-all shadow-none">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
-                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-red-50 to-transparent rounded-bl-full pointer-events-none"></div>
+                                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-red-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
                   <div class="flex items-center justify-between mb-0.5">
                     <span class="text-[7px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Hot_Leads</span>
@@ -180,8 +178,7 @@
 
               <!-- Warm -->
               <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-orange-400 transition-all shadow-none">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
-                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-orange-50 to-transparent rounded-bl-full pointer-events-none"></div>
+                                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-orange-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
                   <div class="flex items-center justify-between mb-0.5">
                     <span class="text-[7px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Warm_Leads</span>
@@ -194,8 +191,7 @@
 
               <!-- Cold -->
               <div class="relative overflow-hidden bg-white border border-gray-200 rounded-sm group hover:border-blue-400 transition-all shadow-none">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
-                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full pointer-events-none"></div>
+                                <div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 px-3 py-2">
                   <div class="flex items-center justify-between mb-0.5">
                     <span class="text-[7px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Cold_Leads</span>
@@ -212,8 +208,7 @@
               class="relative overflow-hidden bg-white border border-dashed border-gray-300 cursor-pointer hover:border-[#2F2E8B] hover:shadow-none transition-all group"
               @click="showAutoAssignModal = true"
             >
-              <div class="absolute inset-0 dotted-pattern opacity-[0.04] pointer-events-none"></div>
-              <div class="relative z-10 flex items-center gap-4 px-4 py-3">
+                            <div class="relative z-10 flex items-center gap-4 px-4 py-3">
                 <div class="w-9 h-9 border border-gray-200 flex items-center justify-center shrink-0 group-hover:border-[#2F2E8B] transition-colors">
                   <Zap :size="16" class="text-gray-300 group-hover:text-[#2F2E8B] transition-colors" />
                 </div>
@@ -582,7 +577,7 @@
               </button>
             </template>
 
-            <button @click="bulkDelete" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest hover:border-red-500 hover:text-red-600 transition flex items-center gap-2 rounded-sm">
+            <button v-permission="['crm', 'delete']" @click="bulkDelete" class="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest hover:border-red-500 hover:text-red-600 transition flex items-center gap-2 rounded-sm">
               <Trash2 :size="12" />
               {{ viewState === 'archived' ? 'Delete Permanently' : 'Delete' }}
             </button>
@@ -637,10 +632,10 @@
           <span>Spreadsheet Edit — <span class="text-orange-500">{{ Object.keys(excelChanges).length }}</span> rows</span>
         </div>
         <div class="flex items-center gap-1.5">
-          <button @click="deleteSelectedExcelRows" class="px-2 py-1 border border-red-300 text-red-600 hover:bg-red-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
+          <button v-permission="['crm', 'delete']" @click="deleteSelectedExcelRows" class="px-2 py-1 border border-red-300 text-red-600 hover:bg-red-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
             <Trash2 :size="10" /> Delete
           </button>
-          <button @click="showExtractDialog = true" class="px-2 py-1 border border-blue-300 text-blue-600 hover:bg-blue-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
+          <button v-permission="['crm', 'export']" @click="showExtractDialog = true" class="px-2 py-1 border border-blue-300 text-blue-600 hover:bg-blue-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
             <FileSpreadsheet :size="10" /> Extract Rows
           </button>
         </div>
@@ -786,7 +781,7 @@
                 <button @click="$emit('view', lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-[#2F2E8B] hover:border-[#2F2E8B] rounded-sm transition-all" title="View">
                   <Eye :size="10" />
                 </button>
-                <button v-if="viewState === 'active'" @click="$emit('edit', lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-orange-500 hover:border-orange-500 rounded-sm transition-all" title="Edit">
+                <button v-permission="['crm', 'edit']" v-if="viewState === 'active'" @click="$emit('edit', lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-orange-500 hover:border-orange-500 rounded-sm transition-all" title="Edit">
                   <Edit :size="10" />
                 </button>
                 <button @click="$emit('call', lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-500 rounded-sm transition-all" title="Call">
@@ -798,7 +793,7 @@
                 <button v-else @click="handleRestore(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-500 rounded-sm transition-all" title="Restore">
                   <ArchiveRestore :size="10" />
                 </button>
-                <button @click="handleDelete(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 rounded-sm transition-all" :title="viewState === 'archived' ? 'Delete Permanently' : 'Delete'">
+                <button v-permission="['crm', 'delete']" @click="handleDelete(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 rounded-sm transition-all" :title="viewState === 'archived' ? 'Delete Permanently' : 'Delete'">
                   <Trash2 :size="10" />
                 </button>
               </div>
@@ -819,8 +814,7 @@
         ]"
         @click="$emit('view', lead)"
       >
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-
+        
         <!-- Selection Checkbox -->
         <div class="absolute top-2 left-2 z-10">
           <input 
@@ -893,7 +887,7 @@
             <button v-else @click.stop="handleRestore(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-green-500 hover:border-green-500 rounded-sm transition-all" title="Restore">
               <ArchiveRestore :size="10" />
             </button>
-            <button @click.stop="handleDelete(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 rounded-sm transition-all" title="Delete">
+            <button v-permission="['crm', 'delete']" @click.stop="handleDelete(lead)" class="w-6 h-6 flex items-center justify-center bg-white border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500 rounded-sm transition-all" title="Delete">
               <Trash2 :size="10" />
             </button>
             <div class="w-px h-3 bg-gray-200 mx-0.5"></div>
@@ -910,8 +904,7 @@
 
     <!-- Empty State -->
     <div v-if="!loading && leads.length === 0" class="bg-white border border-gray-100 text-center py-24 rounded-sm relative overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col items-center">
+            <div class="relative z-10 flex flex-col items-center">
         <div class="w-16 h-16 bg-gray-50 border border-gray-100 rounded-sm flex items-center justify-center mb-4">
           <Inbox :size="32" class="text-gray-200" />
         </div>
@@ -979,7 +972,7 @@
               class="px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-wider border border-gray-300 text-gray-700 hover:bg-gray-50 transition disabled:opacity-50">
               Cancel
             </button>
-            <button type="button" @click="runAutoAssign" :disabled="autoAssignLoading || leadStats.unassigned === 0"
+            <button v-permission="['crm', 'assign']" type="button" @click="runAutoAssign" :disabled="autoAssignLoading || leadStats.unassigned === 0"
               class="px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-wider bg-[#2F2E8B] text-white hover:bg-[#3D2F88] transition disabled:opacity-50 flex items-center gap-2">
               <i v-if="autoAssignLoading" class="fas fa-spinner fa-spin text-xs"></i>
               <Zap v-else :size="11" />
@@ -1008,7 +1001,7 @@
             <textarea v-model="extractText" rows="8" placeholder="Paste data here (tab-separated)&#10;Format: Name, Email, Phone, Company, Position, Stage, Priority, Source, City, Country, Assignee&#10;Example:&#10;John Doe	john@email.com	+260977...	Acme Corp	CEO	New	hot	Website	Lusaka	Zambia	user@email.com"
               class="w-full border border-gray-200 bg-gray-50 px-3 py-2.5 text-[12px] font-mono text-gray-700 outline-none focus:border-blue-500 focus:bg-blue-50/30 resize-none rounded-sm transition-colors"></textarea>
             <div class="flex justify-end gap-2 mt-4">
-              <button @click="showExtractDialog = false" class="px-4 py-2 border border-gray-200 text-gray-500 hover:bg-gray-50 text-[10px] font-mono font-bold uppercase tracking-widest transition-all rounded-sm">Cancel</button>
+              <button v-permission="['crm', 'export']" @click="showExtractDialog = false" class="px-4 py-2 border border-gray-200 text-gray-500 hover:bg-gray-50 text-[10px] font-mono font-bold uppercase tracking-widest transition-all rounded-sm">Cancel</button>
               <button @click="processExtractRows" :disabled="!extractText.trim()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white text-[10px] font-mono font-bold uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm">
                 <Plus :size="12" /> Add {{ extractRowCount }} Lead{{ extractRowCount !== 1 ? 's' : '' }}
               </button>

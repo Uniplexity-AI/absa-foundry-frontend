@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative blur-scoped">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">

@@ -22,8 +22,7 @@ const kpis = ref({
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-auto">
     <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <div class="flex-1 w-full relative z-10 blur-scoped pb-20">
       <div class="px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
 
@@ -43,7 +42,7 @@ const kpis = ref({
                 <span class="text-xs text-absa-passion font-medium">Target 80%</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Service Level</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 2 -->
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
@@ -52,7 +51,7 @@ const kpis = ref({
                 <span class="text-xs text-blue-600 font-medium">Avg Time</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Speed to Answer</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
             </div>
             <!-- Card 3 -->
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
@@ -61,7 +60,7 @@ const kpis = ref({
                 <span class="text-xs text-orange-600 font-medium">Critical</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Abandon Rate</h5>
-              <p class="text-2xl font-black text-orange-500 tracking-tight">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <p class="text-2xl font-black tracking-tight text-orange-500">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 4 (Analytics Highlight) -->
             <div class="bg-absa-passion border border-absa-passion shadow-sm p-4 relative group hover:bg-[#b3002d] transition cursor-pointer flex flex-col justify-between">
@@ -84,7 +83,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">+120 Today</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Interactions</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.totalInteractions }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.totalInteractions }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
@@ -92,7 +91,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">24 Act.</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Active Agents</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.activeAgents }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.activeAgents }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
@@ -100,7 +99,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">12 Open</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Escalations</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.escalations }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.escalations }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
@@ -108,7 +107,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">76% FCR</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Avg Handle Time</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgHandleTime }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.avgHandleTime }}</p>
             </div>
           </div>
         </div>
@@ -196,12 +195,6 @@ const kpis = ref({
 </template>
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 </style>
 

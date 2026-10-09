@@ -55,46 +55,42 @@
             <!-- Conversion KPIs -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="bg-white border border-gray-200 p-4 relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                <div class="relative z-10">
+                                <div class="relative z-10">
                   <div class="flex items-center gap-2 mb-2">
                     <div class="p-1.5 bg-green-50 border border-green-100"><TrendingUp :size="12" class="text-green-600" /></div>
                     <span class="text-[9px] font-mono font-bold text-gray-400 uppercase">Conv. Rate</span>
                   </div>
-                  <div class="text-2xl font-black text-gray-900 font-mono">{{ analytics.conversionRate }}%</div>
+                  <div class="text-2xl font-black tracking-tight text-gray-900">{{ analytics.conversionRate }}%</div>
                   <div class="text-[9px] text-gray-400 font-mono mt-1">leads → clients</div>
                 </div>
               </div>
               <div class="bg-white border border-gray-200 p-4 relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                <div class="relative z-10">
+                                <div class="relative z-10">
                   <div class="flex items-center gap-2 mb-2">
                     <div class="p-1.5 bg-blue-50 border border-blue-100"><Clock :size="12" class="text-blue-600" /></div>
                     <span class="text-[9px] font-mono font-bold text-gray-400 uppercase">Avg. Conv. Time</span>
                   </div>
-                  <div class="text-2xl font-black text-gray-900 font-mono">{{ analytics.avgConversionDays }}<span class="text-sm font-normal text-gray-400 ml-1">days</span></div>
+                  <div class="text-2xl font-black tracking-tight text-gray-900">{{ analytics.avgConversionDays }}<span class="text-sm font-normal text-gray-400 ml-1">days</span></div>
                   <div class="text-[9px] text-gray-400 font-mono mt-1">lead to client</div>
                 </div>
               </div>
               <div class="bg-white border border-gray-200 p-4 relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                <div class="relative z-10">
+                                <div class="relative z-10">
                   <div class="flex items-center gap-2 mb-2">
                     <div class="p-1.5 bg-purple-50 border border-purple-100"><DollarSign :size="12" class="text-purple-600" /></div>
                     <span class="text-[9px] font-mono font-bold text-gray-400 uppercase">Avg. CAC</span>
                   </div>
-                  <div class="text-2xl font-black text-gray-900 font-mono">{{ formatCurrency(analytics.avgCAC) }}</div>
+                  <div class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(analytics.avgCAC) }}</div>
                   <div class="text-[9px] text-gray-400 font-mono mt-1">cost per client</div>
                 </div>
               </div>
               <div class="bg-white border border-gray-200 p-4 relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                <div class="relative z-10">
+                                <div class="relative z-10">
                   <div class="flex items-center gap-2 mb-2">
                     <div class="p-1.5 bg-orange-50 border border-orange-100"><AlertCircle :size="12" class="text-orange-600" /></div>
                     <span class="text-[9px] font-mono font-bold text-gray-400 uppercase">Stale Leads</span>
                   </div>
-                  <div class="text-2xl font-black text-gray-900 font-mono">{{ analytics.staleLeads }}</div>
+                  <div class="text-2xl font-black tracking-tight text-gray-900">{{ analytics.staleLeads }}</div>
                   <div class="text-[9px] text-gray-400 font-mono mt-1">> {{ staleThresholdDays }}d no contact</div>
                 </div>
               </div>
@@ -151,19 +147,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="bg-white border border-gray-200 p-4">
                 <div class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-2">Pipeline Value</div>
-                <div class="text-2xl font-black text-[#2F2E8B] font-mono">{{ formatCurrency(analytics.pipelineValue) }}</div>
+                <div class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(analytics.pipelineValue) }}</div>
               </div>
               <div class="bg-white border border-gray-200 p-4">
                 <div class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-2">Weighted Value</div>
-                <div class="text-2xl font-black text-gray-900 font-mono">{{ formatCurrency(analytics.weightedPipelineValue) }}</div>
+                <div class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(analytics.weightedPipelineValue) }}</div>
               </div>
               <div class="bg-white border border-gray-200 p-4">
                 <div class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-2">Deals Won</div>
-                <div class="text-2xl font-black text-green-600 font-mono">{{ analytics.dealsWon }}</div>
+                <div class="text-2xl font-black tracking-tight text-status-success">{{ analytics.dealsWon }}</div>
               </div>
               <div class="bg-white border border-gray-200 p-4">
                 <div class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-2">Deals Lost</div>
-                <div class="text-2xl font-black text-red-500 font-mono">{{ analytics.dealsLost }}</div>
+                <div class="text-2xl font-black tracking-tight text-gray-900">{{ analytics.dealsLost }}</div>
               </div>
             </div>
 

@@ -4,6 +4,8 @@ import '@fontsource/hanken-grotesk/400.css';
 import '@fontsource/hanken-grotesk/500.css';
 import '@fontsource/hanken-grotesk/600.css';
 import '@fontsource/hanken-grotesk/700.css';
+import '@fontsource/hanken-grotesk/800.css';
+import '@fontsource/hanken-grotesk/900.css';
 import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
@@ -40,6 +42,7 @@ import './assets/main.css';
 import './assets/patterns.css';
 import './assets/pages.css';
 import { createApp } from 'vue';
+import { permissionDirective } from './directives/permission';
 import App from './App.vue';
 import router from './router'; // Import the router
 import './index.css'; // Adding Tailwind to the project
@@ -108,7 +111,9 @@ const pinia = createPinia(); // Create Pinia instance
 
 // app.use(store);  // Use Vuex store (Legacy)
 app.use(pinia); // Use Pinia for state management
-app.use(router); // Use the router
+app.use(router);
+app.directive('permission', permissionDirective);
+ // Use the router
 app.use(currencyPlugin); // Use currency plugin for global currency formatting
 
 // Configure Google OAuth - Always initialize with the Client ID from env

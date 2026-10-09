@@ -58,8 +58,7 @@
             class="bg-white border border-gray-300 rounded-sm p-4"
           >
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ stage.label }}</p>
-            <p class="text-2xl font-bold font-mono" :class="stage.color ?? 'text-absa-enrich'">
-              {{ stage.count?.toLocaleString() }}
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ stage.count?.toLocaleString() }}
             </p>
             <p class="text-[11px] text-gray-500 mt-1">{{ stage.pct }}% of portfolio</p>
             <p class="text-[10px] mt-1 flex items-center gap-0.5">
@@ -248,32 +247,32 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">New Customers (MTD)</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ store.lifecycleData?.onboarding?.total_new?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.total_new?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">This month</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Activated (30D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ store.lifecycleData?.onboarding?.activated_30d?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.activated_30d?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ activation30Pct }}% of new</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Activated (60D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ store.lifecycleData?.onboarding?.activated_60d?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.activated_60d?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ activation60Pct }}% of new</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Activated (90D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ store.lifecycleData?.onboarding?.activated_90d?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.activated_90d?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ activation90Pct }}% of new</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Early At-Risk</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.lifecycleData?.onboarding?.early_at_risk?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.early_at_risk?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Flagged within 90D</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Avg Products Held</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ store.lifecycleData?.onboarding?.avg_products?.toFixed(1) ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.lifecycleData?.onboarding?.avg_products?.toFixed(1) ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Per new customer</p>
           </div>
         </div>
@@ -369,22 +368,22 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Win-Back Eligible</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ winBackEligibleCount.toLocaleString() }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ winBackEligibleCount.toLocaleString() }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Eligible for campaign</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">In Campaign</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ winBackInCampaignCount.toLocaleString() }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ winBackInCampaignCount.toLocaleString() }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Active win-back campaigns</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Avg Win-Back Prob</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ avgWinBackProb }}%</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ avgWinBackProb }}%</p>
             <p class="text-[11px] text-gray-500 mt-1">Predicted success rate</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Est. Total Win-Back Value</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ estTotalWinBackValue }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ estTotalWinBackValue }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Projected revenue recovery</p>
           </div>
         </div>

@@ -2,8 +2,7 @@
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900 dark:text-white">
     
     <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-    
+        
     <!-- Header -->
     <header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-[100] shadow-none">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -110,8 +109,7 @@
               class="cursor-pointer border bg-white dark:bg-gray-800 p-5 transition-all relative group h-40 flex flex-col justify-between rounded-sm hover:shadow-lg overflow-hidden"
               :class="selectedCardId === null ? 'border-[#2F2E8B] ring-1 ring-[#2F2E8B]' : 'border-gray-200 dark:border-gray-700 hover:border-[#2F2E8B]'"
             >
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="absolute top-0 right-0 w-4 h-4 bg-gray-50 dark:bg-gray-700 border-l border-b border-gray-200 dark:border-gray-600 rounded-bl-sm flex items-center justify-center p-0.5 z-10" v-if="selectedCardId === null">
+                            <div class="absolute top-0 right-0 w-4 h-4 bg-gray-50 dark:bg-gray-700 border-l border-b border-gray-200 dark:border-gray-600 rounded-bl-sm flex items-center justify-center p-0.5 z-10" v-if="selectedCardId === null">
                   <div class="w-1.5 h-1.5 bg-[#2F2E8B] rounded-full"></div>
               </div>
               <div class="flex items-center gap-4 relative z-10">
@@ -136,8 +134,7 @@
               class="cursor-pointer border bg-white dark:bg-gray-800 p-5 transition-all relative group h-40 flex flex-col justify-between rounded-sm hover:shadow-lg overflow-hidden"
               :class="selectedCardId === card.id ? 'border-[#2F2E8B] ring-1 ring-[#2F2E8B]' : 'border-gray-200 dark:border-gray-700 hover:border-[#2F2E8B]'"
             >
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="absolute top-0 right-0 w-4 h-4 bg-gray-50 dark:bg-gray-700 border-l border-b border-gray-200 dark:border-gray-600 rounded-bl-sm flex items-center justify-center p-0.5 z-10" v-if="selectedCardId === card.id">
+                            <div class="absolute top-0 right-0 w-4 h-4 bg-gray-50 dark:bg-gray-700 border-l border-b border-gray-200 dark:border-gray-600 rounded-bl-sm flex items-center justify-center p-0.5 z-10" v-if="selectedCardId === card.id">
                   <div class="w-1.5 h-1.5 bg-[#2F2E8B] rounded-full"></div>
               </div>
                <div class="flex items-center gap-4 relative z-10">
@@ -198,8 +195,7 @@
             
             <!-- Business Information Card -->
             <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              
+                            
               <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
                 <i class="fas fa-briefcase text-gray-400 text-xs"></i> Information
               </h3>
@@ -276,8 +272,7 @@
 
             <!-- Contact Details -->
             <div class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              
+                            
               <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
                 <i class="fas fa-address-book text-gray-400 text-xs"></i> Contact Details
               </h3>
@@ -316,8 +311,7 @@
 
             <!-- Social Media (Owner only) -->
             <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
-               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-               
+                              
                <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
                 <i class="fas fa-share-alt text-gray-400 text-xs"></i> Social Media
               </h3>
@@ -337,8 +331,7 @@
 
             <!-- File Uploads (Owner only) -->
             <div v-if="isOwner" class="bg-white dark:bg-gray-800 p-6 border border-gray-200 dark:border-gray-700 shadow-none relative group hover:border-blue-300 transition-colors rounded-sm">
-               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-               
+                              
                <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight mb-6 flex items-center gap-2">
                 <i class="fas fa-cloud-upload-alt text-gray-400 text-xs"></i> Assets & Files
               </h3>
@@ -530,8 +523,7 @@
             :key="mod.id"
             class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-5 relative overflow-hidden group hover:border-[#2F2E8B] transition-colors"
           >
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="relative z-10">
+                        <div class="relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="w-10 h-10 rounded-sm bg-[#2F2E8B]/10 dark:bg-[#2F2E8B]/20 flex items-center justify-center">
                   <i :class="mod.icon || 'fas fa-cube'" class="text-[#2F2E8B] text-sm"></i>

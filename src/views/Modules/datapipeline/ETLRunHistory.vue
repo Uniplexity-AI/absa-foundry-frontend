@@ -176,7 +176,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none ">
           <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Storage Growth</p>
           <div class="flex items-end gap-3 mb-2">
-            <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.storageGrowth.value != null ? '+' + footerMetrics.storageGrowth.value : '—' }}</span>
+            <span class="text-2xl font-black tracking-tight text-gray-900">{{ footerMetrics.storageGrowth.value != null ? '+' + footerMetrics.storageGrowth.value : '—' }}</span>
             <span v-if="footerMetrics.storageGrowth.change != null" class="text-sm font-semibold text-[#FF780F] flex items-center">
               <span class="material-symbols-outlined text-[16px]">trending_up</span> {{ footerMetrics.storageGrowth.change }}%
             </span>
@@ -190,7 +190,7 @@
           <div>
             <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Average Quality</p>
             <div class="flex items-end gap-3">
-              <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.averageQuality.value != null ? footerMetrics.averageQuality.value + '%' : '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ footerMetrics.averageQuality.value != null ? footerMetrics.averageQuality.value + '%' : '—' }}</span>
               <span v-if="footerMetrics.averageQuality.change != null" class="text-sm font-semibold text-[#FF780F] flex items-center">
                 <span class="material-symbols-outlined text-[16px]">arrow_upward</span> {{ footerMetrics.averageQuality.change }}%
               </span>
@@ -201,7 +201,7 @@
           <div>
             <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Failed Retries</p>
             <div class="flex items-end justify-between">
-              <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.failedRetries.count != null ? String(footerMetrics.failedRetries.count).padStart(2, '0') : '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ footerMetrics.failedRetries.count != null ? String(footerMetrics.failedRetries.count).padStart(2, '0') : '—' }}</span>
               <span v-if="footerMetrics.failedRetries.status" class="text-xs font-semibold text-primary flex items-center gap-1 border border-primary-fixed px-2 py-0.5 rounded">
                 <span class="material-symbols-outlined text-[14px]">error</span> {{ footerMetrics.failedRetries.status }}
               </span>
@@ -211,7 +211,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-5 shadow-none ">
           <p class="text-xs text-on-surface-variant font-label uppercase tracking-wide font-semibold mb-2">Gateway Latency</p>
           <div class="flex items-end justify-between mb-2">
-            <span class="text-3xl font-headline font-bold text-on-surface">{{ footerMetrics.gatewayLatency.value != null ? footerMetrics.gatewayLatency.value : '—' }}</span>
+            <span class="text-2xl font-black tracking-tight text-gray-900">{{ footerMetrics.gatewayLatency.value != null ? footerMetrics.gatewayLatency.value : '—' }}</span>
             <span v-if="footerMetrics.gatewayLatency.level" class="text-sm font-semibold text-primary flex items-center">
               <span class="material-symbols-outlined text-[16px]">warning</span> {{ footerMetrics.gatewayLatency.level }}
             </span>

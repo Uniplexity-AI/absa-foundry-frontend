@@ -47,55 +47,55 @@ const routes = [
       },
 
       // ── Analytics / Customer workspace — RM + ADMIN ──
-      { path: 'portfolio',             name: 'DashboardHome',             component: () => import('../views/PortfolioOverview.vue'),                                            meta: { requiresRoles: [ADMIN, RM], title: 'Dashboard' } },
+      { path: 'portfolio',             name: 'DashboardHome',             component: () => import('../views/PortfolioOverview.vue'),                                            meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'Dashboard' } },
       { path: 'customers',             name: 'MyCustomers',               component: () => import('../views/MyCustomers.vue'),                                                  meta: { requiresRoles: [ADMIN, RM, OPS], title: 'My Customers' } },
       { path: 'customers/:id',         name: 'CustomerProfile',           component: () => import('../views/CustomerProfile.vue'),                                              meta: { requiresRoles: [ADMIN, RM, OPS], title: 'Customer Profile' } },
       { path: 'customer/:id',          name: 'CustomerDetail',            component: () => import('../views/CustomerDetail.vue'),                                               meta: { requiresRoles: [ADMIN, RM, OPS], title: 'Customer Detail' } },
-      { path: 'customer/:id/action-plan', name: 'CreateActionPlan',      component: () => import('../views/CreateActionPlan.vue'),                                             meta: { requiresRoles: [ADMIN, RM], title: 'Create Action Plan' } },
-      { path: 'customer/:id/take-action', name: 'TakeAction',            component: () => import('../views/TakeAction.vue'),                                                   meta: { requiresRoles: [ADMIN, RM], title: 'Take Action' } },
+      { path: 'customer/:id/action-plan', name: 'CreateActionPlan',      component: () => import('../views/CreateActionPlan.vue'),                                             meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'Create Action Plan' } },
+      { path: 'customer/:id/take-action', name: 'TakeAction',            component: () => import('../views/TakeAction.vue'),                                                   meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'Take Action' } },
 
       // 🔮 Intelligence layer – RM + ADMIN + DS 🔮
-      { path: 'customer-value',    name: 'CustomerValueIntelligence', component: () => import('../views/Modules/intelligence/CustomerValueIntelligence.vue'), meta: { requiresRoles: [ADMIN, RM, DS], title: 'Customer Value Intelligence' } },
-      { path: 'balance-forecast',  name: 'BalanceForecast',           component: () => import('../views/Modules/intelligence/BalanceForecast.vue'),           meta: { requiresRoles: [ADMIN, RM, DS], title: 'Balance Forecast' } },
-      { path: 'business-outcomes', name: 'BusinessOutcomes',          component: () => import('../views/Modules/intelligence/BusinessOutcomes.vue'),          meta: { requiresRoles: [ADMIN, RM, DS], title: 'Business Outcomes' } },
-      { path: 'lifecycle',         name: 'LifecyclePrediction',       component: () => import('../views/Modules/intelligence/LifecyclePrediction.vue'),       meta: { requiresRoles: [ADMIN, RM, DS], title: 'Customer Lifecycle' } },
+      { path: 'customer-value',    name: 'CustomerValueIntelligence', component: () => import('../views/Modules/intelligence/CustomerValueIntelligence.vue'), meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }], title: 'Customer Value Intelligence' } },
+      { path: 'balance-forecast',  name: 'BalanceForecast',           component: () => import('../views/Modules/intelligence/BalanceForecast.vue'),           meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }], title: 'Balance Forecast' } },
+      { path: 'business-outcomes', name: 'BusinessOutcomes',          component: () => import('../views/Modules/intelligence/BusinessOutcomes.vue'),          meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }], title: 'Business Outcomes' } },
+      { path: 'lifecycle',         name: 'LifecyclePrediction',       component: () => import('../views/Modules/intelligence/LifecyclePrediction.vue'),       meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }], title: 'Customer Lifecycle' } },
 
       // ── CRM — RM + ADMIN ──
-      { path: 'crm',                 name: 'CrmModule',           component: () => import('../views/Modules/crm/CRMModule.vue'),           meta: { requiresRoles: [ADMIN, RM], title: 'CRM' } },
-      { path: 'crm/workspace',       name: 'CrmWorkspace', component: () => import('../views/Modules/crm/CRMOmnichannelWorkspace.vue'), meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/calendar', name: 'CRMCalendar', component: () => import('../views/Modules/crm/CRMCalendarPage.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'Calendar & Activities' } },
-      { path: 'crm/analytics', name: 'CrmAnalytics', component: () => import('../views/Modules/crm/CRMAnalyticsDashboard.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Analytics' } },
-      { path: 'crm/tickets', name: 'CrmTickets', component: () => import('../views/Modules/crm/CRMTicketsPage.vue'), meta: { requiresRoles: [ADMIN, RM], title: 'CRM Tickets' } },
-      { path: 'crm/leads', name: 'CrmLeads',            component: () => import('../views/Modules/crm/CRMLeadsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/pipeline',        name: 'CrmPipeline',         component: () => import('../views/Modules/crm/CRMPipelinePage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/contacts',        name: 'CrmContacts',         component: () => import('../views/Modules/crm/CRMContactsPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/accounts',        name: 'CrmAccounts',         component: () => import('../views/Modules/crm/CRMAccountsPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/deals',           name: 'CrmDeals',            component: () => import('../views/Modules/crm/CRMDealsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/documents',       name: 'CrmDocuments',        component: () => import('../views/Modules/crm/CRMDocumentsPage.vue'),    meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/meetings',        name: 'CrmMeetings',         component: () => import('../views/Modules/crm/CRMMeetingsPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/emails',          name: 'CrmEmails',           component: () => import('../views/Modules/crm/CRMEmailsPage.vue'),       meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/calls',           name: 'CrmCalls',            component: () => import('../views/Modules/crm/CRMCallsPage.vue'),        meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/visits',          name: 'CrmVisits',           component: () => import('../views/Modules/crm/CRMVisitsPage.vue'),       meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/whatsapp',        name: 'CrmWhatsApp',         component: () => import('../views/Modules/crm/CRMWhatsAppPage.vue'),     meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/acquisition',     name: 'CrmAcquisition',      component: () => import('../views/Modules/crm/CRMAcquisitionPage.vue'),  meta: { requiresRoles: [ADMIN, RM] } },
-      { path: 'crm/promise-to-fund', name: 'PromiseToFundReport', component: () => import('../views/Modules/crm/PromiseToFundReport.vue'), meta: { requiresRoles: [ADMIN, RM] } },
+      { path: 'crm',                 name: 'CrmModule',           component: () => import('../views/Modules/crm/CRMModule.vue'),           meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'CRM' } },
+      { path: 'crm/workspace',       name: 'CrmWorkspace', component: () => import('../views/Modules/crm/CRMOmnichannelWorkspace.vue'), meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/calendar', name: 'CRMCalendar', component: () => import('../views/Modules/crm/CRMCalendarPage.vue'), meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'Calendar & Activities' } },
+      { path: 'crm/analytics', name: 'CrmAnalytics', component: () => import('../views/Modules/crm/CRMAnalyticsDashboard.vue'), meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'CRM Analytics' } },
+      { path: 'crm/tickets', name: 'CrmTickets', component: () => import('../views/Modules/crm/CRMTicketsPage.vue'), meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }], title: 'CRM Tickets' } },
+      { path: 'crm/leads', name: 'CrmLeads',            component: () => import('../views/Modules/crm/CRMLeadsPage.vue'),        meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/pipeline',        name: 'CrmPipeline',         component: () => import('../views/Modules/crm/CRMPipelinePage.vue'),     meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/contacts',        name: 'CrmContacts',         component: () => import('../views/Modules/crm/CRMContactsPage.vue'),     meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/accounts',        name: 'CrmAccounts',         component: () => import('../views/Modules/crm/CRMAccountsPage.vue'),     meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/deals',           name: 'CrmDeals',            component: () => import('../views/Modules/crm/CRMDealsPage.vue'),        meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/documents',       name: 'CrmDocuments',        component: () => import('../views/Modules/crm/CRMDocumentsPage.vue'),    meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/meetings',        name: 'CrmMeetings',         component: () => import('../views/Modules/crm/CRMMeetingsPage.vue'),     meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/emails',          name: 'CrmEmails',           component: () => import('../views/Modules/crm/CRMEmailsPage.vue'),       meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/calls',           name: 'CrmCalls',            component: () => import('../views/Modules/crm/CRMCallsPage.vue'),        meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/visits',          name: 'CrmVisits',           component: () => import('../views/Modules/crm/CRMVisitsPage.vue'),       meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/whatsapp',        name: 'CrmWhatsApp',         component: () => import('../views/Modules/crm/CRMWhatsAppPage.vue'),     meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/acquisition',     name: 'CrmAcquisition',      component: () => import('../views/Modules/crm/CRMAcquisitionPage.vue'),  meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
+      { path: 'crm/promise-to-fund', name: 'PromiseToFundReport', component: () => import('../views/Modules/crm/PromiseToFundReport.vue'), meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }] } },
 
       // ── Models / Data Science — DS + ADMIN ──
-      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue'), meta: { requiresRoles: [ADMIN, DS], title: 'Model Performance' } },
+      { path: 'models', name: 'ModelsMonitoring', component: () => import('../views/Modules/aiagents/Models.vue'), meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }], title: 'Model Performance' } },
 
       // ── ETL / Operations — OPS + ADMIN ──
-      { path: 'etl-pipeline',                    name: 'EtlPipeline',        component: () => import('../views/Modules/datapipeline/EtlPipeline.vue'),          meta: { requiresRoles: [ADMIN, OPS], title: 'ETL Pipeline' } },
-      { path: 'etl-run-history',                 name: 'EtlRunHistory',       component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'),         meta: { requiresRoles: [ADMIN, OPS], title: 'ETL Manager' } },
-      { path: 'etl-run-history/batch/:runId',    name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { requiresRoles: [ADMIN, OPS], title: 'Batch Execution Detail' } },
-      { path: 'etl-config-manager',             name: 'EtlConfigManager',    component: () => import('../views/Modules/datapipeline/EtlConfigManager.vue'),      meta: { requiresRoles: [ADMIN, OPS], title: 'ETL Config Manager' } },
+      { path: 'etl-pipeline',                    name: 'EtlPipeline',        component: () => import('../views/Modules/datapipeline/EtlPipeline.vue'),          meta: { requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }], title: 'ETL Pipeline' } },
+      { path: 'etl-run-history',                 name: 'EtlRunHistory',       component: () => import('../views/Modules/datapipeline/ETLRunHistory.vue'),         meta: { requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }], title: 'ETL Manager' } },
+      { path: 'etl-run-history/batch/:runId',    name: 'BatchExecutionDetail', component: () => import('../views/Modules/datapipeline/BatchExecutionDetail.vue'), meta: { requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }], title: 'Batch Execution Detail' } },
+      { path: 'etl-config-manager',             name: 'EtlConfigManager',    component: () => import('../views/Modules/datapipeline/EtlConfigManager.vue'),      meta: { requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }], title: 'ETL Config Manager' } },
 
       // ── Branch Manager — OPS + ADMIN ──
-      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue'), meta: { requiresRoles: [ADMIN, OPS], title: 'Branch Manager Dashboard' } },
+      { path: 'branch-manager', name: 'BranchManagerDashboard', component: () => import('../views/Modules/managers/BranchManagerDashboard.vue'), meta: { requiredPermissions: [{ entity: 'operations', action: 'read' }], title: 'Branch Manager Dashboard' } },
 
       // ── Settings — ADMIN only ──
-      { path: 'settings',       name: 'SettingsModule',  component: () => import('../views/Modules/settings/SettingsModule.vue'),   meta: { requiresRoles: [ADMIN], title: 'Settings' } },
-      { path: 'settings/users', name: 'UserManagement',  component: () => import('../views/Modules/settings/UserManagement.vue'),   meta: { requiresRoles: [ADMIN], title: 'User Management' } },
-      { path: 'subaccounts',    name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue'), meta: { requiresRoles: [ADMIN], title: 'Sub Accounts' } },
+      { path: 'settings',       name: 'SettingsModule',  component: () => import('../views/Modules/settings/SettingsModule.vue'),   meta: { requiredPermissions: [{ entity: 'settings', action: 'read' }], title: 'Settings' } },
+      { path: 'settings/users', name: 'UserManagement',  component: () => import('../views/Modules/settings/UserManagement.vue'),   meta: { requiredPermissions: [{ entity: 'settings', action: 'read' }], title: 'User Management' } },
+      { path: 'subaccounts',    name: 'SubAccountsModule', component: () => import('../views/Modules/settings/SubAccountModule.vue'), meta: { requiredPermissions: [{ entity: 'settings', action: 'read' }], title: 'Sub Accounts' } },
 
       // ── Profile — any authenticated user ──
       { path: 'profile', name: 'ProfileModule', component: () => import('../views/Modules/settings/ProfileModule.vue'), meta: { requiresAuth: true, title: 'Profile' } },
@@ -106,13 +106,13 @@ const routes = [
   {
     path: '/portfolio',
     component: () => import('../components/layouts/DashboardLayout.vue'),
-    meta: { requiresAuth: true, requiresRoles: [ADMIN, RM] },
+    meta: { requiresAuth: true, requiredPermissions: [{ entity: 'operations', action: 'read' }] },
     children: [{ path: '', component: () => import('../views/PortfolioOverview.vue') }],
   },
   {
     path: '/customer/:id',
     component: () => import('../components/layouts/DashboardLayout.vue'),
-    meta: { requiresAuth: true, requiresRoles: [ADMIN, RM, OPS] },
+    meta: { requiresAuth: true, requiredPermissions: [{ entity: 'operations', action: 'read' }] },
     children: [{ path: '', component: () => import('../views/CustomerDetail.vue') }],
   },
 ]
@@ -140,10 +140,17 @@ router.beforeEach(async (to) => {
   // Not authenticated → login
   if (!authStore.isAuthenticated) return '/login'
 
-  // Role check
-  const required = to.meta.requiresRoles
-  if (required && required.length > 0) {
-    const canAccess = required.some(r => authStore.roles.includes(r))
+  // Permission check (RBAC)
+  const requiredPerms = to.meta.requiredPermissions
+  if (requiredPerms && requiredPerms.length > 0) {
+    const hasAccess = requiredPerms.every(p => authStore.hasPermission(p.entity, p.action))
+    if (!hasAccess) return '/403'
+  }
+  
+  // Legacy Role check fallback for routes not yet updated
+  const requiredRoles = to.meta.requiresRoles
+  if (requiredRoles && requiredRoles.length > 0) {
+    const canAccess = requiredRoles.some(r => authStore.roles.includes(r))
     if (!canAccess) return '/403'
   }
 

@@ -162,8 +162,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full pt-6 px-6 pb-8 absa-mesh min-h-screen relative">
-    <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30 z-0"></div>
+  <div class="w-full pt-6 px-6 pb-8 min-h-screen relative">
+    
     <div class="relative z-10 w-full max-w-7xl mx-auto space-y-6">
       
 <!-- Page Title Row -->
@@ -218,7 +218,7 @@ onMounted(() => {
       
       <!-- List View -->
       <div v-if="currentView === 'list'" class="bg-white border border-gray-200 rounded-sm shadow-none overflow-hidden relative">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
+        
         <div class="overflow-x-auto relative z-10">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -267,7 +267,7 @@ onMounted(() => {
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           <div v-for="evt in filteredEvents" :key="evt.id" class="bg-white border border-gray-200 rounded-sm hover:shadow-md transition cursor-pointer relative overflow-hidden group flex flex-col">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
+            
             
             <!-- Card Header -->
             <div class="px-3 py-2 border-b border-gray-100 bg-gray-50/50 flex justify-between items-start relative z-10">
@@ -339,7 +339,7 @@ onMounted(() => {
 
       <!-- Calendar View -->
       <div v-if="currentView === 'calendar'" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        
         <div class="p-4 md:p-6 relative z-10">
           <div class="flex items-center justify-between mb-4">
             <button @click="previousMonth" class="px-3 py-1.5 border border-gray-200 rounded-sm hover:bg-gray-50 transition text-[10px] font-mono font-bold flex items-center gap-1">
@@ -396,7 +396,7 @@ onMounted(() => {
 
       <!-- Upcoming Activities -->
       <div v-if="upcomingEvents.length > 0" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
+        
         <div class="p-4 md:p-6 relative z-10">
           <div class="flex items-center gap-2 mb-4">
             <div class="w-1 h-4 bg-absa-passion"></div>
@@ -428,11 +428,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.dotted-pattern {
-  background-image: radial-gradient(#DC0037 1.5px, transparent 1.5px);
-  background-size: 20px 20px;
-  opacity: 0.04;
-}
+
 </style>
 
 

@@ -21,51 +21,46 @@
     <!-- Stats Grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <div class="bg-white border border-gray-200 rounded-sm p-4 relative overflow-hidden hover:border-[#2F2E8B]/40 transition">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">TOTAL</span>
             <div class="p-1 border border-blue-100 rounded-sm"><Users :size="12" class="text-[#2F2E8B]" /></div>
           </div>
-          <div class="text-2xl font-black text-gray-900 font-mono">{{ totalContacts }}</div>
+          <div class="text-2xl font-black tracking-tight text-gray-900">{{ totalContacts }}</div>
         </div>
       </div>
       <div class="bg-white border border-gray-200 rounded-sm p-4 relative overflow-hidden hover:border-[#2F2E8B]/40 transition">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">WITH_ACCOUNTS</span>
             <div class="p-1 border border-purple-100 rounded-sm"><Building :size="12" class="text-purple-500" /></div>
           </div>
-          <div class="text-2xl font-black text-gray-900 font-mono">{{ contactsWithAccounts }}</div>
+          <div class="text-2xl font-black tracking-tight text-gray-900">{{ contactsWithAccounts }}</div>
         </div>
       </div>
       <div class="bg-white border border-gray-200 rounded-sm p-4 relative overflow-hidden hover:border-[#2F2E8B]/40 transition">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">CONVERTED</span>
             <div class="p-1 border border-green-100 rounded-sm"><ArrowRightLeft :size="12" class="text-green-500" /></div>
           </div>
-          <div class="text-2xl font-black text-gray-900 font-mono">{{ convertedContacts }}</div>
+          <div class="text-2xl font-black tracking-tight text-gray-900">{{ convertedContacts }}</div>
         </div>
       </div>
       <div class="bg-white border border-gray-200 rounded-sm p-4 relative overflow-hidden hover:border-[#2F2E8B]/40 transition">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">THIS_MONTH</span>
             <div class="p-1 border border-orange-100 rounded-sm"><CalendarDays :size="12" class="text-orange-500" /></div>
           </div>
-          <div class="text-2xl font-black text-gray-900 font-mono">{{ contactsThisMonth }}</div>
+          <div class="text-2xl font-black tracking-tight text-gray-900">{{ contactsThisMonth }}</div>
         </div>
       </div>
     </div>
 
     <!-- Search + Filters Bar -->
     <div class="bg-white border border-gray-200 rounded-sm p-3 space-y-3 relative overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-      <div class="relative z-10 flex flex-col md:flex-row gap-3">
+            <div class="relative z-10 flex flex-col md:flex-row gap-3">
         <!-- Search -->
         <div class="relative flex-1">
           <Search :size="13" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" />
@@ -107,8 +102,7 @@
     <!-- Empty State -->
     <div v-else-if="contacts.length === 0"
       class="bg-white border border-gray-200 rounded-sm p-12 text-center relative overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-      <div class="relative z-10">
+            <div class="relative z-10">
         <BookUser :size="48" class="text-gray-200 mx-auto mb-4" />
         <p class="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">No_Contacts_Found</p>
         <p class="text-xs text-gray-400 mt-2 mb-6">DIRECTORY_EMPTY // NO_RECORDS</p>
@@ -124,8 +118,7 @@
       <div v-for="contact in contacts" :key="contact.id"
         @click="viewContact(contact)"
         class="bg-white border border-gray-200 rounded-sm hover:border-[#2F2E8B]/50 hover:shadow-none transition cursor-pointer p-4 relative overflow-hidden group">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-
+        
         <div class="relative z-10">
           <!-- Avatar + Name Row -->
           <div class="flex items-start justify-between mb-3">
@@ -203,8 +196,7 @@
 
     <!-- List View -->
     <div v-else class="bg-white border border-gray-200 rounded-sm overflow-hidden relative">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-      <div class="overflow-x-auto relative z-10">
+            <div class="overflow-x-auto relative z-10">
         <table class="w-full">
           <thead class="border-b border-gray-100 bg-gray-50/70">
             <tr>
@@ -307,8 +299,7 @@
       <div v-if="showDeleteConfirm" class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-24"
         @click.self="showDeleteConfirm = false">
         <div class="bg-white rounded-sm shadow-2xl w-full max-w-md border border-gray-200 relative overflow-hidden animate-modal-in">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="p-5 border-b border-gray-100 flex items-center gap-3 bg-gray-50/50 relative z-10">
+                    <div class="p-5 border-b border-gray-100 flex items-center gap-3 bg-gray-50/50 relative z-10">
             <div class="w-1 h-5 bg-red-500"></div>
             <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
               <AlertTriangle :size="14" class="text-red-500" /> Delete_Contact

@@ -2,8 +2,7 @@
   <Teleport to="body">
     <div v-if="modelValue && document" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10002] p-4" @click.self="close">
       <div class="bg-white shadow-2xl max-w-2xl w-full overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto border border-gray-200 relative">
-        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-        <!-- Header -->
+                <!-- Header -->
         <div class="bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-5 sticky top-0 z-10 flex items-center justify-between">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-1.5 h-6 bg-[#2F2E8B] flex-shrink-0"></div>

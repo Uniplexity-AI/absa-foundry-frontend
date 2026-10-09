@@ -19,3 +19,27 @@ export function getNextOfKin(customerId) {
     phone: '+260******123'
   })
 }
+
+
+import axios from 'axios';
+import BASE_URL, { getAuthHeaders } from './api';
+
+export async function fetchTickets() {
+  const response = await axios.get(`${BASE_URL}/api/v1/crm/tickets`, { headers: getAuthHeaders() });
+  return response.data;
+}
+
+export async function createTicket(payload) {
+  const response = await axios.post(`${BASE_URL}/api/v1/crm/tickets`, payload, { headers: getAuthHeaders() });
+  return response.data;
+}
+
+export async function deleteTicket(ticketId) {
+  const response = await axios.delete(`${BASE_URL}/api/v1/crm/tickets/${ticketId}`, { headers: getAuthHeaders() });
+  return response.data;
+}
+
+export async function updateTicket(ticketId, payload) {
+  const response = await axios.put(`${BASE_URL}/api/v1/crm/tickets/${ticketId}`, payload, { headers: getAuthHeaders() });
+  return response.data;
+}

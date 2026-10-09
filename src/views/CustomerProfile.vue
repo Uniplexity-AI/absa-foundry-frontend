@@ -820,8 +820,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
       <!-- ═══ Customer identity header ═══ -->
       <section class="bg-white border border-gray-200 rounded-none shadow-sm mb-5 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
         <div class="p-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
           <div class="flex items-start gap-4 min-w-0">
             <div
@@ -922,8 +921,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
       <!-- ── Predictive insights / risk drivers ── -->
       <div class="grid grid-cols-12 gap-4 mb-5">
         <section class="col-span-12 lg:col-span-6 bg-white border border-gray-200 rounded-none shadow-sm p-5 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-          <div class="relative z-10">
+                    <div class="relative z-10">
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center gap-2"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Predictive Insights</h2></div>
             <span v-if="profile?.snapshot_date || computedAt" class="text-[10px] text-gray-400">
@@ -994,8 +992,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
         <!-- Key risk drivers -->
         <section class="col-span-12 lg:col-span-6 bg-white border border-gray-200 rounded-none shadow-sm p-5 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-          <div class="relative z-10">
+                    <div class="relative z-10">
           <div class="flex items-center gap-2 mb-4"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Key Risk Drivers</h2></div>
           <div v-if="riskDrivers.length" class="space-y-4">
             <div v-for="d in riskDrivers" :key="d.label">
@@ -1016,8 +1013,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
       <!-- Lifecycle journey -->
       <section class="bg-white border border-gray-200 rounded-none shadow-sm p-5 mb-5 relative overflow-hidden">
-        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
         <div class="flex items-center justify-between mb-1">
           <div class="flex items-center gap-2"><div class="w-1 h-3.5 bg-absa-passion rounded-none"></div><h2 class="text-xs font-bold font-display uppercase tracking-tight text-gray-900">Lifecycle Journey (12 Months)</h2></div>
           <span class="text-[10px] text-gray-400">{{ journeyNodes.length }} snapshots</span>
@@ -1086,8 +1082,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 
         <!-- Interaction History / Next of Kin Tabs -->
         <section class="col-span-12 lg:col-span-8 bg-white border border-gray-200 rounded-none shadow-sm p-5 flex flex-col relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-          <div class="relative z-10 flex flex-col flex-1">
+                    <div class="relative z-10 flex flex-col flex-1">
                       <!-- Tabs Header -->
             <div class="flex items-center gap-4 border-b border-gray-200 mb-4 pb-2">
               <button
@@ -1339,13 +1334,7 @@ onBeforeUnmount(() => window.removeEventListener('pageshow', onPageShow))
 </template>
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 .dotted-pattern {
   background-image: radial-gradient(#DC0037 1px, transparent 1px);
   background-size: 16px 16px;

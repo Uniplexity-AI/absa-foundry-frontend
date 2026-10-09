@@ -240,7 +240,7 @@
                   <button @click="openBulkAssign" :disabled="bulkProcessing" class="px-2 py-1 border border-[#2F2E8B] text-[#2F2E8B] hover:bg-[#2F2E8B] hover:text-white transition flex items-center gap-1 font-mono font-bold uppercase text-[6px] tracking-widest rounded-sm">
                     <Users :size="8" /> Assign
                   </button>
-                  <button @click="bulkDeleteAccounts" :disabled="bulkProcessing" class="px-2 py-1 border border-red-400 text-red-500 hover:bg-red-600 hover:text-white transition flex items-center gap-1 font-mono font-bold uppercase text-[6px] tracking-widest rounded-sm">
+                  <button v-permission="['crm', 'delete']" @click="bulkDeleteAccounts" :disabled="bulkProcessing" class="px-2 py-1 border border-red-400 text-red-500 hover:bg-red-600 hover:text-white transition flex items-center gap-1 font-mono font-bold uppercase text-[6px] tracking-widest rounded-sm">
                     <Trash2 :size="8" /> Delete
                   </button>
                   <button @click="clearSelection" class="text-[6px] font-mono font-bold text-gray-400 hover:text-red-500 uppercase tracking-widest underline">Clear</button>
@@ -288,8 +288,7 @@
     <!-- Empty State -->
     <div v-if="!loading && accounts.length === 0"
       class="bg-white border border-gray-200 rounded-sm p-12 text-center relative overflow-hidden">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-      <div class="relative z-10">
+            <div class="relative z-10">
         <Building :size="48" class="text-gray-200 mx-auto mb-4" />
         <p class="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">No_Accounts_Found</p>
         <p class="text-xs text-gray-400 mt-2 mb-6">{{ searchQuery ? 'TRY_ADJUSTING_FILTERS' : 'REGISTRY_EMPTY' }}</p>
@@ -374,10 +373,10 @@
           <span>Spreadsheet Edit — <span class="text-orange-500">{{ Object.keys(excelChanges).length }}</span> rows</span>
         </div>
         <div class="flex items-center gap-1.5">
-          <button @click="deleteSelectedExcelRows" class="px-2 py-1 border border-red-300 text-red-600 hover:bg-red-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
+          <button v-permission="['crm', 'delete']" @click="deleteSelectedExcelRows" class="px-2 py-1 border border-red-300 text-red-600 hover:bg-red-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
             <Trash2 :size="10" /> Delete
           </button>
-          <button @click="showExtractDialog = true" class="px-2 py-1 border border-blue-300 text-blue-600 hover:bg-blue-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
+          <button v-permission="['crm', 'export']" @click="showExtractDialog = true" class="px-2 py-1 border border-blue-300 text-blue-600 hover:bg-blue-50 text-[8px] font-mono font-black uppercase tracking-widest rounded-sm transition flex items-center gap-1">
             <FileSpreadsheet :size="10" /> Extract Rows
           </button>
         </div>
@@ -569,7 +568,7 @@
             <textarea v-model="extractText" rows="8" placeholder="Paste data here (tab-separated)&#10;Format: Name, Industry, Phone, Email, Assignee&#10;Example:&#10;Acme Corp	Technology	+260977...	info@acme.com	user@email.com&#10;Globex Inc	Finance	+260955...	ceo@globex.com	admin@email.com"
               class="w-full border border-gray-200 bg-gray-50 px-3 py-2.5 text-[12px] font-mono text-gray-700 outline-none focus:border-blue-500 focus:bg-blue-50/30 resize-none rounded-sm transition-colors"></textarea>
             <div class="flex justify-end gap-2 mt-4">
-              <button @click="showExtractDialog = false" class="px-4 py-2 border border-gray-200 text-gray-500 hover:bg-gray-50 text-[10px] font-mono font-bold uppercase tracking-widest transition-all rounded-sm">Cancel</button>
+              <button v-permission="['crm', 'export']" @click="showExtractDialog = false" class="px-4 py-2 border border-gray-200 text-gray-500 hover:bg-gray-50 text-[10px] font-mono font-bold uppercase tracking-widest transition-all rounded-sm">Cancel</button>
               <button @click="processExtractRows" :disabled="!extractText.trim()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white text-[10px] font-mono font-bold uppercase tracking-widest transition-all flex items-center gap-1.5 rounded-sm">
                 <Plus :size="12" /> Add {{ extractRowCount }} Row{{ extractRowCount !== 1 ? 's' : '' }}
               </button>

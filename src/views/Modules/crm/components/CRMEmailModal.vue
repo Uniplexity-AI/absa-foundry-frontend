@@ -1,8 +1,7 @@
 <template>
   <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 sm:p-6 shadow-2xl">
     <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden border border-gray-200 rounded-none relative">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-      
+            
       <!-- Header -->
       <header class="flex items-center justify-between p-6 border-b border-gray-100 bg-white/50 backdrop-blur-md relative z-10 sticky top-0">
         <div class="flex items-center gap-3">

@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative text-gray-800 blur-scoped">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -47,46 +46,41 @@
         <!-- Email Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="bg-white border border-gray-200 hover:border-[#2F2E8B] transition-all duration-300 relative overflow-hidden group p-4 rounded-none">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            <div class="flex justify-between items-start mb-2 relative z-10">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
               <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Sent_Today</div>
               <Send :size="14" class="text-blue-500" />
             </div>
-            <div class="text-2xl font-black text-[#2F2E8B] tracking-tighter relative z-10">{{ emailStats.sentToday }}</div>
+            <div class="relative z-10 text-2xl font-black tracking-tight text-gray-900">{{ emailStats.sentToday }}</div>
           </div>
           
           <div class="bg-white border border-gray-200 hover:border-green-500 transition-all duration-300 relative overflow-hidden group p-4 rounded-none">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            <div class="flex justify-between items-start mb-2 relative z-10">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
               <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Open_Rate</div>
               <MailOpen :size="14" class="text-green-500" />
             </div>
-            <div class="text-2xl font-black text-green-600 tracking-tighter relative z-10">{{ emailStats.openRate }}%</div>
+            <div class="relative z-10 text-2xl font-black tracking-tight text-status-success">{{ emailStats.openRate }}%</div>
           </div>
 
           <div class="bg-white border border-gray-200 hover:border-purple-500 transition-all duration-300 relative overflow-hidden group p-4 rounded-none">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            <div class="flex justify-between items-start mb-2 relative z-10">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
               <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Click_Rate</div>
               <MousePointerClick :size="14" class="text-purple-500" />
             </div>
-            <div class="text-2xl font-black text-purple-600 tracking-tighter relative z-10">{{ emailStats.clickRate }}%</div>
+            <div class="relative z-10 text-2xl font-black tracking-tight text-gray-900">{{ emailStats.clickRate }}%</div>
           </div>
 
           <div class="bg-white border border-gray-200 hover:border-orange-500 transition-all duration-300 relative overflow-hidden group p-4 rounded-none">
-             <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-             <div class="flex justify-between items-start mb-2 relative z-10">
+                          <div class="flex justify-between items-start mb-2 relative z-10">
               <div class="text-[8px] font-mono font-bold text-gray-400 uppercase tracking-[0.2em]">Scheduled</div>
               <Clock :size="14" class="text-orange-500" />
              </div>
-             <div class="text-2xl font-black text-orange-600 tracking-tighter relative z-10">{{ emailStats.scheduled }}</div>
+             <div class="relative z-10 text-2xl font-black tracking-tight text-orange-500">{{ emailStats.scheduled }}</div>
           </div>
         </div>
 
         <!-- Email List -->
         <div class="bg-white border border-gray-200 rounded-none relative overflow-hidden flex flex-col h-[600px]">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.01]"></div>
-          
+                    
           <div class="border-b border-gray-100 bg-gray-50/50 relative z-10 flex border-t-0">
              <button v-for="folder in ['inbox', 'sent', 'scheduled', 'drafts']" :key="folder" @click="emailListFilter = folder"
                 class="px-6 py-4 transition-all text-[10px] font-mono uppercase tracking-[0.2em] flex items-center gap-2 whitespace-nowrap border-b-2"

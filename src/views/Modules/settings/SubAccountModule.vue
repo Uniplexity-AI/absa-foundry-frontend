@@ -169,8 +169,7 @@
       <div v-for="(acc, index) in paged" :key="acc.id || acc.email || index" @click="openDetailsModal(acc)" 
            class="group bg-white rounded-sm border border-gray-200 p-5 shadow-none hover:shadow-md hover:border-[#BE0F2C] transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[220px]">
         
-        <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-
+        
         <div class="absolute top-0 right-0 py-1 px-3 bg-gray-50 border-b border-l border-gray-100 text-[9px] font-mono font-black text-gray-500 uppercase tracking-widest rounded-bl-sm group-hover:bg-[#BE0F2C] group-hover:text-white transition-colors">
           {{ acc.role }}
         </div>
@@ -320,8 +319,7 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showCreateModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm" @click="closeCreateModal">
         <div class="bg-white border border-gray-200 rounded-sm p-8 shadow-2xl relative overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar" @click.stop>
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
               <div class="w-1 h-6 bg-[#BE0F2C]"></div>
@@ -420,8 +418,7 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showBranchModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm" @click="closeBranchModal">
         <div class="bg-white border border-gray-200 rounded-sm p-8 shadow-2xl relative overflow-hidden w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar" @click.stop>
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
               <div class="w-1 h-6 bg-[#BE0F2C]"></div>
@@ -486,8 +483,7 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showManageBranchesModal" class="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-gray-900/60 backdrop-blur-sm" @click="showManageBranchesModal = false">
         <div class="bg-white border border-gray-200 rounded-sm p-4 sm:p-8 shadow-2xl relative overflow-hidden w-full max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto custom-scrollbar" @click.stop>
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-gray-100">
             <div class="flex items-center gap-2 sm:gap-3">
               <div class="w-1 h-5 sm:h-6 bg-orange-500"></div>
@@ -646,8 +642,7 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showDetailsModal && selectedSubAccount" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm" @click="closeDetailsModal">
         <div class="bg-white border border-gray-200 rounded-sm p-8 shadow-2xl relative overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar" @click.stop>
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-4">
               <div class="h-10 w-10 flex items-center justify-center text-[#BE0F2C] font-black">
@@ -797,8 +792,7 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0" enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showEditBranchModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm" @click="closeEditBranchModal">
         <div class="bg-white border border-gray-200 rounded-sm p-8 shadow-2xl relative overflow-hidden w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar" @click.stop>
-        <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-        <div class="relative z-10">
+                <div class="relative z-10">
           <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
               <div class="w-1 h-6 bg-blue-500"></div>
@@ -1934,7 +1928,7 @@ onMounted(async () => {
   border: 1px solid #E8E8EC;
   background: #FFFFFF;
   color: #4B5563;
-  font-family: 'Montserrat', system-ui, sans-serif;
+  /* Removed hardcoded Montserrat */
 }
 
 .absa-subaccounts__btn:hover {

@@ -1,24 +1,42 @@
-repo_path = r'c:\Users\ADMIN\Desktop\uniplexity-ai\ABSA\absa-foundry-backend\customer-lifecycle-ai\services\decision-intelligence-service\app\api\pilot_action_routes.py'
-with open(repo_path, 'r') as f:
+import re
+
+with open('src/router/index.js', 'r', encoding='utf-8') as f:
     content = f.read()
 
-addition = """
-@router.delete("/log/{action_id}")
-def delete_action(action_id: int):
-    success = pilot_action_service.delete_action(action_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Not found")
-    return {"success": True}
+# 1. Update the router guard logic
+guard_pattern = re.compile(r"// Role check\n\s*const required = to\.meta\.requiresRoles\n.*?if \(!canAccess\) return \'/403\'\n\s*\}", re.DOTALL)
+new_guard = '''// Permission check (RBAC)
+  const requiredPerms = to.meta.requiredPermissions
+  if (requiredPerms && requiredPerms.length > 0) {
+    const hasAccess = requiredPerms.every(p => authStore.hasPermission(p.entity, p.action))
+    if (!hasAccess) return '/403'
+  }
+  
+  // Legacy Role check fallback for routes not yet updated
+  const requiredRoles = to.meta.requiresRoles
+  if (requiredRoles && requiredRoles.length > 0) {
+    const canAccess = requiredRoles.some(r => authStore.roles.includes(r))
+    if (!canAccess) return '/403'
+  }'''
+content = guard_pattern.sub(new_guard, content)
 
-@router.put("/log/{action_id}")
-def update_action(action_id: int, req: PilotActionLogRequest):
-    success = pilot_action_service.update_action(action_id, req)
-    if not success:
-        raise HTTPException(status_code=404, detail="Not found")
-    return {"success": True}
-"""
+# 2. Update the routes themselves
+# For intelligence -> requiredPermissions: [{ entity: 'intelligence', action: 'read' }]
+content = re.sub(r"meta:\s*\{\s*requiresRoles:\s*\[ADMIN,\s*RM,\s*DS\]", "meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }]", content)
 
-content = content.replace("@router.get(\"/state/{customer_id}\"", addition + "\n@router.get(\"/state/{customer_id}\"")
-with open(repo_path, 'w') as f:
+# For CRM -> requiredPermissions: [{ entity: 'crm', action: 'read' }]
+content = re.sub(r"meta:\s*\{\s*requiresRoles:\s*\[ADMIN,\s*RM\]", "meta: { requiredPermissions: [{ entity: 'crm', action: 'read' }]", content)
+
+# For Operations / ETL -> requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }]
+content = re.sub(r"meta:\s*\{\s*requiresRoles:\s*\[ADMIN,\s*OPS\]", "meta: { requiredPermissions: [{ entity: 'etl-pipeline', action: 'read' }]", content)
+
+# For Models -> requiredPermissions: [{ entity: 'intelligence', action: 'read' }] (Since DS + ADMIN)
+content = re.sub(r"meta:\s*\{\s*requiresRoles:\s*\[ADMIN,\s*DS\]", "meta: { requiredPermissions: [{ entity: 'intelligence', action: 'read' }]", content)
+
+# For Settings -> requiredPermissions: [{ entity: 'settings', action: 'read' }]
+content = re.sub(r"meta:\s*\{\s*requiresRoles:\s*\[ADMIN\]", "meta: { requiredPermissions: [{ entity: 'settings', action: 'read' }]", content)
+
+with open('src/router/index.js', 'w', encoding='utf-8') as f:
     f.write(content)
-print("done di router")
+
+print("Updated router.js with permissions guard.")

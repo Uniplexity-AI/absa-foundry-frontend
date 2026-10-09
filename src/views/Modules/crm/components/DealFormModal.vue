@@ -4,8 +4,7 @@
       class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-10 overflow-y-auto"
       @click.self="close">
       <div class="bg-white rounded-sm shadow-2xl max-w-5xl w-full border border-gray-200 relative overflow-hidden animate-modal-in flex flex-col my-auto md:my-10">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-
+        
         <!-- Header -->
         <div class="relative z-10 sticky top-0 bg-white border-b border-gray-200 p-4 rounded-t-sm">
           <div class="flex items-center justify-between">
@@ -30,8 +29,7 @@
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <!-- Basic Information -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <Info :size="10" class="text-[#2F2E8B]" /> Basic_Information
@@ -68,8 +66,7 @@
 
             <!-- Associated Records -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <Link :size="10" class="text-[#2F2E8B]" /> Associated_Records
@@ -99,8 +96,7 @@
 
             <!-- Assignment Section -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <UserCheck :size="10" class="text-[#2F2E8B]" /> Assignment
@@ -116,8 +112,7 @@
 
             <!-- Description & Next Steps -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <AlignLeft :size="10" class="text-[#2F2E8B]" /> Details_&amp;_Next_Steps
@@ -137,14 +132,12 @@
 
             <!-- Weighted Value Display -->
             <section class="bg-gray-50 rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 p-4">
+                            <div class="relative z-10 p-4">
                 <div class="flex items-center gap-2 mb-2">
                   <Calculator :size="14" class="text-gray-400" />
                   <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Weighted_Value</span>
                 </div>
-                <div class="text-2xl font-black text-[#2F2E8B] font-mono tracking-tighter">
-                  {{ formatCurrency((form.amount || 0) * (form.probability || 0) / 100) }}
+                <div class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency((form.amount || 0) * (form.probability || 0) / 100) }}
                 </div>
                 <div class="text-[10px] text-gray-500 font-mono mt-1">
                   {{ formatCurrency(form.amount || 0) }} × {{ form.probability || 0 }}%
@@ -154,8 +147,7 @@
 
             <!-- Documents -->
             <section v-if="form.id" class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <FileText :size="10" class="text-[#2F2E8B]" /> Documents

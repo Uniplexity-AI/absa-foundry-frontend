@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { fetchTickets, createTicket, deleteTicket, updateTicket } from '@/services/crmApi'
 import FaqUploadModal from './FaqUploadModal.vue'
 import FaqViewModal from './FaqViewModal.vue'
+import TicketFormModal from './components/TicketFormModal.vue'
 import {
   Layers, Search, Filter, Plus, ArrowLeft,
   CheckCircle, AlertTriangle, Clock, MessageSquare, Phone, Upload
@@ -13,19 +15,92 @@ const showFaqUploadModal = ref(false)
 const showFaqViewModal = ref(false)
 
 const selectedTicket = ref(null)
-const mockTickets = ref([
-  { id: 'CASE-4892', type: 'Complaint', customer: '0977 123 456', status: 'Open', priority: 'High', channel: 'Voice', sla: 'At Risk', created: '2026-09-28' },
-  { id: 'CASE-4891', type: 'Enquiry', customer: '+260 96 111222', status: 'Resolved', priority: 'Medium', channel: 'WhatsApp', sla: 'Met', created: '2026-09-28' },
-  { id: 'CASE-4890', type: 'Account Block', customer: 'John Banda', status: 'Escalated', priority: 'Critical', channel: 'Facebook', sla: 'Breached', created: '2026-09-27' },
-  { id: 'CASE-4889', type: 'Card Delivery', customer: 'Mary S.', status: 'Pending', priority: 'Low', channel: 'Email', sla: 'On Track', created: '2026-09-27' },
-])
+const mockTickets = ref([])
+
+const loadTickets = async () => {
+  try {
+    mockTickets.value = await fetchTickets()
+  } catch (error) {
+    console.error("Failed to load tickets from database", error)
+  }
+}
+
+onMounted(() => {
+  loadTickets()
+})
+
+const isEditing = ref(false)
+const editingTicketId = ref(null)
+
+const openNewCaseModal = () => {
+  isEditing.value = false
+  editingTicketId.value = null
+  newCaseForm.value = {
+    subject: '',
+    customer: '',
+    type: 'Complaint',
+    priority: 'Low',
+    channel: 'In-Branch',
+    assignedTo: 'Unassigned',
+    description: ''
+  }
+  showNewCaseModal.value = true
+}
+
+const openEditModal = (ticket) => {
+  isEditing.value = true
+  editingTicketId.value = ticket.id
+  newCaseForm.value = { ...ticket }
+  showNewCaseModal.value = true
+}
+
+const newCaseForm = ref({
+  subject: '',
+  customer: '',
+  type: 'Complaint',
+  priority: 'Low',
+  channel: 'In-Branch',
+  assignedTo: 'Unassigned',
+  description: ''
+})
+
+const saveNewCase = async (formData) => {
+  try {
+    if (isEditing.value) {
+      await updateTicket(editingTicketId.value, formData)
+      const index = mockTickets.value.findIndex(t => t.id === editingTicketId.value)
+      if (index !== -1) {
+        mockTickets.value[index] = { ...mockTickets.value[index], ...formData }
+      }
+    } else {
+      const res = await createTicket(formData)
+      mockTickets.value.unshift(res.ticket)
+    }
+    
+    showNewCaseModal.value = false
+  } catch (error) {
+    console.error("Failed to save ticket", error)
+    alert("Error saving ticket.")
+  }
+}
+
+const deleteCase = async (ticketId) => {
+  if (!confirm("Are you sure you want to delete this ticket?")) return
+  try {
+    await deleteTicket(ticketId)
+    mockTickets.value = mockTickets.value.filter(t => t.id !== ticketId)
+  } catch (error) {
+    console.error("Failed to delete ticket", error)
+    alert("Error deleting ticket.")
+  }
+}
+
 
 </script>
 
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-auto">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-20 shadow-sm shrink-0">
       <div class="px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -55,7 +130,7 @@ const mockTickets = ref([
             Upload FAQs
           </button>
 
-          <button @click="showNewCaseModal = true" class="px-3 py-1.5 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-2"><Plus :size="12"/> New Case</button>
+          <button @click="openNewCaseModal" class="px-3 py-1.5 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-2"><Plus :size="12"/> New Case</button>
         </div>
       </div>
     </header>
@@ -82,6 +157,7 @@ const mockTickets = ref([
             <thead>
               <tr class="bg-gray-50 text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest border-b border-gray-200">
                 <th class="p-3">Ticket ID</th>
+                  <th class="p-3">Subject</th>
                 <th class="p-3">Customer Info</th>
                 <th class="p-3">Type</th>
                 <th class="p-3">Channel</th>
@@ -94,6 +170,7 @@ const mockTickets = ref([
             <tbody class="text-xs font-mono">
               <tr v-for="ticket in mockTickets" :key="ticket.id" class="border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer">
                 <td class="p-3 text-absa-passion font-bold">{{ ticket.id }}</td>
+                  <td class="p-3 text-gray-900 truncate max-w-[150px] font-bold" :title="ticket.subject">{{ ticket.subject || 'N/A' }}</td>
                 <td class="p-3 text-gray-900">{{ ticket.customer }}</td>
                 <td class="p-3 text-gray-600">{{ ticket.type }}</td>
                 <td class="p-3 text-gray-500">
@@ -120,8 +197,10 @@ const mockTickets = ref([
                    </span>
                 </td>
                 <td class="p-3 text-gray-400">{{ ticket.created }}</td>
-                <td class="p-3 text-right">
-                   <button @click.stop="selectedTicket = ticket" class="px-2 py-1 bg-transparent text-gray-500 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-bold uppercase rounded-none transition">View</button>
+                <td class="p-3 text-right flex justify-end gap-2">
+                   <button @click.stop="selectedTicket = ticket" class="p-1 bg-transparent text-gray-500 border border-gray-300 hover:border-absa-passion hover:text-absa-passion rounded-none transition flex items-center justify-center" title="View"><span class="material-symbols-outlined text-[14px]">visibility</span></button>
+                   <button @click.stop="openEditModal(ticket)" class="p-1 bg-transparent text-gray-500 border border-gray-300 hover:border-absa-passion hover:text-absa-passion rounded-none transition flex items-center justify-center" title="Edit"><span class="material-symbols-outlined text-[14px]">edit</span></button>
+                   <button @click.stop="deleteCase(ticket.id)" class="p-1 bg-transparent text-red-500 border border-red-300 hover:bg-red-50 rounded-none transition flex items-center justify-center" title="Delete"><span class="material-symbols-outlined text-[14px]">delete</span></button>
                 </td>
               </tr>
             </tbody>
@@ -130,51 +209,13 @@ const mockTickets = ref([
 
       </div>
 
-      <Teleport to="body">
-      <!-- New Case Modal -->
-      <div v-if="showNewCaseModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display flex items-center gap-2">New Case</h3>
-            <button @click="showNewCaseModal = false" class="text-gray-400 hover:text-absa-passion">X</button>
-          </div>
-          <div class="p-6 space-y-4 font-mono text-sm">
-            
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Customer Phone / ID</label>
-              <input type="text" class="w-full bg-white border border-gray-200 rounded-none p-2 text-gray-600 outline-none focus:border-absa-passion" placeholder="e.g. +260 96 111..." />
-            </div>
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Case Category</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 text-gray-600 outline-none focus:border-absa-passion">
-                <option>Complaint</option>
-                <option>Enquiry</option>
-                <option>Account Block</option>
-                <option>Card Delivery</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Priority</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 text-gray-600 outline-none focus:border-absa-passion">
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-                <option>Critical</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Description</label>
-              <textarea rows="3" class="w-full bg-white border border-gray-200 rounded-none p-2 text-gray-600 outline-none focus:border-absa-passion" placeholder="Case details..."></textarea>
-            </div>
-
-          </div>
-          <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-            <button @click="showNewCaseModal = false" class="px-4 py-2 bg-transparent text-gray-600 border border-gray-300 hover:bg-gray-100 text-[10px] font-bold uppercase rounded-none">Cancel</button>
-            <button @click="showNewCaseModal = false" class="px-6 py-2 bg-transparent text-absa-passion border border-absa-passion hover:bg-absa-passion/10 text-[10px] font-bold uppercase rounded-none">Create Case</button>
-          </div>
-        </div>
-      </div>
-      </Teleport>
+      <TicketFormModal 
+        :open="showNewCaseModal" 
+        :isEditing="isEditing" 
+        :initialData="newCaseForm" 
+        @close="showNewCaseModal = false" 
+        @save="saveNewCase" 
+      />
 
       <Teleport to="body">
       <!-- View Ticket Modal -->
@@ -187,7 +228,7 @@ const mockTickets = ref([
             </div>
             <button @click="selectedTicket = null" class="text-gray-400 hover:text-absa-passion">X</button>
           </div>
-          <div class="p-6 font-mono text-sm space-y-6">
+          <div class="p-6 font-mono text-sm space-y-6 overflow-y-auto max-h-[70vh]">
             
             <div class="grid grid-cols-2 gap-4">
                <div>
@@ -208,6 +249,24 @@ const mockTickets = ref([
                <div>
                  <span class="block text-[9px] font-bold text-gray-400 uppercase mb-1">Priority & SLA</span>
                  <span class="text-gray-900 font-bold">{{ selectedTicket.priority }} <span class="text-gray-400 font-normal">({{ selectedTicket.sla }})</span></span>
+               </div>
+               <div>
+                 <span class="block text-[9px] font-bold text-gray-400 uppercase mb-1">Assigned To</span>
+                 <span class="text-gray-900 font-bold">{{ selectedTicket.assignedTo || 'Unassigned' }}</span>
+               </div>
+            </div>
+
+            <div>
+               <span class="block text-[9px] font-bold text-gray-400 uppercase mb-2 border-b border-gray-100 pb-1">Ticket Details</span>
+               <div class="space-y-3">
+                 <div>
+                   <span class="text-[10px] font-bold text-gray-900 uppercase">Subject: </span>
+                   <span class="text-gray-700 text-sm font-bold">{{ selectedTicket.subject || 'N/A' }}</span>
+                 </div>
+                 <div>
+                   <span class="text-[10px] font-bold text-gray-900 uppercase">Description: </span>
+                   <p class="text-gray-600 text-xs mt-1 bg-gray-50 p-3 border border-gray-100 whitespace-pre-wrap rounded-none">{{ selectedTicket.description || 'No description provided.' }}</p>
+                 </div>
                </div>
             </div>
             
@@ -247,13 +306,7 @@ const mockTickets = ref([
 
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 </style>
 
 

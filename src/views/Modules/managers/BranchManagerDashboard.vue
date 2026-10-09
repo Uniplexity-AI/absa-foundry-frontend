@@ -56,7 +56,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           <div v-for="kpi in overviewKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
-            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpi.value }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
           </div>
         </div>
@@ -157,14 +157,14 @@
                 <div class="border border-gray-300 rounded-sm p-4 flex justify-between items-center">
                   <div>
                     <p class="text-[11px] text-gray-500 uppercase font-bold tracking-wider">Total Projected Exits</p>
-                    <p class="text-2xl font-bold text-absa-passion font-mono mt-1">{{ totalForecast.toLocaleString() }}</p>
+                    <p class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ totalForecast.toLocaleString() }}</p>
                   </div>
                   <span class="material-symbols-outlined text-[30px] text-gray-200">group_remove</span>
                 </div>
                 <div class="border border-gray-300 rounded-sm p-4 flex justify-between items-center">
                   <div>
                     <p class="text-[11px] text-gray-500 uppercase font-bold tracking-wider">Estimated AUM at Risk</p>
-                    <p class="text-2xl font-bold text-absa-enrich font-mono mt-1">{{ estimatedAUM }}</p>
+                    <p class="mt-1 text-2xl font-black tracking-tight text-gray-900">{{ estimatedAUM }}</p>
                   </div>
                   <span class="material-symbols-outlined text-[30px] text-gray-200">account_balance</span>
                 </div>
@@ -192,7 +192,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div v-for="kpi in rmSummaryKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
-            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpi.value }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
           </div>
         </div>
@@ -299,7 +299,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div v-for="kpi in campaignKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
-            <p class="text-2xl font-bold font-mono" :class="kpi.valueClass || 'text-absa-enrich'">{{ kpi.value }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpi.value }}</p>
             <p class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
           </div>
         </div>

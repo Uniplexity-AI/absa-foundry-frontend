@@ -80,7 +80,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
           <div v-for="kpi in overviewKpis" :key="kpi.label" class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">{{ kpi.label }}</p>
-            <p class="text-2xl font-bold text-absa-enrich font-mono">{{ kpi.value }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpi.value }}</p>
             <p v-if="kpi.note" class="text-[11px] text-gray-500 mt-1">{{ kpi.note }}</p>
           </div>
         </div>
@@ -94,7 +94,7 @@
                 <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">AUC-ROC</h3>
                 <span class="text-[11px] font-semibold text-status-success flex items-center gap-1"><i class="fa-solid fa-arrow-up text-[9px]"></i>+0.3%</span>
               </div>
-              <div class="text-2xl font-bold text-absa-enrich font-mono mb-1">{{ modelMetrics.aucRoc.value }}</div>
+              <div class="mb-1 text-2xl font-black tracking-tight text-gray-900">{{ modelMetrics.aucRoc.value }}</div>
               <div class="h-8 w-full relative"><canvas ref="sparklineAucCanvas"></canvas></div>
             </div>
             <div class="p-4 rounded-sm border border-gray-300 flex flex-col justify-between h-[140px]">
@@ -102,7 +102,7 @@
                 <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Log Loss</h3>
                 <span class="text-[11px] text-gray-400">Lower is better</span>
               </div>
-              <div class="text-2xl font-bold text-absa-enrich font-mono mb-1">{{ modelMetrics.logLoss.value }}</div>
+              <div class="mb-1 text-2xl font-black tracking-tight text-gray-900">{{ modelMetrics.logLoss.value }}</div>
               <div class="h-8 w-full relative"><canvas ref="sparklineF1Canvas"></canvas></div>
             </div>
             <div class="p-4 rounded-sm border border-gray-300 flex flex-col justify-between h-[120px]">
@@ -110,7 +110,7 @@
                 <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Brier Score</h3>
                 <span class="text-[11px] text-gray-400">Calibration</span>
               </div>
-              <div class="text-2xl font-bold text-absa-enrich font-mono">{{ modelMetrics.brier.value }}</div>
+              <div class="text-2xl font-black tracking-tight text-gray-900">{{ modelMetrics.brier.value }}</div>
             </div>
           </div>
 
@@ -150,7 +150,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">KS Statistic</p>
-            <p class="text-2xl font-bold text-absa-enrich font-mono">{{ overviewKpis.find(k => k.label === 'KS Stat')?.value || '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ overviewKpis.find(k => k.label === 'KS Stat')?.value || '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Kolmogorov–Smirnov discrimination power</p>
           </div>
           <div class="border border-gray-300 rounded-sm p-4">
@@ -160,7 +160,7 @@
           </div>
           <div class="border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Avg Inference Latency</p>
-            <p class="text-2xl font-bold text-absa-enrich font-mono">{{ avgLatency }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ avgLatency }}</p>
             <p class="text-[11px] text-gray-500 mt-1">P95 across last 50 predictions</p>
           </div>
         </div>
@@ -190,19 +190,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
                 <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated True Positives</p>
-                <p class="text-2xl font-mono text-status-success mt-1">{{ simulatedMetrics.tp }}</p>
+                <p class="mt-1 text-2xl font-black tracking-tight text-status-success">{{ simulatedMetrics.tp }}</p>
               </div>
               <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
                 <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated False Positives</p>
-                <p class="text-2xl font-mono text-status-warning mt-1">{{ simulatedMetrics.fp }}</p>
+                <p class="mt-1 text-2xl font-black tracking-tight text-orange-500">{{ simulatedMetrics.fp }}</p>
               </div>
               <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
                 <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated True Negatives</p>
-                <p class="text-2xl font-mono text-status-success mt-1">{{ simulatedMetrics.tn }}</p>
+                <p class="mt-1 text-2xl font-black tracking-tight text-status-success">{{ simulatedMetrics.tn }}</p>
               </div>
               <div class="border border-gray-200 rounded p-4 text-center bg-gray-50">
                 <p class="text-[10px] font-bold text-gray-500 uppercase">Simulated False Negatives</p>
-                <p class="text-2xl font-mono text-status-warning mt-1">{{ simulatedMetrics.fn }}</p>
+                <p class="mt-1 text-2xl font-black tracking-tight text-orange-500">{{ simulatedMetrics.fn }}</p>
               </div>
             </div>
             
@@ -238,8 +238,7 @@
               <div v-if="simulationResult" class="space-y-6">
                 <div class="flex justify-between items-center border-b border-gray-200 pb-4">
                   <span class="text-sm font-bold text-gray-600">Simulated Probability</span>
-                  <span class="text-3xl font-mono" :class="simulationResult.classification === 'HIGH_RISK' ? 'text-absa-passion' : 'text-status-success'">
-                    {{ (simulationResult.simulated_probability * 100).toFixed(1) }}%
+                  <span class="text-2xl font-black tracking-tight text-gray-900">{{ (simulationResult.simulated_probability * 100).toFixed(1) }}%
                   </span>
                 </div>
                 
@@ -421,7 +420,7 @@
         <div class="grid grid-cols-3 gap-4 mb-6">
           <div class="border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Features Monitored</p>
-            <p class="text-2xl font-bold text-absa-enrich font-mono">{{ featureDriftList.length || 12 }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ featureDriftList.length || 12 }}</p>
           </div>
           <div class="border rounded-sm p-4" :class="driftingFeatureCount > 0 ? 'border-absa-inspire/50 bg-absa-passion/10' : 'border-gray-300'">
             <p class="text-[11px] font-bold uppercase tracking-wider mb-2" :class="driftingFeatureCount > 0 ? 'text-absa-inspire' : 'text-gray-500'">Drifting Features (PSI &gt; 0.20)</p>
@@ -429,7 +428,7 @@
           </div>
           <div class="border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Last Drift Scan</p>
-            <p class="text-2xl font-bold text-absa-enrich font-mono">{{ lastDriftScan }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ lastDriftScan }}</p>
           </div>
         </div>
 
@@ -768,6 +767,7 @@ import { useIntelligenceStore } from '@/stores/intelligenceStore'
 import Chart from 'chart.js/auto'
 import { notify } from '@/utils/absaExport'
 import { decodeJWT } from '@/services/decodeJWT'
+import { useAuthStore } from '@/stores/auth'
 
 const api = axios.create({ baseURL: API_BASE_URL, timeout: 15000 })
 api.interceptors.request.use((config) => {
@@ -804,12 +804,8 @@ const retrainError = ref('')
 
 // Request Retrain is available to Data Scientists + Admin
 const canRetrain = computed(() => {
-  try {
-    const roles = (decodeJWT().getUserRoles?.() || []).map((r) => String(r).toUpperCase())
-    return roles.includes('ADMIN') || roles.includes('DATA_SCIENTIST')
-  } catch (e) {
-    return false
-  }
+  const authStore = useAuthStore()
+  return authStore.hasPermission('intelligence', 'execute')
 })
 
 // Raw backend data

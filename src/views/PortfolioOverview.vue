@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pt-6 px-6 pb-6">
+  <div class="w-full pt-6 px-6 pb-6 font-sans">
     <!-- Loading Skeleton -->
     <template v-if="customerStore.loading">
       <div class="min-h-[calc(100vh-6rem)] flex flex-col">
@@ -49,7 +49,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-4 mb-6">
           <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Total Customers</h3>
             <div class="flex items-baseline gap-2 mb-4">
-              <span class="text-2xl font-bold font-mono text-absa-enrich">{{ customerStore.portfolio.total.toLocaleString() || '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ customerStore.portfolio.total.toLocaleString() || '—' }}</span>
               <span class="text-xs font-bold text-amber-700 font-semibold flex items-center">
                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -67,7 +67,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-4 mb-6">
             <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">At Risk</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-2xl font-bold font-mono text-amber-700">{{ customerStore.portfolio.atRisk.toLocaleString() || '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-orange-500">{{ customerStore.portfolio.atRisk.toLocaleString() || '—' }}</span>
               <span class="text-xs text-gray-500">| {{ customerStore.portfolio.atRiskPct }}%</span>
             </div>
             <p class="text-xs text-gray-500 mt-auto">+4 since last snapshot</p>
@@ -77,7 +77,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-4 mb-6">
             <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Dormant</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-2xl font-bold font-mono text-red-900">{{ customerStore.portfolio.dormant.toLocaleString() || '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ customerStore.portfolio.dormant.toLocaleString() || '—' }}</span>
               <span class="text-xs text-gray-500">| {{ customerStore.portfolio.dormantPct }}%</span>
             </div>
             <p class="text-xs text-gray-500 mt-auto">Stable across 3 periods</p>
@@ -87,7 +87,7 @@
         <div class="bg-white rounded-sm border border-gray-300 p-4 mb-6">
             <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Churned</h3>
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-2xl font-bold font-mono text-red-900">{{ customerStore.portfolio.churned.toLocaleString() || '—' }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ customerStore.portfolio.churned.toLocaleString() || '—' }}</span>
               <span class="text-xs text-gray-500">| {{ customerStore.portfolio.churnedPct }}%</span>
             </div>
             <p class="text-xs text-gray-500 mt-auto">Last 90 days</p>

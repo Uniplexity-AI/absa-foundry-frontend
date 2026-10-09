@@ -66,24 +66,24 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CURRENT AUM</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatAum(forecast?.current_aum) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatAum(forecast?.current_aum) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">
               {{ forecast?.as_of_date ? `As of ${formatDate(forecast.as_of_date)}` : 'No snapshot' }}
             </p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">BASE SCENARIO (90D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.base_scenario_aum_90d) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatAum(forecast?.base_scenario_aum_90d) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Projected end of period</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">AUM AT RISK</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.aum_at_risk) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatAum(forecast?.aum_at_risk) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Base vs current delta</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">BEST CASE (90D)</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatAum(forecast?.best_case_aum_90d) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatAum(forecast?.best_case_aum_90d) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">If churn improves 2pp</p>
           </div>
         </div>

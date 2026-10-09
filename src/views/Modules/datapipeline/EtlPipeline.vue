@@ -309,9 +309,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+  <div class="min-h-screen  flex flex-col font-sans relative text-gray-900">
+    
     <header class="bg-white border-b border-gray-200 shrink-0 relative z-0">
       <div class="max-w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -339,7 +338,7 @@ onMounted(() => {
 
     <div class="flex-1 max-w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 relative z-0 space-y-8 pb-20">
       
-      <div v-if="extractionProgress && extractionProgress.status !== 'idle'" class="bg-white border border-gray-200 p-6 relative group overflow-hidden dot-pattern">
+      <div v-if="extractionProgress && extractionProgress.status !== 'idle'" class="bg-white border border-gray-200 p-6 relative group overflow-hidden ">
         <div class="relative z-10 flex flex-col gap-4">
           <div class="flex justify-between items-center">
             <div class="text-[10px] font-black uppercase tracking-widest text-gray-900">
@@ -363,8 +362,7 @@ onMounted(() => {
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- PostgreSQL -->
         <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
-          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
-          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">PostgreSQL</div>
+                    <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">PostgreSQL</div>
           <div class="flex justify-between items-start mb-6 relative z-10">
             <div class="text-gray-400"><i class="fas fa-database text-lg"></i></div>
             <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]"></span>
@@ -372,7 +370,7 @@ onMounted(() => {
           <div class="relative z-10 mt-auto">
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cluster Status</p>
             <div class="flex items-end gap-3 mt-1">
-              <span class="text-3xl font-black tracking-tighter" :class="pgStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ pgStatus }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ pgStatus }}</span>
             </div>
             <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Avg Duration: {{ pgLatency }}</p>
           </div>
@@ -380,8 +378,7 @@ onMounted(() => {
 
         <!-- Redis -->
         <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
-          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
-          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">Redis Cache</div>
+                    <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">Redis Cache</div>
           <div class="flex justify-between items-start mb-6 relative z-10">
             <div class="text-gray-400"><i class="fas fa-bolt text-lg"></i></div>
             <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]"></span>
@@ -389,7 +386,7 @@ onMounted(() => {
           <div class="relative z-10 mt-auto">
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cache Status</p>
             <div class="flex items-end gap-3 mt-1">
-              <span class="text-3xl font-black tracking-tighter" :class="redisStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ redisStatus }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ redisStatus }}</span>
             </div>
             <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Memory: {{ redisMemory }}</p>
           </div>
@@ -397,8 +394,7 @@ onMounted(() => {
 
         <!-- API Gateway -->
         <div class="bg-white border border-gray-200 relative group overflow-hidden hover:border-absa-passion transition-colors flex flex-col p-6 min-h-[140px]">
-          <div class="absolute inset-0 dot-pattern opacity-50 group-hover:opacity-100 transition-opacity"></div>
-          <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">API Gateway</div>
+                    <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 px-2 py-0.5 text-[9px] font-black text-gray-400 uppercase tracking-widest z-20">API Gateway</div>
           <div class="flex justify-between items-start mb-6 relative z-10">
             <div class="text-gray-400"><i class="fas fa-network-wired text-lg"></i></div>
             <span class="w-2.5 h-2.5 rounded-full" :class="gatewayStatus === 'Operational' ? 'bg-green-500 shadow-[0_0_0_3px_rgba(34,197,94,0.2)]' : 'bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.2)]'"></span>
@@ -406,7 +402,7 @@ onMounted(() => {
           <div class="relative z-10 mt-auto">
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Gateway Status</p>
             <div class="flex items-end gap-3 mt-1">
-              <span class="text-3xl font-black tracking-tighter" :class="gatewayStatus === 'Operational' ? 'text-green-600' : 'text-amber-600'">{{ gatewayStatus }}</span>
+              <span class="text-2xl font-black tracking-tight text-gray-900">{{ gatewayStatus }}</span>
             </div>
             <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-2">Uptime: {{ gatewayUptime }}</p>
           </div>
@@ -499,8 +495,7 @@ onMounted(() => {
     <Teleport to="body">
   <div v-if="showRunModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md" @click.self="closeRunModal">
     <div class="bg-white rounded-none w-full max-w-xl overflow-hidden shadow-2xl relative border border-gray-200">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30"></div>
-      
+            
       <!-- Header -->
       <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
         <div class="flex items-center gap-2">
@@ -649,16 +644,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.dot-pattern {
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 16px 16px;
-}
 
-.mesh-background {
-  background-color: #fcfcfc;
-  background-image:
-    linear-gradient(#f0f0f0 1px, transparent 1px),
-    linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
-  background-size: 40px 40px;
-}
+
+
 </style>

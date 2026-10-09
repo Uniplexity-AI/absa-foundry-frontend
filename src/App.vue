@@ -1,5 +1,5 @@
 <template>
-  <div class="app-gradient font-sans antialiased text-gray-900 min-h-screen">
+  <div class="absa-mesh font-sans antialiased text-gray-900 min-h-screen">
     <div v-if="devBypass" class="fixed top-0 left-0 right-0 bg-yellow-200 text-yellow-900 text-center text-xs py-1 z-[9999]">
       Dev Bypass active — Service Worker registration is disabled (VITE_DEV_BYPASS=true)
     </div>
@@ -245,18 +245,9 @@ const dismissInstall = () => {
 </script>
 
 <style scoped>
-.app-gradient {
-  min-height: 100vh;
-  width: 100vw;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #f7faff 0%, #fafcff 100%);
-  overflow-x: hidden;
-}
 
-:global(.dark) .app-gradient {
-  background: linear-gradient(135deg, #0c0c0c 0%, #111111 100%);
-}
+
+:global(.dark) 
 
 .dotted-pattern {
   background-image: radial-gradient(#2F2E8B 0.5px, transparent 0.5px);

@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useCrmStore } from '../../../stores/crmStore'
+import { createTicket } from '@/services/crmApi'
+import TicketFormModal from './components/TicketFormModal.vue'
 import {
   Phone, Mail, MessageSquare, Plus, Search, UserCircle, Bell, Video,
   MessageCircle, Twitter, List, X, ChevronDown, CheckCircle, Clock,
@@ -16,6 +18,38 @@ onMounted(() => {
 const selectedTab = ref('active_queue')
 
 const showTicketModal = ref(false)
+const ticketModalInitialData = ref({})
+
+const openTicketModal = () => {
+  if (currentCustomer.value) {
+    let mappedChannel = 'In-Branch'
+    if (currentCustomer.value.channel === 'voice') mappedChannel = 'Phone Call'
+    if (currentCustomer.value.channel === 'whatsapp') mappedChannel = 'WhatsApp'
+    if (currentCustomer.value.channel === 'email') mappedChannel = 'Email'
+    if (currentCustomer.value.channel === 'social') mappedChannel = 'Social Media'
+    
+    ticketModalInitialData.value = {
+      customer: currentCustomer.value.phone || currentCustomer.value.id || '',
+      channel: mappedChannel,
+      subject: `Inbound ${mappedChannel} Case - ${currentCustomer.value.name || 'Customer'}`
+    }
+  } else {
+    ticketModalInitialData.value = {}
+  }
+  showTicketModal.value = true
+}
+
+const handleSaveTicket = async (ticketData) => {
+  try {
+    await createTicket(ticketData)
+    showTicketModal.value = false
+    alert("Ticket created successfully!")
+  } catch (error) {
+    console.error("Failed to create ticket", error)
+    alert("Error creating ticket.")
+  }
+}
+
 const showEscalationModal = ref(false)
 const showWrapUpModal = ref(false)
 const showTemplateModal = ref(false)
@@ -37,6 +71,30 @@ function handleSendSms() {
   showSmsModal.value = false
 }
 
+const escalateForm = ref({ unit: 'Tier 2 Tech Support', priority: 'P2 - High', reason: '' })
+function handleEscalate() {
+  if (currentCustomer.value) {
+    currentCustomer.value.tier = 'Escalated ' + currentCustomer.value.tier
+    alert(`Case routed to ${escalateForm.value.unit}`)
+  }
+  showEscalationModal.value = false
+}
+
+const wrapUpForm = ref({ disposition: 'Resolved', notes: '' })
+function handleWrapUp() {
+  if (currentCustomer.value) {
+    crmStore.activeCustomers = crmStore.activeCustomers.filter(c => c.id !== currentCustomer.value.id)
+    alert(`Call wrapped up with code: ${wrapUpForm.value.disposition}`)
+  }
+  showWrapUpModal.value = false
+}
+
+function handleTemplateSelect(text) {
+  // Simple mock: assume there's a chat interface to inject into. Since there isn't a direct v-model available here, we'll just alert or set a variable if it existed.
+  alert(`Template inserted: "${text}"`)
+  showTemplateModal.value = false
+}
+
 const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.active))
 
 </script>
@@ -44,8 +102,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-hidden">
     <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     
     <!-- After Hours Banner -->
     <div v-if="crmStore.isAfterHours" class="bg-orange-500 text-white px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 shrink-0">
@@ -53,30 +110,30 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
     </div>
 
     <!-- Primary Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm shrink-0 blur-scoped">
-      <div class="px-4 sm:px-6 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <router-link to="/dashboard/crm" class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest hover:text-absa-passion transition flex items-center gap-1">&larr; Back</router-link>
-          <div class="w-2 h-8 bg-absa-passion rounded-none ml-2"></div>
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Workspace</span>
-              <span class="text-[10px] font-mono font-bold text-gray-300">//</span>
-              <span class="text-[10px] font-mono font-bold text-gray-900 uppercase tracking-widest">Omnichannel</span>
-            </div>
-            <h1 class="text-xl font-black font-display text-gray-900 uppercase tracking-tight">Agent Desktop</h1>
+    <header class="bg-white border-b border-gray-200 shrink-0 relative z-0">
+      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <router-link to="/dashboard/crm" class="h-9 px-3 border border-gray-200 text-gray-400 hover:text-absa-passion hover:border-absa-passion transition flex items-center justify-center bg-white cursor-pointer mr-2 shrink-0">
+             &larr;
+          </router-link>
+          <div class="min-w-0">
+              <span class="block text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">Module // Omnichannel Workspace</span>
+              <h1 class="text-xl sm:text-2xl font-black text-gray-900 uppercase tracking-tight font-display leading-tight truncate">Agent Desktop</h1>
+              <p class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mt-1">
+                Handle multi-channel interactions, Voice, and Tickets
+              </p>
           </div>
         </div>
 
         <!-- Finesse State & User -->
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-1.5 rounded-none">
-            <div class="w-2 h-2 rounded-none bg-green-500 animate-pulse"></div>
-            <span class="text-[10px] font-mono font-bold text-green-700 uppercase tracking-widest">Ready (Voice & Digital)</span>
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center gap-2 bg-transparent border border-gray-200 px-3 h-9">
+            <div class="w-1.5 h-1.5 bg-green-500 animate-pulse"></div>
+            <span class="text-[10px] font-mono font-bold text-gray-700 uppercase tracking-widest">Ready (Voice & Digital)</span>
           </div>
           
-          <span class="text-[10px] font-mono font-bold text-absa-passion bg-[#FDE8EC] border border-[#f5c6cb] px-3 py-1.5 flex items-center gap-2 rounded-none uppercase tracking-wider">
-            <UserCircle :size="14" /> CSR Agent
+          <span class="text-[10px] h-9 font-mono font-bold text-gray-700 bg-transparent border border-gray-200 px-3 flex items-center gap-2 uppercase tracking-wider">
+            <UserCircle :size="14" class="text-gray-400" /> CSR Agent
           </span>
         </div>
       </div>
@@ -99,8 +156,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
         <div class="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
           <!-- Queue Items -->
           <div v-for="item in crmStore.incomingQueue" :key="item.id" class="bg-white border border-gray-200 rounded-none shadow-sm hover:border-absa-passion transition cursor-pointer relative overflow-hidden group">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            <div class="p-3 relative z-10">
+                        <div class="p-3 relative z-10">
               <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-1.5">
                   <Phone v-if="item.channel === 'voice'" :size="12" class="text-blue-500" />
@@ -133,32 +189,32 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
       <div class="flex-1 flex flex-col bg-transparent">
         
         <!-- Tab Bar -->
-        <div class="h-10 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-end px-2 gap-1 overflow-x-auto custom-scrollbar sticky top-0 z-20">
+        <div class="bg-white border-b border-gray-200 flex items-center px-4 gap-1 overflow-x-auto custom-scrollbar relative z-10 shrink-0 h-10">
           <button v-for="cust in crmStore.activeCustomers" :key="cust.id" 
             @click="activateCustomer(cust.id)"
-            class="h-8 px-4 border border-b-0 rounded-none flex items-center gap-2 text-[10px] font-mono font-bold uppercase transition-all min-w-[140px] max-w-[200px]"
-            :class="cust.active ? 'bg-white border-gray-200 text-absa-passion shadow-[0_-2px_10px_rgba(0,0,0,0.05)]' : 'bg-gray-50 border-transparent text-gray-500 hover:bg-gray-100'">
-            <div class="w-1.5 h-1.5 rounded-none" :class="cust.channel === 'voice' ? 'bg-blue-500' : 'bg-green-500'"></div>
+            class="h-full px-4 border-b-2 flex items-center gap-2 text-[10px] font-mono font-bold uppercase transition-colors min-w-[140px] max-w-[200px]"
+            :class="cust.active ? 'border-absa-passion text-absa-passion bg-white' : 'border-transparent text-gray-500 hover:text-gray-900 bg-transparent'">
+            <div class="w-1.5 h-1.5" :class="cust.channel === 'voice' ? 'bg-blue-500' : 'bg-green-500'"></div>
             <span class="truncate flex-1 text-left">{{ cust.name }}</span>
-            <X @click.stop="crmStore.activeCustomers = crmStore.activeCustomers.filter(c => c.id !== cust.id)" :size="12" class="text-gray-400 hover:text-red-500" />
+            <X @click.stop="crmStore.activeCustomers = crmStore.activeCustomers.filter(c => c.id !== cust.id)" :size="12" class="text-gray-400 hover:text-absa-passion" />
           </button>
         </div>
 
         <!-- Active Customer Workspace (Screen Pop) -->
         <div v-if="currentCustomer" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar relative">
           <!-- Cisco Control Panel (Mock) -->
-          <div v-if="currentCustomer.channel === 'voice'" class="bg-gray-900 rounded-none p-3 mb-6 flex items-center justify-between shadow-lg border border-gray-700">
+          <div v-if="currentCustomer.channel === 'voice'" class="bg-white rounded-none p-3 mb-6 flex items-center justify-between shadow-sm border border-gray-200">
              <div class="flex items-center gap-3">
-               <div class="bg-blue-500/20 p-2 rounded-none"><Phone :size="16" class="text-blue-400" /></div>
+               <div class="bg-blue-50 border border-blue-100 p-2 rounded-none"><Phone :size="16" class="text-blue-500" /></div>
                <div>
-                 <div class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest">Active Call - Cisco Finesse</div>
-                 <div class="text-white font-mono text-sm">{{ currentCustomer.phone }} (02:14)</div>
+                 <div class="text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest">Active Call - Cisco Finesse</div>
+                 <div class="text-gray-900 font-mono font-bold text-sm">{{ currentCustomer.phone }} (02:14)</div>
                </div>
              </div>
              <div class="flex gap-2">
-               <button class="px-3 py-1 bg-transparent text-gray-300 border border-gray-500 hover:bg-gray-800 text-[10px] font-mono font-bold uppercase rounded-none ">Hold</button>
-               <button class="px-3 py-1 bg-transparent text-gray-300 border border-gray-500 hover:bg-gray-800 text-[10px] font-mono font-bold uppercase rounded-none ">Transfer</button>
-               <button class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-red-500 hover:text-red-500 text-[10px] font-mono font-bold uppercase rounded-none ">Release</button>
+               <button class="h-8 px-3 bg-white text-gray-600 border border-gray-200 hover:border-absa-passion hover:text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest transition-colors cursor-pointer">Hold</button>
+               <button class="h-8 px-3 bg-white text-gray-600 border border-gray-200 hover:border-absa-passion hover:text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest transition-colors cursor-pointer">Transfer</button>
+               <button class="h-8 px-3 bg-white text-gray-900 border border-gray-200 hover:border-absa-passion hover:text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest transition-colors cursor-pointer">Release</button>
              </div>
           </div>
 
@@ -166,14 +222,23 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
           
           <div class="bg-white border border-gray-200 rounded-none shadow-sm overflow-hidden mb-6">
             <div class="border-b border-gray-100 bg-gray-50 p-2 px-4 flex items-center justify-between">
-              <span class="text-[10px] font-mono font-bold text-gray-500 uppercase">Case Actions</span>
+              <span class="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">Case Actions</span>
               <div class="flex gap-2">
-                <button @click="showTicketModal = true" class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion hover:text-absa-passion transition">Create Ticket</button>
-                <button @click="showTemplateModal = true" class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion hover:text-absa-passion transition">Templates</button>
-                <button @click="showEscalationModal = true" class="px-3 py-1 bg-transparent text-orange-500 border border-orange-500 text-[9px] font-mono font-bold uppercase rounded-none hover:bg-orange-50 transition">Escalate</button>
-                
-                <button @click="showSmsModal = true" class="px-3 py-1 bg-transparent text-gray-700 border border-gray-300 hover:border-gray-500 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-1"><MessageSquare :size="10"/> SMS Gateway</button>
-                <button @click="showWrapUpModal = true" class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase rounded-none  transition">Wrap-Up Call</button>
+                <button @click="openTicketModal" class="h-8 px-3 border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+                  Create Ticket
+                </button>
+                <button @click="showTemplateModal = true" class="h-8 px-3 border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+                  Templates
+                </button>
+                <button @click="showEscalationModal = true" class="h-8 px-3 border border-absa-passion text-absa-passion text-[9px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:bg-absa-passion hover:text-white cursor-pointer">
+                  Escalate
+                </button>
+                <button @click="showSmsModal = true" class="h-8 px-3 border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 bg-white hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+                  <MessageSquare :size="12"/> SMS Gateway
+                </button>
+                <button @click="showWrapUpModal = true" class="h-8 px-3 border border-gray-200 bg-white text-gray-600 text-[9px] font-mono font-bold uppercase tracking-widest transition-colors flex items-center gap-2 hover:border-absa-passion hover:text-absa-passion cursor-pointer">
+                  Wrap-Up Call
+                </button>
               </div>
             </div>
             <!-- Screen Pop Main Info -->
@@ -234,55 +299,27 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
     
       
       <!-- Create Ticket Modal -->
-      <div v-if="showTicketModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-md border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-absa-passion font-display uppercase tracking-widest">Create New Ticket</h3>
-            <button @click="showTicketModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="14"/></button>
-          </div>
-          <div class="p-6 space-y-4 font-mono text-sm">
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Customer / Phone</label>
-              <input type="text" disabled :value="currentCustomer?.phone" class="w-full bg-gray-50 border border-gray-200 rounded-none p-2 text-gray-600 outline-none" />
-            </div>
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Issue Category</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-absa-passion">
-                <option>Account Enquiry</option>
-                <option>Card Block / Fraud</option>
-                <option>Transaction Dispute</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Details</label>
-              <textarea rows="3" class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-absa-passion"></textarea>
-            </div>
-          </div>
-          <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-            <button @click="showTicketModal = false" class="px-4 py-2 border border-gray-200 text-gray-600 text-[10px] font-bold uppercase rounded-none">Cancel</button>
-            <button @click="showTicketModal = false" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none ">Generate Ticket</button>
-          </div>
-        </div>
-      </div>
+      <TicketFormModal 
+        :open="showTicketModal" 
+        :initialData="ticketModalInitialData" 
+        @close="showTicketModal = false" 
+        @save="handleSaveTicket" 
+      />
 
       <!-- Templates Modal -->
-      <div v-if="showTemplateModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-lg border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-absa-passion font-display uppercase tracking-widest">Quick Access Templates</h3>
-            <button @click="showTemplateModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="14"/></button>
+      <div v-if="showTemplateModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white shadow-2xl w-full max-w-lg border border-gray-200 overflow-hidden flex flex-col">
+          <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display">Quick Access Templates</h3>
+            <button @click="showTemplateModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="16"/></button>
           </div>
-          <div class="p-4 bg-gray-50 border-b border-gray-100 flex gap-2">
-             <button class="px-3 py-1 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[9px] font-mono font-bold uppercase rounded-none">Holding (>=2 Days)</button>
-             <button class="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[9px] font-mono font-bold uppercase rounded-none hover:border-absa-passion">Resolution</button>
-          </div>
-          <div class="p-6 space-y-3 font-mono text-xs">
-            <div class="p-3 border border-gray-200 rounded-none hover:border-absa-passion cursor-pointer transition">
-              <strong class="block text-gray-800 mb-1">Standard Holding SMS</strong>
+          <div class="p-6 space-y-3 font-mono text-xs max-h-[60vh] overflow-y-auto">
+            <div @click="handleTemplateSelect('Dear customer, your ticket {CASE_ID} is still under review. We appreciate your patience...')" class="p-4 border border-gray-200 hover:border-absa-passion cursor-pointer transition">
+              <strong class="block text-gray-900 mb-1 text-[10px] uppercase tracking-wider">Standard Holding SMS</strong>
               <span class="text-gray-500">"Dear customer, your ticket {CASE_ID} is still under review. We appreciate your patience..."</span>
             </div>
-            <div class="p-3 border border-gray-200 rounded-none hover:border-absa-passion cursor-pointer transition">
-              <strong class="block text-gray-800 mb-1">Standard Holding Email</strong>
+            <div @click="handleTemplateSelect('Dear customer, regarding case {CASE_ID}, our technical team is currently investigating...')" class="p-4 border border-gray-200 hover:border-absa-passion cursor-pointer transition">
+              <strong class="block text-gray-900 mb-1 text-[10px] uppercase tracking-wider">Standard Holding Email</strong>
               <span class="text-gray-500">"Dear customer, regarding case {CASE_ID}, our technical team is currently investigating..."</span>
             </div>
           </div>
@@ -290,94 +327,89 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
       </div>
 
       <!-- Wrap Up Modal -->
-      <div v-if="showWrapUpModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-absa-passion font-display uppercase tracking-widest flex items-center gap-2"><CheckCircle :size="14"/> Call Wrap-Up</h3>
+      <div v-if="showWrapUpModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
+          <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display flex items-center gap-2"><CheckCircle :size="14" class="text-absa-passion"/> Call Wrap-Up</h3>
+            <button @click="showWrapUpModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="16"/></button>
           </div>
-          <div class="p-6 space-y-4 font-mono text-sm">
+          <div class="p-6 space-y-5 font-mono text-sm">
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Disposition Code</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-absa-passion">
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Disposition Code</label>
+              <select v-model="wrapUpForm.disposition" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion">
                 <option>Resolved on Call</option>
                 <option>Ticket Created - Pending</option>
                 <option>Dropped / Disconnected</option>
               </select>
             </div>
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Notes</label>
-              <textarea rows="4" class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-absa-passion"></textarea>
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Notes</label>
+              <textarea v-model="wrapUpForm.notes" rows="4" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion"></textarea>
             </div>
           </div>
-          <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end">
-            
-                <button @click="showSmsModal = true" class="px-3 py-1 bg-transparent text-gray-700 border border-gray-300 hover:border-gray-500 text-[9px] font-mono font-bold uppercase rounded-none transition flex items-center gap-1"><MessageSquare :size="10"/> SMS Gateway</button>
-                <button @click="showWrapUpModal = false" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none ">Complete Wrap-Up</button>
+          <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
+            <button @click="showWrapUpModal = false" class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:border-gray-300 transition-colors cursor-pointer">Cancel</button>
+            <button @click="handleWrapUp" class="h-9 px-4 border border-absa-passion text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:bg-absa-passion hover:text-white transition-colors cursor-pointer">Complete</button>
           </div>
         </div>
       </div>
-    
-      
-      
 
-      
       <!-- SMS Dispatch Modal -->
-      <div v-if="showSmsModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display flex items-center gap-2"><MessageSquare :size="14"/> Dispatch SMS</h3>
-            <button @click="showSmsModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="14"/></button>
+      <div v-if="showSmsModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
+          <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display flex items-center gap-2"><MessageSquare :size="14" class="text-absa-passion"/> Dispatch SMS</h3>
+            <button @click="showSmsModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="16"/></button>
           </div>
-          <div class="p-6 space-y-4 font-mono text-sm">
+          <div class="p-6 space-y-5 font-mono text-sm">
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">To (Phone)</label>
-              <input type="text" disabled :value="currentCustomer?.phone" class="w-full bg-gray-50 border border-gray-200 rounded-none p-2 text-gray-600 outline-none" />
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">To (Phone)</label>
+              <input type="text" disabled :value="currentCustomer?.phone" class="w-full bg-gray-50 border border-gray-200 p-2 text-gray-600 outline-none" />
             </div>
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Message Payload</label>
-              <textarea v-model="smsMessage" rows="3" class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-absa-passion" placeholder="Type SMS..."></textarea>
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Message Payload</label>
+              <textarea v-model="smsMessage" rows="3" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion" placeholder="Type SMS..."></textarea>
             </div>
           </div>
-          <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-            <button @click="handleSendSms" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 hover:border-absa-passion hover:text-absa-passion text-[10px] font-bold uppercase rounded-none flex items-center gap-2">Send SMS <Send :size="12"/></button>
+          <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
+            <button @click="showSmsModal = false" class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:border-gray-300 transition-colors cursor-pointer">Cancel</button>
+            <button @click="handleSendSms" class="h-9 px-4 border border-absa-passion text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:bg-absa-passion hover:text-white transition-colors cursor-pointer flex items-center gap-2">Send <Send :size="12"/></button>
           </div>
         </div>
       </div>
-      
 
-      
       <!-- Escalation Modal -->
-      <div v-if="showEscalationModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-none shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
-          <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
-            <h3 class="text-xs font-black text-absa-passion font-display uppercase tracking-widest">Escalate Case</h3>
-            <button @click="showEscalationModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="14"/></button>
+      <div v-if="showEscalationModal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white shadow-2xl w-full max-w-sm border border-gray-200 overflow-hidden flex flex-col">
+          <div class="bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest font-display flex items-center gap-2"><ShieldAlert :size="14" class="text-absa-passion"/> Escalate Case</h3>
+            <button @click="showEscalationModal = false" class="text-gray-400 hover:text-absa-passion"><X :size="16"/></button>
           </div>
-          <div class="p-6 space-y-4 font-mono text-sm">
+          <div class="p-6 space-y-5 font-mono text-sm">
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Route To Unit</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-orange-500">
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Route To Unit</label>
+              <select v-model="escalateForm.unit" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion">
                 <option>Tier 2 Tech Support</option>
                 <option>Fraud Investigations</option>
                 <option>Branch Manager</option>
               </select>
             </div>
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Escalation Priority</label>
-              <select class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-orange-500">
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Escalation Priority</label>
+              <select v-model="escalateForm.priority" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion">
                 <option>P1 - Critical (SLA 2hrs)</option>
                 <option>P2 - High (SLA 24hrs)</option>
                 <option>P3 - Normal (SLA 48hrs)</option>
               </select>
             </div>
             <div>
-              <label class="block text-[9px] font-bold text-gray-500 uppercase mb-1">Audit Notes / Reason</label>
-              <textarea rows="3" class="w-full bg-white border border-gray-200 rounded-none p-2 outline-none focus:border-orange-500" placeholder="Mandatory trail for compliance..."></textarea>
+              <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Audit Notes / Reason</label>
+              <textarea v-model="escalateForm.reason" rows="3" class="w-full bg-white border border-gray-200 p-2 outline-none focus:border-absa-passion" placeholder="Mandatory trail for compliance..."></textarea>
             </div>
           </div>
-          <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
-            <button @click="showEscalationModal = false" class="px-4 py-2 border border-gray-200 text-gray-600 text-[10px] font-bold uppercase rounded-none">Cancel</button>
-            <button @click="showEscalationModal = false" class="px-4 py-2 bg-transparent text-orange-500 border border-orange-500 hover:bg-orange-50 text-[10px] font-bold uppercase rounded-none hover:bg-orange-50">Route Case</button>
+          <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2">
+            <button @click="showEscalationModal = false" class="h-9 px-4 border border-gray-200 text-gray-600 text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:border-gray-300 transition-colors cursor-pointer">Cancel</button>
+            <button @click="handleEscalate" class="h-9 px-4 border border-absa-passion text-absa-passion text-[10px] font-mono font-bold uppercase tracking-widest bg-white hover:bg-absa-passion hover:text-white transition-colors cursor-pointer">Route Case</button>
           </div>
         </div>
       </div>
@@ -388,13 +420,7 @@ const currentCustomer = computed(() => crmStore.activeCustomers.find(c => c.acti
 </template>
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 .dotted-pattern {
   background-image: radial-gradient(#DC0037 1px, transparent 1px);
   background-size: 16px 16px;

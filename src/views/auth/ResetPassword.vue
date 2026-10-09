@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col lg:flex-row bg-white font-sans overflow-hidden">
+  <div class="min-h-screen flex flex-col lg:flex-row  font-sans overflow-hidden">
     
     <!-- Left: Reset Form -->
     <div class="flex flex-col justify-center items-center w-full lg:w-5/12 relative z-10 bg-white border-r border-gray-200">

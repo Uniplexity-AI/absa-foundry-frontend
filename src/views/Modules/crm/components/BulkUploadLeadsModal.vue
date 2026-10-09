@@ -1,8 +1,7 @@
 <template>
   <div v-if="modelValue" class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[100000] p-4">
     <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-7xl overflow-hidden animate-scale-in max-h-[95vh] flex flex-col border border-gray-200 rounded-none relative">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-      <!-- Header -->
+            <!-- Header -->
       <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 bg-white/50 backdrop-blur-md sticky top-0 z-50">
         <div class="flex items-center gap-3">
           <div class="w-1.5 h-6 bg-[#2F2E8B]"></div>
@@ -42,8 +41,7 @@
             :class="dragOver ? 'border-[#2F2E8B] bg-[#2F2E8B]/5' : 'border-gray-200 bg-gray-50/30'"
             class="border border-dashed p-16 text-center transition-all relative group"
           >
-            <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-            <input
+                        <input
               ref="fileInput"
               type="file"
               @change="handleFileSelect"
@@ -134,8 +132,7 @@
 
           <!-- Column Mapping Table -->
           <div class="bg-white border border-gray-200 overflow-hidden relative">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-            <div class="overflow-x-auto max-h-[450px] overflow-y-auto custom-scrollbar relative z-10">
+                        <div class="overflow-x-auto max-h-[450px] overflow-y-auto custom-scrollbar relative z-10">
               <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-50/80 backdrop-blur-md sticky top-0 z-20 border-b border-gray-200">
                   <tr>
@@ -229,8 +226,7 @@
 
           <!-- Import Options -->
           <div class="bg-[#0F0F1A] border border-[#2F2E8B]/30 p-8 shadow-2xl relative overflow-hidden group">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none transition-opacity group-hover:opacity-[0.1]"></div>
-            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
               <div class="space-y-2">
                 <h5 class="text-[11px] font-mono font-black text-[#2F2E8B] uppercase tracking-[0.4em] mb-4">DEPLOYMENT_STRATEGY</h5>
                 <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3">
@@ -266,8 +262,7 @@
 
           <!-- Editable Preview Table -->
           <div class="bg-white border border-gray-100 overflow-hidden relative shadow-none">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.01] pointer-events-none"></div>
-            <div class="overflow-x-auto max-h-[480px] overflow-y-auto custom-scrollbar relative z-10">
+                        <div class="overflow-x-auto max-h-[480px] overflow-y-auto custom-scrollbar relative z-10">
               <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-50/90 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100">
                   <tr>
@@ -369,9 +364,8 @@
               { label: 'Duplicate Detect', value: duplicateCount, color: 'text-amber-600', bg: 'bg-amber-50/30 border-amber-100' },
               { label: 'Critical Errors', value: invalidCount, color: 'text-red-600', bg: 'bg-red-50/30 border-red-100' }
             ]" :key="stat.label" :class="[stat.bg, 'p-6 border relative overflow-hidden group shadow-none transition-all hover:scale-[1.02] duration-300']">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none group-hover:opacity-[0.06] transition-opacity"></div>
-              <p class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-1 relative z-10">{{ stat.label }}</p>
-              <p class="text-3xl font-black tracking-tighter relative z-10" :class="stat.color">{{ stat.value }}</p>
+                            <p class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-[0.2em] mb-1 relative z-10">{{ stat.label }}</p>
+              <p class="relative z-10 text-2xl font-black tracking-tight text-gray-900">{{ stat.value }}</p>
               <div class="absolute bottom-0 right-0 w-12 h-12 -mr-4 -mb-4 opacity-[0.05] relative z-0">
                 <TableIcon :size="48" class="text-gray-900" />
               </div>
@@ -400,10 +394,9 @@
               { label: 'Failed Protocol', val: importResults.failed, icon: FileWarning, color: 'text-red-600', border: 'border-red-100', bg: 'bg-red-50/20' },
               { label: 'Total Volume', val: importResults.total, icon: TableIcon, color: 'text-[#2F2E8B]', border: 'border-[#2F2E8B]/10', bg: 'bg-[#2F2E8B]/5' }
             ]" :key="res.label" :class="[res.bg, res.border, 'p-8 border text-center relative group shadow-none']">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none group-hover:opacity-[0.08] transition-opacity"></div>
-              <component :is="res.icon" :size="24" class="mx-auto mb-4 opacity-40" :class="res.color" />
+                            <component :is="res.icon" :size="24" class="mx-auto mb-4 opacity-40" :class="res.color" />
               <p class="text-[9px] font-mono font-black text-gray-400 uppercase tracking-widest mb-1 relative z-10">{{ res.label }}</p>
-              <p class="text-4xl font-black tracking-tighter relative z-10" :class="res.color">{{ res.val }}</p>
+              <p class="relative z-10 text-2xl font-black tracking-tight text-gray-900">{{ res.val }}</p>
             </div>
           </div>
 

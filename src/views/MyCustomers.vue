@@ -16,14 +16,12 @@ import { MARKET_SEGMENT_OPTIONS } from '@/config/customerSegments'
 import { downloadCsv, notify, reportFilename } from '@/utils/absaExport'
 import { healthTier, stateTier, tierColor } from '@/composables/useSeverityTier'
 import { decodeJWT } from '@/services/decodeJWT'
+import { useAuthStore } from '@/stores/auth'
 import {
   MAX_BULK_DELETE,
   bulkDeleteCustomers,
   deleteCustomer,
-  fetchDeletedCount,
-  fetchDeletedCustomers,
-  restoreCustomers,
-} from '@/services/customerAdminApi'
+  } from '@/services/customerAdminApi'
 import CustomerStatePill from '@/components/CustomerStatePill.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import LoadCustomerDataModal from '@/components/ingest/LoadCustomerDataModal.vue'
@@ -58,13 +56,8 @@ const showAddCustomer = ref(false)
 const showEditCustomer = ref(false)
 const editingCustomer = ref(null)
 const canLoadData = computed(() => {
-  try {
-    const jwt = decodeJWT()
-    const roles = jwt.getUserRoles?.() || [jwt.getUserRole?.()].filter(Boolean)
-    return roles.map((r) => String(r).toUpperCase()).some((r) => LOAD_ROLES.includes(r))
-  } catch {
-    return false
-  }
+  const authStore = useAuthStore()
+  return authStore.hasPermission('crm', 'write') || authStore.hasPermission('operations', 'write')
 })
 
 // Deleting customers is an OPERATIONS action on the backend (ADMIN bypasses).
@@ -72,16 +65,11 @@ const canLoadData = computed(() => {
 // controls, so a user who tampers with it still gets a 403.
 const DELETE_ROLES = ['ADMIN', 'OPERATIONS']
 const canDelete = computed(() => {
-  try {
-    const jwt = decodeJWT()
-    const roles = jwt.getUserRoles?.() || [jwt.getUserRole?.()].filter(Boolean)
-    return roles.map((r) => String(r).toUpperCase()).some((r) => DELETE_ROLES.includes(r))
-  } catch {
-    return false
-  }
+  const authStore = useAuthStore()
+  return authStore.hasPermission('crm', 'delete') || authStore.hasPermission('operations', 'delete')
 })
 const deleting = ref(false)
-const hiddenCount = ref(0)
+
 
 const COLUMNS = [
   { key: 'name', label: 'Customer' },
@@ -450,47 +438,17 @@ async function confirmDelete() {
   }
 }
 
-async function restoreAll() {
-  if (!hiddenCount.value) return
-  deleting.value = true
-  try {
-    const { customers } = await fetchDeletedCustomers(MAX_BULK_DELETE)
-    const ids = (customers || []).map((c) => c.customer_id)
-    if (!ids.length) {
-      hiddenCount.value = 0
-      return
-    }
-    const result = await restoreCustomers(ids)
-    notify(
-      `Restored ${result.restored} customer${result.restored === 1 ? '' : 's'}`,
-      'success',
-      { autoClose: 4000 },
-    )
-    await refreshAfterDelete()
-  } catch (e) {
-    notify(e.message || 'Restore failed', 'error', { autoClose: 6000 })
-  } finally {
-    deleting.value = false
-  }
-}
+
 
 /** Reload the portfolio and re-sync the hidden-count banner. */
 async function refreshAfterDelete() {
   await customerStore.fetchPortfolio()
-  await syncHiddenCount()
+  
   const ids = pageRows.value.map((c) => c.customerId)
   if (ids.length) predictionStore.fetchBatchPredictions(ids)
 }
 
-async function syncHiddenCount() {
-  if (!canDelete.value) return
-  try {
-    hiddenCount.value = (await fetchDeletedCount()).total || 0
-  } catch {
-    // The banner is informational — a failure here must not break the page.
-    hiddenCount.value = 0
-  }
-}
+
 
 /** Refresh the table (and the visible rows' predictions) after an ingest. */
 async function onDataLoaded() {
@@ -520,14 +478,13 @@ onMounted(async () => {
   // Enrich the visible page with churn + CLV percentile (batched, non-blocking).
   const ids = pageRows.value.map((c) => c.customerId)
   if (ids.length) predictionStore.fetchBatchPredictions(ids)
-  syncHiddenCount()
+  
 })
 </script>
 
 <template>
-  <div class="w-full pt-6 px-6 pb-8 absa-mesh relative min-h-screen">
-    <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30 z-0"></div>
-    <div class="relative z-10 w-full">
+  <div class="w-full pt-6 px-6 pb-8 relative min-h-screen">
+        <div class="relative z-10 w-full">
     <!-- Page header -->
     <div class="mb-6 pb-4 border-b border-gray-300 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
       <div>
@@ -658,27 +615,6 @@ onMounted(async () => {
           Clear filters
         </button>
       </div>
-    </div>
-
-    <!-- Hidden-customers banner: soft-deleted customers are absent from every
-         list, so this is the only place they can be brought back. -->
-    <div
-      v-if="canDelete && hiddenCount > 0"
-      class="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-sm flex flex-wrap items-center justify-between gap-3"
-    >
-      <div class="flex items-center gap-2 text-xs text-amber-900">
-        <span class="material-symbols-outlined text-[18px]">visibility_off</span>
-        <span>
-          <span class="font-bold">{{ hiddenCount.toLocaleString() }}</span>
-          customer{{ hiddenCount === 1 ? '' : 's' }} hidden from the portfolio.
-          <span class="text-amber-700">Their records are retained — only the listing is filtered.</span>
-        </span>
-      </div>
-      <button
-        :disabled="deleting"
-        class="px-3 py-1.5 border border-amber-300 bg-white rounded-sm text-[11px] font-bold text-amber-900 hover:bg-amber-100 disabled:opacity-50"
-        @click="restoreAll"
-      >{{ deleting ? 'Working…' : 'Restore all' }}</button>
     </div>
 
     <!-- Bulk selection bar -->
@@ -859,13 +795,12 @@ onMounted(async () => {
     <AddCustomerModal :open="showAddCustomer" @close="showAddCustomer = false" @added="onDataLoaded" />
     <EditCustomerModal :open="showEditCustomer" :customer="editingCustomer" @close="showEditCustomer = false" @added="onDataLoaded" />
 
-    <!-- Destructive-action confirmation. Deleting is soft and reversible, so the
-         copy says so plainly instead of claiming permanence. -->
+    <!-- Destructive-action confirmation (permanent deletion) -->
     <ConfirmDialog
       :open="!!confirmState"
       :title="confirmState?.title || 'Delete customer'"
       :message="confirmState?.message || ''"
-      eyebrow="Soft delete — reversible"
+      eyebrow="Permanent delete"
       :confirm-label="confirmState?.confirmLabel || 'Delete'"
       busy-label="Deleting…"
       :busy="deleting"
@@ -898,3 +833,6 @@ onMounted(async () => {
   </div>
   </div>
 </template>
+
+
+

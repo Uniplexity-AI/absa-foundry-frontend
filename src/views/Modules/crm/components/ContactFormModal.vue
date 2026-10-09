@@ -4,12 +4,11 @@
       class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-10 overflow-y-auto"
       @click.self="$emit('update:modelValue', false)">
     <div class="bg-white rounded-sm shadow-2xl max-w-5xl w-full border border-gray-200 relative overflow-hidden animate-modal-in flex flex-col my-auto md:my-10">
-      <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-
+      
       <!-- Header -->
       <div class="relative z-10 sticky top-0 bg-white border-b border-gray-200 text-gray-800 p-4 rounded-t-sm flex items-center justify-between">
         <div>
-          <h3 class="text-lg md:text-2xl font-bold">{{ isEditing ? 'Edit Contact' : 'New Contact' }}</h3>
+          <h3 class="text-2xl font-black tracking-tight text-gray-900">{{ isEditing ? 'Edit Contact' : 'New Contact' }}</h3>
           <p class="text-xs md:text-sm opacity-90 mt-1">{{ isEditing ? 'Update contact information' : 'Add a new contact to your CRM' }}</p>
         </div>
         <button

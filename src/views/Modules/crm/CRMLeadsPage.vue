@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
@@ -133,8 +132,7 @@
 
           <!-- Modal Body (Scrollable) -->
           <div class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar relative">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-            
+                        
             <form @submit.prevent="submitLead" class="space-y-6 sm:space-y-8 relative z-10">
 
               <!-- ═══════════════════════════════════════════════ -->
@@ -229,7 +227,7 @@
 
                 <!-- Expand link -->
                 <div class="text-center pt-1">
-                  <button type="button" @click="showExpandedLeadForm = true"
+                  <button v-permission="['crm', 'write']" type="button" @click="showExpandedLeadForm = true"
                     class="text-xs text-gray-400 hover:text-[#2F2E8B] font-medium transition-colors inline-flex items-center gap-1">
                     <ChevronDown :size="12" />
                     More fields

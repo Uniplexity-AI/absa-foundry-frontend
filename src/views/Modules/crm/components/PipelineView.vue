@@ -6,8 +6,7 @@
         class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[99999] p-4 pt-10 overflow-y-auto" 
         @click.self="$emit('close-add-stage')">
         <div class="bg-white rounded-sm shadow-2xl max-w-md w-full border border-gray-200 relative overflow-hidden animate-modal-in flex flex-col my-auto md:my-10">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-
+          
           <!-- Header -->
           <div class="relative z-10 sticky top-0 bg-white border-b border-gray-200 p-4 rounded-t-sm">
             <div class="flex items-center justify-between">

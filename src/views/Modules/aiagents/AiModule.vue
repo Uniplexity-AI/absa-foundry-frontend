@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[100dvh] overflow-hidden bg-gray-50/50 relative">
+  <div class="flex h-[100dvh] overflow-hidden relative">
     <!-- Mesh Background -->
     <div class="fixed inset-0 z-0 pointer-events-none mesh-background opacity-60"></div>
     <!-- Desktop Icon Sidebar -->
@@ -111,8 +111,7 @@
                 class="group p-6 bg-white/80 backdrop-blur-sm border border-dashed border-gray-300 rounded-sm hover:border-[#2F2E8B] hover:bg-blue-50/20 transition-all text-left relative overflow-hidden shadow-none hover:shadow-md"
               >
                 <!-- Dotted Background -->
-                <div class="absolute inset-0 dotted-pattern opacity-0 group-hover:opacity-10 transition-opacity"></div>
-
+                
                 <div class="flex items-start justify-between mb-3 relative z-10">
                   <div class="flex items-center gap-3">
                     <i :class="['fas', getSuggestionIcon(suggestion), 'text-gray-400 group-hover:text-[#2F2E8B] transition-colors']"></i>
@@ -147,8 +146,7 @@
                   </div>
 
                   <!-- Dotted Overlay -->
-                  <div class="absolute inset-0 dotted-pattern opacity-5 pointer-events-none"></div>
-
+                  
                   <!-- Message Content -->
                   <div class="relative z-10 text-sm leading-relaxed prose-content">
                     <div v-if="msg.sender === 'bot'" v-html="msg.text"></div>
@@ -209,8 +207,7 @@
 
           <!-- Lexi Refined Input Area -->
           <div class="bg-white/90 backdrop-blur-sm rounded-sm border border-gray-300 shadow-lg relative overflow-hidden group focus-within:border-[#2F2E8B] transition-all">
-            <div class="absolute inset-0 dotted-pattern opacity-5 pointer-events-none"></div>
-
+            
             <div class="flex items-end p-2 relative z-10">
               <textarea
                 v-model="message"

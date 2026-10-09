@@ -1,8 +1,7 @@
 <template>
   <div v-if="modelValue" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-none shadow-2xl max-w-2xl w-full overflow-hidden animate-scale-in border border-gray-200 relative">
-      <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-      <!-- Header -->
+            <!-- Header -->
       <div class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-6 flex items-center justify-between relative z-10">
         <div class="flex items-center gap-3">
           <div class="w-1.5 h-6 bg-orange-500"></div>
@@ -20,7 +19,7 @@
           <div class="w-16 h-16 bg-gray-50 border border-gray-100 flex items-center justify-center mx-auto mb-6">
             <i class="fas fa-lock text-2xl text-orange-500"></i>
           </div>
-          <h4 class="text-2xl font-black text-gray-900 font-display uppercase tracking-tight mb-2">{{ featureName }}</h4>
+          <h4 class="mb-2 text-2xl font-black tracking-tight text-gray-900">{{ featureName }}</h4>
           <p class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest leading-relaxed max-w-sm mx-auto">
             You need access to the <span class="text-orange-600">{{ moduleName }}</span> to utilize this architectural feature.
           </p>
@@ -28,8 +27,7 @@
 
         <!-- Feature Benefits -->
         <div class="bg-gray-50/50 p-6 border border-gray-100 relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern opacity-[0.05] pointer-events-none"></div>
-          <h5 class="text-[10px] font-mono font-black text-gray-900 uppercase tracking-widest mb-4 flex items-center gap-2 relative z-10">
+                    <h5 class="text-[10px] font-mono font-black text-gray-900 uppercase tracking-widest mb-4 flex items-center gap-2 relative z-10">
             <i class="fas fa-shield-alt text-orange-500"></i>
             Architectural Benefits:
           </h5>

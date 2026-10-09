@@ -1,11 +1,13 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   TrendingUp, Clock, AlertTriangle, Activity, 
   Users, BarChart2, Briefcase, CheckCircle,
   PhoneCall, Users as CustomersIcon, Layers, PieChart, Calendar
 } from 'lucide-vue-next'
+import authApi from '@/services/auth_api'
+import axios from 'axios'
 
 // Mock Data for KPIs (Call Centre FRD metrics)
 const router = useRouter()
@@ -21,16 +23,65 @@ const kpis = ref({
   abandonmentRate: '12.5',
   fcr: '76.0',
   totalInteractions: '1,245',
-  activeAgents: '24',
+  activeAgents: '...',
   escalations: '42',
   avgHandleTime: '4m 20s'
 })
+
+const activeRepsLabel = ref('...')
+
+onMounted(async () => {
+  try {
+    const BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').trim() ||
+      (typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://22.84.115.25:8080'
+        : 'https://ub-app-backend-692487163735.europe-west1.run.app')
+        
+    const token = localStorage.getItem('token') || localStorage.getItem('access_token')
+    const metricsRes = await axios.get(`${BASE_URL}/api/v1/crm/metrics`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    
+    if (metricsRes.data) {
+      kpis.value.serviceLevel = metricsRes.data.serviceLevel
+      kpis.value.avgSpeedAnswer = metricsRes.data.avgSpeedAnswer
+      kpis.value.abandonmentRate = metricsRes.data.abandonmentRate
+      kpis.value.fcr = metricsRes.data.fcr
+      kpis.value.totalInteractions = metricsRes.data.totalInteractions
+      kpis.value.escalations = metricsRes.data.escalations
+      kpis.value.avgHandleTime = metricsRes.data.avgHandleTime
+    }
+  } catch (err) {
+    console.error('Failed to load dynamic CRM metrics:', err)
+  }
+
+  try {
+    const users = await authApi.listUsers()
+    
+    // Filter users whose role includes "Customer sales representative" (case insensitive)
+    const reps = users.filter(u => {
+      if (!u.roles) return false
+      return u.roles.some(r => typeof r === 'string' && r.toLowerCase().includes('customer sales rep'))
+    })
+    
+    const activeCount = reps.filter(u => u.is_active !== false).length
+    
+    kpis.value.activeAgents = String(reps.length)
+    activeRepsLabel.value = `${activeCount} Act.`
+  } catch (err) {
+    console.error('Failed to load users for CSR count:', err)
+    kpis.value.activeAgents = '0'
+    activeRepsLabel.value = '0 Act.'
+  }
+})
+
 </script>
 
 <template>
   <div class="h-full flex flex-col font-sans relative text-gray-900 bg-transparent overflow-auto">
     <!-- Mesh Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
+    
 
     <div class="flex-1 w-full relative z-10 blur-scoped pb-20">
       <div class="px-4 sm:px-6 lg:px-8 py-8 space-y-8 w-full">
@@ -51,7 +102,7 @@ const kpis = ref({
                 <span class="text-xs text-absa-passion font-medium">Target 80%</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Service Level</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.serviceLevel }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 2 -->
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
@@ -60,7 +111,7 @@ const kpis = ref({
                 <span class="text-xs text-blue-600 font-medium">Avg Time</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Speed to Answer</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.avgSpeedAnswer }}<span class="text-sm font-normal text-gray-400 ml-1">sec</span></p>
             </div>
             <!-- Card 3 -->
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
@@ -69,7 +120,7 @@ const kpis = ref({
                 <span class="text-xs text-orange-600 font-medium">Critical</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Abandon Rate</h5>
-              <p class="text-2xl font-black text-orange-500 tracking-tight">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
+              <p class="text-2xl font-black tracking-tight text-orange-500">{{ kpis.abandonmentRate }}<span class="text-sm font-normal text-gray-400">%</span></p>
             </div>
             <!-- Card 4 (Analytics Highlight) -->
               <router-link to="/dashboard/crm/analytics" class="bg-absa-passion border border-absa-passion shadow-sm p-4 relative group hover:bg-[#b3002d] transition cursor-pointer flex flex-col justify-between">
@@ -92,15 +143,15 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">+120 Today</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Interactions</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.totalInteractions }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.totalInteractions }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
                 <div class="text-gray-400"><Users :size="18"/></div>
-                <span class="text-xs text-gray-400 font-medium">24 Act.</span>
+                <span class="text-xs text-gray-400 font-medium">{{ activeRepsLabel }}</span>
               </div>
-              <h5 class="text-xs font-medium text-gray-500 mb-1">Active Agents</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.activeAgents }}</p>
+              <h5 class="text-xs font-medium text-gray-500 mb-1">Customer Sales Representatives</h5>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.activeAgents }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
@@ -108,7 +159,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">12 Open</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Escalations</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.escalations }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.escalations }}</p>
             </div>
             <div class="bg-white border border-gray-200 shadow-sm p-4 relative group hover:border-absa-passion transition cursor-pointer">
               <div class="flex items-center justify-between mb-3">
@@ -116,7 +167,7 @@ const kpis = ref({
                 <span class="text-xs text-gray-400 font-medium">76% FCR</span>
               </div>
               <h5 class="text-xs font-medium text-gray-500 mb-1">Avg Handle Time</h5>
-              <p class="text-2xl font-black text-absa-passion tracking-tight">{{ kpis.avgHandleTime }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ kpis.avgHandleTime }}</p>
             </div>
           </div>
         </div>
@@ -204,13 +255,7 @@ const kpis = ref({
 </template>
 
 <style scoped>
-.mesh-background {
-  background-color: #ffffff;
-  background-image:
-    linear-gradient(color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, #DC0037 4%, transparent) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
+
 </style>
 
 <!-- clear ebusy -->

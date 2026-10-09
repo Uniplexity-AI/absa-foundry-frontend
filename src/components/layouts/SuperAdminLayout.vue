@@ -71,8 +71,8 @@
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
-  background: #F8F8FA;
-  font-family: 'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  background: transparent;
+  /* Removed hardcoded Montserrat */
 }
 
 .absa-sidebar {

@@ -125,32 +125,32 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Total Portfolio CLV</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatCurrency(store.clvData?.summary?.total_clv) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(store.clvData?.summary?.total_clv) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Churn-adjusted</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Avg Customer CLV</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatCurrency(store.clvData?.summary?.avg_clv) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(store.clvData?.summary?.avg_clv) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Per customer</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Platinum + Gold Count</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ platinumGoldCount.toLocaleString() }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ platinumGoldCount.toLocaleString() }}</p>
             <p class="text-[11px] text-gray-500 mt-1">High-value customers</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CLV at Risk</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatCurrency(store.clvData?.summary?.clv_at_risk) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(store.clvData?.summary?.clv_at_risk) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">High-value + high-churn</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Value Protected MTD</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatCurrency(store.clvData?.summary?.value_protected_mtd) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(store.clvData?.summary?.value_protected_mtd) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Interventions this month</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Churn-Adj. CLV</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatCurrency(store.clvData?.summary?.churn_adjusted_clv) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatCurrency(store.clvData?.summary?.churn_adjusted_clv) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Expected realised value</p>
           </div>
         </div>
@@ -397,7 +397,7 @@
             <div class="p-5">
               <p class="text-xs text-gray-600 mb-3">Immediate RM assignment or senior intervention required</p>
               <div class="flex items-end gap-2">
-                <p class="text-3xl font-bold font-mono text-absa-passion">{{ protectCount }}</p>
+                <p class="text-2xl font-black tracking-tight text-gray-900">{{ protectCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
               <p class="text-[10px] text-gray-400 mt-1">CLV top 50% &amp; Churn Prob &gt; 50%</p>
@@ -414,7 +414,7 @@
             <div class="p-5">
               <p class="text-xs text-gray-600 mb-3">Preserve relationship &mdash; proactive check-ins</p>
               <div class="flex items-end gap-2">
-                <p class="text-3xl font-bold font-mono text-absa-passion">{{ maintainCount }}</p>
+                <p class="text-2xl font-black tracking-tight text-gray-900">{{ maintainCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
               <p class="text-[10px] text-gray-400 mt-1">CLV top 50% &amp; Churn Prob &le; 50%</p>
@@ -431,7 +431,7 @@
             <div class="p-5">
               <p class="text-xs text-gray-600 mb-3">Campaign enrolment &mdash; cost-effective intervention</p>
               <div class="flex items-end gap-2">
-                <p class="text-3xl font-bold font-mono text-amber-700">{{ monitorCount }}</p>
+                <p class="text-2xl font-black tracking-tight text-orange-500">{{ monitorCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
               <p class="text-[10px] text-gray-400 mt-1">CLV bottom 50% &amp; Churn Prob &gt; 50%</p>
@@ -448,7 +448,7 @@
             <div class="p-5">
               <p class="text-xs text-gray-600 mb-3">Standard BAU &mdash; no intervention needed</p>
               <div class="flex items-end gap-2">
-                <p class="text-3xl font-bold font-mono text-gray-600">{{ observeCount }}</p>
+                <p class="text-2xl font-black tracking-tight text-gray-900">{{ observeCount }}</p>
                 <p class="text-xs text-gray-400 mb-1">customers</p>
               </div>
               <p class="text-[10px] text-gray-400 mt-1">CLV bottom 50% &amp; Churn Prob &le; 50%</p>

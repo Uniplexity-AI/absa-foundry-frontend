@@ -66,10 +66,12 @@
               </router-link>
 
               <div v-if="canAdmin" class="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-gray-400">ADMIN</div>
+              <!-- 
               <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
                 <span class="text-body-md font-medium">Settings</span>
-              </router-link>
+              </router-link> 
+              -->
               <router-link v-if="canAdmin" class="flex items-center gap-3 px-4 py-2 rounded text-secondary hover:bg-surface-container-low transition-colors" to="/dashboard/settings/users" active-class="!bg-[#a40022] !text-white !font-semibold">
                 <span class="material-symbols-outlined text-[20px]">group_add</span>
                 <span class="text-body-md font-medium">User Management</span>
@@ -332,11 +334,12 @@ const ROLE_LABELS = {
 const userEmail = computed(() => authStore.email || 'User')
 
 // Use authStore (roles array) for all access decisions
-const canAnalytics = computed(() => authStore.isAdmin || authStore.isRM)
-const canPredict   = computed(() => authStore.isAdmin || authStore.isRM || authStore.isDS)
-const canModels    = computed(() => authStore.isAdmin || authStore.isDS)
-const canEtl       = computed(() => authStore.isAdmin || authStore.isOps)
-const canAdmin     = computed(() => authStore.isAdmin)
+const canAnalytics = computed(() => authStore.hasPermission('crm', 'read') || authStore.hasPermission('operations', 'read'))
+const canPredict   = computed(() => authStore.hasPermission('intelligence', 'read'))
+const canModels    = computed(() => authStore.hasPermission('intelligence', 'read'))
+const canEtl       = computed(() => authStore.hasPermission('etl-pipeline', 'read'))
+const canAdmin = computed(() => authStore.hasPermission('settings', 'read'))
+
 
 // Keep currentRole for display labels (uses first role)
 const currentRole = computed(() => authStore.primaryRole || '')
@@ -355,7 +358,7 @@ const userInitials = computed(() => {
   return (initials || 'AU').toUpperCase()
 })
 
-const canAccessSettings = computed(() => authStore.isAdmin)
+const canAccessSettings = computed(() => authStore.hasPermission('settings', 'read'))
 
 // ── Dynamic Modules ──
 const allModuleCards = getModuleCards()
@@ -428,8 +431,8 @@ async function fetchSubscribedModules() {
 .absa-dashboard-layout {
   display: flex;
   min-height: 100vh;
-  background: #ffffff;
-  font-family: 'Montserrat', 'Inter', system-ui, -apple-system, sans-serif;
+  background: transparent;
+  /* Removed hardcoded Montserrat */
 }
 
 /* ── Main Area ── */
@@ -444,7 +447,7 @@ async function fetchSubscribedModules() {
 .absa-content {
   flex: 1 1 auto;
   overflow-y: auto;
-  background: #ffffff;
+  background: transparent;
 }
 
 /* ── Top Bar ── */

@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -78,8 +77,7 @@
         <!-- Stats Grid -->
         <div v-if="showKPIs" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-blue-50 p-2 border border-blue-100">
                   <Clock :size="18" class="text-blue-500 group-hover:text-blue-600 transition-colors" />
@@ -87,12 +85,11 @@
                 <span class="text-[9px] text-blue-600 font-mono font-bold uppercase">Count</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Scheduled</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.scheduled || 0 }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ meetingStats.scheduled || 0 }}</p>
             </div>
           </div>
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-green-50 p-2 border border-green-100">
                   <CalendarDays :size="18" class="text-green-500 group-hover:text-green-600 transition-colors" />
@@ -100,12 +97,11 @@
                 <span class="text-[9px] text-green-600 font-mono font-bold uppercase">Today</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Today</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.today || 0 }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ meetingStats.today || 0 }}</p>
             </div>
           </div>
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-emerald-50 p-2 border border-emerald-100">
                   <CheckCircle2 :size="18" class="text-emerald-500 group-hover:text-emerald-600 transition-colors" />
@@ -113,12 +109,11 @@
                 <span class="text-[9px] text-emerald-600 font-mono font-bold uppercase">Week</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Completed_Week</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.completedThisWeek || 0 }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ meetingStats.completedThisWeek || 0 }}</p>
             </div>
           </div>
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-orange-50 p-2 border border-orange-100">
                   <CalendarCheck :size="18" class="text-orange-500 group-hover:text-orange-600 transition-colors" />
@@ -126,7 +121,7 @@
                 <span class="text-[9px] text-orange-600 font-mono font-bold uppercase">Total</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Total</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ meetingStats.totalMeetings || 0 }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ meetingStats.totalMeetings || 0 }}</p>
             </div>
           </div>
         </div>
@@ -134,8 +129,7 @@
         <!-- Financial KPI Row -->
         <div v-if="showKPIs" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-blue-50 p-2 border border-blue-100">
                   <TrendingUp :size="18" class="text-blue-500 group-hover:text-blue-600 transition-colors" />
@@ -143,12 +137,11 @@
                 <span class="text-[9px] text-blue-600 font-mono font-bold uppercase">Pipeline</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Deal_Values</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiPipelineValue) }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ fmtMoney(kpiPipelineValue) }}</p>
             </div>
           </div>
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-green-50 p-2 border border-green-100">
                   <DollarSign :size="18" class="text-green-500 group-hover:text-green-600 transition-colors" />
@@ -156,12 +149,11 @@
                 <span class="text-[9px] text-green-600 font-mono font-bold uppercase">Won</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">Won_Revenue</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiWonRevenue) }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ fmtMoney(kpiWonRevenue) }}</p>
             </div>
           </div>
           <div class="bg-white border border-gray-200 shadow-none hover:border-[#2F2E8B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-purple-50 p-2 border border-purple-100">
                   <Target :size="18" class="text-purple-500 group-hover:text-purple-600 transition-colors" />
@@ -169,12 +161,11 @@
                 <span class="text-[9px] text-purple-600 font-mono font-bold uppercase">Avg</span>
               </div>
               <h5 class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest mb-1">CAC</h5>
-              <p class="text-2xl font-black text-[#2F2E8B] tracking-tight">{{ fmtMoney(kpiCAC) }}</p>
+              <p class="text-2xl font-black tracking-tight text-gray-900">{{ fmtMoney(kpiCAC) }}</p>
             </div>
           </div>
           <div class="bg-[#2F2E8B] border border-[#2F2E8B] shadow-none hover:bg-[#1D226B] transition cursor-pointer group relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-10"></div>
-            <div class="p-4 relative z-10">
+                        <div class="p-4 relative z-10">
               <div class="flex items-center justify-between mb-3">
                 <div class="bg-white/15 p-2 border border-white/20">
                   <AlertTriangle :size="18" class="text-white" />
@@ -216,8 +207,7 @@
         <div v-if="meetingView === 'list'">
           <!-- Empty State -->
           <div v-if="filteredMeetings.length === 0" class="bg-white border border-gray-100 text-center py-20 rounded-sm relative overflow-hidden">
-            <div class="absolute inset-0 dotted-pattern opacity-[0.03] pointer-events-none"></div>
-            <div class="relative z-10 flex flex-col items-center">
+                        <div class="relative z-10 flex flex-col items-center">
               <div class="w-16 h-16 bg-gray-50 border border-gray-100 rounded-sm flex items-center justify-center mb-4">
                 <CalendarX :size="32" class="text-gray-200" />
               </div>
@@ -239,8 +229,7 @@
                 'border-l-[3px] border-l-red-500 border-gray-200': meeting.status === 'cancelled',
               }"
               @click="openMeetingDetail(meeting)">
-              <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-
+              
               <!-- Card Header -->
               <div class="px-3 py-2 border-b border-gray-50 bg-gray-50/30">
                 <div class="flex items-start justify-between gap-2">
@@ -322,8 +311,7 @@
 
         <!-- Calendar View -->
         <div v-if="meetingView === 'calendar'" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="p-4 md:p-6 relative z-10">
+                    <div class="p-4 md:p-6 relative z-10">
             <div class="flex items-center justify-between mb-4">
               <button @click="previousMonth" class="px-3 py-1.5 border border-gray-200 rounded-sm hover:bg-gray-50 transition text-[10px] font-mono font-bold flex items-center gap-1">
                 <ChevronLeft :size="12" /> PREV
@@ -365,8 +353,7 @@
 
         <!-- Upcoming Meetings -->
         <div v-if="meetingStats.upcoming && meetingStats.upcoming.length > 0" class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="p-4 md:p-6 relative z-10">
+                    <div class="p-4 md:p-6 relative z-10">
             <div class="flex items-center gap-2 mb-4">
               <div class="w-1 h-4 bg-[#2F2E8B]"></div>
               <h4 class="text-xs font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">

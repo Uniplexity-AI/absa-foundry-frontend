@@ -62,8 +62,7 @@ function handleFileUpload(event) {
   <Teleport to="body">
     <div v-if="open" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
       <div class="bg-white rounded-none w-full max-w-2xl overflow-hidden shadow-2xl relative border border-gray-200">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-30"></div>
-        
+                
         <!-- Header -->
         <div class="px-5 py-4 border-b border-gray-200 flex justify-between items-center bg-white relative z-10">
           <div class="flex items-center gap-2">

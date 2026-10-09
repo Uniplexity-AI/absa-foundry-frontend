@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -40,8 +39,7 @@
         </div>
 
         <div class="bg-white border border-gray-200 rounded-sm shadow-none relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          <div class="p-4 md:p-6 space-y-4 relative z-10">
+                    <div class="p-4 md:p-6 space-y-4 relative z-10">
             <div v-if="!visits.length" class="text-center py-12 border-2 border-dashed border-gray-100 rounded-sm">
               <MapPin :size="48" class="text-gray-200 mx-auto mb-4" />
               <p class="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest">No_Visits_Scheduled</p>
@@ -157,8 +155,7 @@
         <Teleport to="body">
           <div v-if="showVisitModal" class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-20 overflow-y-auto">
             <div class="bg-white rounded-sm shadow-2xl w-full max-w-2xl border border-gray-200 relative overflow-hidden animate-modal-in">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 relative z-10">
+                            <div class="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 relative z-10">
                 <div class="flex items-center gap-3">
                   <div class="w-1 h-5 bg-[#2F2E8B]"></div>
                   <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2"><MapPin :size="14" class="text-gray-400" /> {{ editingVisit ? 'Edit_Visit' : 'Schedule_New_Visit' }}</h3>
@@ -236,8 +233,7 @@
         <Teleport to="body">
           <div v-if="showCheckOutModalFlag" class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-20">
             <div class="bg-white rounded-sm shadow-2xl w-full max-w-lg border border-gray-200 relative overflow-hidden animate-modal-in">
-               <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 relative z-10">
+                             <div class="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 relative z-10">
                 <div class="flex items-center gap-3">
                   <div class="w-1 h-5 bg-orange-600"></div>
                   <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2"><LogOut :size="14" class="text-orange-600" /> Technical_Check_Out</h3>

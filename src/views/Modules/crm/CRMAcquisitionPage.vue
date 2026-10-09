@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col font-sans relative text-gray-900">
-    <div class="fixed inset-0 z-0 pointer-events-none mesh-background"></div>
-
+    
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-none relative">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -61,33 +60,27 @@
           <div v-show="isKpiSectionVisible" class="p-6 transition-all duration-300">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
               <div class="bg-white border border-gray-200 rounded-sm p-5 relative overflow-hidden hover:shadow-md hover:border-gray-300 transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Total_Marketing_Spend</h4>
+                                    <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Total_Marketing_Spend</h4>
                   <p class="text-xl font-black text-gray-900 font-mono tracking-tighter">{{ formatCurrency(totalMarketingSpend) }}</p>
               </div>
               <div class="bg-white border border-gray-200 rounded-sm p-5 relative overflow-hidden hover:shadow-md hover:border-gray-300 transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Avg_Acquisition_Cost</h4>
+                                    <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Avg_Acquisition_Cost</h4>
                   <p class="text-xl font-black text-gray-900 font-mono tracking-tighter">{{ formatCurrency(avgAcquisitionCost) }}</p>
               </div>
               <div class="bg-white border border-gray-200 rounded-sm p-5 relative overflow-hidden hover:shadow-md hover:border-gray-300 transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Total_Investment</h4>
+                                    <h4 class="text-[9px] font-mono font-bold text-gray-400 uppercase mb-3 tracking-wider">Total_Investment</h4>
                   <p class="text-xl font-black text-gray-900 font-mono tracking-tighter">{{ formatCurrency(totalCosts) }}</p>
               </div>
               <div class="bg-white border border-gray-200 rounded-sm p-5 relative overflow-hidden hover:shadow-md hover:border-gray-300 transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 class="text-[9px] font-mono font-bold text-emerald-500 uppercase mb-3 tracking-wider">Lifetime_Value</h4>
+                                    <h4 class="text-[9px] font-mono font-bold text-emerald-500 uppercase mb-3 tracking-wider">Lifetime_Value</h4>
                   <p class="text-xl font-black text-emerald-600 font-mono tracking-tighter">{{ formatCurrency(totalLifetimeValue) }}</p>
               </div>
               <div class="bg-white border border-gray-200 rounded-sm p-5 relative overflow-hidden hover:shadow-md hover:border-gray-300 transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 class="text-[9px] font-mono font-bold text-blue-500 uppercase mb-3 tracking-wider">Revenue_Made</h4>
+                                    <h4 class="text-[9px] font-mono font-bold text-blue-500 uppercase mb-3 tracking-wider">Revenue_Made</h4>
                   <p class="text-xl font-black text-blue-600 font-mono tracking-tighter">{{ formatCurrency(totalRevenueMade) }}</p>
               </div>
               <div :class="totalRevenueMade - totalCosts >= 0 ? 'border-green-200 bg-green-50/30 hover:border-green-300' : 'border-red-200 bg-red-50/30 hover:border-red-300'" class="border rounded-sm p-5 relative overflow-hidden hover:shadow-md transition-all">
-                  <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-                  <h4 :class="totalRevenueMade - totalCosts >= 0 ? 'text-green-500' : 'text-red-500'" class="text-[9px] font-mono font-bold uppercase mb-3 tracking-wider">{{ totalRevenueMade - totalCosts >= 0 ? 'Net_Profit' : 'Net_Loss' }}</h4>
+                                    <h4 :class="totalRevenueMade - totalCosts >= 0 ? 'text-green-500' : 'text-red-500'" class="text-[9px] font-mono font-bold uppercase mb-3 tracking-wider">{{ totalRevenueMade - totalCosts >= 0 ? 'Net_Profit' : 'Net_Loss' }}</h4>
                   <p :class="totalRevenueMade - totalCosts >= 0 ? 'text-green-600' : 'text-red-600'" class="text-xl font-black font-mono tracking-tighter">{{ totalRevenueMade - totalCosts >= 0 ? '+' : '' }}{{ formatCurrency(totalRevenueMade - totalCosts) }}</p>
               </div>
             </div>
@@ -173,8 +166,7 @@
     <!-- Cost Log Modal — outside stacking context so it floats over everything -->
     <div v-if="showCOAModal" class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
         <div class="bg-white w-full max-w-xl shadow-2xl rounded-sm border border-gray-100 flex flex-col max-h-[90vh] relative overflow-hidden">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-          
+                    
           <header class="p-6 border-b border-gray-100 flex items-center justify-between bg-white relative z-10">
             <div class="flex items-center gap-3">
               <div class="w-1.5 h-8 bg-[#2F2E8B]"></div>

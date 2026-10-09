@@ -2,8 +2,7 @@
   <Teleport to="body">
     <div v-if="modelValue" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-2 md:p-4 backdrop-blur-sm">
       <div class="bg-white border border-gray-200 shadow-[0_0_50px_rgba(47,46,139,0.2)] max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col relative rounded-none">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Header -->
         <div class="bg-white border-b border-gray-100 p-6 relative z-10">
           <div class="flex items-start justify-between">
@@ -12,7 +11,7 @@
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[10px] font-mono font-black text-gray-400 uppercase tracking-widest">DEAL_IDENTIFIER // DETAILS</span>
               </div>
-              <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tight font-mono">{{ deal?.name }}</h2>
+              <h2 class="text-2xl font-black tracking-tight text-gray-900">{{ deal?.name }}</h2>
               
               <div class="flex flex-wrap items-center gap-4 mt-6">
                 <div :class="getStageBadgeClass(deal?.stage)" class="inline-block px-3 py-1 border text-[10px] font-mono font-black uppercase tracking-widest rounded-sm">
@@ -63,8 +62,7 @@
           <div v-if="activeTab === 'overview'" class="space-y-6 relative z-10">
             <!-- Deal Information -->
             <div class="bg-white border border-gray-100 p-6 relative overflow-hidden rounded-sm">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.01]"></div>
-              <h3 class="text-[10px] font-mono font-black text-[#2F2E8B] mb-6 flex items-center gap-2 uppercase tracking-widest">
+                            <h3 class="text-[10px] font-mono font-black text-[#2F2E8B] mb-6 flex items-center gap-2 uppercase tracking-widest">
                 <Info :size="14" />
                 DEAL_CORE_INFORMATION
               </h3>
@@ -215,7 +213,7 @@
         <!-- Footer Actions -->
         <div class="border-t border-gray-100 p-6 bg-white relative z-10">
           <div class="flex flex-col sm:flex-row justify-between gap-4">
-            <button
+            <button v-permission="['crm', 'delete']"
               @click="handleDelete"
               class="px-6 py-2.5 border border-red-200 text-red-500 rounded-sm hover:bg-red-50 transition text-[9px] font-mono font-black uppercase tracking-widest flex items-center gap-2"
             >

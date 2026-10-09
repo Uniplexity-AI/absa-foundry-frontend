@@ -58,7 +58,10 @@ class CurrencyService {
 
       // Try to load from backend
       try {
-        const response = await fetch(`${this.API_BASE_URL}/currency/currency-settings`);
+                const token = localStorage.getItem('token');
+        const response = await fetch(`${this.API_BASE_URL}/currency/currency-settings`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
         if (response.ok) {
           const result = await response.json();
           if (result.currency_settings) {

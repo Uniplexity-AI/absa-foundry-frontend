@@ -144,7 +144,7 @@ function removePrimaryField(index) {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-surface-container rounded-lg p-6 space-y-8">
+  <div class=" dark:bg-surface-container rounded-lg p-6 space-y-8">
     
     <!-- Meta Info -->
     <section>

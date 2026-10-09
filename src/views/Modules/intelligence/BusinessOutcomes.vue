@@ -52,27 +52,27 @@
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">REVENUE PROTECTED</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ formatK(store.outcomesData?.roi?.revenue_protected) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatK(store.outcomesData?.roi?.revenue_protected) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Cumulative MTD</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">CUSTOMERS RETAINED</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.customers_retained?.toLocaleString() ?? '—' }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.outcomesData?.roi?.customers_retained?.toLocaleString() ?? '—' }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Via AI interventions</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">INTERVENTION COST</p>
-            <p class="text-2xl font-bold font-mono text-absa-enrich">{{ formatK(store.outcomesData?.roi?.intervention_cost) }}</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ formatK(store.outcomesData?.roi?.intervention_cost) }}</p>
             <p class="text-[11px] text-gray-500 mt-1">Total campaign + RM cost</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">NET ROI</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.net_roi_pct?.toLocaleString() ?? '—' }}%</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.outcomesData?.roi?.net_roi_pct?.toLocaleString() ?? '—' }}%</p>
             <p class="text-[11px] text-gray-500 mt-1">Revenue protected ÷ cost</p>
           </div>
           <div class="bg-white border border-gray-300 rounded-sm p-4">
             <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">SYSTEM ROI MULTIPLE</p>
-            <p class="text-2xl font-bold font-mono text-absa-passion">{{ store.outcomesData?.roi?.roi_multiple?.toLocaleString() ?? '—' }}×</p>
+            <p class="text-2xl font-black tracking-tight text-gray-900">{{ store.outcomesData?.roi?.roi_multiple?.toLocaleString() ?? '—' }}×</p>
             <p class="text-[11px] text-gray-500 mt-1">K returned per K1 spent</p>
           </div>
         </div>

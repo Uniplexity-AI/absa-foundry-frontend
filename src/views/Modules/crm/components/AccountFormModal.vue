@@ -4,8 +4,7 @@
       class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start justify-center z-[9999] p-4 pt-10 overflow-y-auto" 
       @click.self="close">
       <div class="bg-white rounded-sm shadow-2xl max-w-5xl w-full border border-gray-200 relative overflow-hidden animate-modal-in flex flex-col my-auto md:my-10">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-
+        
         <!-- Header -->
         <div class="relative z-10 sticky top-0 bg-white border-b border-gray-200 p-4 rounded-t-sm">
           <div class="flex items-center justify-between">
@@ -30,8 +29,7 @@
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <!-- Company Information -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <Info :size="10" class="text-[#2F2E8B]" /> Company_Information
@@ -86,8 +84,7 @@
 
             <!-- Assignment Section -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <UserCheck :size="10" class="text-[#2F2E8B]" /> Assignment
@@ -103,8 +100,7 @@
 
             <!-- CRM Association Section -->
             <section class="bg-white rounded-sm border border-gray-200 relative" :class="showLeadDropdown ? 'z-30' : 'z-10'">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none rounded-sm overflow-hidden"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <LinkIcon :size="10" class="text-[#2F2E8B]" /> Associate_with_Leads
@@ -143,8 +139,7 @@
 
             <!-- Billing Address -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <MapPin :size="10" class="text-[#2F2E8B]" /> Billing_Address
@@ -176,8 +171,7 @@
 
             <!-- Shipping Address -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center justify-between">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                   <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
@@ -214,8 +208,7 @@
 
             <!-- Social Media -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <Share2 :size="10" class="text-[#2F2E8B]" /> Social_Media
@@ -245,8 +238,7 @@
 
             <!-- Description -->
             <section class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <AlignLeft :size="10" class="text-[#2F2E8B]" /> Description
@@ -259,8 +251,7 @@
 
             <!-- Linked Documents -->
             <section v-if="form.id" class="bg-white rounded-sm border border-gray-200 relative overflow-hidden">
-              <div class="absolute inset-0 dotted-pattern pointer-events-none"></div>
-              <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                            <div class="relative z-10 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                 <div class="w-1 h-4 bg-[#2F2E8B]"></div>
                 <span class="text-[9px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                   <FileText :size="10" class="text-[#2F2E8B]" /> Documents

@@ -2,8 +2,7 @@
   <Teleport to="body">
     <div v-if="modelValue" class="fixed inset-0 z-[100] flex items-stretch sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm bg-black/40">
       <div class="bg-white shadow-[0_0_50px_rgba(47,46,139,0.2)] w-full max-w-6xl h-full sm:h-auto sm:max-h-[92vh] overflow-hidden flex flex-col border border-gray-200 rounded-none relative">
-        <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.02]"></div>
-        
+                
         <!-- Modal Header -->
         <div class="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-white/50 sticky top-0 z-20">
           <div class="flex items-center gap-2 flex-1 min-w-0">
@@ -36,7 +35,7 @@
                 </button>
               </div>
             </div>
-            <button @click="$emit('edit', lead)" class="w-8 h-8 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all" title="Edit">
+            <button v-permission="['crm', 'edit']" @click="$emit('edit', lead)" class="w-8 h-8 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-orange-500 hover:border-orange-500 transition-all" title="Edit">
               <Edit :size="14" />
             </button>
             <button @click="$emit('update:modelValue', false)" class="w-8 h-8 flex items-center justify-center border border-gray-100 bg-white text-gray-400 hover:text-red-500 hover:border-red-500 transition-all">
@@ -90,8 +89,7 @@
 
         <!-- Modal Body (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-4 sm:p-5 custom-scrollbar relative">
-          <div class="absolute inset-0 dotted-pattern pointer-events-none opacity-[0.03]"></div>
-          
+                    
           <!-- Tab Content -->
           <div class="relative z-10 space-y-3 animate-in fade-in duration-500">
             
@@ -434,8 +432,7 @@
 
               <!-- Meeting Form -->
               <div v-if="showMeetingForm" class="border border-[#2F2E8B]/20 bg-white shadow-none relative overflow-hidden">
-                <div class="absolute inset-0 dotted-pattern opacity-[0.02] pointer-events-none"></div>
-                <div class="relative z-10">
+                                <div class="relative z-10">
                   <!-- Form header -->
                   <div class="bg-gradient-to-r from-[#2F2E8B] to-[#3D2F88] px-5 py-3 flex items-center gap-3">
                     <div class="w-8 h-8 bg-white/10 border border-white/20 flex items-center justify-center">
@@ -776,7 +773,7 @@
              <button v-if="hasStagedChanges" @click="commitStagedChanges" :disabled="savingStaged" class="px-6 py-2 bg-green-600 text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-green-700 transition-all flex items-center gap-1.5 disabled:opacity-50">
                <Save :size="14" /> {{ savingStaged ? 'SAVING...' : 'SAVE CHANGES' }}
              </button>
-             <button @click="$emit('edit', lead)" class="px-6 py-2 bg-[#2F2E8B] text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-[#3D2F88] transition-all flex items-center gap-1.5">
+             <button v-permission="['crm', 'edit']" @click="$emit('edit', lead)" class="px-6 py-2 bg-[#2F2E8B] text-white text-[10px] font-mono font-black uppercase tracking-widest hover:bg-[#3D2F88] transition-all flex items-center gap-1.5">
                <Edit :size="14" /> EDIT
              </button>
           </div>

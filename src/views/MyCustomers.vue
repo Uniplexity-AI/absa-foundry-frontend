@@ -366,8 +366,8 @@ function askDeleteOne(customer) {
     title: 'Delete customer',
     message:
       `Remove ${customer.fullName || customer.customerId} from the portfolio?\n\n` +
-      'The record is hidden from every list, score and report, and this is recorded ' +
-      'in the audit trail. You can restore it afterwards.',
+      'All data for this customer will be permanently removed from the database, and this action is ' + 
+      'recorded in the audit trail. This action cannot be undone.',
     confirmLabel: 'Delete customer',
   }
   deleteReason.value = ''
@@ -383,8 +383,8 @@ function askDeleteSelected() {
     title: `Delete ${selectedCount.value} customers`,
     message:
       'Remove the selected customers from the portfolio?\n\n' +
-      'They are hidden from every list, score and report, and each removal is ' +
-      'recorded in the audit trail. You can restore them afterwards.\n\n' +
+      'All data for the selected customers will be permanently removed from the database, and this action is ' + 
+      'recorded in the audit trail. This action cannot be undone.\n\n' +
       (names.join(', ') + (extra > 0 ? ` and ${extra} more` : '')),
     confirmLabel: `Delete ${selectedCount.value} customers`,
   }
@@ -833,6 +833,7 @@ onMounted(async () => {
   </div>
   </div>
 </template>
+
 
 
 
